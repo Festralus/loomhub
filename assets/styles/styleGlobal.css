@@ -1,0 +1,28 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+:root {
+  --btn-primary-bg-default-color: #000;
+  --btn-primary-bg-hover-color: ;
+  --btn-primary-bg-active-color: ;
+  --btn-primary-bg-disabled-color: rgba(255, 51, 51, 0.1);
+
+  --btn-secondary-bg-default-color: #f2f0f1;
+  --btn-secondary-bg-hover-color: ;
+  --btn-secondary-bg-hover-shadow: ;
+  --btn-secondary-bg-active-color: ;
+}
+
+.website {
+  background: #fcf6f6;
+  max-width: 1440px;
+  margin: 0 auto;
+  /* box-sizing: border-box; */
+}

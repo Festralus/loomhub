@@ -3,13 +3,20 @@
     <header class="top-menu">
       <div class="top-menu__logo">LoomHub</div>
       <nav class="top-menu__nav">
-        <div class="top-menu__nav-item top-menu__nav-item--shop">Shop</div>
+        <div class="top-menu__nav-item top-menu__nav-item--shop">
+          <div class="top-menu__nav-item--shop-text">Shop</div>
+          <ArrowIcon class="top-menu__nav-item--shop-dropdown"></ArrowIcon>
+        </div>
+
         <div class="top-menu__nav-item">On Sale</div>
         <div class="top-menu__nav-item">New Arrivals</div>
         <div class="top-menu__nav-item">Brands</div>
       </nav>
       <div class="top-menu__search">
-        <div class="top-menu__search-icon" aria-label="Search">SVG-search</div>
+        <SearchIcon
+          class="top-menu__search-icon"
+          aria-label="Search"
+        ></SearchIcon>
         <input
           type="text"
           class="top-menu__search-input"
@@ -19,8 +26,8 @@
         />
       </div>
       <div class="top-menu__actions">
-        <div class="top-menu__actions-cart">SVG-cart</div>
-        <div class="top-menu__actions-profile">SVG-profile</div>
+        <CartIcon class="top-menu__actions-cart"></CartIcon>
+        <ProfileIcon class="top-menu__actions-profile"></ProfileIcon>
       </div>
     </header>
     <div class="home-description">
@@ -107,8 +114,16 @@
   </div>
 </template>
 <script setup>
+import ArrowIcon from "../assets/icons/ArrowIcon-12.vue";
+import CartIcon from "../assets/icons/CartIcon-23.vue";
+import ProfileIcon from "../assets/icons/ProfileIcon-22.vue";
+import SearchIcon from "../assets/icons/SearchIcon-22.vue";
+import StarIcon from "../assets/icons/StarIcon-104.vue";
+
 const new_item_price = 120;
 const top_item_price = 220;
 const style_tile_name = "Casual";
 </script>
-<style></style>
+<style scoped>
+@import "/assets/styles/style.css";
+</style>
