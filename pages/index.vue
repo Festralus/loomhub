@@ -7,7 +7,6 @@
           <div class="top-menu__nav-item--shop-text">Shop</div>
           <ArrowIcon class="top-menu__nav-item--shop-dropdown"></ArrowIcon>
         </div>
-
         <div class="top-menu__nav-item">On Sale</div>
         <div class="top-menu__nav-item">New Arrivals</div>
         <div class="top-menu__nav-item">Brands</div>
