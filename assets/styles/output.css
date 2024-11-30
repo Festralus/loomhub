@@ -580,6 +580,14 @@ video {
   height: 1.5rem;
 }
 
+.h-\[90px\] {
+  height: 90px;
+}
+
+.h-\[64px\] {
+  height: 64px;
+}
+
 .w-\[100vw\] {
   width: 100vw;
 }
@@ -598,6 +606,10 @@ video {
 
 .justify-center {
   justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
 }
 
 .justify-evenly {
@@ -621,6 +633,21 @@ video {
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
 }
 
 .text-red-900 {

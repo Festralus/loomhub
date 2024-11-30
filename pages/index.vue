@@ -1,9 +1,10 @@
 <template>
   <div class="website">
     <header
-      class="top-menu flex h-6 w-[100vw] flex-row justify-center align-middle"
+      class="top-menu flex h-[64px] w-[100vw] flex-row justify-between align-middle"
     >
-      <div class="top-menu__logo">LoomHub</div>
+      <BurgerMenuIcon class="" />
+      <div class="top-menu__logo font1 text-2xl">LOOM.HUB</div>
       <nav class="top-menu__nav hidden flex-row md:flex">
         <div class="top-menu__nav-item top-menu__nav-item--shop flex flex-row">
           <div class="top-menu__nav-item--shop-text">Shop</div>
@@ -31,11 +32,11 @@
     <div class="home-description">
       <div class="home-description__interactive">
         <h2
-          class="home-description__interactive--main-text font2 mt-6 max-w-[576px] text-4xl xl:pl-24 xl:pt-24 xl:text-6xl"
+          class="home-description__interactive--main-text font2 max-w-[576px] text-4xl xl:pl-24 xl:pt-24 xl:text-6xl"
         >
           FIND CLOTHES THAT MATCHES YOUR STYLE
         </h2>
-        <div class="home-description__interactive--secondary-text text-red-900">
+        <div class="home-description__interactive--secondary-text">
           Browse through our diverse range of meticulously crafted garments,
           designed to bring out your individuality and cater to your sense of
           style.
@@ -129,6 +130,7 @@ import PradaIcon from '../assets/icons/PradaIcon.vue';
 import VersaceIcon from '../assets/icons/VersaceIcon.vue';
 import ZaraIcon from '../assets/icons/ZaraIcon.vue';
 import CalvinKleinIcon from '../assets/icons/CalvinKleinIcon.vue';
+import BurgerMenuIcon from '../assets/icons/BurgerMenuIcon.vue';
 import StarIcon from '../assets/icons/StarIconBig.vue';
 
 const new_item_price = 120;
