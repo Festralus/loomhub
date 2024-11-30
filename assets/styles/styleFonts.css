@@ -12,8 +12,8 @@
 .font2 {
   /* font-family: ''; */
   font-style: normal;
-  font-weight: 500;
-  font-size: 64px;
+  font-weight: 900;
+  /* font-size: 64px; */
   line-height: 64px;
   color: #000;
 }

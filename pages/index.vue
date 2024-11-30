@@ -1,8 +1,10 @@
 <template>
   <div class="website">
-    <header class="top-menu flex h-24 flex-row px-24 py-6">
+    <header
+      class="top-menu flex h-6 w-[100vw] flex-row justify-center align-middle"
+    >
       <div class="top-menu__logo">LoomHub</div>
-      <nav class="top-menu__nav flex flex-row">
+      <nav class="top-menu__nav hidden flex-row md:flex">
         <div class="top-menu__nav-item top-menu__nav-item--shop flex flex-row">
           <div class="top-menu__nav-item--shop-text">Shop</div>
           <ArrowIcon class="top-menu__nav-item--shop-dropdown"></ArrowIcon>
@@ -12,13 +14,10 @@
         <div class="top-menu__nav-item">Brands</div>
       </nav>
       <div class="top-menu__search flex flex-row">
-        <SearchIcon
-          class="top-menu__search-icon"
-          aria-label="Search"
-        ></SearchIcon>
+        <SearchIcon class="top-menu__search-icon" aria-label="Search" />
         <input
           type="text"
-          class="top-menu__search-input h-6"
+          class="top-menu__search-input hidden h-6 md:block"
           placeholder="Search
         for products..."
           aria-label="Search for products"
@@ -32,7 +31,7 @@
     <div class="home-description">
       <div class="home-description__interactive">
         <h2
-          class="home-description__interactive--main-text font2 w-[576px] pl-24 pt-24"
+          class="home-description__interactive--main-text font2 mt-6 max-w-[576px] text-4xl xl:pl-24 xl:pt-24 xl:text-6xl"
         >
           FIND CLOTHES THAT MATCHES YOUR STYLE
         </h2>
@@ -63,13 +62,17 @@
       </div>
     </div>
     <div
-      class="popular-brands flex flex-row justify-between bg-black px-24 py-11"
+      class="popular-brands flex w-[100vw] flex-row flex-wrap justify-evenly bg-black py-5"
     >
-      <VersaceIcon class="popular-brands__certain-brand"></VersaceIcon>
-      <ZaraIcon class="popular-brands__certain-brand"></ZaraIcon>
-      <GucciIcon class="popular-brands__certain-brand"></GucciIcon>
-      <PradaIcon class="popular-brands__certain-brand"></PradaIcon>
-      <CalvinKleinIcon class="popular-brands__certain-brand"></CalvinKleinIcon>
+      <VersaceIcon
+        class="popular-brands__certain-brand mx-3 my-2"
+      ></VersaceIcon>
+      <ZaraIcon class="popular-brands__certain-brand mx-3 my-2"></ZaraIcon>
+      <GucciIcon class="popular-brands__certain-brand mx-3 my-2"></GucciIcon>
+      <PradaIcon class="popular-brands__certain-brand mx-3 my-2"></PradaIcon>
+      <CalvinKleinIcon
+        class="popular-brands__certain-brand mx-3 my-2"
+      ></CalvinKleinIcon>
     </div>
     <!-- Combine new-arrivals and top-selling ?? -->
     <div class="new-arrivals">
