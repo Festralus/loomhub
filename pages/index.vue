@@ -1,11 +1,11 @@
 <template>
-  <div class="website">
+  <div class="website w-[100vw]">
     <header
-      class="top-menu flex h-[64px] w-[100vw] flex-row justify-between align-middle"
+      class="top-menu flex h-[64px] w-full flex-row justify-between align-middle"
     >
-      <BurgerMenuIcon class="" />
+      <BurgerMenuIcon class="w-[12%] flex-shrink-0 sm:hidden" />
       <div class="top-menu__logo font1 text-2xl">LOOM.HUB</div>
-      <nav class="top-menu__nav hidden flex-row md:flex">
+      <nav class="top-menu__nav hidden flex-row sm:flex">
         <div class="top-menu__nav-item top-menu__nav-item--shop flex flex-row">
           <div class="top-menu__nav-item--shop-text">Shop</div>
           <ArrowIcon class="top-menu__nav-item--shop-dropdown"></ArrowIcon>
@@ -24,9 +24,9 @@
           aria-label="Search for products"
         />
       </div>
-      <div class="top-menu__actions flex flex-row">
+      <div class="top-menu__actions flex w-[21%] flex-shrink-0 flex-row">
         <CartIcon class="top-menu__actions-cart"></CartIcon>
-        <ProfileIcon class="top-menu__actions-profile"></ProfileIcon>
+        <ProfileIcon class="top-menu__actions-profile ml-[14px]"></ProfileIcon>
       </div>
     </header>
     <div class="home-description">
