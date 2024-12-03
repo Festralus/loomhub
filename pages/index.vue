@@ -3,7 +3,9 @@
     <header
       class="top-menu flex h-[64px] w-full flex-row justify-between align-middle"
     >
-      <BurgerMenuIcon class="w-[12%] flex-shrink-0 sm:hidden" />
+      <div class="BurgerMenuIconContainer flex w-[12%] items-center">
+        <BurgerMenuIcon class="m-auto h-6 w-6 flex-shrink-0 sm:hidden" />
+      </div>
       <div class="top-menu__logo font1 text-2xl">LOOM.HUB</div>
       <nav class="top-menu__nav hidden flex-row sm:flex">
         <div class="top-menu__nav-item top-menu__nav-item--shop flex flex-row">
