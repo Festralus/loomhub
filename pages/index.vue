@@ -1,12 +1,12 @@
 <template>
-  <div class="website w-[100vw]">
+  <div class="website relative w-[100vw]">
     <header
-      class="top-menu flex h-[64px] w-full flex-row justify-between align-middle"
+      class="top-menu fixed left-0 top-0 z-[100] flex h-[64px] w-full flex-row items-center justify-between bg-white"
     >
-      <div class="BurgerMenuIconContainer flex w-[12%] items-center">
+      <div class="BurgerMenuIconContainer flex w-[12%]">
         <BurgerMenuIcon class="m-auto h-6 w-6 flex-shrink-0 sm:hidden" />
       </div>
-      <div class="top-menu__logo font1 text-2xl">LOOM.HUB</div>
+      <div class="top-menu__logo font1 mb-2 leading-none">LOOM.HUB</div>
       <nav class="top-menu__nav hidden flex-row sm:flex">
         <div class="top-menu__nav-item top-menu__nav-item--shop flex flex-row">
           <div class="top-menu__nav-item--shop-text">Shop</div>
@@ -17,7 +17,10 @@
         <div class="top-menu__nav-item">Brands</div>
       </nav>
       <div class="top-menu__search flex flex-row">
-        <SearchIcon class="top-menu__search-icon" aria-label="Search" />
+        <SearchIconGray
+          class="top-menu__search-icon hidden xl:block"
+          aria-label="Search"
+        />
         <input
           type="text"
           class="top-menu__search-input hidden h-6 md:block"
@@ -26,15 +29,16 @@
           aria-label="Search for products"
         />
       </div>
-      <div class="top-menu__actions flex w-[21%] flex-shrink-0 flex-row">
-        <CartIcon class="top-menu__actions-cart"></CartIcon>
+      <div class="top-menu__actions flex w-[30%] flex-shrink-0 flex-row">
+        <SearchIconBlack class="top-menu__search-icon" aria-label="Search" />
+        <CartIcon class="top-menu__actions-cart ml-[14px]"></CartIcon>
         <ProfileIcon class="top-menu__actions-profile ml-[14px]"></ProfileIcon>
       </div>
     </header>
-    <div class="home-description">
+    <div class="home-description relative z-50 mt-[64px] p-[14px]">
       <div class="home-description__interactive">
         <h2
-          class="home-description__interactive--main-text font2 max-w-[576px] text-4xl xl:pl-24 xl:pt-24 xl:text-6xl"
+          class="home-description__interactive--main-text font2 max-w-[576px] text-4xl leading-tight xl:pl-24 xl:pt-24 xl:text-6xl"
         >
           FIND CLOTHES THAT MATCHES YOUR STYLE
         </h2>
@@ -120,13 +124,15 @@
         </div>
       </div>
     </div>
+    <div class="mb-[500px]"></div>
   </div>
 </template>
 <script setup>
 import ArrowIcon from '../assets/icons/ArrowIcon.vue';
 import CartIcon from '../assets/icons/CartIcon.vue';
 import ProfileIcon from '../assets/icons/ProfileIcon.vue';
-import SearchIcon from '../assets/icons/SearchIcon.vue';
+import SearchIconBlack from '../assets/icons/SearchIconBlack.vue';
+import SearchIconGray from '../assets/icons/SearchIconGray.vue';
 import GucciIcon from '../assets/icons/GucciIcon.vue';
 import PradaIcon from '../assets/icons/PradaIcon.vue';
 import VersaceIcon from '../assets/icons/VersaceIcon.vue';
