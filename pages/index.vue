@@ -38,18 +38,18 @@
     <div class="home-description relative z-50 mt-[64px] p-[14px]">
       <div class="home-description__interactive">
         <h2
-          class="home-description__interactive--main-text font2 max-w-[576px] text-4xl leading-tight xl:pl-24 xl:pt-24 xl:text-6xl"
+          class="home-description__interactive--main-text font2 xl:pt-22 max-w-[576px] text-4xl leading-tight xl:pl-24 xl:text-6xl"
         >
           FIND CLOTHES THAT MATCHES YOUR STYLE
         </h2>
-        <div class="home-description__interactive--secondary-text">
+        <div class="home-description__interactive--secondary-text mt-5">
           Browse through our diverse range of meticulously crafted garments,
           designed to bring out your individuality and cater to your sense of
           style.
         </div>
-        <div class="home-description__interactive--button">
+        <button class="home-description__interactive--button button">
           <div class="home-description__interactive--button-text">Shop Now</div>
-        </div>
+        </button>
         <div class="home-description__interactive--stats">
           <div class="home-description__interactive--stats-brands">
             200+ International Brands
