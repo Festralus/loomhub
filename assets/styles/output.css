@@ -604,20 +604,12 @@ video {
   margin-left: 14px;
 }
 
-.mt-\[64px\] {
-  margin-top: 64px;
-}
-
-.mt-\[16px\] {
-  margin-top: 16px;
-}
-
-.mt-4 {
-  margin-top: 1rem;
-}
-
 .mt-5 {
   margin-top: 1.25rem;
+}
+
+.mt-\[64px\] {
+  margin-top: 64px;
 }
 
 .flex {
@@ -743,10 +735,6 @@ video {
 
   .xl\:pl-24 {
     padding-left: 6rem;
-  }
-
-  .xl\:pt-24 {
-    padding-top: 6rem;
   }
 
   .xl\:text-6xl {
