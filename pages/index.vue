@@ -124,6 +124,13 @@
         </div>
       </div>
     </div>
+    <div class="reviews">
+      <div class="reviews__arrows-control">
+        <div class="reviews__arrows-control__left"></div>
+        <div class="reviews__arrows-control__right"></div>
+      </div>
+      <div class="reviews_card"></div>
+    </div>
     <div class="mb-[500px]"></div>
   </div>
 </template>
