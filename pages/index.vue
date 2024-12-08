@@ -57,20 +57,20 @@
           Shop Now
         </button>
         <div
-          class="home-description__interactive--stats mt-4 flex h-[116px] flex-wrap justify-center"
+          class="home-description__interactive--stats mt-4 flex h-[116px] flex-wrap justify-center gap-y-4"
         >
           <div
-            class="description__interactive-block home-description__interactive--stats-brands font3 text-[12px]"
+            class="description__interactive-block home-description__interactive--stats-brands font3 px-4 pt-2 text-[12px] leading-4"
           >
             <span class="font5">200+</span> <br />International Brands
           </div>
           <div
-            class="description__interactive-block home-description__interactive--stats-products font3 text-[12px]"
+            class="description__interactive-block home-description__interactive--stats-products font3 px-4 pt-2 text-[12px] leading-4"
           >
             <span class="font5">2,000+</span> <br />High-Quality Products
           </div>
           <div
-            class="description__interactive-block home-description__interactive--stats-customersfont3 text-[12px]"
+            class="description__interactive-block home-description__interactive--stats-customers font3 px-4 pt-2 text-[12px] leading-4"
           >
             <span class="font5">30,000+</span><br />
             Happy Customers
