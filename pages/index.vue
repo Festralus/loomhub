@@ -44,7 +44,9 @@
         >
           FIND CLOTHES THAT MATCHES YOUR STYLE
         </h2>
-        <div class="home-description__interactive--secondary-text font3 mt-4">
+        <div
+          class="home-description__interactive--secondary-text font3 mt-4 text-[14px]"
+        >
           Browse through our diverse range of meticulously crafted garments,
           designed to bring out your individuality and cater to your sense of
           style.
@@ -54,15 +56,24 @@
         >
           Shop Now
         </button>
-        <div class="home-description__interactive--stats mt-4">
-          <div class="home-description__interactive--stats-brands">
-            200+ International Brands
+        <div
+          class="home-description__interactive--stats mt-4 flex h-[116px] flex-wrap justify-center"
+        >
+          <div
+            class="description__interactive-block home-description__interactive--stats-brands font3 text-[12px]"
+          >
+            <span class="font5">200+</span> <br />International Brands
           </div>
-          <div class="home-description__interactive--stats-products">
-            2,000+ High-Quality Products
+          <div
+            class="description__interactive-block home-description__interactive--stats-products font3 text-[12px]"
+          >
+            <span class="font5">2,000+</span> <br />High-Quality Products
           </div>
-          <div class="home-description__interactive--stats-customers">
-            30,000+ Happy Customers
+          <div
+            class="description__interactive-block home-description__interactive--stats-customersfont3 text-[12px]"
+          >
+            <span class="font5">30,000+</span><br />
+            Happy Customers
           </div>
         </div>
       </div>

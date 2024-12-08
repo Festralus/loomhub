@@ -47,7 +47,6 @@
   font-style: normal;
   font-weight: 900;
   font-size: 24px;
-  /* line-height: 64px; */
   color: #000;
 }
 
@@ -55,15 +54,12 @@
   font-family: 'Integral-ExtraBold';
   font-style: normal;
   font-weight: 900;
-  /* font-size: 64px; */
-  /* line-height: 64px; */
   color: #000;
 }
 
 .font3 {
   font-family: 'Satoshi-Regular';
   font-style: normal;
-  font-size: 14px;
   color: rgba(0, 0, 0, 0.6);
 }
 
@@ -72,4 +68,11 @@
   font-style: normal;
   font-size: 16px;
   color: rgba(255, 255, 255);
+}
+
+.font5 {
+  font-family: 'Satoshi-Bold';
+  font-style: normal;
+  font-size: 24px;
+  color: rgba(0, 0, 0);
 }
