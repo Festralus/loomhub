@@ -40,6 +40,10 @@
 }
 
 .popular-brands__certain-brand {
-  /* max-width: 27%; */
-  /* min-height: 38px; */
+  flex: 1 1 calc(25% - 20px);
+  max-width: 27%;
+  aspect-ratio: 1.5;
+  object-fit: contain;
+  height: auto;
+  max-height: calc(8vw);
 }

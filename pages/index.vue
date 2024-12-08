@@ -6,7 +6,9 @@
       <div class="BurgerMenuIconContainer flex w-[12%]">
         <BurgerMenuIcon class="m-auto h-6 w-6 flex-shrink-0 sm:hidden" />
       </div>
-      <div class="top-menu__logo font1 mb-2 leading-none">LOOM.HUB</div>
+      <div class="top-menu__logo font2 mb-2 text-[24px] leading-none">
+        LOOM.HUB
+      </div>
       <nav class="top-menu__nav hidden flex-row sm:flex">
         <div class="top-menu__nav-item top-menu__nav-item--shop flex flex-row">
           <div class="top-menu__nav-item--shop-text">Shop</div>
@@ -84,7 +86,7 @@
       </div>
     </div>
     <div
-      class="popular-brands flex w-[100vw] flex-row flex-wrap justify-evenly bg-black py-5"
+      class="popular-brands flex w-[100vw] flex-row flex-wrap justify-evenly bg-black pb-3 pt-5"
     >
       <VersaceIcon
         class="popular-brands__certain-brand mx-3 my-2"
@@ -98,8 +100,12 @@
     </div>
     <!-- Combine new-arrivals and top-selling ?? -->
     <div class="new-arrivals">
-      <div class="new-arrivals__title">NEW ARRIVALS</div>
-      <div class="new-arrivals__items">
+      <div
+        class="new-arrivals__title font2 mt-9 text-center text-[32px] leading-none"
+      >
+        NEW ARRIVALS
+      </div>
+      <div class="new-arrivals__items mt-9">
         <div class="new-arrivals__items-item">
           <div class="new-arrivals__items-item__pic"></div>
           <div class="new-arrivals__items-item__title"></div>
