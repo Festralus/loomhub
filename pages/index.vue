@@ -29,28 +29,32 @@
           aria-label="Search for products"
         />
       </div>
-      <div class="top-menu__actions flex w-[30%] flex-shrink-0 flex-row">
+      <div
+        class="top-menu__actions mr-4 flex w-[30%] flex-shrink-0 flex-row justify-end"
+      >
         <SearchIconBlack class="top-menu__search-icon" aria-label="Search" />
         <CartIcon class="top-menu__actions-cart ml-[14px]"></CartIcon>
         <ProfileIcon class="top-menu__actions-profile ml-[14px]"></ProfileIcon>
       </div>
     </header>
-    <div class="home-description relative z-50 mt-[64px] p-[14px]">
+    <div class="home-description relative z-50 mt-[64px] p-4">
       <div class="home-description__interactive">
         <h2
           class="home-description__interactive--main-text font2 xl:pt-22 max-w-[576px] text-4xl leading-tight xl:pl-24 xl:text-6xl"
         >
           FIND CLOTHES THAT MATCHES YOUR STYLE
         </h2>
-        <div class="home-description__interactive--secondary-text mt-5">
+        <div class="home-description__interactive--secondary-text font3 mt-4">
           Browse through our diverse range of meticulously crafted garments,
           designed to bring out your individuality and cater to your sense of
           style.
         </div>
-        <button class="home-description__interactive--button button">
-          <div class="home-description__interactive--button-text">Shop Now</div>
+        <button
+          class="home-description__interactive--button font4 mt-5 flex h-12 w-[100%] items-center justify-center rounded-3xl bg-black"
+        >
+          Shop Now
         </button>
-        <div class="home-description__interactive--stats">
+        <div class="home-description__interactive--stats mt-4">
           <div class="home-description__interactive--stats-brands">
             200+ International Brands
           </div>
