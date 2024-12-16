@@ -111,7 +111,7 @@
           <div class="new-arrivals__items-item__title"></div>
           <div class="new-arrivals__items-item__rating"></div>
           <div class="new-arrivals__items-item__price">
-            $ {{ new_item_price }}
+            <!-- $ {{ new_item_price }} -->
           </div>
         </div>
       </div>
@@ -127,7 +127,7 @@
           <div class="top-selling__items-item__title"></div>
           <div class="top-selling__items-item__rating"></div>
           <div class="top-selling__items-item__price">
-            $ {{ top_item_price }}
+            <!-- $ {{ top_item_price }} -->
           </div>
         </div>
       </div>
@@ -140,7 +140,7 @@
       <div class="style-masonry__tileset">
         <div class="style-masonry__tileset__tile">
           <div class="style-masonry__tileset__tile-text">
-            {{ style_tile_name }}
+            <!-- {{ style_tile_name }} -->
           </div>
         </div>
       </div>
@@ -156,6 +156,9 @@
   </div>
 </template>
 <script setup>
+import { onMounted, ref } from 'vue';
+import axios from 'axios';
+
 import ArrowIcon from '../assets/icons/ArrowIcon.vue';
 import CartIcon from '../assets/icons/CartIcon.vue';
 import ProfileIcon from '../assets/icons/ProfileIcon.vue';
@@ -169,9 +172,51 @@ import CalvinKleinIcon from '../assets/icons/CalvinKleinIcon.vue';
 import BurgerMenuIcon from '../assets/icons/BurgerMenuIcon.vue';
 import StarIcon from '../assets/icons/StarIconBig.vue';
 
-const new_item_price = 120;
-const top_item_price = 220;
-const style_tile_name = 'Casual';
+// Change BaseURL for axios
+const api = axios.create({
+  baseURL: 'http://localhost:3001',
+});
+
+onMounted(() => {
+  getProducts();
+});
+
+// const new_item_price = 0;
+// const top_item_price = 0;
+// const style_tile_name = '';
+
+const productsList = ref([]);
+const product = null;
+
+let currentPosition = 0;
+const limit = 5;
+let isFetching = false;
+let isFirstFetch = true;
+let isMaxReached = false;
+async function getProducts() {
+  if (isFetching || isMaxReached) return;
+  isFetching = true;
+
+  try {
+    const res = await api.get(
+      `/api/products?limit=${limit}&offset=${currentPosition}`
+    );
+
+    console.log(res.data);
+
+    const newProductsList = res.data.map((item) => {
+      const modifiedPrice = (item.price * currencyMultiplier.value).toFixed(2);
+
+      return {
+        // ?
+      };
+    });
+  } catch (err) {
+    console.log(err);
+  } finally {
+    isFetching = false;
+  }
+}
 </script>
 <style scoped>
 @import '/assets/styles/style.css';
