@@ -193,6 +193,7 @@ const limit = 5;
 let isFetching = false;
 let isFirstFetch = true;
 let isMaxReached = false;
+const currencyMultiplier = 1;
 async function getProducts() {
   if (isFetching || isMaxReached) return;
   isFetching = true;
@@ -204,13 +205,28 @@ async function getProducts() {
 
     console.log(res.data);
 
-    const newProductsList = res.data.map((item) => {
-      const modifiedPrice = (item.price * currencyMultiplier.value).toFixed(2);
+    const newProductsList = res.data.map((product) => {
+      const modifiedPrice = (product.price * currencyMultiplier.value).toFixed(
+        2
+      );
 
       return {
-        // ?
+        name: product.name,
+        description: product.description,
+        price: modifiedPrice,
+        GID: product.GID,
+        stock: product.stock,
+        images: product.images,
+        timestamps: product.timestamps,
       };
     });
+
+    productsList.value.push(...newProductsList);
+    currentPosition += limit;
+
+    // product.value = new Proxy(productsList.value[0], {});
+
+    isFirstFetch = false;
   } catch (err) {
     console.log(err);
   } finally {
