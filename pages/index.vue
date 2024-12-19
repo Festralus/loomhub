@@ -105,16 +105,7 @@
       >
         NEW ARRIVALS
       </div>
-      <div class="new-arrivals__items mt-9">
-        <div class="new-arrivals__items-item">
-          <div class="new-arrivals__items-item__pic"></div>
-          <div class="new-arrivals__items-item__title"></div>
-          <div class="new-arrivals__items-item__rating"></div>
-          <div class="new-arrivals__items-item__price">
-            <!-- $ {{ new_item_price }} -->
-          </div>
-        </div>
-      </div>
+      <New_arrivals :productsList="productsList"></New_arrivals>
       <div class="new-arrivals__button">
         <div class="new-arrivals__button-text">View All</div>
       </div>
@@ -171,6 +162,7 @@ import ZaraIcon from '../assets/icons/ZaraIcon.vue';
 import CalvinKleinIcon from '../assets/icons/CalvinKleinIcon.vue';
 import BurgerMenuIcon from '../assets/icons/BurgerMenuIcon.vue';
 import StarIcon from '../assets/icons/StarIconBig.vue';
+import New_arrivals from '~/components/new_arrivals.vue';
 
 // Change BaseURL for axios
 const api = axios.create({
@@ -222,6 +214,7 @@ async function getProducts() {
     });
 
     productsList.value.push(...newProductsList);
+    console.log(productsList.value);
     currentPosition += limit;
 
     // product.value = new Proxy(productsList.value[0], {});
