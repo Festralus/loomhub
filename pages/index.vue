@@ -178,14 +178,12 @@ onMounted(() => {
 // const style_tile_name = '';
 
 const productsList = ref([]);
-const product = null;
-
 let currentPosition = 0;
-const limit = 5;
+const limit = 10;
 let isFetching = false;
-let isFirstFetch = true;
 let isMaxReached = false;
 const currencyMultiplier = 1;
+
 async function getProducts() {
   if (isFetching || isMaxReached) return;
   isFetching = true;
@@ -195,33 +193,31 @@ async function getProducts() {
       `/api/products?limit=${limit}&offset=${currentPosition}`
     );
 
-    console.log(res.data);
-
     const newProductsList = res.data.map((product) => {
-      const modifiedPrice = (product.price * currencyMultiplier.value).toFixed(
-        2
-      );
+      const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
+      const discountPrice = product.discount
+        ? (product.price * (1 - product.discount / 100)).toFixed(2)
+        : null;
 
       return {
         name: product.name,
         description: product.description,
         price: modifiedPrice,
+        discountPrice: discountPrice,
+        discount: product.discount,
         GID: product.GID,
         stock: product.stock,
         images: product.images,
         timestamps: product.timestamps,
+        rating: product.rating || 4,
       };
     });
 
     productsList.value.push(...newProductsList);
-    console.log(productsList.value);
     currentPosition += limit;
-
-    // product.value = new Proxy(productsList.value[0], {});
-
-    isFirstFetch = false;
+    isMaxReached = newProductsList.length < limit;
   } catch (err) {
-    console.log(err);
+    console.error(err);
   } finally {
     isFetching = false;
   }
