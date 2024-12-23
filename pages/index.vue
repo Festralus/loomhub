@@ -144,6 +144,7 @@
       <div class="reviews_card"></div>
     </div>
     <div class="mb-[500px]"></div>
+    <button @click="updateOrderStatus(orderId, newStatus)">UPDATE</button>
   </div>
 </template>
 <script setup>
@@ -220,6 +221,36 @@ async function getProducts() {
     console.error(err);
   } finally {
     isFetching = false;
+  }
+}
+
+const orderId = '6769bc16c09d4bcd85526087';
+const newStatus = 'shipped';
+async function updateOrderStatus(orderId, newStatus) {
+  const validStatuses = ['pending', 'shipped', 'delivered', 'cancelled'];
+  if (!validStatuses.includes(newStatus)) {
+    console.error('Invalid order status');
+    return { success: false, message: 'Invalid order status' };
+  }
+
+  try {
+    const res = await api.put(`/api/orders/${orderId}`, {
+      orderStatus: newStatus,
+    });
+
+    if (res.status === 200) {
+      console.log('Order status updated successfully:', res.data.order);
+      return { success: true, order: res.data.order };
+    }
+  } catch (err) {
+    if (err.response?.status === 404) {
+      console.error('Order not found');
+      return { success: false, message: 'Order not found' };
+    }
+    console.error('Internal server error:', err.message);
+    return { success: false, message: 'Internal server error' };
+  } finally {
+    console.log(order);
   }
 }
 </script>
