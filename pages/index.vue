@@ -12,7 +12,9 @@
       <nav class="top-menu__nav hidden flex-row sm:flex">
         <div class="top-menu__nav-item top-menu__nav-item--shop flex flex-row">
           <div class="top-menu__nav-item--shop-text">Shop</div>
-          <ArrowIcon class="top-menu__nav-item--shop-dropdown"></ArrowIcon>
+          <ArrowIcon
+            class="top-menu__nav-item top-menu__nav-item--shop-dropdown"
+          ></ArrowIcon>
         </div>
         <div class="top-menu__nav-item">On Sale</div>
         <div class="top-menu__nav-item">New Arrivals</div>
@@ -59,20 +61,20 @@
           Shop Now
         </button>
         <div
-          class="home-description__interactive--stats mt-4 flex h-[116px] flex-wrap justify-center gap-y-4"
+          class="home-description__stats mt-4 flex h-[116px] flex-wrap justify-center gap-y-4"
         >
           <div
-            class="description__interactive-block home-description__interactive--stats-brands font3 px-4 pt-2 text-[12px] leading-4"
+            class="home-description__stat-block home-description__stats-brands font3 px-4 pt-2 text-[12px] leading-4"
           >
             <span class="font5">200+</span> <br />International Brands
           </div>
           <div
-            class="description__interactive-block home-description__interactive--stats-products font3 px-4 pt-2 text-[12px] leading-4"
+            class="home-description__stat-block home-description__stats-products font3 px-4 pt-2 text-[12px] leading-4"
           >
             <span class="font5">2,000+</span> <br />High-Quality Products
           </div>
           <div
-            class="description__interactive-block home-description__interactive--stats-customers font3 px-4 pt-2 text-[12px] leading-4"
+            class="home-description__stat-block home-description__stats-customers font3 px-4 pt-2 text-[12px] leading-4"
           >
             <span class="font5">30,000+</span><br />
             Happy Customers
@@ -114,10 +116,10 @@
       <div class="top-selling__title">TOP SELLING</div>
       <div class="top-selling__items">
         <div class="top-selling__items-item">
-          <div class="top-selling__items-item__pic"></div>
-          <div class="top-selling__items-item__title"></div>
-          <div class="top-selling__items-item__rating"></div>
-          <div class="top-selling__items-item__price">
+          <div class="top-selling__item-pic"></div>
+          <div class="top-selling__item-title"></div>
+          <div class="top-selling__item-rating"></div>
+          <div class="top-selling__item-price">
             <!-- $ {{ top_item_price }} -->
           </div>
         </div>
@@ -225,7 +227,7 @@ async function getProducts() {
 }
 
 const orderId = '6769bc16c09d4bcd85526087';
-const newStatus = 'shipped';
+const newStatus = 'delivered';
 async function updateOrderStatus(orderId, newStatus) {
   const validStatuses = ['pending', 'shipped', 'delivered', 'cancelled'];
   if (!validStatuses.includes(newStatus)) {
@@ -249,8 +251,6 @@ async function updateOrderStatus(orderId, newStatus) {
     }
     console.error('Internal server error:', err.message);
     return { success: false, message: 'Internal server error' };
-  } finally {
-    console.log(order);
   }
 }
 </script>

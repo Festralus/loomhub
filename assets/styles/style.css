@@ -1,5 +1,5 @@
 @media screen and (min-width: 1px) and (max-width: 481px) {
-  .description__interactive-block:first-child::after {
+  .home-description__stat-block:first-child::after {
     content: '';
     position: absolute;
     right: 0;
@@ -11,7 +11,7 @@
   }
 }
 @media screen and (min-width: 482px) {
-  .description__interactive-block:not(:last-child)::after {
+  .home-description__stat-block:not(:last-child)::after {
     content: '';
     position: absolute;
     right: 0;
@@ -33,7 +33,7 @@
   margin-top: 0px;
 }
 
-.description__interactive-block {
+.home-description__stat-block {
   height: 52px;
   width: 150px;
   position: relative;
