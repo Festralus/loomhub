@@ -176,10 +176,6 @@ onMounted(() => {
   getProducts();
 });
 
-// const new_item_price = 0;
-// const top_item_price = 0;
-// const style_tile_name = '';
-
 const productsList = ref([]);
 let currentPosition = 0;
 const limit = 10;
