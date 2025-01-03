@@ -84,7 +84,26 @@
       <div class="home-description__background">
         <div class="home-description__background--big-star"></div>
         <div class="home-description__background--small-star"></div>
-        <div class="home-description__background--image"></div>
+        <!-- <img
+          class="home-description__background--image -mx-4 -mb-4"
+          src="https://i.imgur.com/Mea753h.png"
+          srcset="
+            https://i.imgur.com/Mea753h.png 400w,
+            https://i.imgur.com/sqNcZ0J.png
+          "
+        /> -->
+        <picture class="home-description__background--image -mx-4 -mb-4">
+          <source
+            class="home-description__background--image -mx-4 -mb-4"
+            srcset="https://i.imgur.com/Mea753h.png"
+            media="(max-width: 400px)"
+          />
+          <source
+            srcset="https://i.imgur.com/sqNcZ0J.png"
+            media="(min-width: 401px)"
+          />
+          <img src="https://i.imgur.com/sqNcZ0J.png" alt="Background image" />
+        </picture>
       </div>
     </div>
     <div
