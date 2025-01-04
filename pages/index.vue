@@ -61,7 +61,7 @@
           Shop Now
         </button>
         <div
-          class="home-description__stats mt-4 flex h-[116px] flex-wrap justify-center gap-y-4"
+          class="home-description__stats mt-4 flex flex-wrap justify-center gap-y-4"
         >
           <div
             class="home-description__stat-block home-description__stats-brands font3 px-4 pt-2 text-[12px] leading-4"
@@ -92,9 +92,8 @@
             https://i.imgur.com/sqNcZ0J.png
           "
         /> -->
-        <picture class="home-description__background--image -mx-4 -mb-4">
+        <picture>
           <source
-            class="home-description__background--image -mx-4 -mb-4"
             srcset="https://i.imgur.com/Mea753h.png"
             media="(max-width: 400px)"
           />
@@ -102,7 +101,11 @@
             srcset="https://i.imgur.com/sqNcZ0J.png"
             media="(min-width: 401px)"
           />
-          <img src="https://i.imgur.com/sqNcZ0J.png" alt="Background image" />
+          <img
+            class="home-description__background--image -mx-4 -mb-4 bg-center object-center"
+            src="https://i.imgur.com/sqNcZ0J.png"
+            alt="Background image"
+          />
         </picture>
       </div>
     </div>
@@ -122,11 +125,11 @@
     <!-- Combine new-arrivals and top-selling ?? -->
     <div class="new-arrivals">
       <div
-        class="new-arrivals__title font2 mt-9 text-center text-[32px] leading-none"
+        class="new-arrivals__title font2 mb-8 mt-9 text-center text-[32px] leading-none"
       >
         NEW ARRIVALS
       </div>
-      <New_arrivals :productsList="productsList"></New_arrivals>
+      <Slider_component :productsList="productsList"></Slider_component>
       <div class="new-arrivals__button">
         <div class="new-arrivals__button-text">View All</div>
       </div>
@@ -184,7 +187,7 @@ import ZaraIcon from '../assets/icons/ZaraIcon.vue';
 import CalvinKleinIcon from '../assets/icons/CalvinKleinIcon.vue';
 import BurgerMenuIcon from '../assets/icons/BurgerMenuIcon.vue';
 import StarIcon from '../assets/icons/StarIconBig.vue';
-import New_arrivals from '~/components/new_arrivals.vue';
+import Slider_component from '~/components/slider_component.vue';
 
 // Change BaseURL for axios
 const api = axios.create({

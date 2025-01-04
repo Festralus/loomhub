@@ -1,6 +1,6 @@
 <template>
   <div
-    class="new-arrivals__items mt-9 flex w-full flex-row flex-wrap justify-start gap-6 overflow-x-auto"
+    class="new-arrivals__items m-4 flex w-full flex-row justify-start gap-6 overflow-x-auto"
   >
     <div
       v-for="product in productsList"
@@ -10,14 +10,18 @@
       <img
         :src="product.images[0]"
         alt="Product Image"
-        class="new-arrivals__items-item__pic h-[200px] w-full rounded object-cover"
+        class="new-arrivals__items-item__pic h-[200px] w-full rounded-2xl object-cover"
       />
       <div class="new-arrivals__items-item__title mt-2 text-lg font-bold">
         {{ product.name }}
       </div>
       <div class="new-arrivals__items-item__rating mt-1 flex items-center">
         <span class="flex">
-          <StarIcon v-for="n in 5" :key="n" class="h-4 w-4 text-yellow-500" />
+          <StarIcon
+            v-for="n in product.rating"
+            :key="n"
+            class="h-4 w-4 text-yellow-500"
+          />
         </span>
         <span class="ml-2 text-sm text-gray-600">(4)</span>
       </div>
@@ -26,8 +30,8 @@
         <span v-if="product.oldPrice" class="ml-2 text-gray-500 line-through"
           >${{ product.oldPrice }}</span
         >
-        <span v-if="product.discountPercentage" class="ml-2 text-red-500"
-          >({{ product.discountPercentage }}% OFF)</span
+        <span v-if="product.discount" class="ml-2 text-red-500"
+          >({{ product.discount }}% OFF)</span
         >
       </div>
     </div>
