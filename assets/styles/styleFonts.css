@@ -1,4 +1,4 @@
-/* font2 available */
+/* fonts available */
 
 @font-face {
   font-family: 'Integral-Regular';
@@ -45,29 +45,37 @@
 .font1 {
 }
 
-.font2 {
+.IntergralExtraBold {
   font-family: 'Integral-ExtraBold';
   font-style: normal;
   font-weight: 900;
-  color: #000;
+  /* color: #000; */
 }
 
-.font3 {
+.SatoshiRegular {
   font-family: 'Satoshi-Regular';
   font-style: normal;
-  color: rgba(0, 0, 0, 0.6);
+  /* color: rgba(0, 0, 0, 0.6); */
 }
-
-.font4 {
+.SatoshiRegular16White {
   font-family: 'Satoshi-Regular';
   font-style: normal;
   font-size: 16px;
   color: rgba(255, 255, 255);
 }
 
-.font5 {
+.SatoshiBold {
+  font-family: 'Satoshi-Bold';
+  font-style: normal;
+}
+.SatoshiBold24 {
   font-family: 'Satoshi-Bold';
   font-style: normal;
   font-size: 24px;
-  color: rgba(0, 0, 0);
+  /* color: rgba(0, 0, 0); */
+}
+
+.SatoshiLight {
+  font-family: 'Satoshi-Light';
+  font-style: normal;
 }

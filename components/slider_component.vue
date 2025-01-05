@@ -1,11 +1,11 @@
 <template>
   <div
-    class="new-arrivals__items m-4 flex w-full flex-row justify-start gap-6 overflow-x-auto"
+    class="new-arrivals__items flex w-full flex-row justify-start overflow-x-auto"
   >
     <div
       v-for="product in productsList"
       :key="product.GID"
-      class="new-arrivals__items-item w-[240px] flex-shrink-0"
+      class="new-arrivals__items-item w-[272px] flex-shrink-0 pl-4"
     >
       <img
         :src="product.images[0]"
@@ -18,20 +18,36 @@
       <div class="new-arrivals__items-item__rating mt-1 flex items-center">
         <span class="flex">
           <StarIcon
-            v-for="n in product.rating"
-            :key="n"
-            class="h-4 w-4 text-yellow-500"
+            v-for="n in Math.floor(product.rating)"
+            :key="'full-' + product.id"
+            class="h-4 w-4"
+          />
+          <HalfStarIcon
+            v-if="product.rating % 1 !== 0"
+            :key="'half-' + product.id"
+            class="h-4 w-4"
+          />
+          <EmptyStarIcon
+            v-for="n in Math.floor(5 - product.rating)"
+            :key="'empty-' + product.id"
+            class="h-4 w-4"
           />
         </span>
-        <span class="ml-2 text-sm text-gray-600">(4)</span>
+        <span class="ml-2 text-sm text-gray-600">({{ product.rating }})</span>
       </div>
-      <div class="new-arrivals__items-item__price mt-1 text-sm font-semibold">
+      <div
+        class="new-arrivals__items-item__price SatoshiBold mt-1 flex items-center text-xl font-semibold"
+      >
         <span>${{ product.price }}</span>
-        <span v-if="product.oldPrice" class="ml-2 text-gray-500 line-through"
+        <span
+          v-if="product.oldPrice > 0"
+          class="SatoshiBold ml-2 text-gray-500 line-through"
           >${{ product.oldPrice }}</span
         >
-        <span v-if="product.discount" class="ml-2 text-red-500"
-          >({{ product.discount }}% OFF)</span
+        <span
+          v-if="product.discount"
+          class="SatoshiLight ml-2 rounded-[62px] bg-[rgba(255,51,51,0.1)] px-2 py-1 text-sm text-[#FF3333]"
+          >-{{ product.discount }}%</span
         >
       </div>
     </div>
@@ -39,7 +55,9 @@
 </template>
 
 <script>
-import StarIcon from '../assets/icons/StarIconBig.vue';
+import EmptyStarIcon from '../assets/icons/RatingEmptyStarIcon.vue';
+import HalfStarIcon from '../assets/icons/RatingHalfStarIcon.vue';
+import StarIcon from '../assets/icons/RatingFullStarIcon.vue';
 
 export default {
   props: {
@@ -49,6 +67,8 @@ export default {
     },
   },
   components: {
+    EmptyStarIcon,
+    HalfStarIcon,
     StarIcon,
   },
 };
@@ -60,31 +80,13 @@ export default {
 }
 .new-arrivals__items-item {
   scroll-snap-align: start;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
+.new-arrivals__items-item:last-child {
+  padding-right: 16px;
+}
+/* .new-arrivals__items {
+  max-width: 100%;
+} */
 </style>
-
-<!-- <template>
-  <div class="new-arrivals__items mt-9">
-    <div
-      v-for="product in productsList"
-      :key="product.GID"
-      class="new-arrivals__items-item"
-    >
-      <img :src="product.images[0]" class="new-arrivals__items-item__pic" />
-      <div class="new-arrivals__items-item__title">{{ product.name }}</div>
-      <div class="new-arrivals__items-item__rating">4</div>
-      <div class="new-arrivals__items-item__price">$ {{ product.price }}</div>
-    </div>
-  </div>
-</template>
-<script>
-export default {
-  props: {
-    productsList: {
-      type: Array,
-      required: true,
-    },
-  },
-};
-</script>
-<style scoped></style> -->

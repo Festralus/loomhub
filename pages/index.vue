@@ -6,7 +6,9 @@
       <div class="BurgerMenuIconContainer flex w-[12%]">
         <BurgerMenuIcon class="m-auto h-6 w-6 flex-shrink-0 sm:hidden" />
       </div>
-      <div class="top-menu__logo font2 mb-2 text-[24px] leading-none">
+      <div
+        class="top-menu__logo IntergralExtraBold mb-2 text-[24px] leading-none"
+      >
         LOOM.HUB
       </div>
       <nav class="top-menu__nav hidden flex-row sm:flex">
@@ -44,19 +46,19 @@
     <div class="home-description relative z-50 mt-[64px] p-4">
       <div class="home-description__interactive">
         <h2
-          class="home-description__interactive--main-text font2 xl:pt-22 max-w-[576px] text-4xl leading-tight xl:pl-24 xl:text-6xl"
+          class="home-description__interactive--main-text IntergralExtraBold xl:pt-22 max-w-[576px] text-4xl leading-tight xl:pl-24 xl:text-6xl"
         >
           FIND CLOTHES THAT MATCHES YOUR STYLE
         </h2>
         <div
-          class="home-description__interactive--secondary-text font3 mt-4 text-[14px]"
+          class="home-description__interactive--secondary-text SatoshiRegular mt-4 text-[14px]"
         >
           Browse through our diverse range of meticulously crafted garments,
           designed to bring out your individuality and cater to your sense of
           style.
         </div>
         <button
-          class="home-description__interactive--button font4 mt-5 flex h-12 w-[100%] items-center justify-center rounded-3xl bg-black"
+          class="home-description__interactive--button SatoshiRegular16White mt-5 flex h-12 w-[100%] items-center justify-center rounded-3xl bg-black"
         >
           Shop Now
         </button>
@@ -64,19 +66,20 @@
           class="home-description__stats mt-4 flex flex-wrap justify-center gap-y-4"
         >
           <div
-            class="home-description__stat-block home-description__stats-brands font3 px-4 pt-2 text-[12px] leading-4"
+            class="home-description__stat-block home-description__stats-brands SatoshiRegular px-4 pt-2 text-[12px] leading-4"
           >
-            <span class="font5">200+</span> <br />International Brands
+            <span class="SatoshiBold24">200+</span> <br />International Brands
           </div>
           <div
-            class="home-description__stat-block home-description__stats-products font3 px-4 pt-2 text-[12px] leading-4"
+            class="home-description__stat-block home-description__stats-products SatoshiRegular px-4 pt-2 text-[12px] leading-4"
           >
-            <span class="font5">2,000+</span> <br />High-Quality Products
+            <span class="SatoshiBold24">2,000+</span> <br />High-Quality
+            Products
           </div>
           <div
-            class="home-description__stat-block home-description__stats-customers font3 px-4 pt-2 text-[12px] leading-4"
+            class="home-description__stat-block home-description__stats-customers SatoshiRegular px-4 pt-2 text-[12px] leading-4"
           >
-            <span class="font5">30,000+</span><br />
+            <span class="SatoshiBold24">30,000+</span><br />
             Happy Customers
           </div>
         </div>
@@ -125,7 +128,7 @@
     <!-- Combine new-arrivals and top-selling ?? -->
     <div class="new-arrivals">
       <div
-        class="new-arrivals__title font2 mb-8 mt-9 text-center text-[32px] leading-none"
+        class="new-arrivals__title IntergralExtraBold mb-6 mt-9 text-center text-[32px] leading-none"
       >
         NEW ARRIVALS
       </div>
@@ -216,21 +219,28 @@ async function getProducts() {
 
     const newProductsList = res.data.map((product) => {
       const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
-      const discountPrice = product.discount
-        ? (product.price * (1 - product.discount / 100)).toFixed(2)
-        : null;
+      const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
+        2
+      );
+      // const discountPrice = product.discount
+      //   ? (product.price * (1 - product.discount / 100)).toFixed(2)
+      //   : null;
+      const discountPercentage = Math.round(
+        100 - (modifiedPrice / modifiedOldPrice) * 100
+      );
 
       return {
         name: product.name,
         description: product.description,
         price: modifiedPrice,
-        discountPrice: discountPrice,
         discount: product.discount,
         GID: product.GID,
         stock: product.stock,
         images: product.images,
         timestamps: product.timestamps,
         rating: product.rating || 4,
+        oldPrice: modifiedOldPrice || null,
+        discount: discountPercentage,
       };
     });
 
