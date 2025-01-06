@@ -58,3 +58,14 @@
   -o-background-size: cover;
   background-repeat: no-repeat;
 }
+.home-description__background--big-star {
+  right: 0;
+  max-width: 20vw;
+  aspect-ratio: 1;
+}
+.home-description__background--small-star {
+  top: 20vw;
+  left: 0;
+  max-width: 10vw;
+  aspect-ratio: 1;
+}

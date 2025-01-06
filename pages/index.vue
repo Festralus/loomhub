@@ -84,9 +84,13 @@
           </div>
         </div>
       </div>
-      <div class="home-description__background">
-        <div class="home-description__background--big-star"></div>
-        <div class="home-description__background--small-star"></div>
+      <div class="home-description__background relative">
+        <StarIcon
+          class="home-description__background--big-star absolute"
+        ></StarIcon>
+        <StarIcon
+          class="home-description__background--small-star absolute"
+        ></StarIcon>
         <!-- <img
           class="home-description__background--image -mx-4 -mb-4"
           src="https://i.imgur.com/Mea753h.png"
@@ -132,25 +136,33 @@
       >
         NEW ARRIVALS
       </div>
-      <Slider_component :productsList="productsList"></Slider_component>
-      <div class="new-arrivals__button">
-        <div class="new-arrivals__button-text">View All</div>
+      <Slider_component
+        class="new-arrivals__items"
+        :productsList="newArrivalsList"
+        :getSliderProducts="() => getSliderProducts('getNewArrivals')"
+      ></Slider_component>
+      <div
+        class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] justify-center rounded-[62px] py-3 text-base"
+      >
+        View All
       </div>
+      <div class="horizontal-separator mt-10"></div>
     </div>
-    <div class="top-selling">
-      <div class="top-selling__title">TOP SELLING</div>
-      <div class="top-selling__items">
-        <div class="top-selling__items-item">
-          <div class="top-selling__item-pic"></div>
-          <div class="top-selling__item-title"></div>
-          <div class="top-selling__item-rating"></div>
-          <div class="top-selling__item-price">
-            <!-- $ {{ top_item_price }} -->
-          </div>
-        </div>
+    <div class="top-selling mt-10">
+      <div
+        class="top-selling__title IntergralExtraBold mb-6 mt-9 text-center text-[32px] leading-none"
+      >
+        TOP SELLING
       </div>
-      <div class="top-selling__button">
-        <div class="top-selling__button-text">View All</div>
+      <Slider_component
+        class="top-selling__items"
+        :productsList="topSellingList"
+        :getSliderProducts="() => getSliderProducts('getTopSelling')"
+      ></Slider_component>
+      <div
+        class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] justify-center rounded-[62px] py-3 text-base"
+      >
+        View All
       </div>
     </div>
     <div class="style-masonry">
@@ -198,44 +210,34 @@ const api = axios.create({
 });
 
 onMounted(() => {
-  getProducts();
+  getSliderProducts('getNewArrivals');
+  getSliderProducts('getTopSelling');
 });
 
-const productsList = ref([]);
-let currentPosition = 0;
-const limit = 10;
-let isFetching = false;
-let isMaxReached = false;
+// const productsList = ref([]);
+// let isMaxReached = false;
+// let isFetching = false;
+// let currentPosition = 0;
+const newArrivalsList = ref([]);
+const limit = 6;
 const currencyMultiplier = 1;
 
-async function getProducts() {
-  if (isFetching || isMaxReached) return;
-  isFetching = true;
-
+async function getSliderProducts(filterName) {
   try {
-    const res = await api.get(
-      `/api/products?limit=${limit}&offset=${currentPosition}`
-    );
-
-    const newProductsList = res.data.map((product) => {
+    const res = await api.get(`/api/${filterName}?limit=${limit}`);
+    const arrivalsResponse = res.data.map((product) => {
       const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
       const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
         2
       );
-      // const discountPrice = product.discount
-      //   ? (product.price * (1 - product.discount / 100)).toFixed(2)
-      //   : null;
       const discountPercentage = Math.round(
         100 - (modifiedPrice / modifiedOldPrice) * 100
       );
 
       return {
         name: product.name,
-        description: product.description,
         price: modifiedPrice,
-        discount: product.discount,
         GID: product.GID,
-        stock: product.stock,
         images: product.images,
         timestamps: product.timestamps,
         rating: product.rating || 4,
@@ -244,13 +246,152 @@ async function getProducts() {
       };
     });
 
-    productsList.value.push(...newProductsList);
-    currentPosition += limit;
-    isMaxReached = newProductsList.length < limit;
+    if (filterName === 'getNewArrivals') {
+      newArrivalsList.value.push(...arrivalsResponse);
+    } else if (filterName === 'getTopSelling') {
+      topSellingList.value.push(...arrivalsResponse);
+    }
   } catch (err) {
-    console.error(err);
-  } finally {
-    isFetching = false;
+    console.log(err);
+  }
+}
+
+async function getNewArrivals() {
+  try {
+    const res = await api.get(`/api/getNewArrivals?limit=${limit}`);
+    const arrivalsResponse = res.data.map((product) => {
+      const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
+      const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
+        2
+      );
+      const discountPercentage = Math.round(
+        100 - (modifiedPrice / modifiedOldPrice) * 100
+      );
+
+      return {
+        name: product.name,
+        price: modifiedPrice,
+        GID: product.GID,
+        images: product.images,
+        timestamps: product.timestamps,
+        rating: product.rating || 4,
+        oldPrice: modifiedOldPrice || null,
+        discount: discountPercentage,
+      };
+    });
+
+    newArrivalsList.value.push(...arrivalsResponse);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+// async function getNewArrivals() {
+//   try {
+//     const res = await api.get(`/api/products?limit=${limit}`);
+
+//     const newProductsList = res.data.map((product) => {
+//       const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
+//       const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
+//         2
+//       );
+//       // const discountPrice = product.discount
+//       //   ? (product.price * (1 - product.discount / 100)).toFixed(2)
+//       //   : null;
+//       const discountPercentage = Math.round(
+//         100 - (modifiedPrice / modifiedOldPrice) * 100
+//       );
+
+//       return {
+//         name: product.name,
+//         price: modifiedPrice,
+//         GID: product.GID,
+//         images: product.images,
+//         timestamps: product.timestamps,
+//         rating: product.rating || 4,
+//         oldPrice: modifiedOldPrice || null,
+//         discount: discountPercentage,
+//       };
+//     });
+
+//     productsList.value.push(...newProductsList);
+//   } catch (err) {
+//     console.error(err);
+//   }
+// }
+
+// async function getProducts() {
+//   if (isFetching || isMaxReached) return;
+//   isFetching = true;
+
+//   try {
+//     const res = await api.get(
+//       `/api/products?limit=${limit}&offset=${currentPosition}`
+//     );
+
+//     const newProductsList = res.data.map((product) => {
+//       const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
+//       const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
+//         2
+//       );
+//       const discountPercentage = Math.round(
+//         100 - (modifiedPrice / modifiedOldPrice) * 100
+//       );
+
+//       return {
+//         name: product.name,
+//         description: product.description,
+//         price: modifiedPrice,
+//         discount: product.discount,
+//         GID: product.GID,
+//         stock: product.stock,
+//         images: product.images,
+//         timestamps: product.timestamps,
+//         rating: product.rating || 4,
+//         oldPrice: modifiedOldPrice || null,
+//         discount: discountPercentage,
+//       };
+//     });
+
+//     productsList.value.push(...newProductsList);
+//     currentPosition += limit;
+//     isMaxReached = newProductsList.length < limit;
+//   } catch (err) {
+//     console.error(err);
+//   } finally {
+//     isFetching = false;
+//   }
+// }
+
+const topSellingList = ref([]);
+
+async function getTopSelling() {
+  try {
+    const res = await api.get(`/api/getTopSelling?limit=${limit}`);
+    const arrivalsResponse = res.data.map((product) => {
+      const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
+      const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
+        2
+      );
+      const discountPercentage = Math.round(
+        100 - (modifiedPrice / modifiedOldPrice) * 100
+      );
+
+      return {
+        name: product.name,
+        price: modifiedPrice,
+        GID: product.GID,
+        images: product.images,
+        timestamps: product.timestamps,
+        rating: product.rating || 4,
+        oldPrice: modifiedOldPrice || null,
+        discount: discountPercentage,
+      };
+    });
+
+    topSellingList.value.push(...arrivalsResponse);
+  } catch (err) {
+    console.log(err);
   }
 }
 

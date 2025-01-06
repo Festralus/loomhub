@@ -25,3 +25,15 @@
   /* max-width: 1440px; */
   /* box-sizing: border-box; */
 }
+
+.button-border {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.horizontal-separator {
+  width: 90%;
+  height: 1px;
+  border-top: solid 1px rgba(0, 0, 0, 0.1);
+  margin-left: auto;
+  margin-right: auto;
+}
