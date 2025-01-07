@@ -1,5 +1,5 @@
 <template>
-  <div class="website relative w-[100vw]">
+  <div class="website relative max-w-[100vw]">
     <header
       class="top-menu fixed left-0 top-0 z-[100] flex h-[64px] w-full flex-row items-center justify-between bg-white"
     >
@@ -165,13 +165,38 @@
         View All
       </div>
     </div>
-    <div class="style-masonry">
-      <div class="style-masonry__title">BROWSE BY dress STYLE</div>
-      <div class="style-masonry__tileset">
-        <div class="style-masonry__tileset__tile">
-          <div class="style-masonry__tileset__tile-text">
-            <!-- {{ style_tile_name }} -->
+    <div class="style-masonry mx-4 mt-10 rounded-2xl bg-[#F0F0F0] pb-2 pt-9">
+      <div
+        class="style-masonry__title IntergralExtraBold mb-7 px-10 text-center text-[32px] leading-none"
+      >
+        BROWSE BY DRESS STYLE
+      </div>
+      <div class="style-masonry__tileset relative flex flex-col items-center">
+        <div
+          v-for="style in dress_styles_list"
+          :key="style.name"
+          class="style-masonry__tileset__tile relative mb-4 w-[90%] rounded-3xl bg-white"
+        >
+          <div
+            class="style-masonry__tileset__tile-text SatoshiBold absolute ml-6 mt-4 text-2xl"
+          >
+            {{ style.name }}
           </div>
+          <picture class="style-masonry__tileset_tile-background">
+            <source
+              :srcset="`${style.backgroundPicture}.png`"
+              media="(max-width: 400px)"
+            />
+            <source
+              :srcset="`${style.backgroundPicture}-xl.png`"
+              media="(min-width: 401px)"
+            />
+            <img
+              class="ml-auto rounded-3xl"
+              :src="`${style.backgroundPicture}-xl.png`"
+              alt="Background image"
+            />
+          </picture>
         </div>
       </div>
     </div>
@@ -422,6 +447,14 @@ async function updateOrderStatus(orderId, newStatus) {
     return { success: false, message: 'Internal server error' };
   }
 }
+
+// An array for Browse by dress style
+const dress_styles_list = [
+  { name: 'Casual', backgroundPicture: '/assets/images/browse-casual' },
+  { name: 'Formal', backgroundPicture: '/assets/images/browse-formal' },
+  { name: 'Party', backgroundPicture: '/assets/images/browse-party' },
+  { name: 'Gym', backgroundPicture: '/assets/images/browse-gym' },
+];
 </script>
 <style scoped>
 @import '/assets/styles/style.css';
