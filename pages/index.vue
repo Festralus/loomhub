@@ -14,9 +14,9 @@
       <nav class="top-menu__nav hidden flex-row sm:flex">
         <div class="top-menu__nav-item top-menu__nav-item--shop flex flex-row">
           <div class="top-menu__nav-item--shop-text">Shop</div>
-          <ArrowIcon
+          <PointerIcon
             class="top-menu__nav-item top-menu__nav-item--shop-dropdown"
-          ></ArrowIcon>
+          ></PointerIcon>
         </div>
         <div class="top-menu__nav-item">On Sale</div>
         <div class="top-menu__nav-item">New Arrivals</div>
@@ -129,7 +129,6 @@
         class="popular-brands__certain-brand mx-3 my-2"
       ></CalvinKleinIcon>
     </div>
-    <!-- Combine new-arrivals and top-selling ?? -->
     <div class="new-arrivals">
       <div
         class="new-arrivals__title IntergralExtraBold mb-6 mt-9 text-center text-[32px] leading-none"
@@ -200,12 +199,48 @@
         </div>
       </div>
     </div>
-    <div class="reviews">
-      <div class="reviews__arrows-control">
-        <div class="reviews__arrows-control__left"></div>
-        <div class="reviews__arrows-control__right"></div>
+    <div class="reviews mt-10">
+      <div class="reviews__header mx-4 flex">
+        <div
+          class="reviews__title IntergralExtraBold mr-10 text-left text-[32px] leading-none"
+        >
+          OUR HAPPY CUSTOMERS
+        </div>
+        <div class="reviews__arrows mt-auto flex">
+          <ArrowIcon
+            class="reviews__arrow--left mr-4 size-6 rotate-180"
+          ></ArrowIcon>
+          <ArrowIcon class="reviews__arrow--right size-6"></ArrowIcon>
+        </div>
       </div>
-      <div class="reviews_card"></div>
+      <div class="reviews__cards">
+        <div
+          class="reviews__card button-border mx-4 mt-6 h-[190px] rounded-3xl border-gray-500 p-6"
+          v-for="review in websiteReviewsArray"
+          :key="review.id"
+        >
+          <div class="reviews__card-rating mt-1 flex items-center">
+            <span class="flex">
+              <RatingStarIcon
+                v-for="n in Math.floor(review.rating)"
+                :key="'full-' + review.id"
+                class="h-5 w-5"
+              />
+              <RatingEmptyStarIcon
+                v-for="n in Math.floor(5 - review.rating)"
+                :key="'empty-' + review.id"
+                class="h-5 w-5"
+              />
+            </span>
+          </div>
+          <div class="reviews__card-name SatoshiBold mt-2 text-base">
+            {{ review.user }}
+          </div>
+          <div class="reviews__card-text SatoshiRegular mt-1 text-gray-500">
+            {{ review.comment }}
+          </div>
+        </div>
+      </div>
     </div>
     <div class="mb-[500px]"></div>
     <button @click="updateOrderStatus(orderId, newStatus)">UPDATE</button>
@@ -216,7 +251,11 @@ import { onMounted, ref } from 'vue';
 import axios from 'axios';
 
 import ArrowIcon from '../assets/icons/ArrowIcon.vue';
+import PointerIcon from '../assets/icons/PointerIcon.vue';
 import CartIcon from '../assets/icons/CartIcon.vue';
+import RatingEmptyStarIcon from '../assets/icons/RatingEmptyStarIcon.vue';
+// import RatingHalfStarIcon from '../assets/icons/RatingHalfStarIcon.vue';
+import RatingStarIcon from '../assets/icons/RatingFullStarIcon.vue';
 import ProfileIcon from '../assets/icons/ProfileIcon.vue';
 import SearchIconBlack from '../assets/icons/SearchIconBlack.vue';
 import SearchIconGray from '../assets/icons/SearchIconGray.vue';
@@ -228,6 +267,7 @@ import CalvinKleinIcon from '../assets/icons/CalvinKleinIcon.vue';
 import BurgerMenuIcon from '../assets/icons/BurgerMenuIcon.vue';
 import StarIcon from '../assets/icons/StarIconBig.vue';
 import Slider_component from '~/components/slider_component.vue';
+import VerifiedTickIcon from '../assets/icons/VerifiedTickIcon.vue';
 
 // Change BaseURL for axios
 const api = axios.create({
@@ -237,6 +277,7 @@ const api = axios.create({
 onMounted(() => {
   getSliderProducts('getNewArrivals');
   getSliderProducts('getTopSelling');
+  getWebsiteReviews();
 });
 
 // const productsList = ref([]);
@@ -455,6 +496,28 @@ const dress_styles_list = [
   { name: 'Party', backgroundPicture: '/assets/images/browse-party' },
   { name: 'Gym', backgroundPicture: '/assets/images/browse-gym' },
 ];
+
+// Get website reviews
+const websiteReviewsArray = ref([]);
+async function getWebsiteReviews() {
+  try {
+    const response = await api.get('/api/getWebsiteReviews');
+    const modifiedResponse = response.data.map((review) => {
+      const reviewerName = review.name;
+
+      return {
+        user: reviewerName,
+        comment: review.comment,
+        id: review.id,
+      };
+    });
+
+    websiteReviewsArray.value.push(...modifiedResponse.data);
+    console.log(websiteReviewsArray.value);
+  } catch (err) {
+    console.log(err);
+  }
+}
 </script>
 <style scoped>
 @import '/assets/styles/style.css';
