@@ -209,35 +209,47 @@
         <div class="reviews__arrows mt-auto flex">
           <ArrowIcon
             class="reviews__arrow--left mr-4 size-6 rotate-180"
+            @click="scrollToCard(reviewCardIndex - 1)"
           ></ArrowIcon>
-          <ArrowIcon class="reviews__arrow--right size-6"></ArrowIcon>
+          <ArrowIcon
+            class="reviews__arrow--right size-6"
+            @click="scrollToCard(reviewCardIndex + 1)"
+          ></ArrowIcon>
         </div>
       </div>
-      <div class="reviews__cards">
-        <div
-          class="reviews__card button-border mx-4 mt-6 h-[190px] rounded-3xl border-gray-500 p-6"
-          v-for="review in websiteReviewsArray"
-          :key="review.id"
-        >
-          <div class="reviews__card-rating mt-1 flex items-center">
-            <span class="flex">
-              <RatingStarIcon
-                v-for="n in Math.floor(review.rating)"
-                :key="'full-' + review.id"
-                class="h-5 w-5"
-              />
-              <RatingEmptyStarIcon
-                v-for="n in Math.floor(5 - review.rating)"
-                :key="'empty-' + review.id"
-                class="h-5 w-5"
-              />
-            </span>
-          </div>
-          <div class="reviews__card-name SatoshiBold mt-2 text-base">
-            {{ review.user }}
-          </div>
-          <div class="reviews__card-text SatoshiRegular mt-1 text-gray-500">
-            {{ review.comment }}
+      <div class="reviews__cards-container">
+        <div class="reviews__cards" ref="reviewCardsContainer">
+          <div
+            class="reviews__card button-border mx-4 mt-6 h-[180px] w-[340px] rounded-3xl border-gray-500 p-6"
+            v-for="review in websiteReviewsArray"
+            :key="review.id"
+            ref="reviewCardRefs"
+          >
+            <div class="reviews__card-rating mt-1 flex items-center">
+              <span class="flex">
+                <RatingStarIcon
+                  v-for="n in Math.floor(review.rating)"
+                  :key="'full-' + review.id"
+                  class="h-5 w-5"
+                />
+                <RatingEmptyStarIcon
+                  v-for="n in Math.floor(5 - review.rating)"
+                  :key="'empty-' + review.id"
+                  class="h-5 w-5"
+                />
+              </span>
+            </div>
+            <div class="reviews__card-name__line flex items-end">
+              <div class="reviews__card-name SatoshiBold mt-2 text-base">
+                {{ review.user }}
+              </div>
+              <VerifiedTickIcon
+                class="reviews__card-verified mb-1 ml-1 size-4"
+              ></VerifiedTickIcon>
+            </div>
+            <div class="reviews__card-text SatoshiRegular mt-1 text-gray-500">
+              {{ review.comment }}
+            </div>
           </div>
         </div>
       </div>
@@ -278,6 +290,8 @@ onMounted(() => {
   getSliderProducts('getNewArrivals');
   getSliderProducts('getTopSelling');
   getWebsiteReviews();
+
+  reviewCardsContainer.value.addEventListener('scroll', handleScroll);
 });
 
 // const productsList = ref([]);
@@ -499,6 +513,7 @@ const dress_styles_list = [
 
 // Get website reviews
 const websiteReviewsArray = ref([]);
+
 async function getWebsiteReviews() {
   try {
     const response = await api.get('/api/getWebsiteReviews');
@@ -508,15 +523,46 @@ async function getWebsiteReviews() {
       return {
         user: reviewerName,
         comment: review.comment,
-        id: review.id,
+        rating: review.rating,
+        id: review._id,
       };
     });
 
-    websiteReviewsArray.value.push(...modifiedResponse.data);
-    console.log(websiteReviewsArray.value);
+    websiteReviewsArray.value.push(...modifiedResponse);
   } catch (err) {
     console.log(err);
   }
+}
+
+const reviewCardIndex = ref(0);
+const reviewCardsContainer = ref(null);
+// websiteReviewsArray
+function scrollToCard(index) {
+  if (!reviewCardsContainer.value) return;
+  reviewCardIndex.value = Math.max(
+    0,
+    Math.min(index, websiteReviewsArray.value.length - 1)
+  );
+  if (index < 0) {
+    reviewCardIndex.value = websiteReviewsArray.value.length - 1;
+  }
+  if (index > websiteReviewsArray.value.length - 3) {
+    reviewCardIndex.value = 0;
+  }
+  const cardWidth = reviewCardsContainer.value.children[0]?.offsetWidth;
+  reviewCardsContainer.value.scrollTo({
+    left: cardWidth * reviewCardIndex.value,
+    behavior: 'smooth',
+  });
+}
+
+function handleScroll() {
+  if (!reviewCardsContainer.value) return;
+
+  const container = reviewCardsContainer.value;
+  const scrollLeft = container.scrollLeft;
+  const cardWidth = container.children[0]?.offsetWidth;
+  reviewCardIndex.value = Math.round(scrollLeft / cardWidth);
 }
 </script>
 <style scoped>

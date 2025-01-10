@@ -70,5 +70,19 @@
   aspect-ratio: 1;
 }
 
+.reviews__cards-container {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
 .reviews__cards {
+  overflow-x: auto;
+  display: flex;
+  flex-wrap: nowrap;
+  width: max-content;
+}
+
+.reviews__card {
+  scroll-snap-align: center;
 }
