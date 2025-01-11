@@ -77,7 +77,6 @@
   width: 100%;
 }
 .reviews__cards {
-  overflow-x: auto;
   display: flex;
   flex-wrap: nowrap;
   width: max-content;

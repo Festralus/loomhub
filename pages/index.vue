@@ -217,8 +217,8 @@
           ></ArrowIcon>
         </div>
       </div>
-      <div class="reviews__cards-container">
-        <div class="reviews__cards" ref="reviewCardsContainer">
+      <div class="reviews__cards-container" ref="reviewCardsContainer">
+        <div class="reviews__cards">
           <div
             class="reviews__card button-border mx-4 mt-6 h-[180px] w-[340px] rounded-3xl border-gray-500 p-6"
             v-for="review in websiteReviewsArray"
@@ -294,10 +294,6 @@ onMounted(() => {
   reviewCardsContainer.value.addEventListener('scroll', handleScroll);
 });
 
-// const productsList = ref([]);
-// let isMaxReached = false;
-// let isFetching = false;
-// let currentPosition = 0;
 const newArrivalsList = ref([]);
 const limit = 6;
 const currencyMultiplier = 1;
@@ -336,144 +332,7 @@ async function getSliderProducts(filterName) {
   }
 }
 
-async function getNewArrivals() {
-  try {
-    const res = await api.get(`/api/getNewArrivals?limit=${limit}`);
-    const arrivalsResponse = res.data.map((product) => {
-      const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
-      const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
-        2
-      );
-      const discountPercentage = Math.round(
-        100 - (modifiedPrice / modifiedOldPrice) * 100
-      );
-
-      return {
-        name: product.name,
-        price: modifiedPrice,
-        GID: product.GID,
-        images: product.images,
-        timestamps: product.timestamps,
-        rating: product.rating || 4,
-        oldPrice: modifiedOldPrice || null,
-        discount: discountPercentage,
-      };
-    });
-
-    newArrivalsList.value.push(...arrivalsResponse);
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-// async function getNewArrivals() {
-//   try {
-//     const res = await api.get(`/api/products?limit=${limit}`);
-
-//     const newProductsList = res.data.map((product) => {
-//       const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
-//       const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
-//         2
-//       );
-//       // const discountPrice = product.discount
-//       //   ? (product.price * (1 - product.discount / 100)).toFixed(2)
-//       //   : null;
-//       const discountPercentage = Math.round(
-//         100 - (modifiedPrice / modifiedOldPrice) * 100
-//       );
-
-//       return {
-//         name: product.name,
-//         price: modifiedPrice,
-//         GID: product.GID,
-//         images: product.images,
-//         timestamps: product.timestamps,
-//         rating: product.rating || 4,
-//         oldPrice: modifiedOldPrice || null,
-//         discount: discountPercentage,
-//       };
-//     });
-
-//     productsList.value.push(...newProductsList);
-//   } catch (err) {
-//     console.error(err);
-//   }
-// }
-
-// async function getProducts() {
-//   if (isFetching || isMaxReached) return;
-//   isFetching = true;
-
-//   try {
-//     const res = await api.get(
-//       `/api/products?limit=${limit}&offset=${currentPosition}`
-//     );
-
-//     const newProductsList = res.data.map((product) => {
-//       const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
-//       const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
-//         2
-//       );
-//       const discountPercentage = Math.round(
-//         100 - (modifiedPrice / modifiedOldPrice) * 100
-//       );
-
-//       return {
-//         name: product.name,
-//         description: product.description,
-//         price: modifiedPrice,
-//         discount: product.discount,
-//         GID: product.GID,
-//         stock: product.stock,
-//         images: product.images,
-//         timestamps: product.timestamps,
-//         rating: product.rating || 4,
-//         oldPrice: modifiedOldPrice || null,
-//         discount: discountPercentage,
-//       };
-//     });
-
-//     productsList.value.push(...newProductsList);
-//     currentPosition += limit;
-//     isMaxReached = newProductsList.length < limit;
-//   } catch (err) {
-//     console.error(err);
-//   } finally {
-//     isFetching = false;
-//   }
-// }
-
 const topSellingList = ref([]);
-
-async function getTopSelling() {
-  try {
-    const res = await api.get(`/api/getTopSelling?limit=${limit}`);
-    const arrivalsResponse = res.data.map((product) => {
-      const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
-      const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
-        2
-      );
-      const discountPercentage = Math.round(
-        100 - (modifiedPrice / modifiedOldPrice) * 100
-      );
-
-      return {
-        name: product.name,
-        price: modifiedPrice,
-        GID: product.GID,
-        images: product.images,
-        timestamps: product.timestamps,
-        rating: product.rating || 4,
-        oldPrice: modifiedOldPrice || null,
-        discount: discountPercentage,
-      };
-    });
-
-    topSellingList.value.push(...arrivalsResponse);
-  } catch (err) {
-    console.log(err);
-  }
-}
 
 const orderId = '6769bc16c09d4bcd85526087';
 const newStatus = 'delivered';
@@ -534,22 +393,24 @@ async function getWebsiteReviews() {
   }
 }
 
+// Horizontal cards scroller
 const reviewCardIndex = ref(0);
 const reviewCardsContainer = ref(null);
-// websiteReviewsArray
 function scrollToCard(index) {
   if (!reviewCardsContainer.value) return;
-  reviewCardIndex.value = Math.max(
-    0,
-    Math.min(index, websiteReviewsArray.value.length - 1)
-  );
+  reviewCardIndex.value = index;
+
   if (index < 0) {
     reviewCardIndex.value = websiteReviewsArray.value.length - 1;
   }
-  if (index > websiteReviewsArray.value.length - 3) {
+
+  if (index > websiteReviewsArray.value.length - 1) {
     reviewCardIndex.value = 0;
   }
-  const cardWidth = reviewCardsContainer.value.children[0]?.offsetWidth;
+  const cardWidth =
+    reviewCardsContainer.value.children[0]?.children[0]?.children[0]
+      ?.offsetWidth;
+
   reviewCardsContainer.value.scrollTo({
     left: cardWidth * reviewCardIndex.value,
     behavior: 'smooth',
