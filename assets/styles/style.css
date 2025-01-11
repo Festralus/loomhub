@@ -85,3 +85,18 @@
 .reviews__card {
   scroll-snap-align: center;
 }
+
+.reviews__cards2 {
+  display: flex;
+  flex-wrap: wrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  /* width: 100%; */
+  scroll-snap-type: x mandatory;
+
+  /* width: max-content; */
+}
+
+.reviews__card2 {
+  scroll-snap-align: center;
+}

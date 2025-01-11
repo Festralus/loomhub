@@ -253,6 +253,51 @@
           </div>
         </div>
       </div>
+
+      <div class="reviews__arrows mt-auto flex">
+        <ArrowIcon
+          class="reviews__arrow--left mr-4 size-6 rotate-180"
+          @click="scrollToCard2(reviewCardIndex2 - 1)"
+        ></ArrowIcon>
+        <ArrowIcon
+          class="reviews__arrow--right size-6"
+          @click="scrollToCard2(reviewCardIndex2 + 1)"
+        ></ArrowIcon>
+      </div>
+      <div class="reviews__cards2" ref="reviewCardsContainer2">
+        <div
+          class="reviews__card2 button-border mx-4 mt-6 h-[180px] w-[340px] rounded-3xl border-gray-500 p-6"
+          v-for="review in websiteReviewsArray"
+          :key="review.id"
+          ref="reviewCardRefs"
+        >
+          <div class="reviews__card-rating mt-1 flex items-center">
+            <span class="flex">
+              <RatingStarIcon
+                v-for="n in Math.floor(review.rating)"
+                :key="'full-' + review.id"
+                class="h-5 w-5"
+              />
+              <RatingEmptyStarIcon
+                v-for="n in Math.floor(5 - review.rating)"
+                :key="'empty-' + review.id"
+                class="h-5 w-5"
+              />
+            </span>
+          </div>
+          <div class="reviews__card-name__line flex items-end">
+            <div class="reviews__card-name SatoshiBold mt-2 text-base">
+              {{ review.user }}
+            </div>
+            <VerifiedTickIcon
+              class="reviews__card-verified mb-1 ml-1 size-4"
+            ></VerifiedTickIcon>
+          </div>
+          <div class="reviews__card-text SatoshiRegular mt-1 text-gray-500">
+            {{ review.comment }}
+          </div>
+        </div>
+      </div>
     </div>
     <div class="mb-[500px]"></div>
     <button @click="updateOrderStatus(orderId, newStatus)">UPDATE</button>
@@ -292,6 +337,7 @@ onMounted(() => {
   getWebsiteReviews();
 
   reviewCardsContainer.value.addEventListener('scroll', handleScroll);
+  reviewCardsContainer2.value.addEventListener('scroll', handleScroll2);
 });
 
 const newArrivalsList = ref([]);
@@ -408,9 +454,9 @@ function scrollToCard(index) {
     reviewCardIndex.value = 0;
   }
   const cardWidth =
-    reviewCardsContainer.value.children[0]?.children[0]?.children[0]
-      ?.offsetWidth;
+    reviewCardsContainer.value.children[0]?.children[0]?.offsetWidth;
 
+  console.log(reviewCardIndex.value);
   reviewCardsContainer.value.scrollTo({
     left: cardWidth * reviewCardIndex.value,
     behavior: 'smooth',
@@ -422,8 +468,43 @@ function handleScroll() {
 
   const container = reviewCardsContainer.value;
   const scrollLeft = container.scrollLeft;
-  const cardWidth = container.children[0]?.offsetWidth;
+  const cardWidth = container.children[0]?.children[0]?.offsetWidth;
   reviewCardIndex.value = Math.round(scrollLeft / cardWidth);
+  console.log(reviewCardIndex.value);
+}
+
+// Horizontal cards scroller
+const reviewCardIndex2 = ref(0);
+const reviewCardsContainer2 = ref(null);
+function scrollToCard2(index) {
+  if (!reviewCardsContainer2.value) return;
+  reviewCardIndex2.value = index;
+
+  if (index < 0) {
+    reviewCardIndex2.value = websiteReviewsArray.value.length - 1;
+  }
+
+  if (index > websiteReviewsArray.value.length - 1) {
+    reviewCardIndex2.value = 0;
+  }
+  const cardWidth =
+    reviewCardsContainer2.value.children[0]?.children[0]?.offsetWidth;
+
+  console.log(reviewCardIndex2.value);
+  reviewCardsContainer2.value.scrollTo({
+    left: cardWidth * reviewCardIndex2.value,
+    behavior: 'smooth',
+  });
+}
+
+function handleScroll2() {
+  if (!reviewCardsContainer2.value) return;
+
+  const container = reviewCardsContainer2.value;
+  const scrollLeft = container.scrollLeft;
+  const cardWidth = container.children[0]?.children[0]?.offsetWidth;
+  reviewCardIndex.value = Math.round(scrollLeft / cardWidth);
+  console.log(reviewCardIndex.value);
 }
 </script>
 <style scoped>
