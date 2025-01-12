@@ -253,6 +253,14 @@
           </div>
         </div>
       </div>
+      <div class="subscribe_container">
+        <div class="subscribe__title">STAY UP TO DATE ABOUT OUR OFFERS</div>
+        <div class="subscribe__input_block">
+          <div class="subscribe__icon"></div>
+          <div class="subscribe__input"></div>
+        </div>
+        <div class="subscribe__button">Subscribe to Newsletter</div>
+      </div>
     </div>
     <div class="mb-[500px]"></div>
     <button @click="updateOrderStatus(orderId, newStatus)">UPDATE</button>
