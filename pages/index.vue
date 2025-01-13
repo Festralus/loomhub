@@ -253,11 +253,11 @@
           </div>
         </div>
       </div>
-      <div class="subscribe_container">
-        <div class="subscribe__title">STAY UP TO DATE ABOUT OUR OFFERS</div>
-        <div class="subscribe__input_block">
-          <div class="subscribe__icon"></div>
-          <div class="subscribe__input"></div>
+      <div class="subscribe_container bg-black">
+        <div class="subscribe__title text-white">STAY UP TO DATE ABOUT OUR OFFERS</div>
+        <div class="subscribe__input_block rounded-xl flex p-2 w-[90vw] mx-auto ">
+          <div class="subscribe__icon text-gray-500 bg-white pr-1">S</div>
+          <input class="subscribe__input bg-white w-[100%]"/>
         </div>
         <div class="subscribe__button">Subscribe to Newsletter</div>
       </div>
