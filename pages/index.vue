@@ -253,16 +253,35 @@
           </div>
         </div>
       </div>
-      <div class="subscribe_container bg-black">
-        <div class="subscribe__title text-white">STAY UP TO DATE ABOUT OUR OFFERS</div>
-        <div class="subscribe__input_block rounded-xl flex p-2 w-[90vw] mx-auto ">
-          <div class="subscribe__icon text-gray-500 bg-white pr-1">S</div>
-          <input class="subscribe__input bg-white w-[100%]"/>
+      <div
+        class="subscribe_container mx-4 mt-12 overflow-hidden rounded-2xl bg-black"
+      >
+        <div
+          class="subscribe__title IntegralBold px-6 pt-8 text-[1.8rem] leading-9 text-white"
+        >
+          STAY UP TO DATE ABOUT OUR BEST OFFERS
         </div>
-        <div class="subscribe__button">Subscribe to Newsletter</div>
+        <div
+          class="subscribe__input_block mx-auto mt-8 flex h-[42px] w-[311px] items-center overflow-hidden rounded-3xl bg-white"
+          @click="focusSubscriptionEmail"
+        >
+          <LetterIcon class="subscribe__icon ml-4 mr-3 bg-white"></LetterIcon>
+          <input
+            class="subscribe__input SatoshiRegular w-[80%] bg-white text-sm placeholder-gray-400"
+            placeholder="Enter your email address"
+            ref="SubscriptionEmail"
+          />
+        </div>
+        <div
+          class="subscribe__button SatoshiRegular mx-auto mb-7 mt-3 h-[42px] w-[311px] rounded-3xl bg-white text-center leading-[42px] text-black"
+        >
+          Subscribe to Newsletter
+        </div>
       </div>
+      <div class="ContactIconsBlock"></div>
+      <footer></footer>
     </div>
-    <div class="mb-[500px]"></div>
+    <div class="mb-[500px] mt-[100px]"></div>
     <button @click="updateOrderStatus(orderId, newStatus)">UPDATE</button>
   </div>
 </template>
@@ -273,6 +292,7 @@ import axios from 'axios';
 import ArrowIcon from '../assets/icons/ArrowIcon.vue';
 import PointerIcon from '../assets/icons/PointerIcon.vue';
 import CartIcon from '../assets/icons/CartIcon.vue';
+import LetterIcon from '../assets/icons/LetterIcon.vue';
 import RatingEmptyStarIcon from '../assets/icons/RatingEmptyStarIcon.vue';
 // import RatingHalfStarIcon from '../assets/icons/RatingHalfStarIcon.vue';
 import RatingStarIcon from '../assets/icons/RatingFullStarIcon.vue';
@@ -431,6 +451,11 @@ function handleScroll() {
   const scrollLeft = container.scrollLeft;
   const cardWidth = container.children[0]?.children[0]?.offsetWidth;
   reviewCardIndex.value = Math.round(scrollLeft / cardWidth);
+}
+
+const SubscriptionEmail = ref();
+function focusSubscriptionEmail() {
+  SubscriptionEmail.value?.focus();
 }
 </script>
 <style scoped>

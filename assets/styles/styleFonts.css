@@ -45,6 +45,11 @@
 /* .font1 {
 } */
 
+.IntegralBold {
+  font-family: 'Integral-Bold';
+  font-style: normal;
+  font-weight: 600;
+}
 .IntergralExtraBold {
   font-family: 'Integral-ExtraBold';
   font-style: normal;
