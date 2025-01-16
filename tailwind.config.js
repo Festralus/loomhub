@@ -13,6 +13,8 @@ export const theme = {
       'primary-default-color': '#000',
       'primary-disabled-color': 'rgba(255, 51, 51, 0.1)',
       'tw-ww': '#1DA1F2',
+      'text-black-600': 'rgba(0, 0, 0, 0.6)',
+      // 'text-black-600': '#00000099',
     },
   },
 };

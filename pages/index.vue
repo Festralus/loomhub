@@ -278,8 +278,85 @@
           Subscribe to Newsletter
         </div>
       </div>
-      <div class="ContactIconsBlock"></div>
-      <footer></footer>
+      <footer>
+        <div class="share__block ml-4">
+          <div class="share__title IntegralBold mt-6 text-2xl">LOOM.HUB</div>
+          <div
+            class="share__description SatoshiRegular mt-3 text-base text-gray-500"
+          >
+            We have clothes that suits your style and which you’re proud to
+            wear. From women to men.
+          </div>
+          <div class="share__icons mt-4 flex gap-3">
+            <ShareTwitterX class="share__icon"></ShareTwitterX>
+            <ShareFacebook class="share__icon"></ShareFacebook>
+            <ShareInstagram class="share__icon"></ShareInstagram>
+            <ShareGithub class="share__icon"></ShareGithub>
+          </div>
+        </div>
+        <div class="footer__links">
+          <div class="links__block pb-6">
+            <div
+              class="footer__links-category SatoshiRegular pb-4 text-base tracking-[3px]"
+            >
+              COMPANY
+            </div>
+            <div class="footer__links-link">About</div>
+            <div class="footer__links-link">Features</div>
+            <div class="footer__links-link">Works</div>
+            <div class="footer__links-link">Career</div>
+          </div>
+
+          <div class="links__block pb-6">
+            <div
+              class="footer__links-category SatoshiRegular pb-4 text-base tracking-[3px]"
+            >
+              HELP
+            </div>
+            <div class="footer__links-link">Customer support</div>
+            <div class="footer__links-link">Delivery Details</div>
+            <div class="footer__links-link">Terms & Conditions</div>
+            <div class="footer__links-link">Privacy Policy</div>
+          </div>
+          <div class="links__block pb-6">
+            <div
+              class="footer__links-category SatoshiRegular pb-4 text-base tracking-[3px]"
+            >
+              FAQ
+            </div>
+            <div class="footer__links-link">Account</div>
+            <div class="footer__links-link">Manage Deliveries</div>
+            <div class="footer__links-link">Orders</div>
+            <div class="footer__links-link">Payment</div>
+          </div>
+          <div class="links__block pb-6">
+            <div
+              class="footer__links-category SatoshiRegular pb-4 text-base tracking-[3px]"
+            >
+              RESOURCES
+            </div>
+            <div class="footer__links-link">Free eBook</div>
+            <div class="footer__links-link">Developer Tutorial</div>
+            <div class="footer__links-link">How to - Blog</div>
+            <div class="footer__links-link">Youtube Playlist</div>
+          </div>
+        </div>
+        <div class="horizontal-separator mt-10"></div>
+        <div
+          class="footer__trademark SatoshiRegular mt-4 text-center text-base text-gray-500"
+        >
+          Loom.hub © 2024-2025, All rights reserved
+        </div>
+        <div class="footer__payment_methods mt-4 flex justify-center gap-3">
+          <PaymentVisaIcon class="footer__payment_method"></PaymentVisaIcon>
+          <PaymentMastercardIcon
+            class="footer__payment_method"
+          ></PaymentMastercardIcon>
+          <PaymentPaypalIcon class="footer__payment_method"></PaymentPaypalIcon>
+          <PaymentAppleIcon class="footer__payment_method"></PaymentAppleIcon>
+          <PaymentGoogleIcon class="footer__payment_method"></PaymentGoogleIcon>
+        </div>
+      </footer>
     </div>
     <div class="mb-[500px] mt-[100px]"></div>
     <button @click="updateOrderStatus(orderId, newStatus)">UPDATE</button>
@@ -305,6 +382,15 @@ import VersaceIcon from '../assets/icons/VersaceIcon.vue';
 import ZaraIcon from '../assets/icons/ZaraIcon.vue';
 import CalvinKleinIcon from '../assets/icons/CalvinKleinIcon.vue';
 import BurgerMenuIcon from '../assets/icons/BurgerMenuIcon.vue';
+import PaymentAppleIcon from '../assets/icons/PaymentAppleIcon.vue';
+import PaymentGoogleIcon from '../assets/icons/PaymentGoogleIcon.vue';
+import PaymentMastercardIcon from '../assets/icons/PaymentMastercardIcon.vue';
+import PaymentPaypalIcon from '../assets/icons/PaymentPaypalIcon.vue';
+import PaymentVisaIcon from '../assets/icons/PaymentVisaIcon.vue';
+import ShareTwitterX from '../assets/icons/ShareTwitterXIcon.vue';
+import ShareFacebook from '../assets/icons/ShareFacebookIcon.vue';
+import ShareInstagram from '../assets/icons/ShareInstagramIcon.vue';
+import ShareGithub from '../assets/icons/ShareGithubIcon.vue';
 import StarIcon from '../assets/icons/StarIconBig.vue';
 import Slider_component from '~/components/slider_component.vue';
 import VerifiedTickIcon from '../assets/icons/VerifiedTickIcon.vue';

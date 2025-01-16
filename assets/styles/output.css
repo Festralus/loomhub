@@ -635,11 +635,6 @@ video {
   margin-right: 1rem;
 }
 
-.mx-6 {
-  margin-left: 1.5rem;
-  margin-right: 1.5rem;
-}
-
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -686,6 +681,10 @@ video {
   margin-left: 0.5rem;
 }
 
+.ml-4 {
+  margin-left: 1rem;
+}
+
 .ml-6 {
   margin-left: 1.5rem;
 }
@@ -700,6 +699,10 @@ video {
 
 .mr-10 {
   margin-right: 2.5rem;
+}
+
+.mr-3 {
+  margin-right: 0.75rem;
 }
 
 .mr-4 {
@@ -756,14 +759,6 @@ video {
 
 .mt-auto {
   margin-top: auto;
-}
-
-.ml-4 {
-  margin-left: 1rem;
-}
-
-.mr-3 {
-  margin-right: 0.75rem;
 }
 
 .flex {
@@ -856,24 +851,16 @@ video {
   width: 340px;
 }
 
+.w-\[80\%\] {
+  width: 80%;
+}
+
 .w-\[90\%\] {
   width: 90%;
 }
 
 .w-full {
   width: 100%;
-}
-
-.w-\[321px\] {
-  width: 321px;
-}
-
-.w-\[40\%\] {
-  width: 40%;
-}
-
-.w-\[80\%\] {
-  width: 80%;
 }
 
 .max-w-\[100vw\] {
@@ -933,16 +920,16 @@ video {
   justify-content: space-evenly;
 }
 
+.gap-3 {
+  gap: 0.75rem;
+}
+
 .gap-y-4 {
   row-gap: 1rem;
 }
 
 .overflow-hidden {
   overflow: hidden;
-}
-
-.overflow-visible {
-  overflow: visible;
 }
 
 .overflow-x-auto {
@@ -999,10 +986,6 @@ video {
      object-position: center;
 }
 
-.p-2 {
-  padding: 0.5rem;
-}
-
 .p-4 {
   padding: 1rem;
 }
@@ -1041,11 +1024,6 @@ video {
   padding-bottom: 0.75rem;
 }
 
-.py-2 {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
-
 .pb-2 {
   padding-bottom: 0.5rem;
 }
@@ -1056,10 +1034,6 @@ video {
 
 .pl-4 {
   padding-left: 1rem;
-}
-
-.pr-1 {
-  padding-right: 0.25rem;
 }
 
 .pt-2 {
@@ -1076,6 +1050,14 @@ video {
 
 .pt-9 {
   padding-top: 2.25rem;
+}
+
+.pb-4 {
+  padding-bottom: 1rem;
+}
+
+.pb-6 {
+  padding-bottom: 1.5rem;
 }
 
 .text-left {
@@ -1152,6 +1134,10 @@ video {
   line-height: 2.25rem;
 }
 
+.leading-\[42px\] {
+  line-height: 42px;
+}
+
 .leading-none {
   line-height: 1;
 }
@@ -1160,8 +1146,16 @@ video {
   line-height: 1.25;
 }
 
-.leading-\[42px\] {
-  line-height: 42px;
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
+.tracking-widest {
+  letter-spacing: 0.1em;
+}
+
+.tracking-\[3px\] {
+  letter-spacing: 3px;
 }
 
 .text-\[\#FF3333\] {
