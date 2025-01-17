@@ -85,3 +85,15 @@
 .reviews__card {
   scroll-snap-align: center;
 }
+
+.links__block {
+  min-width: 160px;
+}
+.footer__links-category {
+  margin-bottom: 4px;
+}
+.footer__links-link {
+  margin-top: 12px;
+  font-family: 'Satoshi-Regular';
+  color: rgba(0, 0, 0, 0.6);
+}

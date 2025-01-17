@@ -294,54 +294,57 @@
             <ShareGithub class="share__icon"></ShareGithub>
           </div>
         </div>
-        <div class="footer__links">
-          <div class="links__block pb-6">
-            <div
-              class="footer__links-category SatoshiRegular pb-4 text-base tracking-[3px]"
-            >
-              COMPANY
+        <div class="footer__links mx-1 mt-5 flex flex-wrap justify-center">
+          <div class="links__container inline-flex">
+            <div class="links__block pb-6">
+              <div
+                class="footer__links-category SatoshiRegular text-base tracking-[3px]"
+              >
+                COMPANY
+              </div>
+              <div class="footer__links-link">About</div>
+              <div class="footer__links-link">Features</div>
+              <div class="footer__links-link">Works</div>
+              <div class="footer__links-link">Career</div>
             </div>
-            <div class="footer__links-link">About</div>
-            <div class="footer__links-link">Features</div>
-            <div class="footer__links-link">Works</div>
-            <div class="footer__links-link">Career</div>
+            <div class="links__block pb-6">
+              <div
+                class="footer__links-category SatoshiRegular text-base tracking-[3px]"
+              >
+                HELP
+              </div>
+              <div class="footer__links-link">Customer support</div>
+              <div class="footer__links-link">Delivery Details</div>
+              <div class="footer__links-link">Terms & Conditions</div>
+              <div class="footer__links-link">Privacy Policy</div>
+            </div>
           </div>
-
-          <div class="links__block pb-6">
-            <div
-              class="footer__links-category SatoshiRegular pb-4 text-base tracking-[3px]"
-            >
-              HELP
+          <div class="links__container inline-flex">
+            <div class="links__block pb-6">
+              <div
+                class="footer__links-category SatoshiRegular text-base tracking-[3px]"
+              >
+                FAQ
+              </div>
+              <div class="footer__links-link">Account</div>
+              <div class="footer__links-link">Manage Deliveries</div>
+              <div class="footer__links-link">Orders</div>
+              <div class="footer__links-link">Payment</div>
             </div>
-            <div class="footer__links-link">Customer support</div>
-            <div class="footer__links-link">Delivery Details</div>
-            <div class="footer__links-link">Terms & Conditions</div>
-            <div class="footer__links-link">Privacy Policy</div>
-          </div>
-          <div class="links__block pb-6">
-            <div
-              class="footer__links-category SatoshiRegular pb-4 text-base tracking-[3px]"
-            >
-              FAQ
+            <div class="links__block pb-6">
+              <div
+                class="footer__links-category SatoshiRegular text-base tracking-[3px]"
+              >
+                RESOURCES
+              </div>
+              <div class="footer__links-link">Free eBook</div>
+              <div class="footer__links-link">Developer Tutorial</div>
+              <div class="footer__links-link">How to - Blog</div>
+              <div class="footer__links-link">Youtube Playlist</div>
             </div>
-            <div class="footer__links-link">Account</div>
-            <div class="footer__links-link">Manage Deliveries</div>
-            <div class="footer__links-link">Orders</div>
-            <div class="footer__links-link">Payment</div>
-          </div>
-          <div class="links__block pb-6">
-            <div
-              class="footer__links-category SatoshiRegular pb-4 text-base tracking-[3px]"
-            >
-              RESOURCES
-            </div>
-            <div class="footer__links-link">Free eBook</div>
-            <div class="footer__links-link">Developer Tutorial</div>
-            <div class="footer__links-link">How to - Blog</div>
-            <div class="footer__links-link">Youtube Playlist</div>
           </div>
         </div>
-        <div class="horizontal-separator mt-10"></div>
+        <div class="horizontal-separator mt-8"></div>
         <div
           class="footer__trademark SatoshiRegular mt-4 text-center text-base text-gray-500"
         >
