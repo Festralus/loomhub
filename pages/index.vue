@@ -7,63 +7,77 @@
         <BurgerMenuIcon class="m-auto h-6 w-6 flex-shrink-0 sm:hidden" />
       </div>
       <div
-        class="top-menu__logo IntergralExtraBold mb-2 text-[24px] leading-none"
+        class="top-menu__logo IntergralExtraBold mb-2 mt-0 text-[24px] leading-none"
       >
         LOOM.HUB
       </div>
-      <nav class="top-menu__nav hidden flex-row sm:flex">
-        <div class="top-menu__nav-item top-menu__nav-item--shop flex flex-row">
+      <nav
+        class="top-menu__nav max-h-10px hidden flex-row sm:flex sm:w-full sm:justify-evenly xl:w-[30%]"
+      >
+        <div
+          class="top-menu__nav-item top-menu__nav-item--shop flex flex-row items-center"
+        >
           <div class="top-menu__nav-item--shop-text">Shop</div>
           <PointerIcon
-            class="top-menu__nav-item top-menu__nav-item--shop-dropdown"
+            class="top-menu__nav-item top-menu__nav-item--shop-dropdown pl-1"
           ></PointerIcon>
         </div>
         <div class="top-menu__nav-item">On Sale</div>
         <div class="top-menu__nav-item">New Arrivals</div>
         <div class="top-menu__nav-item">Brands</div>
       </nav>
-      <div class="top-menu__search flex flex-row">
+      <div
+        class="top-menu__search hidden w-full flex-row rounded-3xl bg-[#F0F0F0] p-2 lg:flex xl:w-[40vw]"
+        @click="focusHomePageSearch"
+      >
         <SearchIconGray
-          class="top-menu__search-icon hidden xl:block"
+          class="top-menu__search-icon mr-3 hidden pl-1 lg:block"
           aria-label="Search"
         />
         <input
           type="text"
-          class="top-menu__search-input hidden h-6 md:block"
-          placeholder="Search
-        for products..."
+          class="top-menu__search-input mr-2 hidden h-6 w-full bg-[#F0F0F0] lg:block"
+          placeholder="Search for products..."
           aria-label="Search for products"
+          ref="HomePageSearch"
         />
       </div>
       <div
-        class="top-menu__actions mr-4 flex w-[30%] flex-shrink-0 flex-row justify-end"
+        class="top-menu__actions mr-4 flex w-[30%] flex-shrink-0 flex-row justify-end sm:w-auto xl:mr-6 xl:w-[10%]"
       >
-        <SearchIconBlack class="top-menu__search-icon" aria-label="Search" />
+        <SearchIconBlack
+          class="top-menu__search-icon lg:hidden"
+          aria-label="Search"
+        />
         <CartIcon class="top-menu__actions-cart ml-[14px]"></CartIcon>
         <ProfileIcon class="top-menu__actions-profile ml-[14px]"></ProfileIcon>
       </div>
     </header>
-    <div class="home-description relative z-50 mt-[64px] p-4">
-      <div class="home-description__interactive">
+    <div
+      class="home-description relative z-50 mt-[64px] w-[100vw] bg-[#f2f0f1] p-4 xl:flex xl:flex-nowrap xl:justify-evenly 2xl:justify-between"
+    >
+      <div
+        class="home-description__interactive relative z-30 xl:mt-28 xl:max-w-[940px] 2xl:mx-auto 2xl:text-center"
+      >
         <h2
-          class="home-description__interactive--main-text IntergralExtraBold xl:pt-22 max-w-[576px] text-4xl leading-tight xl:pl-24 xl:text-6xl"
+          class="home-description__interactive--main-text IntergralExtraBold xl:pt-22 max-w-[576px] text-4xl leading-tight xl:text-6xl 2xl:max-w-full"
         >
           FIND CLOTHES THAT MATCHES YOUR STYLE
         </h2>
         <div
-          class="home-description__interactive--secondary-text SatoshiRegular mt-4 text-[14px]"
+          class="home-description__interactive--secondary-text SatoshiRegular nowrap mt-4 text-[14px]"
         >
           Browse through our diverse range of meticulously crafted garments,
           designed to bring out your individuality and cater to your sense of
           style.
         </div>
         <button
-          class="home-description__interactive--button SatoshiRegular16White mt-5 flex h-12 w-[100%] items-center justify-center rounded-3xl bg-black"
+          class="home-description__interactive--button SatoshiRegular16White mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] items-center justify-center rounded-3xl bg-black md:mx-0 2xl:mx-auto"
         >
           Shop Now
         </button>
         <div
-          class="home-description__stats mt-4 flex flex-wrap justify-center gap-y-4"
+          class="home-description__stats mt-4 flex flex-wrap justify-center gap-y-4 md:justify-start 2xl:justify-center"
         >
           <div
             class="home-description__stat-block home-description__stats-brands SatoshiRegular px-4 pt-2 text-[12px] leading-4"
@@ -84,21 +98,13 @@
           </div>
         </div>
       </div>
-      <div class="home-description__background relative">
+      <div class="home-description__background relative z-0 max-w-[700px]">
         <StarIcon
           class="home-description__background--big-star absolute"
         ></StarIcon>
         <StarIcon
-          class="home-description__background--small-star absolute"
+          class="home-description__background--small-star absolute top-[20vw] 2xl:top-[300px]"
         ></StarIcon>
-        <!-- <img
-          class="home-description__background--image -mx-4 -mb-4"
-          src="https://i.imgur.com/Mea753h.png"
-          srcset="
-            https://i.imgur.com/Mea753h.png 400w,
-            https://i.imgur.com/sqNcZ0J.png
-          "
-        /> -->
         <picture>
           <source
             srcset="https://i.imgur.com/Mea753h.png"
@@ -109,7 +115,7 @@
             media="(min-width: 401px)"
           />
           <img
-            class="home-description__background--image -mx-4 -mb-4 bg-center object-center"
+            class="home-description__background--image -mb-4 bg-center object-center"
             src="https://i.imgur.com/sqNcZ0J.png"
             alt="Background image"
           />
@@ -141,7 +147,7 @@
         :getSliderProducts="() => getSliderProducts('getNewArrivals')"
       ></Slider_component>
       <div
-        class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] justify-center rounded-[62px] py-3 text-base"
+        class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] justify-center rounded-[62px] py-3 text-base"
       >
         View All
       </div>
@@ -159,7 +165,7 @@
         :getSliderProducts="() => getSliderProducts('getTopSelling')"
       ></Slider_component>
       <div
-        class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] justify-center rounded-[62px] py-3 text-base"
+        class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] justify-center rounded-[62px] py-3 text-base"
       >
         View All
       </div>
@@ -545,6 +551,11 @@ function handleScroll() {
 const SubscriptionEmail = ref();
 function focusSubscriptionEmail() {
   SubscriptionEmail.value?.focus();
+}
+
+const HomePageSearch = ref();
+function focusHomePageSearch() {
+  HomePageSearch.value?.focus();
 }
 </script>
 <style scoped>

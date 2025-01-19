@@ -1,6 +1,6 @@
 <template>
   <div
-    class="new-arrivals__items flex w-full flex-row justify-start overflow-x-auto"
+    class="new-arrivals__items flex w-full max-w-[90vw] flex-row justify-start overflow-x-auto xl:my-12 xl:origin-center xl:scale-125 xl:transform xl:px-44"
   >
     <div
       v-for="product in productsList"
@@ -86,7 +86,4 @@ export default {
 .new-arrivals__items-item:last-child {
   padding-right: 16px;
 }
-/* .new-arrivals__items {
-  max-width: 100%;
-} */
 </style>

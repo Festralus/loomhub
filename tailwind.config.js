@@ -16,6 +16,9 @@ export const theme = {
       'text-black-600': 'rgba(0, 0, 0, 0.6)',
       // 'text-black-600': '#00000099',
     },
+    screens: {
+      '3xl': '1900px',
+    },
   },
 };
 export const plugins = [];
