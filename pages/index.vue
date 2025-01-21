@@ -54,10 +54,10 @@
       </div>
     </header>
     <div
-      class="home-description relative z-50 mt-[64px] w-[100vw] bg-[#f2f0f1] p-4 xl:flex xl:flex-nowrap xl:justify-evenly 2xl:justify-between"
+      class="home-description relative z-50 mt-[64px] w-[100vw] bg-[#f2f0f1] xl:flex xl:flex-nowrap xl:justify-evenly 2xl:justify-between"
     >
       <div
-        class="home-description__interactive relative z-30 xl:mt-28 xl:max-w-[940px] 2xl:mx-auto 2xl:text-center"
+        class="home-description__interactive relative z-30 px-4 xl:mt-28 xl:max-w-[940px] 2xl:mx-auto 2xl:text-center"
       >
         <h2
           class="home-description__interactive--main-text IntergralExtraBold xl:pt-22 max-w-[576px] text-4xl leading-tight xl:text-6xl 2xl:max-w-full"
@@ -98,7 +98,9 @@
           </div>
         </div>
       </div>
-      <div class="home-description__background relative z-0 max-w-[700px]">
+      <div
+        class="home-description__background relative z-0 max-w-[700px] overflow-clip"
+      >
         <StarIcon
           class="home-description__background--big-star absolute"
         ></StarIcon>
@@ -170,24 +172,33 @@
         View All
       </div>
     </div>
-    <div class="style-masonry mx-4 mt-10 rounded-2xl bg-[#F0F0F0] pb-2 pt-9">
+    <div
+      class="style-masonry mx-auto mt-10 w-[1800px] max-w-[94vw] rounded-2xl bg-[#F0F0F0] pb-2 pt-9"
+    >
       <div
         class="style-masonry__title IntergralExtraBold mb-7 px-10 text-center text-[32px] leading-none"
       >
         BROWSE BY DRESS STYLE
       </div>
-      <div class="style-masonry__tileset relative flex flex-col items-center">
+      <div
+        class="style-masonry__tileset relative flex flex-col flex-wrap items-center justify-center px-2 xl:flex-row xl:gap-5"
+      >
         <div
-          v-for="style in dress_styles_list"
+          v-for="(style, index) in dress_styles_list"
           :key="style.name"
-          class="style-masonry__tileset__tile relative mb-4 w-[90%] rounded-3xl bg-white"
+          class="style-masonry__tile relative mb-4 w-[90%] rounded-3xl bg-white"
+          :class="[
+            index === 1 || index === 2
+              ? 'style-masonry__tile-big'
+              : 'style-masonry__tile-small',
+          ]"
         >
           <div
-            class="style-masonry__tileset__tile-text SatoshiBold absolute ml-6 mt-4 text-2xl"
+            class="style-masonry__tile-text SatoshiBold absolute ml-6 mt-4 text-2xl"
           >
             {{ style.name }}
           </div>
-          <picture class="style-masonry__tileset_tile-background">
+          <picture>
             <source
               :srcset="`${style.backgroundPicture}.png`"
               media="(max-width: 400px)"
@@ -197,7 +208,7 @@
               media="(min-width: 401px)"
             />
             <img
-              class="ml-auto rounded-3xl"
+              class="style-masonry__tile-background rounded-3xl"
               :src="`${style.backgroundPicture}-xl.png`"
               alt="Background image"
             />
@@ -418,7 +429,7 @@ onMounted(() => {
 });
 
 const newArrivalsList = ref([]);
-const limit = 6;
+const limit = 9;
 const currencyMultiplier = 1;
 
 async function getSliderProducts(filterName) {

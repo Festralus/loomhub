@@ -1,6 +1,6 @@
 <template>
   <div
-    class="new-arrivals__items flex w-full max-w-[90vw] flex-row justify-start overflow-x-auto xl:my-12 xl:origin-center xl:scale-125 xl:transform xl:px-44"
+    class="new-arrivals__items flex w-full max-w-[100vw] flex-row justify-start overflow-x-auto xl:my-4 xl:origin-center xl:transform"
   >
     <div
       v-for="product in productsList"
