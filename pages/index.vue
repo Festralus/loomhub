@@ -3,23 +3,23 @@
     <header
       class="top-menu fixed left-0 top-0 z-[100] flex h-[64px] w-full flex-row items-center justify-between bg-white"
     >
-      <div class="BurgerMenuIconContainer flex w-[12%]">
+      <div class="BurgerMenuIconContainer flex w-[12%] sm:hidden">
         <BurgerMenuIcon class="m-auto h-6 w-6 flex-shrink-0 sm:hidden" />
       </div>
       <div
-        class="top-menu__logo IntergralExtraBold mb-2 mt-0 text-[24px] leading-none"
+        class="top-menu__logo IntergralExtraBold mb-2 mt-0 text-2xl leading-none sm:ml-[10%] 2xl:ml-[6%] 2xl:text-3xl"
       >
         LOOM.HUB
       </div>
       <nav
-        class="top-menu__nav max-h-10px hidden flex-row sm:flex sm:w-full sm:justify-evenly xl:w-[30%]"
+        class="top-menu__nav max-h-10px SatoshiRegular hidden flex-row text-base sm:flex sm:w-full sm:justify-evenly xl:w-[30%] 2xl:text-xl"
       >
         <div
           class="top-menu__nav-item top-menu__nav-item--shop flex flex-row items-center"
         >
           <div class="top-menu__nav-item--shop-text">Shop</div>
           <PointerIcon
-            class="top-menu__nav-item top-menu__nav-item--shop-dropdown pl-1"
+            class="top-menu__nav-item top-menu__nav-item--shop-dropdown size-3 pl-1 2xl:size-[14px]"
           ></PointerIcon>
         </div>
         <div class="top-menu__nav-item">On Sale</div>
@@ -54,10 +54,10 @@
       </div>
     </header>
     <div
-      class="home-description relative z-50 mt-[64px] w-[100vw] bg-[#f2f0f1] xl:flex xl:flex-nowrap xl:justify-evenly 2xl:justify-between"
+      class="home-description relative z-50 mt-[64px] w-[100vw] bg-[#f2f0f1] xl:flex xl:flex-nowrap xl:justify-evenly 2xl:items-center 2xl:justify-between"
     >
       <div
-        class="home-description__interactive relative z-30 px-4 xl:mt-28 xl:max-w-[940px] 2xl:mx-auto 2xl:text-center"
+        class="home-description__interactive relative z-30 px-4 xl:max-w-[940px] 2xl:mx-auto 2xl:text-center"
       >
         <h2
           class="home-description__interactive--main-text IntergralExtraBold xl:pt-22 max-w-[576px] text-4xl leading-tight xl:text-6xl 2xl:max-w-full"
@@ -65,33 +65,33 @@
           FIND CLOTHES THAT MATCHES YOUR STYLE
         </h2>
         <div
-          class="home-description__interactive--secondary-text SatoshiRegular nowrap mt-4 text-[14px]"
+          class="home-description__interactive--secondary-text SatoshiRegular nowrap mt-4 text-[14px] lg:text-xl"
         >
           Browse through our diverse range of meticulously crafted garments,
           designed to bring out your individuality and cater to your sense of
           style.
         </div>
         <button
-          class="home-description__interactive--button SatoshiRegular16White mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] items-center justify-center rounded-3xl bg-black md:mx-0 2xl:mx-auto"
+          class="home-description__interactive--button SatoshiRegular16White mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] items-center justify-center rounded-3xl bg-black"
         >
           Shop Now
         </button>
         <div
-          class="home-description__stats mt-4 flex flex-wrap justify-center gap-y-4 md:justify-start 2xl:justify-center"
+          class="home-description__stats mt-4 flex flex-wrap justify-center gap-y-4"
         >
           <div
-            class="home-description__stat-block home-description__stats-brands SatoshiRegular px-4 pt-2 text-[12px] leading-4"
+            class="home-description__stat-block home-description__stats-brands SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
             <span class="SatoshiBold24">200+</span> <br />International Brands
           </div>
           <div
-            class="home-description__stat-block home-description__stats-products SatoshiRegular px-4 pt-2 text-[12px] leading-4"
+            class="home-description__stat-block home-description__stats-products SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
             <span class="SatoshiBold24">2,000+</span> <br />High-Quality
             Products
           </div>
           <div
-            class="home-description__stat-block home-description__stats-customers SatoshiRegular px-4 pt-2 text-[12px] leading-4"
+            class="home-description__stat-block home-description__stats-customers SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
             <span class="SatoshiBold24">30,000+</span><br />
             Happy Customers
@@ -99,13 +99,13 @@
         </div>
       </div>
       <div
-        class="home-description__background relative z-0 max-w-[700px] overflow-clip"
+        class="home-description__background relative z-0 mx-auto max-w-[700px] overflow-clip"
       >
         <StarIcon
           class="home-description__background--big-star absolute"
         ></StarIcon>
         <StarIcon
-          class="home-description__background--small-star absolute top-[20vw] 2xl:top-[300px]"
+          class="home-description__background--small-star absolute top-[20vw] xl:top-[10vw]"
         ></StarIcon>
         <picture>
           <source
@@ -223,7 +223,7 @@
         >
           OUR HAPPY CUSTOMERS
         </div>
-        <div class="reviews__arrows mt-auto flex">
+        <div class="reviews__arrows mt-auto flex sm:hidden">
           <ArrowIcon
             class="reviews__arrow--left mr-4 size-6 rotate-180"
             @click="scrollToCard(reviewCardIndex - 1)"
@@ -270,116 +270,117 @@
           </div>
         </div>
       </div>
+    </div>
+    <div
+      class="subscribe_container mx-auto mt-12 w-[1100px] max-w-[94vw] overflow-hidden rounded-2xl bg-black"
+    >
       <div
-        class="subscribe_container mx-4 mt-12 overflow-hidden rounded-2xl bg-black"
+        class="subscribe__title IntegralBold px-6 pt-8 text-center text-[1.8rem] leading-9 text-white"
       >
+        STAY UP TO DATE ABOUT OUR BEST OFFERS
+      </div>
+      <div
+        class="subscribe__input_block mx-auto mt-8 flex h-[42px] w-[311px] items-center overflow-hidden rounded-3xl bg-white"
+        @click="focusSubscriptionEmail"
+      >
+        <LetterIcon class="subscribe__icon ml-4 mr-3 bg-white"></LetterIcon>
+        <input
+          class="subscribe__input SatoshiRegular w-[80%] bg-white text-sm placeholder-gray-400"
+          placeholder="Enter your email address"
+          ref="SubscriptionEmail"
+        />
+      </div>
+      <div
+        class="subscribe__button SatoshiRegular mx-auto mb-7 mt-3 h-[42px] w-[311px] rounded-3xl bg-white text-center leading-[42px] text-black"
+      >
+        Subscribe to Newsletter
+      </div>
+    </div>
+    <footer class="mb-6">
+      <div class="share__block ml-4 block lg:ml-0 lg:text-center">
+        <div class="share__title IntegralBold mt-6 text-2xl">LOOM.HUB</div>
         <div
-          class="subscribe__title IntegralBold px-6 pt-8 text-[1.8rem] leading-9 text-white"
+          class="share__description SatoshiRegular mt-3 text-base text-gray-500"
         >
-          STAY UP TO DATE ABOUT OUR BEST OFFERS
+          The place where fashion meets your lifestyle. Explore the collection
+          today.
         </div>
-        <div
-          class="subscribe__input_block mx-auto mt-8 flex h-[42px] w-[311px] items-center overflow-hidden rounded-3xl bg-white"
-          @click="focusSubscriptionEmail"
-        >
-          <LetterIcon class="subscribe__icon ml-4 mr-3 bg-white"></LetterIcon>
-          <input
-            class="subscribe__input SatoshiRegular w-[80%] bg-white text-sm placeholder-gray-400"
-            placeholder="Enter your email address"
-            ref="SubscriptionEmail"
-          />
-        </div>
-        <div
-          class="subscribe__button SatoshiRegular mx-auto mb-7 mt-3 h-[42px] w-[311px] rounded-3xl bg-white text-center leading-[42px] text-black"
-        >
-          Subscribe to Newsletter
+        <div class="share__icons mt-4 flex gap-3 lg:justify-center">
+          <ShareTwitterX class="share__icon"></ShareTwitterX>
+          <ShareFacebook class="share__icon"></ShareFacebook>
+          <ShareInstagram class="share__icon"></ShareInstagram>
+          <ShareGithub class="share__icon"></ShareGithub>
         </div>
       </div>
-      <footer>
-        <div class="share__block ml-4">
-          <div class="share__title IntegralBold mt-6 text-2xl">LOOM.HUB</div>
-          <div
-            class="share__description SatoshiRegular mt-3 text-base text-gray-500"
-          >
-            We have clothes that suits your style and which you’re proud to
-            wear. From women to men.
+      <div class="footer__links mx-1 mt-8 flex flex-wrap justify-center">
+        <div class="links__container inline-flex">
+          <div class="links__block pb-6">
+            <div
+              class="footer__links-category SatoshiRegular text-base tracking-[3px]"
+            >
+              COMPANY
+            </div>
+            <div class="footer__links-link">About</div>
+            <div class="footer__links-link">Features</div>
+            <div class="footer__links-link">Works</div>
+            <div class="footer__links-link">Career</div>
           </div>
-          <div class="share__icons mt-4 flex gap-3">
-            <ShareTwitterX class="share__icon"></ShareTwitterX>
-            <ShareFacebook class="share__icon"></ShareFacebook>
-            <ShareInstagram class="share__icon"></ShareInstagram>
-            <ShareGithub class="share__icon"></ShareGithub>
-          </div>
-        </div>
-        <div class="footer__links mx-1 mt-5 flex flex-wrap justify-center">
-          <div class="links__container inline-flex">
-            <div class="links__block pb-6">
-              <div
-                class="footer__links-category SatoshiRegular text-base tracking-[3px]"
-              >
-                COMPANY
-              </div>
-              <div class="footer__links-link">About</div>
-              <div class="footer__links-link">Features</div>
-              <div class="footer__links-link">Works</div>
-              <div class="footer__links-link">Career</div>
+          <div class="links__block pb-6">
+            <div
+              class="footer__links-category SatoshiRegular text-base tracking-[3px]"
+            >
+              HELP
             </div>
-            <div class="links__block pb-6">
-              <div
-                class="footer__links-category SatoshiRegular text-base tracking-[3px]"
-              >
-                HELP
-              </div>
-              <div class="footer__links-link">Customer support</div>
-              <div class="footer__links-link">Delivery Details</div>
-              <div class="footer__links-link">Terms & Conditions</div>
-              <div class="footer__links-link">Privacy Policy</div>
-            </div>
-          </div>
-          <div class="links__container inline-flex">
-            <div class="links__block pb-6">
-              <div
-                class="footer__links-category SatoshiRegular text-base tracking-[3px]"
-              >
-                FAQ
-              </div>
-              <div class="footer__links-link">Account</div>
-              <div class="footer__links-link">Manage Deliveries</div>
-              <div class="footer__links-link">Orders</div>
-              <div class="footer__links-link">Payment</div>
-            </div>
-            <div class="links__block pb-6">
-              <div
-                class="footer__links-category SatoshiRegular text-base tracking-[3px]"
-              >
-                RESOURCES
-              </div>
-              <div class="footer__links-link">Free eBook</div>
-              <div class="footer__links-link">Developer Tutorial</div>
-              <div class="footer__links-link">How to - Blog</div>
-              <div class="footer__links-link">Youtube Playlist</div>
-            </div>
+            <div class="footer__links-link">Customer support</div>
+            <div class="footer__links-link">Delivery Details</div>
+            <div class="footer__links-link">Terms & Conditions</div>
+            <div class="footer__links-link">Privacy Policy</div>
           </div>
         </div>
-        <div class="horizontal-separator mt-8"></div>
-        <div
-          class="footer__trademark SatoshiRegular mt-4 text-center text-base text-gray-500"
-        >
-          Loom.hub © 2024-2025, All rights reserved
+        <div class="links__container inline-flex">
+          <div class="links__block pb-6">
+            <div
+              class="footer__links-category SatoshiRegular text-base tracking-[3px]"
+            >
+              FAQ
+            </div>
+            <div class="footer__links-link">Account</div>
+            <div class="footer__links-link">Manage Deliveries</div>
+            <div class="footer__links-link">Orders</div>
+            <div class="footer__links-link">Payment</div>
+          </div>
+          <div class="links__block pb-6">
+            <div
+              class="footer__links-category SatoshiRegular text-base tracking-[3px]"
+            >
+              RESOURCES
+            </div>
+            <div class="footer__links-link">Free eBook</div>
+            <div class="footer__links-link">Developer Tutorial</div>
+            <div class="footer__links-link">How to - Blog</div>
+            <div class="footer__links-link">Youtube Playlist</div>
+          </div>
         </div>
-        <div class="footer__payment_methods mt-4 flex justify-center gap-3">
-          <PaymentVisaIcon class="footer__payment_method"></PaymentVisaIcon>
-          <PaymentMastercardIcon
-            class="footer__payment_method"
-          ></PaymentMastercardIcon>
-          <PaymentPaypalIcon class="footer__payment_method"></PaymentPaypalIcon>
-          <PaymentAppleIcon class="footer__payment_method"></PaymentAppleIcon>
-          <PaymentGoogleIcon class="footer__payment_method"></PaymentGoogleIcon>
-        </div>
-      </footer>
-    </div>
-    <div class="mb-[500px] mt-[100px]"></div>
-    <button @click="updateOrderStatus(orderId, newStatus)">UPDATE</button>
+      </div>
+      <div class="horizontal-separator mt-8"></div>
+      <div
+        class="footer__trademark SatoshiRegular mt-4 text-center text-base text-gray-500"
+      >
+        Loom.hub © 2024-2025, All rights reserved
+      </div>
+      <div class="footer__payment_methods mt-4 flex justify-center gap-3">
+        <PaymentVisaIcon class="footer__payment_method"></PaymentVisaIcon>
+        <PaymentMastercardIcon
+          class="footer__payment_method"
+        ></PaymentMastercardIcon>
+        <PaymentPaypalIcon class="footer__payment_method"></PaymentPaypalIcon>
+        <PaymentAppleIcon class="footer__payment_method"></PaymentAppleIcon>
+        <PaymentGoogleIcon class="footer__payment_method"></PaymentGoogleIcon>
+      </div>
+    </footer>
+
+    <!-- <div class="mb-[500px] mt-[100px]"></div>
+    <button @click="updateOrderStatus(orderId, newStatus)">UPDATE</button> -->
   </div>
 </template>
 <script setup>
