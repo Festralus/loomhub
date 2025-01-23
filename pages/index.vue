@@ -3,11 +3,28 @@
     <header
       class="top-menu fixed left-0 top-0 z-[100] flex h-[64px] w-full flex-row items-center justify-between bg-white"
     >
-      <div class="BurgerMenuIconContainer flex w-[12%] sm:hidden">
+      <div
+        class="BurgerMenuIcon__container flex w-[12%] sm:hidden"
+        @click="openBurgerDropdown"
+      >
         <BurgerMenuIcon class="m-auto h-6 w-6 flex-shrink-0 sm:hidden" />
       </div>
       <div
-        class="top-menu__logo IntergralExtraBold mb-2 mt-0 text-2xl leading-none sm:ml-[10%] 2xl:ml-[6%] 2xl:text-3xl"
+        class="modal_overlay"
+        @click="closeModalOverlay"
+        :class="{ active: isModalOverlayActive }"
+      ></div>
+      <div
+        class="BurgerMenu__dropdown"
+        :class="isBurgerDropdownActive ? 'active' : 'closed'"
+      >
+        <div class="BurgerMenu__item">Shop</div>
+        <div class="BurgerMenu__item">On Sale</div>
+        <div class="BurgerMenu__item">New Arrivals</div>
+        <div class="BurgerMenu__item">Brands</div>
+      </div>
+      <div
+        class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none sm:ml-[10%] 2xl:ml-[6%] 2xl:text-3xl"
       >
         LOOM.HUB
       </div>
@@ -48,7 +65,25 @@
         <SearchIconBlack
           class="top-menu__search-icon lg:hidden"
           aria-label="Search"
+          @click="openMobileSearch"
         />
+        <div
+          class="mobile-search__container"
+          :class="isSearchActive ? 'active' : 'closed'"
+        >
+          <SearchIconGray
+            class="top-menu__search-icon ml-1 mr-3"
+            aria-label="Search"
+            @click="closeMobileSearch"
+          />
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Search for products..."
+            aria-label="Search for products"
+            ref="MobileSearchInput"
+          />
+        </div>
         <CartIcon class="top-menu__actions-cart ml-[14px]"></CartIcon>
         <ProfileIcon class="top-menu__actions-profile ml-[14px]"></ProfileIcon>
       </div>
@@ -568,6 +603,38 @@ function focusSubscriptionEmail() {
 const HomePageSearch = ref();
 function focusHomePageSearch() {
   HomePageSearch.value?.focus();
+}
+
+// Modal Background
+const isModalOverlayActive = ref(false);
+function openModalOverlay() {
+  isModalOverlayActive.value = true;
+}
+function closeModalOverlay() {
+  if (isBurgerDropdownActive.value) {
+    closeBurgerDropdown();
+  }
+  isModalOverlayActive.value = false;
+}
+
+// Burger Dropdown
+const isBurgerDropdownActive = ref(false);
+function openBurgerDropdown() {
+  isBurgerDropdownActive.value = true;
+  openModalOverlay();
+}
+function closeBurgerDropdown() {
+  isBurgerDropdownActive.value = false;
+}
+
+const isSearchActive = ref(false);
+const MobileSearchInput = ref(null);
+function openMobileSearch() {
+  isSearchActive.value = true;
+  MobileSearchInput.value?.focus();
+}
+function closeMobileSearch() {
+  isSearchActive.value = false;
 }
 </script>
 <style scoped>

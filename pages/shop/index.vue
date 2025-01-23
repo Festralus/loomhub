@@ -1,5 +1,5 @@
 <template>
-  <div>Cart</div>
+  <div>Shop</div>
 </template>
 <script setup></script>
-<style scoped></style>
+<style></style>
