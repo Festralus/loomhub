@@ -18,30 +18,37 @@
         class="BurgerMenu__dropdown"
         :class="isBurgerDropdownActive ? 'active' : 'closed'"
       >
-        <div class="BurgerMenu__item">Shop</div>
-        <div class="BurgerMenu__item">On Sale</div>
-        <div class="BurgerMenu__item">New Arrivals</div>
-        <div class="BurgerMenu__item">Brands</div>
+        <NuxtLink to="/shop" class="BurgerMenu__item">Shop</NuxtLink>
+        <NuxtLink to="/on_sale" class="BurgerMenu__item">On Sale</NuxtLink>
+        <NuxtLink to="/new_arrivals" class="BurgerMenu__item"
+          >New Arrivals</NuxtLink
+        >
+        <NuxtLink to="/brands" class="BurgerMenu__item">Brands</NuxtLink>
       </div>
-      <div
+      <NuxtLink
+        to="/"
         class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none sm:ml-[10%] 2xl:ml-[6%] 2xl:text-3xl"
       >
         LOOM.HUB
-      </div>
+      </NuxtLink>
       <nav
         class="top-menu__nav max-h-10px SatoshiRegular hidden flex-row text-base sm:flex sm:w-full sm:justify-evenly xl:w-[30%] 2xl:text-xl"
       >
         <div
           class="top-menu__nav-item top-menu__nav-item--shop flex flex-row items-center"
         >
-          <div class="top-menu__nav-item--shop-text">Shop</div>
+          <NuxtLink to="shop" class="top-menu__nav-item--shop-text"
+            >Shop</NuxtLink
+          >
           <PointerIcon
             class="top-menu__nav-item top-menu__nav-item--shop-dropdown size-3 pl-1 2xl:size-[14px]"
           ></PointerIcon>
         </div>
-        <div class="top-menu__nav-item">On Sale</div>
-        <div class="top-menu__nav-item">New Arrivals</div>
-        <div class="top-menu__nav-item">Brands</div>
+        <NuxtLink to="on_sale" class="top-menu__nav-item">On Sale</NuxtLink>
+        <NuxtLink to="new_arrivals" class="top-menu__nav-item"
+          >New Arrivals</NuxtLink
+        >
+        <NuxtLink to="brands" class="top-menu__nav-item">Brands</NuxtLink>
       </nav>
       <div
         class="top-menu__search hidden w-full flex-row rounded-3xl bg-[#F0F0F0] p-2 lg:flex xl:w-[40vw]"
@@ -72,7 +79,7 @@
           :class="isSearchActive ? 'active' : 'closed'"
         >
           <SearchIconGray
-            class="top-menu__search-icon ml-1 mr-3"
+            class="top-menu__search-icon ml-2 mr-3"
             aria-label="Search"
             @click="closeMobileSearch"
           />
@@ -355,10 +362,10 @@
             >
               COMPANY
             </div>
-            <div class="footer__links-link">About</div>
-            <div class="footer__links-link">Features</div>
-            <div class="footer__links-link">Works</div>
-            <div class="footer__links-link">Career</div>
+            <NuxtLink to="/" class="footer__links-link">About</NuxtLink>
+            <NuxtLink to="/" class="footer__links-link">Features</NuxtLink>
+            <NuxtLink to="/" class="footer__links-link">Works</NuxtLink>
+            <NuxtLink to="/" class="footer__links-link">Career</NuxtLink>
           </div>
           <div class="links__block pb-6">
             <div
@@ -366,10 +373,18 @@
             >
               HELP
             </div>
-            <div class="footer__links-link">Customer support</div>
-            <div class="footer__links-link">Delivery Details</div>
-            <div class="footer__links-link">Terms & Conditions</div>
-            <div class="footer__links-link">Privacy Policy</div>
+            <NuxtLink to="/" class="footer__links-link"
+              >Customer support</NuxtLink
+            >
+            <NuxtLink to="/" class="footer__links-link"
+              >Delivery Details</NuxtLink
+            >
+            <NuxtLink to="/" class="footer__links-link"
+              >Terms & Conditions</NuxtLink
+            >
+            <NuxtLink to="/" class="footer__links-link"
+              >Privacy Policy</NuxtLink
+            >
           </div>
         </div>
         <div class="links__container inline-flex">
@@ -379,10 +394,12 @@
             >
               FAQ
             </div>
-            <div class="footer__links-link">Account</div>
-            <div class="footer__links-link">Manage Deliveries</div>
-            <div class="footer__links-link">Orders</div>
-            <div class="footer__links-link">Payment</div>
+            <NuxtLink to="/" class="footer__links-link">Account</NuxtLink>
+            <NuxtLink to="/" class="footer__links-link"
+              >Manage Deliveries</NuxtLink
+            >
+            <NuxtLink to="/" class="footer__links-link">Orders</NuxtLink>
+            <NuxtLink to="/" class="footer__links-link">Payment</NuxtLink>
           </div>
           <div class="links__block pb-6">
             <div

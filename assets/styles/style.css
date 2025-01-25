@@ -107,6 +107,7 @@
   margin-bottom: 26px;
 }
 .footer__links-link {
+  display: block;
   margin-top: 12px;
   font-family: 'Satoshi-Regular';
   color: rgba(0, 0, 0, 0.6);
