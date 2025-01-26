@@ -81,7 +81,7 @@
           <SearchIconGray
             class="top-menu__search-icon ml-2 mr-3"
             aria-label="Search"
-            @click="closeMobileSearch"
+            @click="toggleMobileSearch"
           />
           <input
             type="text"
@@ -91,6 +91,7 @@
             ref="MobileSearchInput"
           />
         </div>
+
         <CartIcon class="top-menu__actions-cart ml-[14px]"></CartIcon>
         <ProfileIcon class="top-menu__actions-profile ml-[14px]"></ProfileIcon>
       </div>
@@ -644,7 +645,7 @@ function closeBurgerDropdown() {
   isBurgerDropdownActive.value = false;
 }
 
-const isSearchActive = ref(false);
+// const isSearchActive = ref(false);
 const MobileSearchInput = ref(null);
 function openMobileSearch() {
   isSearchActive.value = true;
@@ -652,6 +653,12 @@ function openMobileSearch() {
 }
 function closeMobileSearch() {
   isSearchActive.value = false;
+}
+
+const isSearchActive = ref(false);
+
+function toggleMobileSearch() {
+  isSearchActive.value = !isSearchActive.value;
 }
 </script>
 <style scoped>
