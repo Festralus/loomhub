@@ -27,12 +27,14 @@
       </div>
       <NuxtLink
         to="/"
-        class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none sm:ml-[10%] 2xl:ml-[6%] 2xl:text-3xl"
+        class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none sm:ml-[10%] sm:block 2xl:ml-[6%] 2xl:text-3xl"
+        :class="isSearchActive ? 'hidden' : ''"
       >
         LOOM.HUB
       </NuxtLink>
       <nav
-        class="top-menu__nav max-h-10px SatoshiRegular hidden flex-row text-base sm:flex sm:w-full sm:justify-evenly xl:w-[30%] 2xl:text-xl"
+        class="top-menu__nav max-h-10px SatoshiRegular hidden flex-row text-base sm:flex sm:w-full sm:justify-evenly lg:flex xl:w-[30%] 2xl:text-xl"
+        :class="isSearchActive ? 'sm:hidden' : ''"
       >
         <div
           class="top-menu__nav-item top-menu__nav-item--shop flex flex-row items-center"
@@ -71,11 +73,12 @@
       >
         <SearchIconBlack
           class="top-menu__search-icon lg:hidden"
+          :class="isSearchActive ? 'hidden' : ''"
           aria-label="Search"
           @click="openMobileSearch"
         />
         <div
-          class="mobile-search__container"
+          class="mobile-search__container hidden sm:max-w-[64%]"
           :class="isSearchActive ? 'active' : 'closed'"
         >
           <SearchIconGray
@@ -91,8 +94,14 @@
             ref="MobileSearchInput"
           />
         </div>
-        <CartIcon class="top-menu__actions-cart ml-[14px]"></CartIcon>
-        <ProfileIcon class="top-menu__actions-profile ml-[14px]"></ProfileIcon>
+        <CartIcon
+          class="top-menu__actions-cart ml-[14px] lg:block"
+          :class="isSearchActive ? 'hidden' : ''"
+        ></CartIcon>
+        <ProfileIcon
+          class="top-menu__actions-profile ml-[14px] lg:block"
+          :class="isSearchActive ? 'hidden' : ''"
+        ></ProfileIcon>
       </div>
     </header>
     <div
@@ -644,6 +653,7 @@ function closeBurgerDropdown() {
   isBurgerDropdownActive.value = false;
 }
 
+// Mobile Search
 const isSearchActive = ref(false);
 const MobileSearchInput = ref(null);
 function openMobileSearch() {
