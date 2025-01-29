@@ -51,10 +51,25 @@
     justify-content: space-between;
     background-color: #f0f0f0;
     border-radius: 1.5rem;
-    overflow: hidden;
+    /* overflow: hidden; */
 
     transform-origin: calc(100% - 70px) center;
     transform: scaleX(0);
+  }
+  .mobile-search__container .search-dropdown {
+    position: relative;
+    width: 90%;
+  }
+  .mobile-search__container .search-results {
+    position: absolute;
+    left: 0;
+    top: 33px;
+
+    width: 95%;
+    height: 150px;
+    background-color: rgb(226, 199, 199);
+
+    border-radius: 1rem;
   }
   .mobile-search__container .search-input {
     width: 90%;
@@ -222,4 +237,16 @@
 .BurgerMenu__item:active {
   color: #007bff;
   transform: scale(1.05);
+}
+
+.search-results {
+  position: absolute;
+  left: 0;
+  top: 33px;
+
+  width: 98%;
+  padding: 10px;
+  background-color: rgb(226, 199, 199);
+
+  border-radius: 1rem;
 }

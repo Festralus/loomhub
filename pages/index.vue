@@ -60,13 +60,24 @@
           class="top-menu__search-icon mr-3 hidden pl-1 lg:block"
           aria-label="Search"
         />
-        <input
-          type="text"
-          class="top-menu__search-input mr-2 hidden h-6 w-full bg-[#F0F0F0] lg:block"
-          placeholder="Search for products..."
-          aria-label="Search for products"
-          ref="HomePageSearch"
-        />
+        <div class="top-menu__search-dropdown relative hidden w-full lg:block">
+          <input
+            type="text"
+            class="top-menu__search-input h-6 w-full bg-[#F0F0F0]"
+            placeholder="Search for products..."
+            aria-label="Search for products"
+            ref="HomePageSearch"
+            v-model="searchQuery"
+            @input="performQuickSearch"
+            @change="performQuickSearch"
+            @paste="performPasteQuickSearch"
+          />
+          <Search_results_dropdown
+            v-show="searchQuery"
+            :query="searchQuery"
+            :searchResults="searchResults"
+          ></Search_results_dropdown>
+        </div>
       </div>
       <div
         class="top-menu__actions mr-4 flex w-[30%] flex-shrink-0 flex-row justify-end sm:w-auto xl:mr-6 xl:w-[10%]"
@@ -84,15 +95,27 @@
           <SearchIconGray
             class="top-menu__search-icon ml-2 mr-3"
             aria-label="Search"
-            @click="toggleMobileSearch"
+            @click="closeMobileSearch"
           />
-          <input
-            type="text"
-            class="search-input"
-            placeholder="Search for products..."
-            aria-label="Search for products"
-            ref="MobileSearchInput"
-          />
+          <div class="search-dropdown">
+            <input
+              type="text"
+              class="search-input"
+              placeholder="Search for products..."
+              aria-label="Search for products"
+              ref="MobileSearchInput"
+              v-model="searchQuery"
+              @input="performQuickSearch"
+              @change="performQuickSearch"
+              @paste="performPasteQuickSearch"
+            />
+
+            <Search_results_dropdown
+              v-show="searchQuery"
+              :query="searchQuery"
+              :searchResults="searchResults"
+            ></Search_results_dropdown>
+          </div>
         </div>
         <CartIcon
           class="top-menu__actions-cart ml-[14px] lg:block"
@@ -445,9 +468,11 @@
   </div>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch, nextTick } from 'vue';
 import axios from 'axios';
 
+import Search_results_dropdown from '~/components/search_results_dropdown.vue';
+import Slider_component from '~/components/slider_component.vue';
 import ArrowIcon from '../assets/icons/ArrowIcon.vue';
 import PointerIcon from '../assets/icons/PointerIcon.vue';
 import CartIcon from '../assets/icons/CartIcon.vue';
@@ -474,7 +499,6 @@ import ShareFacebook from '../assets/icons/ShareFacebookIcon.vue';
 import ShareInstagram from '../assets/icons/ShareInstagramIcon.vue';
 import ShareGithub from '../assets/icons/ShareGithubIcon.vue';
 import StarIcon from '../assets/icons/StarIconBig.vue';
-import Slider_component from '~/components/slider_component.vue';
 import VerifiedTickIcon from '../assets/icons/VerifiedTickIcon.vue';
 
 // Change BaseURL for axios
@@ -662,6 +686,34 @@ function openMobileSearch() {
 }
 function closeMobileSearch() {
   isSearchActive.value = false;
+}
+
+const searchQuery = ref('');
+let searchResults = ref([]);
+
+watch(searchQuery, async () => {
+  await performQuickSearch();
+});
+
+async function performQuickSearch() {
+  const query = searchQuery.value.trim();
+  if (!query) {
+    searchResults.value = [];
+    return;
+  }
+
+  try {
+    const res = await api.get(`api/products/search?query=${query}`);
+    searchResults.value = res.data.length < 5 ? res.data : res.data.slice(0, 5);
+    console.log('Поиск по:', query);
+  } catch (error) {
+    console.error('Ошибка запроса:', error);
+  }
+}
+
+async function performPasteQuickSearch() {
+  await nextTick();
+  performQuickSearch();
 }
 </script>
 <style scoped>
