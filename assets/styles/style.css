@@ -250,3 +250,42 @@
 
   border-radius: 1rem;
 }
+
+.Auth__Popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 140;
+
+  /* display: none; */
+
+  width: 70vw;
+  max-width: 440px;
+  border-radius: 2rem;
+
+  padding: 40px;
+  background-color: rgb(226, 199, 199);
+}
+.Step-back__arrow {
+  position: absolute;
+  left: 16px;
+  top: 20px;
+  transform: rotate(180deg);
+}
+.Auth__Greetings {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+.Auth__Popup-btn {
+  background-color: black;
+  color: white;
+  font-family: 'Satoshi-Regular';
+  font-size: 26px;
+
+  padding: 10px 30px;
+  border-radius: 1rem;
+}

@@ -117,16 +117,44 @@
             ></Search_results_dropdown>
           </div>
         </div>
-        <CartIcon
+        <NuxtLink
+          to="/cart"
           class="top-menu__actions-cart ml-[14px] lg:block"
           :class="isSearchActive ? 'hidden' : ''"
-        ></CartIcon>
+          ><CartIcon></CartIcon
+        ></NuxtLink>
         <ProfileIcon
           class="top-menu__actions-profile ml-[14px] lg:block"
           :class="isSearchActive ? 'hidden' : ''"
+          @click="openAuthPopup"
         ></ProfileIcon>
       </div>
     </header>
+    <div v-show="authPopupActive" class="Auth__popup">
+      <ArrowIcon class="Step-back__arrow" @click="AuthStepBack"></ArrowIcon>
+      <div v-show="authGreetingsActive" class="Auth__Greetings">
+        <div class="Auth__Popup-btn Login-button" @click="openAuthLogin">
+          Login
+        </div>
+        <div
+          class="Auth__Popup-btn Registration-button"
+          @click="openAuthRegistration"
+        >
+          Sign up
+        </div>
+      </div>
+      <div v-show="authLoginActive" class="Auth__Login">
+        <input class="Auth__login-input" type="text" placeholder="Login" />
+        <input
+          class="Auth__password-input"
+          type="password"
+          placeholder="Password"
+        />
+      </div>
+      <div class="Auth__Registration" v-show="authRegistrationActive">
+        123 123
+      </div>
+    </div>
     <div
       class="home-description relative z-50 mt-[64px] w-[100vw] bg-[#f2f0f1] xl:flex xl:flex-nowrap xl:justify-evenly 2xl:items-center 2xl:justify-between"
     >
@@ -514,9 +542,12 @@ onMounted(() => {
   reviewCardsContainer.value.addEventListener('scroll', handleScroll);
 });
 
+// Horizontal product slider component functionality
+
 const newArrivalsList = ref([]);
 const limit = 9;
 const currencyMultiplier = 1;
+const topSellingList = ref([]);
 
 async function getSliderProducts(filterName) {
   try {
@@ -552,8 +583,7 @@ async function getSliderProducts(filterName) {
   }
 }
 
-const topSellingList = ref([]);
-
+// Updating an order
 const orderId = '6769bc16c09d4bcd85526087';
 const newStatus = 'delivered';
 async function updateOrderStatus(orderId, newStatus) {
@@ -590,7 +620,7 @@ const dress_styles_list = [
   { name: 'Gym', backgroundPicture: '/assets/images/browse-gym' },
 ];
 
-// Get website reviews
+// Method to Get 5 website reviews
 const websiteReviewsArray = ref([]);
 
 async function getWebsiteReviews() {
@@ -714,6 +744,35 @@ async function performQuickSearch() {
 async function performPasteQuickSearch() {
   await nextTick();
   performQuickSearch();
+}
+
+// Authentication popup window
+const authPopupActive = ref(false);
+const authGreetingsActive = ref(true);
+const authLoginActive = ref(false);
+const authRegistrationActive = ref(false);
+
+function openAuthPopup() {
+  authPopupActive.value = true;
+}
+function openAuthLogin() {
+  authGreetingsActive.value = false;
+  authLoginActive.value = true;
+}
+function openAuthRegistration() {
+  authGreetingsActive.value = false;
+  authRegistrationActive.value = true;
+}
+function AuthStepBack() {
+  if (authRegistrationActive.value) {
+    authRegistrationActive.value = false;
+    authGreetingsActive.value = true;
+  } else if (authLoginActive.value) {
+    authLoginActive.value = false;
+    authGreetingsActive.value = true;
+  } else {
+    authPopupActive.value = false;
+  }
 }
 </script>
 <style scoped>
