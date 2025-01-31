@@ -747,7 +747,7 @@ async function performPasteQuickSearch() {
 }
 
 // Authentication popup window
-const authPopupActive = ref(false);
+const authPopupActive = ref(true);
 const authGreetingsActive = ref(true);
 const authLoginActive = ref(false);
 const authRegistrationActive = ref(false);
