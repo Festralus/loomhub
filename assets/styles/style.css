@@ -249,7 +249,7 @@
   border-radius: 1rem;
 }
 
-.Auth__Popup {
+.Auth__popup {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -276,7 +276,7 @@
   align-items: center;
   gap: 30px;
 }
-.Auth__Popup-btn {
+.Auth__popup-btn {
   background-color: black;
   color: white;
   font-family: 'Satoshi-Regular';
@@ -285,7 +285,3 @@
   padding: 10px 30px;
   border-radius: 1rem;
 }
-
-/* .Login-button {
-  
-} */

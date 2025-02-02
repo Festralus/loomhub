@@ -33,24 +33,24 @@
         LOOM.HUB
       </NuxtLink>
       <nav
-        class="top-menu__nav max-h-10px SatoshiRegular hidden flex-row text-base sm:flex sm:w-full sm:justify-evenly lg:flex xl:w-[30%] 2xl:text-xl"
+        class="top-menu__nav SatoshiRegular hidden max-h-[10px] flex-row text-base sm:flex sm:w-full sm:justify-evenly lg:flex xl:w-[30%] 2xl:text-xl"
         :class="isSearchActive ? 'sm:hidden' : ''"
       >
         <div
           class="top-menu__nav-item top-menu__nav-item--shop flex flex-row items-center"
         >
-          <NuxtLink to="shop" class="top-menu__nav-item--shop-text"
+          <NuxtLink to="/shop" class="top-menu__nav-item--shop-text"
             >Shop</NuxtLink
           >
           <PointerIcon
             class="top-menu__nav-item top-menu__nav-item--shop-dropdown size-3 pl-1 2xl:size-[14px]"
           ></PointerIcon>
         </div>
-        <NuxtLink to="on_sale" class="top-menu__nav-item">On Sale</NuxtLink>
-        <NuxtLink to="new_arrivals" class="top-menu__nav-item"
+        <NuxtLink to="/on_sale" class="top-menu__nav-item">On Sale</NuxtLink>
+        <NuxtLink to="/new_arrivals" class="top-menu__nav-item"
           >New Arrivals</NuxtLink
         >
-        <NuxtLink to="brands" class="top-menu__nav-item">Brands</NuxtLink>
+        <NuxtLink to="/brands" class="top-menu__nav-item">Brands</NuxtLink>
       </nav>
       <div
         class="top-menu__search hidden w-full flex-row rounded-3xl bg-[#F0F0F0] p-2 lg:flex xl:w-[40vw]"
@@ -133,26 +133,47 @@
     <div v-show="authPopupActive" class="Auth__popup">
       <ArrowIcon class="Step-back__arrow" @click="AuthStepBack"></ArrowIcon>
       <div v-show="authGreetingsActive" class="Auth__Greetings">
-        <div class="Auth__Popup-btn Login-button" @click="openAuthLogin">
+        <div class="Auth__popup-btn Login-button" @click="openAuthLogin">
           Login
         </div>
         <div
-          class="Auth__Popup-btn Registration-button"
+          class="Auth__popup-btn Registration-button"
           @click="openAuthRegistration"
         >
           Sign up
         </div>
       </div>
       <div v-show="authLoginActive" class="Auth__Login">
-        <input class="Auth__login-input" type="text" placeholder="Login" />
+        <input
+          class="Auth__login-input"
+          type="text"
+          placeholder="Nickname"
+          v-model="loginName"
+        />
         <input
           class="Auth__password-input"
           type="password"
           placeholder="Password"
+          v-model="loginPassword"
         />
+        <button class="Auth__popup-btn" @click="submitLoginForm">Log in</button>
       </div>
       <div class="Auth__Registration" v-show="authRegistrationActive">
-        123 123
+        <input
+          class="Auth__login-input"
+          type="text"
+          placeholder="Nickname"
+          v-model="regName"
+        />
+        <input
+          class="Auth__password-input"
+          type="password"
+          placeholder="Password"
+          v-model="regPassword"
+        />
+        <button class="Auth__popup-btn" @click="submitRegistrationForm">
+          Register
+        </button>
       </div>
     </div>
     <div
@@ -498,6 +519,7 @@
 <script setup>
 import { onMounted, onUnmounted, ref, watch, nextTick } from 'vue';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 import Search_results_dropdown from '~/components/search_results_dropdown.vue';
 import Slider_component from '~/components/slider_component.vue';
@@ -755,13 +777,13 @@ async function performPasteQuickSearch() {
 }
 
 // Authentication popup window
-const authPopupActive = ref(false);
-const authGreetingsActive = ref(false);
+const authPopupActive = ref(true);
+const authGreetingsActive = ref(true);
 const authLoginActive = ref(false);
 const authRegistrationActive = ref(false);
 
 function openAuthPopup() {
-  // authPopupActive.value = true;
+  authPopupActive.value = true;
 }
 function openAuthLogin() {
   authGreetingsActive.value = false;
@@ -780,6 +802,36 @@ function AuthStepBack() {
     authGreetingsActive.value = true;
   } else {
     authPopupActive.value = false;
+  }
+}
+
+// Sign up
+const regName = ref('');
+const regPassword = ref('');
+async function submitRegistrationForm() {
+  try {
+    await api.post('/api/registration', {
+      nickname: regName.value,
+      password: regPassword.value,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+// Login and Session
+const loginName = ref('Guppi');
+const loginPassword = ref('123123');
+async function submitLoginForm() {
+  try {
+    const response = await api.post('/api/login', {
+      nickname: loginName.value,
+      password: loginPassword.value,
+    });
+    const { token } = response.data;
+    Cookies.set('token', token);
+  } catch (err) {
+    console.log(err);
   }
 }
 </script>
