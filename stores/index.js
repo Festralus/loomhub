@@ -24,7 +24,6 @@ export const useAuthStore = defineStore({
 
       if (token) {
         try {
-          // Should do something when protected route can't be reached, if user is not logged in at HomePage it results in an error
           const response = await api.get('/auth/protected', {
             headers: { Authorization: `Bearer ${token}` },
           });

@@ -496,7 +496,7 @@
   </div>
 </template>
 <script setup>
-import { onMounted, ref, watch, nextTick } from 'vue';
+import { onMounted, onUnmounted, ref, watch, nextTick } from 'vue';
 import axios from 'axios';
 
 import Search_results_dropdown from '~/components/search_results_dropdown.vue';
@@ -539,7 +539,11 @@ onMounted(() => {
   getSliderProducts('getTopSelling');
   getWebsiteReviews();
 
-  reviewCardsContainer.value.addEventListener('scroll', handleScroll);
+  // reviewCardsContainer.value.addEventListener('scroll', handleScroll);
+});
+
+onUnmounted(() => {
+  // reviewCardsContainer.value.removeEventListener('scroll', handleScroll);
 });
 
 // Horizontal product slider component functionality
@@ -666,14 +670,14 @@ function scrollToCard(index) {
   });
 }
 
-function handleScroll() {
-  if (!reviewCardsContainer.value) return;
+// function handleScroll() {
+//   if (!reviewCardsContainer.value) return;
 
-  const container = reviewCardsContainer.value;
-  const scrollLeft = container.scrollLeft;
-  const cardWidth = container.children[0]?.children[0]?.offsetWidth;
-  reviewCardIndex.value = Math.round(scrollLeft / cardWidth);
-}
+//   const container = reviewCardsContainer.value;
+//   const scrollLeft = container.scrollLeft;
+//   const cardWidth = container.children[0]?.children[0]?.offsetWidth;
+//   reviewCardIndex.value = Math.round(scrollLeft / cardWidth);
+// }
 
 const SubscriptionEmail = ref();
 function focusSubscriptionEmail() {
@@ -734,10 +738,14 @@ async function performQuickSearch() {
 
   try {
     const res = await api.get(`api/products/search?query=${query}`);
+    if (!res.data.length) {
+      searchResults.value = [{ name: 'No match' }];
+      return;
+    }
     searchResults.value = res.data.length < 5 ? res.data : res.data.slice(0, 5);
-    console.log('Поиск по:', query);
-  } catch (error) {
-    console.error('Ошибка запроса:', error);
+    console.log(searchResults.value);
+  } catch (err) {
+    console.log(err);
   }
 }
 
@@ -747,13 +755,13 @@ async function performPasteQuickSearch() {
 }
 
 // Authentication popup window
-const authPopupActive = ref(true);
-const authGreetingsActive = ref(true);
+const authPopupActive = ref(false);
+const authGreetingsActive = ref(false);
 const authLoginActive = ref(false);
 const authRegistrationActive = ref(false);
 
 function openAuthPopup() {
-  authPopupActive.value = true;
+  // authPopupActive.value = true;
 }
 function openAuthLogin() {
   authGreetingsActive.value = false;

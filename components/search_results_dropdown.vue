@@ -18,7 +18,7 @@ defineProps({
 });
 </script>
 <style scoped>
-.result {
+.result:not(:first-child) {
   margin-top: 8px;
 }
 </style>
