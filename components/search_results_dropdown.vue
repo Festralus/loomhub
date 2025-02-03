@@ -3,7 +3,7 @@
     <div
       v-if="searchResults"
       v-for="(item, i) in searchResults"
-      :key="item.GID + i"
+      :key="i"
       class="result"
     >
       {{ item.name }}

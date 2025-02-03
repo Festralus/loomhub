@@ -1,5 +1,5 @@
 <template>
-  <div class="website relative max-w-[100vw]">
+  <div class="website">
     <header
       class="top-menu fixed left-0 top-0 z-[100] flex h-[64px] w-full flex-row items-center justify-between bg-white"
     >
@@ -362,7 +362,7 @@
           <div
             class="reviews__card button-border mx-4 mt-6 h-[180px] w-[340px] rounded-3xl border-gray-500 p-6"
             v-for="review in websiteReviewsArray"
-            :key="review.id"
+            :key="'main' + review.id"
             ref="reviewCardRefs"
           >
             <div class="reviews__card-rating mt-1 flex items-center">
@@ -598,6 +598,7 @@ async function getSliderProducts(filterName) {
         discount: discountPercentage,
       };
     });
+    console.log(res);
 
     if (filterName === 'getNewArrivals') {
       newArrivalsList.value.push(...arrivalsResponse);
@@ -765,7 +766,6 @@ async function performQuickSearch() {
       return;
     }
     searchResults.value = res.data.length < 5 ? res.data : res.data.slice(0, 5);
-    console.log(searchResults.value);
   } catch (err) {
     console.log(err);
   }
@@ -777,7 +777,7 @@ async function performPasteQuickSearch() {
 }
 
 // Authentication popup window
-const authPopupActive = ref(true);
+const authPopupActive = ref(false);
 const authGreetingsActive = ref(true);
 const authLoginActive = ref(false);
 const authRegistrationActive = ref(false);
@@ -830,6 +830,8 @@ async function submitLoginForm() {
     });
     const { token } = response.data;
     Cookies.set('token', token);
+    console.log(response);
+    console.log(`You are: ${response.data.user}. Your token is: ${token}`);
   } catch (err) {
     console.log(err);
   }
