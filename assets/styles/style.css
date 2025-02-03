@@ -285,3 +285,13 @@
   padding: 10px 30px;
   border-radius: 1rem;
 }
+
+.top-menu__nav-item {
+  display: flex;
+  align-items: center;
+}
+
+.BurgerMenu__dropdown.no-animation,
+.mobile-search__container.no-animation {
+  animation: none;
+}
