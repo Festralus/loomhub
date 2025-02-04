@@ -1,5 +1,5 @@
 <template>
-  <div class="item__path">
+  <!-- <div class="item__path">
     <div class="item__where-from">Home</div>
     <div class="item__where-from">Shop</div>
     <div class="item__where-from">Men</div>
@@ -54,7 +54,7 @@
     <div class="item__details-tab">Product Destails</div>
     <div class="item__reviews-tab">Rating & Reviews</div>
     <div class="item__reviews-FAQ">FAQs</div>
-  </div>
+  </div> -->
 </template>
 <script setup></script>
 <style scoped></style>
