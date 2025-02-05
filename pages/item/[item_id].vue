@@ -1,4 +1,5 @@
 <template>
+  {{ itemId }}
   <!-- <div class="item__path">
     <div class="item__where-from">Home</div>
     <div class="item__where-from">Shop</div>
@@ -56,5 +57,32 @@
     <div class="item__reviews-FAQ">FAQs</div>
   </div> -->
 </template>
-<script setup></script>
+<script setup>
+import { onMounted } from 'vue';
+// import { useRouter } from 'vue-router';
+import Cookies from 'js-cookie';
+import axios from 'axios';
+import { useAuthStore } from '@/stores/index';
+
+// changing baseURL for axios
+const api = axios.create({
+  baseURL: 'http://localhost:3001',
+});
+const checkSession = useAuthStore().checkSession;
+
+onMounted(() => {
+  checkSession();
+  setChosenItem();
+});
+
+// const router = useRouter();
+
+const itemId = ref(null);
+function setChosenItem() {
+  const path = window.location.pathname;
+  const segments = path.split('/');
+  const lastSegment = segments.pop();
+  itemId.value = lastSegment;
+}
+</script>
 <style scoped></style>

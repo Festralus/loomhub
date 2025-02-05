@@ -131,20 +131,26 @@
         ><CartIcon></CartIcon
       ></NuxtLink>
       <ProfileIcon
-        class="top-menu__actions-profile ml-[14px] lg:block"
+        class="top-menu__actions-profile ml-[14px] cursor-pointer lg:block"
         :class="isSearchActive ? 'hidden' : ''"
         @click="openAuthPopup"
       ></ProfileIcon>
     </div>
     <!-- Modal -->
     <div v-show="authPopupActive" class="Auth__popup">
-      <ArrowIcon class="Step-back__arrow" @click="AuthStepBack"></ArrowIcon>
+      <ArrowIcon
+        class="Step-back__arrow cursor-pointer"
+        @click="AuthStepBack"
+      ></ArrowIcon>
       <div v-show="authGreetingsActive" class="Auth__Greetings">
-        <div class="Auth__popup-btn Login-button" @click="openAuthLogin">
+        <div
+          class="Auth__popup-btn Login-button cursor-pointer select-none"
+          @click="openAuthLogin"
+        >
           Login
         </div>
         <div
-          class="Auth__popup-btn Registration-button"
+          class="Auth__popup-btn Registration-button cursor-pointer select-none"
           @click="openAuthRegistration"
         >
           Sign up
@@ -165,7 +171,10 @@
           autocomplete="password"
           v-model="loginPassword"
         />
-        <button class="Auth__popup-btn" @click.prevent="submitLoginForm">
+        <button
+          class="Auth__popup-btn cursor-pointer select-none"
+          @click.prevent="submitLoginForm"
+        >
           Log in
         </button>
       </form>
@@ -184,7 +193,10 @@
           autocomplete="password"
           v-model="regPassword"
         />
-        <button class="Auth__popup-btn" @click.prevent="submitRegistrationForm">
+        <button
+          class="Auth__popup-btn cursor-pointer select-none"
+          @click.prevent="submitRegistrationForm"
+        >
           Register
         </button>
       </form>
@@ -197,6 +209,8 @@
 
 <script setup>
 import { ref, watch, nextTick } from 'vue';
+const route = useRoute();
+
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
@@ -215,6 +229,16 @@ const api = axios.create({
   baseURL: 'http://localhost:3001',
 });
 
+// Empty search every page route
+watch(
+  () => route.path,
+  () => {
+    console.log(123);
+    searchQuery.value = '';
+  }
+);
+
+// Focus search upon opening it
 const HomePageSearch = ref();
 function focusHomePageSearch() {
   HomePageSearch.value?.focus();
@@ -281,6 +305,7 @@ async function performQuickSearch() {
       return;
     }
     searchResults.value = res.data.length < 5 ? res.data : res.data.slice(0, 5);
+    console.log(searchResults.value);
   } catch (err) {
     console.log(err);
   }

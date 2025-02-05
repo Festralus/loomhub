@@ -13,7 +13,6 @@ export const useAuthStore = defineStore({
       token: null,
       nickname: null,
       profilePicUrl: null,
-      email: null,
       authenticated: false,
     };
   },
@@ -27,29 +26,44 @@ export const useAuthStore = defineStore({
           const response = await api.get('/auth/protected', {
             headers: { Authorization: `Bearer ${token}` },
           });
-          const nickname = response.data.nickname;
-          const profilePicUrl = response.data.profilePicUrl;
-          const email = response.data.email;
-          this.setSession({ token, nickname, profilePicUrl, email });
-        } catch (err) {}
+          this.setSession({
+            token,
+            nickname: response.data.nickname,
+            profilePicUrl: response.data.profilePicUrl,
+          });
+        } catch (err) {
+          console.error('Error checking session:', err);
+          this.clearSession();
+        }
+      } else {
+        this.clearSession();
       }
     },
 
     // Method to set user auth (log them in)
     setSession(payload) {
-      this.nickname = payload.nickname;
-      this.profilePicUrl = payload.profilePicUrl;
-      this.email = payload.email;
-      this.token = payload.token;
-
       if (payload.token) {
         this.authenticated = true;
+        this.token = payload.token;
+        this.nickname = payload.nickname;
+        this.profilePicUrl = payload.profilePicUrl;
+        // this.email = payload.email;
+      } else {
+        this.clearSession();
       }
     },
 
     // Method to remove user auth
     deleteSessionToken() {
       Cookies.remove('token');
+      this.clearSession();
+    },
+
+    // Method to clear the session
+    clearSession() {
+      this.nickname = null;
+      this.profilePicUrl = null;
+      this.authenticated = false;
     },
   },
 });
