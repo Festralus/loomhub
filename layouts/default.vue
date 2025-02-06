@@ -142,7 +142,7 @@
         class="Step-back__arrow cursor-pointer"
         @click="AuthStepBack"
       ></ArrowIcon>
-      <div v-show="authGreetingsActive" class="Auth__Greetings">
+      <div v-if="authGreetingsActive && !nickname" class="Auth__Greetings">
         <div
           class="Auth__popup-btn Login-button cursor-pointer select-none"
           @click="openAuthLogin"
@@ -156,7 +156,20 @@
           Sign up
         </div>
       </div>
-      <form v-show="authLoginActive" class="Auth__Login">
+      <div v-if="nickname">
+        <div class="Auth__user-nickname">{{ nickname }}</div>
+        <img
+          :src="`${profilePicUrl}`"
+          v-show="profilePicUrl"
+          class="Auth__user-avatar"
+        />
+        <div
+          class="End-session__button Auth__popup-btn cursor-pointer select-none"
+        >
+          Log out
+        </div>
+      </div>
+      <form v-if="authLoginActive && !nickname" class="Auth__Login">
         <input
           class="Auth__login-input"
           type="text"
@@ -178,7 +191,10 @@
           Log in
         </button>
       </form>
-      <form class="Auth__Registration" v-show="authRegistrationActive">
+      <form
+        class="Auth__Registration"
+        v-if="authRegistrationActive && !nickname"
+      >
         <input
           class="Auth__login-input"
           type="text"
@@ -208,7 +224,9 @@
 </template>
 
 <script setup>
-import { ref, watch, nextTick } from 'vue';
+import { ref, watch, nextTick, onMounted } from 'vue';
+import { useAuthStore } from '@/stores/index';
+import { storeToRefs } from 'pinia';
 const route = useRoute();
 
 import axios from 'axios';
@@ -229,11 +247,14 @@ const api = axios.create({
   baseURL: 'http://localhost:3001',
 });
 
+onMounted(() => {
+  checkSession();
+});
+
 // Empty search every page route
 watch(
   () => route.path,
   () => {
-    console.log(123);
     searchQuery.value = '';
   }
 );
@@ -305,7 +326,6 @@ async function performQuickSearch() {
       return;
     }
     searchResults.value = res.data.length < 5 ? res.data : res.data.slice(0, 5);
-    console.log(searchResults.value);
   } catch (err) {
     console.log(err);
   }
@@ -362,6 +382,7 @@ async function submitRegistrationForm() {
 // Login and Session
 const loginName = ref('Guppi');
 const loginPassword = ref('123123');
+const checkSession = useAuthStore().checkSession;
 async function submitLoginForm() {
   try {
     const response = await api.post('/api/login', {
@@ -372,10 +393,12 @@ async function submitLoginForm() {
     Cookies.set('token', token);
     // console.log(response);
     console.log(`You are: ${response.data.user}. Your token is: ${token}`);
+    await checkSession();
   } catch (err) {
     console.log(err);
   }
 }
+const { nickname, profilePicUrl } = storeToRefs(useAuthStore());
 </script>
 
 <style scoped>
@@ -562,8 +585,20 @@ async function submitLoginForm() {
   color: white;
   font-family: 'Satoshi-Regular';
   font-size: 26px;
+  text-align: center;
 
   padding: 10px 30px;
   border-radius: 1rem;
+}
+.Auth__user-nickname {
+  text-align: center;
+  font-family: 'Satoshi-Bold';
+  font-size: 40px;
+}
+.Auth__user-avatar {
+  width: 200px;
+  border-radius: 50%;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
