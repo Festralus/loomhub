@@ -1,122 +1,81 @@
 <template>
-  <header
-    class="top-menu fixed left-0 top-0 z-[100] flex h-[64px] w-full flex-row items-center justify-between bg-white"
-  >
-    <div
-      class="BurgerMenuIcon__container flex w-[12%] sm:hidden"
-      @click="openBurgerDropdown"
-    >
-      <BurgerMenuIcon class="m-auto h-6 w-6 flex-shrink-0 sm:hidden" />
-    </div>
-    <div
-      class="modal_overlay"
-      @click="closeModalOverlay"
-      :class="{ active: isModalOverlayActive }"
-    ></div>
-    <div
-      class="BurgerMenu__dropdown"
-      :class="{
-        active: isBurgerDropdownActive,
-        closed: !isBurgerDropdownActive,
-        'no-animation': !isBurgerAnimationActive,
-      }"
-    >
-      <NuxtLink to="/shop" class="BurgerMenu__item">Shop</NuxtLink>
-      <NuxtLink to="/on_sale" class="BurgerMenu__item">On Sale</NuxtLink>
-      <NuxtLink to="/new_arrivals" class="BurgerMenu__item"
-        >New Arrivals</NuxtLink
-      >
-      <NuxtLink to="/brands" class="BurgerMenu__item">Brands</NuxtLink>
-    </div>
-    <NuxtLink
-      to="/"
-      class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none sm:ml-[10%] sm:block 2xl:ml-[6%] 2xl:text-3xl"
-      :class="isSearchActive ? 'hidden' : ''"
-    >
-      LOOM.HUB
-    </NuxtLink>
-    <nav
-      class="top-menu__nav SatoshiRegular hidden max-h-[10px] flex-row text-base sm:flex sm:w-full sm:justify-evenly lg:flex xl:w-[30%] 2xl:text-xl"
-      :class="{ 'sm:hidden': isSearchActive }"
+  <div>
+    <header
+      class="top-menu fixed left-0 top-0 z-[100] flex h-[64px] w-full flex-row items-center justify-between bg-white"
     >
       <div
-        class="top-menu__nav-item top-menu__nav-item--shop flex flex-row items-center"
+        class="BurgerMenuIcon__container flex w-[12%] sm:hidden"
+        @click="openBurgerDropdown"
       >
-        <NuxtLink to="/shop" class="top-menu__nav-item--shop-text"
-          ><div>Shop</div></NuxtLink
-        >
-        <PointerIcon
-          class="top-menu__nav-item top-menu__nav-item--shop-dropdown size-3 pl-1 2xl:size-[14px]"
-        ></PointerIcon>
+        <BurgerMenuIcon class="m-auto h-6 w-6 flex-shrink-0 sm:hidden" />
       </div>
-      <NuxtLink to="/on_sale" class="top-menu__nav-item">On Sale</NuxtLink>
-      <NuxtLink to="/new_arrivals" class="top-menu__nav-item"
-        >New Arrivals</NuxtLink
-      >
-      <NuxtLink to="/brands" class="top-menu__nav-item">Brands</NuxtLink>
-    </nav>
-    <div
-      class="top-menu__search hidden w-full flex-row rounded-3xl bg-[#F0F0F0] p-2 lg:flex xl:w-[40vw]"
-      @click="focusHomePageSearch"
-    >
-      <SearchIconGray
-        class="top-menu__search-icon mr-3 hidden pl-1 lg:block"
-        aria-label="Search"
-      />
-      <div class="top-menu__search-dropdown relative hidden w-full lg:block">
-        <input
-          type="text"
-          class="top-menu__search-input h-6 w-full bg-[#F0F0F0]"
-          placeholder="Search for products..."
-          aria-label="Search for products"
-          ref="HomePageSearch"
-          v-model="searchQuery"
-          @input="performQuickSearch"
-          @change="performQuickSearch"
-          @paste="performPasteQuickSearch"
-        />
-        <Search_results_dropdown
-          v-show="searchQuery"
-          :query="searchQuery"
-          :searchResults="searchResults"
-        ></Search_results_dropdown>
-      </div>
-    </div>
-    <div
-      class="top-menu__actions mr-4 flex w-[30%] flex-shrink-0 flex-row justify-end sm:w-auto xl:mr-6 xl:w-[10%]"
-    >
-      <SearchIconBlack
-        class="top-menu__search-icon lg:hidden"
-        :class="isSearchActive ? 'hidden' : ''"
-        aria-label="Search"
-        @click="openMobileSearch"
-      />
       <div
-        class="mobile-search__container hidden sm:max-w-[64%]"
+        class="modal_overlay"
+        @click="closeModalOverlay"
+        :class="{ active: isModalOverlayActive }"
+      ></div>
+      <div
+        class="BurgerMenu__dropdown"
         :class="{
-          active: isSearchActive,
-          closed: !isSearchActive,
-          'no-animation': !isSearchAnimationActive,
+          active: isBurgerDropdownActive,
+          closed: !isBurgerDropdownActive,
+          'no-animation': !isBurgerAnimationActive,
         }"
       >
+        <NuxtLink to="/shop" class="BurgerMenu__item">Shop</NuxtLink>
+        <NuxtLink to="/on_sale" class="BurgerMenu__item">On Sale</NuxtLink>
+        <NuxtLink to="/new_arrivals" class="BurgerMenu__item"
+          >New Arrivals</NuxtLink
+        >
+        <NuxtLink to="/brands" class="BurgerMenu__item">Brands</NuxtLink>
+      </div>
+      <NuxtLink
+        to="/"
+        class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none sm:ml-[10%] sm:block 2xl:ml-[6%] 2xl:text-3xl"
+        :class="isSearchActive ? 'hidden' : ''"
+      >
+        LOOM.HUB
+      </NuxtLink>
+      <nav
+        class="top-menu__nav SatoshiRegular hidden max-h-[10px] flex-row text-base sm:flex sm:w-full sm:justify-evenly lg:flex xl:w-[30%] 2xl:text-xl"
+        :class="{ 'sm:hidden': isSearchActive }"
+      >
+        <div
+          class="top-menu__nav-item top-menu__nav-item--shop flex flex-row items-center"
+        >
+          <NuxtLink to="/shop" class="top-menu__nav-item--shop-text"
+            ><div>Shop</div></NuxtLink
+          >
+          <PointerIcon
+            class="top-menu__nav-item top-menu__nav-item--shop-dropdown size-3 pl-1 2xl:size-[14px]"
+          ></PointerIcon>
+        </div>
+        <NuxtLink to="/on_sale" class="top-menu__nav-item">On Sale</NuxtLink>
+        <NuxtLink to="/new_arrivals" class="top-menu__nav-item"
+          >New Arrivals</NuxtLink
+        >
+        <NuxtLink to="/brands" class="top-menu__nav-item">Brands</NuxtLink>
+      </nav>
+      <div
+        class="top-menu__search hidden w-full flex-row rounded-3xl bg-[#F0F0F0] p-2 lg:flex xl:w-[40vw]"
+        @click="focusHomePageSearch"
+      >
         <SearchIconGray
-          class="top-menu__search-icon ml-2 mr-3"
+          class="top-menu__search-icon mr-3 hidden pl-1 lg:block"
           aria-label="Search"
-          @click="closeMobileSearch"
         />
-        <div class="search-dropdown">
+        <div class="top-menu__search-dropdown relative hidden w-full lg:block">
           <input
             type="text"
-            class="search-input"
+            class="top-menu__search-input h-6 w-full bg-[#F0F0F0]"
             placeholder="Search for products..."
             aria-label="Search for products"
-            ref="MobileSearchInput"
+            ref="HomePageSearch"
             v-model="searchQuery"
             @input="performQuickSearch"
             @change="performQuickSearch"
             @paste="performPasteQuickSearch"
           />
-
           <Search_results_dropdown
             v-show="searchQuery"
             :query="searchQuery"
@@ -124,102 +83,152 @@
           ></Search_results_dropdown>
         </div>
       </div>
-      <NuxtLink
-        to="/cart"
-        class="top-menu__actions-cart ml-[14px] lg:block"
-        :class="isSearchActive ? 'hidden' : ''"
-        ><CartIcon></CartIcon
-      ></NuxtLink>
-      <ProfileIcon
-        class="top-menu__actions-profile ml-[14px] cursor-pointer lg:block"
-        :class="isSearchActive ? 'hidden' : ''"
-        @click="openAuthPopup"
-      ></ProfileIcon>
-    </div>
-    <!-- Modal -->
-    <div v-show="authPopupActive" class="Auth__popup">
-      <ArrowIcon
-        class="Step-back__arrow cursor-pointer"
-        @click="AuthStepBack"
-      ></ArrowIcon>
-      <div v-if="authGreetingsActive && !nickname" class="Auth__Greetings">
-        <div
-          class="Auth__popup-btn Login-button cursor-pointer select-none"
-          @click="openAuthLogin"
-        >
-          Login
-        </div>
-        <div
-          class="Auth__popup-btn Registration-button cursor-pointer select-none"
-          @click="openAuthRegistration"
-        >
-          Sign up
-        </div>
-      </div>
-      <div v-if="nickname">
-        <div class="Auth__user-nickname">{{ nickname }}</div>
-        <img
-          :src="`${profilePicUrl}`"
-          v-show="profilePicUrl"
-          class="Auth__user-avatar"
-        />
-        <div
-          class="End-session__button Auth__popup-btn cursor-pointer select-none"
-        >
-          Log out
-        </div>
-      </div>
-      <form v-if="authLoginActive && !nickname" class="Auth__Login">
-        <input
-          class="Auth__login-input"
-          type="text"
-          placeholder="Nickname"
-          autocomplete="nickname"
-          v-model="loginName"
-        />
-        <input
-          class="Auth__password-input"
-          type="password"
-          placeholder="Password"
-          autocomplete="password"
-          v-model="loginPassword"
-        />
-        <button
-          class="Auth__popup-btn cursor-pointer select-none"
-          @click.prevent="submitLoginForm"
-        >
-          Log in
-        </button>
-      </form>
-      <form
-        class="Auth__Registration"
-        v-if="authRegistrationActive && !nickname"
+      <div
+        class="top-menu__actions mr-4 flex w-[30%] flex-shrink-0 flex-row justify-end sm:w-auto xl:mr-6 xl:w-[10%]"
       >
-        <input
-          class="Auth__login-input"
-          type="text"
-          placeholder="Nickname"
-          autocomplete="nickname"
-          v-model="regName"
+        <SearchIconBlack
+          class="top-menu__search-icon lg:hidden"
+          :class="isSearchActive ? 'hidden' : ''"
+          aria-label="Search"
+          @click="openMobileSearch"
         />
-        <input
-          class="Auth__password-input"
-          type="password"
-          placeholder="Password"
-          autocomplete="password"
-          v-model="regPassword"
-        />
-        <button
-          class="Auth__popup-btn cursor-pointer select-none"
-          @click.prevent="submitRegistrationForm"
+        <div
+          class="mobile-search__container hidden sm:max-w-[64%]"
+          :class="{
+            active: isSearchActive,
+            closed: !isSearchActive,
+            'no-animation': !isSearchAnimationActive,
+          }"
         >
-          Register
-        </button>
-      </form>
+          <SearchIconGray
+            class="top-menu__search-icon ml-2 mr-3"
+            aria-label="Search"
+            @click="closeMobileSearch"
+          />
+          <div class="search-dropdown">
+            <input
+              type="text"
+              class="search-input"
+              placeholder="Search for products..."
+              aria-label="Search for products"
+              ref="MobileSearchInput"
+              v-model="searchQuery"
+              @input="performQuickSearch"
+              @change="performQuickSearch"
+              @paste="performPasteQuickSearch"
+            />
+
+            <Search_results_dropdown
+              v-show="searchQuery"
+              :query="searchQuery"
+              :searchResults="searchResults"
+            ></Search_results_dropdown>
+          </div>
+        </div>
+        <NuxtLink
+          to="/cart"
+          class="top-menu__actions-cart ml-[14px] lg:block"
+          :class="isSearchActive ? 'hidden' : ''"
+          ><CartIcon></CartIcon
+        ></NuxtLink>
+        <ProfileIcon
+          class="top-menu__actions-profile ml-[14px] cursor-pointer lg:block"
+          :class="isSearchActive ? 'hidden' : ''"
+          @click="openAuthPopup"
+        ></ProfileIcon>
+      </div>
+      <!-- Modal -->
+      <div
+        v-show="authPopupActive"
+        class="Auth__popup fixed left-[50%] top-[50%] z-[140] w-[90vw] max-w-[500px] -translate-x-[50%] -translate-y-[50%] rounded-3xl bg-white pb-5 pl-3 pr-3 pt-12 sm:w-[80vw] sm:pb-8 sm:pl-10 sm:pr-10 sm:pt-12 lg:w-[70vw]"
+      >
+        <div
+          class="Step-back__arrow-container cursor-pointer"
+          @click="AuthStepBack"
+        >
+          <ArrowIcon class="Step-back__arrow"></ArrowIcon>
+        </div>
+        <div v-if="authGreetingsActive && !nickname" class="Auth__Greetings">
+          <div
+            class="Auth__popup-btn Login-button cursor-pointer select-none"
+            @click="openAuthLogin"
+          >
+            Login
+          </div>
+          <div
+            class="Auth__popup-btn Registration-button cursor-pointer select-none"
+            @click="openAuthRegistration"
+          >
+            Sign up
+          </div>
+        </div>
+        <div v-if="nickname">
+          <div class="Auth__user-nickname">{{ nickname }}</div>
+          <img
+            :src="`${profilePicUrl}`"
+            v-show="profilePicUrl"
+            class="Auth__user-avatar"
+          />
+          <div
+            class="End-session__button Auth__popup-btn cursor-pointer select-none"
+            @click="logMeOut"
+          >
+            Log out
+          </div>
+        </div>
+        <form v-if="authLoginActive && !nickname" class="Auth__Login">
+          <input
+            class="Auth-input Auth__login-input"
+            type="text"
+            placeholder="Nickname"
+            autocomplete="nickname"
+            v-model="loginName"
+          />
+          <input
+            class="Auth-input Auth__password-input"
+            type="password"
+            placeholder="Password"
+            autocomplete="password"
+            v-model="loginPassword"
+          />
+          <button
+            class="Auth__popup-btn mx-auto block cursor-pointer select-none"
+            @click.prevent="submitLoginForm"
+          >
+            Login
+          </button>
+        </form>
+        <form
+          class="Auth__Registration"
+          v-if="authRegistrationActive && !nickname"
+        >
+          <input
+            class="Auth-input Auth__login-input"
+            type="text"
+            placeholder="Nickname"
+            autocomplete="nickname"
+            v-model="regName"
+            @keyup="checkNicknameAvailability"
+          />
+          <input
+            class="Auth-input Auth__password-input"
+            type="password"
+            placeholder="Password"
+            autocomplete="password"
+            v-model="regPassword"
+          />
+          <button
+            class="Auth__popup-btn mx-auto cursor-pointer select-none"
+            @click.prevent="submitRegistrationForm"
+          >
+            Register
+          </button>
+        </form>
+      </div>
+    </header>
+    <div class="website mt-16">
+      <slot></slot>
     </div>
-  </header>
-  <div class="website mt-16">
-    <slot></slot>
   </div>
 </template>
 
@@ -251,6 +260,9 @@ onMounted(() => {
   checkSession();
 });
 
+// Global variables
+const { nickname, profilePicUrl } = storeToRefs(useAuthStore());
+
 // Empty search every page route
 watch(
   () => route.path,
@@ -274,6 +286,9 @@ function closeModalOverlay() {
   if (isBurgerDropdownActive.value) {
     closeBurgerDropdown();
   }
+  if (authPopupActive) {
+    authPopupActive.value = false;
+  }
   isModalOverlayActive.value = false;
 }
 
@@ -292,7 +307,7 @@ function closeBurgerDropdown() {
   isBurgerDropdownActive.value = false;
 }
 
-// Mobile Search
+// Product search
 const isSearchActive = ref(false);
 const isSearchAnimationActive = ref(false);
 const MobileSearchInput = ref(null);
@@ -327,7 +342,7 @@ async function performQuickSearch() {
     }
     searchResults.value = res.data.length < 5 ? res.data : res.data.slice(0, 5);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 
@@ -343,6 +358,7 @@ const authLoginActive = ref(false);
 const authRegistrationActive = ref(false);
 
 function openAuthPopup() {
+  isModalOverlayActive.value = true;
   authPopupActive.value = true;
 }
 function openAuthLogin() {
@@ -362,6 +378,7 @@ function AuthStepBack() {
     authGreetingsActive.value = true;
   } else {
     authPopupActive.value = false;
+    isModalOverlayActive.value = false;
   }
 }
 
@@ -375,7 +392,18 @@ async function submitRegistrationForm() {
       password: regPassword.value,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
+  }
+}
+
+async function checkNicknameAvailability() {
+  try {
+    const response = await api.post('/api/nicknameAvailability', {
+      nickname: regName.value,
+    });
+    console.log(response);
+  } catch (err) {
+    console.error(err);
   }
 }
 
@@ -390,215 +418,23 @@ async function submitLoginForm() {
       password: loginPassword.value,
     });
     const { token } = response.data;
-    Cookies.set('token', token);
-    // console.log(response);
-    console.log(`You are: ${response.data.user}. Your token is: ${token}`);
+    Cookies.set('token', token, { expires: 1 });
+
+    // console.log(`You are: ${response.data.user}. Your token is: ${token}`);
+
     await checkSession();
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
-const { nickname, profilePicUrl } = storeToRefs(useAuthStore());
+
+// Log out function
+function logMeOut() {
+  Cookies.remove('token');
+  location.reload();
+}
 </script>
 
 <style scoped>
-/* Mobile && Tablet view */
-@media screen and (max-width: 1023px) {
-  /* Search button functionality */
-  .mobile-search__container {
-    height: 44px;
-    width: 80%;
-
-    position: absolute;
-    top: 10px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #f0f0f0;
-    border-radius: 1.5rem;
-    /* overflow: hidden; */
-
-    transform-origin: calc(100% - 70px) center;
-    transform: scaleX(0);
-  }
-  .mobile-search__container .search-dropdown {
-    position: relative;
-    width: 90%;
-  }
-  .mobile-search__container .search-results {
-    position: absolute;
-    left: 0;
-    top: 33px;
-
-    width: 95%;
-    background-color: rgb(226, 199, 199);
-
-    border-radius: 1rem;
-  }
-  .mobile-search__container .search-input {
-    width: 90%;
-    margin-left: 0px;
-    margin-right: 30px;
-    background-color: #f0f0f0;
-  }
-  .mobile-search__container.active {
-    animation: mobileSearchExpand;
-    animation-duration: 0.2s;
-    animation-timing-function: ease-in;
-    animation-fill-mode: forwards;
-  }
-
-  .mobile-search__container.closed {
-    animation: mobileSearchCollapse;
-    animation-duration: 0.2s;
-    animation-timing-function: ease-in;
-    animation-fill-mode: forwards;
-  }
-  @keyframes mobileSearchExpand {
-    0% {
-      transform: scaleX(0);
-    }
-    100% {
-      transform: scaleX(1);
-    }
-  }
-  @keyframes mobileSearchCollapse {
-    0% {
-      transform: scaleX(1);
-    }
-    100% {
-      transform: scaleX(0);
-    }
-  }
-}
-
-/* Burger menu block */
-.BurgerMenu__dropdown {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 140;
-  background-color: rgba(255, 255, 255, 0.97);
-  width: 46vw;
-  max-width: 300px;
-  height: 100vh;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
-
-  transform: translateX(-100%);
-}
-@keyframes dropdownSlideIn {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-@keyframes dropdownSlideOut {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-100%);
-  }
-}
-.BurgerMenu__dropdown.active {
-  animation: dropdownSlideIn 0.3s ease-out forwards;
-}
-.BurgerMenu__dropdown.closed {
-  animation: dropdownSlideOut 0.3s ease-out forwards;
-}
-.BurgerMenu__item {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #333;
-  text-transform: uppercase;
-  text-align: center;
-  padding: 8px 0;
-  transition:
-    color 0.3s,
-    transform 0.3s;
-}
-.BurgerMenu__item:active {
-  color: #007bff;
-  transform: scale(1.05);
-}
-
-/* Animation on-load debug */
-.BurgerMenu__dropdown.no-animation,
-.mobile-search__container.no-animation {
-  animation: none;
-}
-
-.top-menu__nav-item {
-  display: flex;
-  align-items: center;
-}
-
-.search-results {
-  position: absolute;
-  left: 0;
-  top: 33px;
-
-  width: 98%;
-  padding: 10px;
-  background-color: rgb(226, 199, 199);
-
-  border-radius: 1rem;
-}
-
-.Auth__popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 140;
-
-  width: 70vw;
-  max-width: 440px;
-  border-radius: 2rem;
-
-  padding: 40px;
-  background-color: rgb(226, 199, 199);
-}
-.Step-back__arrow {
-  position: absolute;
-  left: 16px;
-  top: 20px;
-  transform: rotate(180deg);
-}
-.Auth__Greetings {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  gap: 30px;
-}
-.Auth__popup-btn {
-  background-color: black;
-  color: white;
-  font-family: 'Satoshi-Regular';
-  font-size: 26px;
-  text-align: center;
-
-  padding: 10px 30px;
-  border-radius: 1rem;
-}
-.Auth__user-nickname {
-  text-align: center;
-  font-family: 'Satoshi-Bold';
-  font-size: 40px;
-}
-.Auth__user-avatar {
-  width: 200px;
-  border-radius: 50%;
-  margin-left: auto;
-  margin-right: auto;
-}
+@import '/assets/styles/default_layout.css';
 </style>
