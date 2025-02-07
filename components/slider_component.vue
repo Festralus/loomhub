@@ -1,6 +1,10 @@
 <template>
   <div
-    class="new-arrivals__items flex w-full max-w-[100vw] flex-row justify-start overflow-x-auto xl:my-4 xl:origin-center xl:transform"
+    class="new-arrivals__items flex w-full max-w-[100vw] cursor-grab select-none flex-row justify-start overflow-x-auto xl:my-4 xl:origin-center xl:transform"
+    @mousedown="startDrag"
+    @mousemove="onDrag"
+    @mouseup="endDrag"
+    ref="scrollContainer"
   >
     <div
       v-for="product in productsList"
@@ -10,7 +14,7 @@
       <img
         :src="product.images[0]"
         alt="Product Image"
-        class="new-arrivals__items-item__pic h-[200px] w-full rounded-2xl object-cover"
+        class="new-arrivals__items-item__pic pointer-events-none h-[200px] w-full select-none rounded-2xl object-cover"
       />
       <div class="new-arrivals__items-item__title mt-2 text-lg font-bold">
         {{ product.name }}
@@ -54,29 +58,61 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { defineProps } from 'vue';
+
 import RatingEmptyStarIcon from '../assets/icons/RatingEmptyStarIcon.vue';
 import RatingHalfStarIcon from '../assets/icons/RatingHalfStarIcon.vue';
 import RatingStarIcon from '../assets/icons/RatingFullStarIcon.vue';
 
-export default {
-  props: {
-    productsList: {
-      type: Array,
-      required: true,
-    },
+defineProps({
+  productsList: {
+    type: Array,
+    required: true,
   },
-  components: {
-    RatingEmptyStarIcon,
-    RatingHalfStarIcon,
-    RatingStarIcon,
-  },
-};
+});
+
+// export default {
+//   props: {
+//     productsList: {
+//       type: Array,
+//       required: true,
+//     },
+//   },
+//   components: {
+//     RatingEmptyStarIcon,
+//     RatingHalfStarIcon,
+//     RatingStarIcon,
+//   },
+// };
+
+const scrollContainer = ref(null);
+let isDragging = false;
+let startX, scrollLeft;
+
+function startDrag(e) {
+  isDragging = true;
+  startX = e.pageX - scrollContainer.value.offsetLeft;
+  scrollLeft = scrollContainer.value.scrollLeft;
+}
+
+function onDrag(e) {
+  if (!isDragging) return;
+  e.preventDefault();
+  const x = e.pageX - scrollContainer.value.offsetLeft;
+  const walk = (x - startX) * 2;
+  scrollContainer.value.scrollLeft = scrollLeft - walk;
+}
+
+function endDrag() {
+  isDragging = false;
+}
 </script>
 
 <style scoped>
 .new-arrivals__items {
   scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
 }
 .new-arrivals__items-item {
   scroll-snap-align: start;
