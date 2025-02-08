@@ -10,6 +10,7 @@
       v-for="product in productsList"
       :key="product.GID"
       class="new-arrivals__items-item w-[272px] flex-shrink-0 pl-4"
+      @click="goToItem(product.GID)"
     >
       <img
         :src="product.images[0]"
@@ -60,6 +61,7 @@
 
 <script setup>
 import { defineProps } from 'vue';
+import { useRouter } from 'vue-router';
 
 import RatingEmptyStarIcon from '../assets/icons/RatingEmptyStarIcon.vue';
 import RatingHalfStarIcon from '../assets/icons/RatingHalfStarIcon.vue';
@@ -88,10 +90,11 @@ defineProps({
 
 const scrollContainer = ref(null);
 let isDragging = false;
-let startX, scrollLeft;
+let startX, scrollLeft, moved;
 
 function startDrag(e) {
   isDragging = true;
+  moved = false;
   startX = e.pageX - scrollContainer.value.offsetLeft;
   scrollLeft = scrollContainer.value.scrollLeft;
 }
@@ -101,11 +104,19 @@ function onDrag(e) {
   e.preventDefault();
   const x = e.pageX - scrollContainer.value.offsetLeft;
   const walk = (x - startX) * 2;
+  if (Math.abs(walk) > 4) moved = true;
   scrollContainer.value.scrollLeft = scrollLeft - walk;
 }
 
 function endDrag() {
   isDragging = false;
+}
+
+const router = useRouter();
+function goToItem(itemId) {
+  if (!moved) {
+    router.push(`/item/${itemId}`);
+  }
 }
 </script>
 

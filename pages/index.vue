@@ -18,11 +18,12 @@
           designed to bring out your individuality and cater to your sense of
           style.
         </div>
-        <button
+        <NuxtLink
+          to="/shop"
           class="home-description__interactive--button SatoshiRegular16White mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] select-none items-center justify-center rounded-3xl bg-black"
         >
           Shop Now
-        </button>
+        </NuxtLink>
         <div
           class="home-description__stats mt-4 flex flex-wrap justify-center gap-y-4"
         >
@@ -95,11 +96,12 @@
         :productsList="newArrivalsList"
         :getSliderProducts="() => getSliderProducts('getNewArrivals')"
       ></Slider_component>
-      <div
+      <NuxtLink
+        to="/new_arrivals"
         class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] select-none justify-center rounded-[62px] py-3 text-base"
       >
         View All
-      </div>
+      </NuxtLink>
       <div class="horizontal-separator mt-10"></div>
     </div>
     <div class="top-selling mt-10">
@@ -113,11 +115,12 @@
         :productsList="topSellingList"
         :getSliderProducts="() => getSliderProducts('getTopSelling')"
       ></Slider_component>
-      <div
+      <NuxtLink
+        to="/top_selling"
         class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] select-none justify-center rounded-[62px] py-3 text-base"
       >
         View All
-      </div>
+      </NuxtLink>
     </div>
     <div
       class="style-masonry mx-auto mt-10 w-[1800px] max-w-[94vw] rounded-2xl bg-[#F0F0F0] pb-2 pt-9"
