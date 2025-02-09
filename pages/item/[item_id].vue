@@ -1,11 +1,6 @@
 <template>
   {{ itemId }}
-  <!-- <div class="item__path">
-    <div class="item__where-from">Home</div>
-    <div class="item__where-from">Shop</div>
-    <div class="item__where-from">Men</div>
-    <div class="item__where-from">T-shirts</div>
-  </div>
+  <BreadcrumbsComponent :history="path"></BreadcrumbsComponent>
   <div class="item__gallery">
     <div class="item__main-picture"></div>
     <div class="item__secondary-picture"></div>
@@ -55,14 +50,15 @@
     <div class="item__details-tab">Product Destails</div>
     <div class="item__reviews-tab">Rating & Reviews</div>
     <div class="item__reviews-FAQ">FAQs</div>
-  </div> -->
+  </div>
 </template>
 <script setup>
 import { onMounted } from 'vue';
 // import { useRouter } from 'vue-router';
-import Cookies from 'js-cookie';
 import axios from 'axios';
 import { useAuthStore } from '@/stores/index';
+
+// import BreadcrumbsComponent from '@/components/breadcrumbs_component.vue';
 
 // changing baseURL for axios
 const api = axios.create({
@@ -78,11 +74,18 @@ onMounted(() => {
 // const router = useRouter();
 
 const itemId = ref(null);
-function setChosenItem() {
-  const path = window.location.pathname;
-  const segments = path.split('/');
+const path = ref('');
+async function setChosenItem() {
+  path.value = window.location.pathname;
+  const segments = path.value.split('/');
   const lastSegment = segments.pop();
   itemId.value = lastSegment;
+
+  try {
+    console.log(123);
+  } catch (err) {
+    console.error(err);
+  }
 }
 </script>
 <style scoped></style>
