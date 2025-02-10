@@ -3,6 +3,7 @@
     <div v-for="(segment, i) in segments" class="path__breadcrumb">
       <div class="breadcrumb__name">{{ segment }}</div>
       <PointerIcon
+        v-if="i !== segments.length - 1"
         :currentColor="'#666666'"
         :strokeWidth="0.2"
         class="breadcrumb__pointer"
@@ -28,7 +29,8 @@ const props = defineProps({
 const segments = ref(null);
 function setBreadcrumbs() {
   segments.value = history.state.current?.split('/');
-  console.log(segments.value);
+  const lastSegment = segments.value.pop();
+  console.log(lastSegment);
 }
 </script>
 <style scoped>

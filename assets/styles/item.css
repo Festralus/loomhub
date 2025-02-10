@@ -1,3 +1,7 @@
+.path__breadcrumbs {
+  display: flex;
+}
+
 .path__breadcrumb {
   display: flex;
 }

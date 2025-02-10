@@ -7,12 +7,12 @@
         class="home-description__interactive relative z-30 px-4 xl:max-w-[940px] 2xl:mx-auto 2xl:text-center"
       >
         <h2
-          class="home-description__interactive--main-text IntergralExtraBold xl:pt-22 max-w-[576px] text-4xl leading-tight xl:text-6xl 2xl:max-w-full"
+          class="home-description__title IntergralExtraBold max-w-[576px] text-4xl leading-tight xl:text-6xl 2xl:max-w-full"
         >
           FIND CLOTHES THAT MATCHES YOUR STYLE
         </h2>
         <div
-          class="home-description__interactive--secondary-text SatoshiRegular nowrap mt-4 text-[14px] lg:text-xl"
+          class="home-description__text SatoshiRegular mt-4 text-[14px] lg:text-xl"
         >
           Browse through our diverse range of meticulously crafted garments,
           designed to bring out your individuality and cater to your sense of
@@ -20,7 +20,7 @@
         </div>
         <NuxtLink
           to="/shop"
-          class="home-description__interactive--button SatoshiRegular16White mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] select-none items-center justify-center rounded-3xl bg-black"
+          class="home-description__button SatoshiRegular16White mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] select-none items-center justify-center rounded-3xl bg-black"
         >
           Shop Now
         </NuxtLink>
@@ -28,20 +28,25 @@
           class="home-description__stats mt-4 flex flex-wrap justify-center gap-y-4"
         >
           <div
-            class="home-description__stat-block home-description__stats-brands SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
+            class="home-description__stat home-description__stats-brands SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
-            <span class="SatoshiBold24">200+</span> <br />International Brands
+            <span class="SatoshiBold24 home-description__stat-value">200+</span>
+            <br class="home-description__stat-label" />International Brands
           </div>
           <div
-            class="home-description__stat-block home-description__stats-products SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
+            class="home-description__stat home-description__stats-products SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
-            <span class="SatoshiBold24">2,000+</span> <br />High-Quality
-            Products
+            <span class="SatoshiBold24 home-description__stat-value"
+              >2,000+</span
+            >
+            <br class="home-description__stat-label" />High-Quality Products
           </div>
           <div
-            class="home-description__stat-block home-description__stats-customers SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
+            class="home-description__stat home-description__stats-customers SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
-            <span class="SatoshiBold24">30,000+</span><br />
+            <span class="SatoshiBold24 home-description__stat-value"
+              >30,000+</span
+            ><br class="home-description__stat-label" />
             Happy Customers
           </div>
         </div>
@@ -65,7 +70,7 @@
             media="(min-width: 401px)"
           />
           <img
-            class="home-description__background--image -mb-4 bg-center object-center"
+            class="home-description__background-image -mb-4 bg-center object-center"
             src="https://i.imgur.com/sqNcZ0J.png"
             alt="Background image"
           />
@@ -75,14 +80,12 @@
     <div
       class="popular-brands flex w-full flex-row flex-wrap justify-evenly overflow-hidden bg-black pb-3 pt-5"
     >
-      <VersaceIcon
-        class="popular-brands__certain-brand mx-3 my-2"
-      ></VersaceIcon>
-      <ZaraIcon class="popular-brands__certain-brand mx-3 my-2"></ZaraIcon>
-      <GucciIcon class="popular-brands__certain-brand mx-3 my-2"></GucciIcon>
-      <PradaIcon class="popular-brands__certain-brand mx-3 my-2"></PradaIcon>
+      <VersaceIcon class="popular-brands__brand mx-3 my-2"></VersaceIcon>
+      <ZaraIcon class="popular-brands__brand mx-3 my-2"></ZaraIcon>
+      <GucciIcon class="popular-brands__brand mx-3 my-2"></GucciIcon>
+      <PradaIcon class="popular-brands__brand mx-3 my-2"></PradaIcon>
       <CalvinKleinIcon
-        class="popular-brands__certain-brand mx-3 my-2"
+        class="popular-brands__brand mx-3 my-2"
       ></CalvinKleinIcon>
     </div>
     <div class="new-arrivals">
@@ -117,7 +120,7 @@
       ></Slider_component>
       <NuxtLink
         to="/top_selling"
-        class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] select-none justify-center rounded-[62px] py-3 text-base"
+        class="top-selling__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] select-none justify-center rounded-[62px] py-3 text-base"
       >
         View All
       </NuxtLink>
@@ -184,7 +187,7 @@
           ></ArrowIcon>
         </div>
       </div>
-      <div class="reviews__cards-container" ref="reviewCardsContainer">
+      <div class="reviews__list" ref="reviewCardsContainer">
         <div class="reviews__cards">
           <div
             class="reviews__card button-border mx-4 mt-6 h-[180px] w-[340px] rounded-3xl border-gray-500 p-6"
@@ -206,7 +209,7 @@
                 />
               </span>
             </div>
-            <div class="reviews__card-name__line flex items-end">
+            <div class="reviews__card-name-line flex items-end">
               <div class="reviews__card-name SatoshiBold mt-2 text-base">
                 {{ review.user }}
               </div>
@@ -222,7 +225,7 @@
       </div>
     </div>
     <div
-      class="subscribe_container mx-auto mt-12 w-[1100px] max-w-[94vw] overflow-hidden rounded-2xl bg-black"
+      class="subscribemx-auto mt-12 w-[1100px] max-w-[94vw] overflow-hidden rounded-2xl bg-black"
     >
       <div
         class="subscribe__title IntegralBold px-6 pt-8 text-center text-[1.8rem] leading-9 text-white"
@@ -230,10 +233,12 @@
         STAY UP TO DATE ABOUT OUR BEST OFFERS
       </div>
       <div
-        class="subscribe__input_block mx-auto mt-8 flex h-[42px] w-[311px] items-center overflow-hidden rounded-3xl bg-white"
+        class="subscribe__input_wrapper mx-auto mt-8 flex h-[42px] w-[311px] items-center overflow-hidden rounded-3xl bg-white"
         @click="focusSubscriptionEmail"
       >
-        <LetterIcon class="subscribe__icon ml-4 mr-3 bg-white"></LetterIcon>
+        <LetterIcon
+          class="subscribe__input-icon ml-4 mr-3 bg-white"
+        ></LetterIcon>
         <input
           class="subscribe__input SatoshiRegular w-[80%] bg-white text-sm placeholder-gray-400"
           placeholder="Enter your email address"
@@ -241,13 +246,13 @@
         />
       </div>
       <div
-        class="subscribe__button SatoshiRegular mx-auto mb-7 mt-3 h-[42px] w-[311px] select-none rounded-3xl bg-white text-center leading-[42px] text-black"
+        class="subscribe__submit-button SatoshiRegular mx-auto mb-7 mt-3 h-[42px] w-[311px] select-none rounded-3xl bg-white text-center leading-[42px] text-black"
       >
         Subscribe to Newsletter
       </div>
     </div>
     <footer class="mb-6">
-      <div class="share__block ml-4 block lg:ml-0 lg:text-center">
+      <div class="footer__branding ml-4 block lg:ml-0 lg:text-center">
         <div class="share__title IntegralBold mt-6 text-2xl">LOOM.HUB</div>
         <div
           class="share__description SatoshiRegular mt-3 text-base text-gray-500"
@@ -255,7 +260,7 @@
           The place where fashion meets your lifestyle. Explore the collection
           today.
         </div>
-        <div class="share__icons mt-4 flex gap-3 lg:justify-center">
+        <div class="footer__socials mt-4 flex gap-3 lg:justify-center">
           <ShareTwitterX class="share__icon"></ShareTwitterX>
           <ShareFacebook class="share__icon"></ShareFacebook>
           <ShareInstagram class="share__icon"></ShareInstagram>
@@ -266,7 +271,7 @@
         <div class="links__container inline-flex">
           <div class="links__block pb-6">
             <div
-              class="footer__links-category SatoshiRegular text-base tracking-[3px]"
+              class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
               COMPANY
             </div>
@@ -277,7 +282,7 @@
           </div>
           <div class="links__block pb-6">
             <div
-              class="footer__links-category SatoshiRegular text-base tracking-[3px]"
+              class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
               HELP
             </div>
@@ -298,7 +303,7 @@
         <div class="links__container inline-flex">
           <div class="links__block pb-6">
             <div
-              class="footer__links-category SatoshiRegular text-base tracking-[3px]"
+              class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
               FAQ
             </div>
@@ -311,7 +316,7 @@
           </div>
           <div class="links__block pb-6">
             <div
-              class="footer__links-category SatoshiRegular text-base tracking-[3px]"
+              class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
               RESOURCES
             </div>
@@ -328,11 +333,11 @@
       </div>
       <div class="horizontal-separator mt-8"></div>
       <div
-        class="footer__trademark SatoshiRegular mt-4 text-center text-base text-gray-500"
+        class="footer__copyright SatoshiRegular mt-4 text-center text-base text-gray-500"
       >
         Loom.hub © 2024-2025, All rights reserved
       </div>
-      <div class="footer__payment_methods mt-4 flex justify-center gap-3">
+      <div class="footer__payment-methods mt-4 flex justify-center gap-3">
         <PaymentVisaIcon class="footer__payment_method"></PaymentVisaIcon>
         <PaymentMastercardIcon
           class="footer__payment_method"

@@ -1,5 +1,5 @@
 <template>
-  {{ itemId }}
+  TITLE - {{ itemId }}
   <BreadcrumbsComponent :history="path"></BreadcrumbsComponent>
   <div class="item__gallery">
     <div class="item__main-picture"></div>
@@ -82,7 +82,6 @@ async function setChosenItem() {
   itemId.value = lastSegment;
 
   try {
-    console.log(123);
   } catch (err) {
     console.error(err);
   }

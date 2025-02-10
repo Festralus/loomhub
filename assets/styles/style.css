@@ -1,6 +1,6 @@
 /* Mobile view */
 @media screen and (min-width: 1px) and (max-width: 481px) {
-  .home-description__stat-block:first-child::after {
+  .home-description__stat:first-child::after {
     content: '';
     position: absolute;
     right: 0;
@@ -13,7 +13,7 @@
 }
 /* Tablet view */
 @media screen and (min-width: 482px) {
-  .home-description__stat-block:not(:last-child)::after {
+  .home-description__stat:not(:last-child)::after {
     content: '';
     position: absolute;
     right: 0;
@@ -38,13 +38,13 @@
   }
 }
 
-.home-description__stat-block {
+.home-description__stat {
   height: 52px;
   width: 160px;
   position: relative;
 }
 
-.popular-brands__certain-brand {
+.popular-brands__brand {
   flex: 1 1 calc(25% - 20px);
   max-width: 27%;
   aspect-ratio: 1.5;
@@ -64,7 +64,7 @@
   aspect-ratio: 1;
 }
 
-.reviews__cards-container {
+.reviews__list {
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
@@ -73,7 +73,7 @@
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
-.reviews__cards-container::-webkit-scrollbar {
+.reviews__list::-webkit-scrollbar {
   display: none; /* Chrome, Safari, and Edge */
 }
 .reviews__cards {
@@ -89,7 +89,7 @@
 .links__block {
   min-width: 160px;
 }
-.footer__links-category {
+.footer__section-title {
   margin-bottom: 26px;
 }
 .footer__links-link {
