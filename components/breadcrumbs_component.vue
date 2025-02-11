@@ -1,6 +1,6 @@
 <template>
   <div class="path__breadcrumbs">
-    <div v-for="(segment, i) in segments" class="path__breadcrumb">
+    <div v-for="(segment, i) in segments" class="path__breadcrumb" :key="i">
       <div class="breadcrumb__name">{{ segment }}</div>
       <PointerIcon
         v-if="i !== segments.length - 1"
@@ -16,6 +16,12 @@ import { defineProps, onMounted } from 'vue';
 
 import PointerIcon from '/assets/icons/PointerIcon';
 
+import axios from 'axios';
+// Change BaseURL for axios
+const api = axios.create({
+  baseURL: 'http://localhost:3001',
+});
+
 onMounted(() => {
   setBreadcrumbs();
 });
@@ -27,10 +33,16 @@ const props = defineProps({
 });
 
 const segments = ref(null);
-function setBreadcrumbs() {
+async function setBreadcrumbs() {
   segments.value = history.state.current?.split('/');
   const lastSegment = segments.value.pop();
-  console.log(lastSegment);
+
+  try {
+    const res = await api.post('/api/productByGid', { itemGID: lastSegment });
+    console.log(res);
+  } catch (err) {
+    console.error(err);
+  }
 }
 </script>
 <style scoped>
