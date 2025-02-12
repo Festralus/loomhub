@@ -13,3 +13,48 @@
   width: 12px;
   height: 12px;
 }
+
+.item__tabs-menu {
+  display: flex;
+}
+
+.reviews__menu {
+  display: flex;
+}
+
+.reviews__card {
+  margin: 24px 16px auto 16px;
+  padding: 24px;
+  height: 180px;
+  width: 340px;
+  border-radius: 30px;
+}
+
+.item__gallery {
+  width: 357px;
+  margin: 20px auto;
+  display: grid;
+  grid-template-rows: 302px 118px;
+  grid-template-columns: 123px 123px 111px;
+}
+.item__main-picture {
+  width: 358px;
+  height: 290px;
+  border-radius: 20px;
+
+  grid-area: 1/1/2/4;
+}
+
+.item__secondary-picture {
+  width: 111px;
+  height: 106px;
+  border-radius: 20px;
+  object-fit: cover;
+  cursor: pointer;
+}
+.item__secondary-picture:not(:last-child) {
+  margin-right: 12px;
+}
+.item__secondary-picture.chosen {
+  border: 2px solid black;
+}

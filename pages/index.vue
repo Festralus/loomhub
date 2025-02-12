@@ -202,6 +202,11 @@
                   :key="'full-' + review.id"
                   class="h-5 w-5"
                 />
+                <RatingHalfStarIcon
+                  v-if="product.rating % 1 !== 0"
+                  :key="'half-' + product.id"
+                  class="h-5 w-5"
+                />
                 <RatingEmptyStarIcon
                   v-for="n in Math.floor(5 - review.rating)"
                   :key="'empty-' + review.id"
@@ -225,7 +230,7 @@
       </div>
     </div>
     <div
-      class="subscribemx-auto mt-12 w-[1100px] max-w-[94vw] overflow-hidden rounded-2xl bg-black"
+      class="subscribe mx-auto mt-12 w-[1100px] max-w-[94vw] overflow-hidden rounded-2xl bg-black"
     >
       <div
         class="subscribe__title IntegralBold px-6 pt-8 text-center text-[1.8rem] leading-9 text-white"
