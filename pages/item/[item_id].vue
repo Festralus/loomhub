@@ -2,20 +2,21 @@
   <div>
     {{ itemId }}
     <BreadcrumbsComponent :history="path"></BreadcrumbsComponent>
-    <div class="item__gallery">
-      <img
-        :src="`/assets/images/product-image-${chosenPicture}.png`"
-        class="item__main-picture"
-      />
-      <img
-        v-for="image in pictures"
-        :key="`image-${image.id}`"
-        :src="`/assets/images/product-image-${image.id}.png`"
-        class="item__secondary-picture secondary-picture-one"
-        :class="{ chosen: chosenPicture === image.id }"
-        @click="choosePicture(image.id)"
-      />
-      <!-- <img
+    <div class="top__section">
+      <div class="item__gallery">
+        <img
+          :src="`/assets/images/product-image-${chosenPicture}.png`"
+          class="item__main-picture"
+        />
+        <img
+          v-for="image in pictures"
+          :key="`image-${image.id}`"
+          :src="`/assets/images/product-image-${image.id}.png`"
+          class="item__secondary-picture"
+          :class="{ chosen: chosenPicture === image.id }"
+          @click="choosePicture(image.id)"
+        />
+        <!-- <img
         :src="'/assets/images/product-image-1.png'"
         class="item__secondary-picture secondary-picture-one"
         :class="{ chosen: chosenPicture === 1 }"
@@ -33,60 +34,72 @@
         :class="{ chosen: chosenPicture === 3 }"
         @click="choosePicture(3)"
       /> -->
-    </div>
-    <div class="item__name">One Life Graphic T-shirt</div>
-    <div class="item__rating">
-      <div class="item__rating-stars">4.5 звездочки</div>
-      <div class="item__rating-number">{{ itemRating }}/5</div>
-    </div>
-    <div class="item__price">
-      <div class="item__price-current">$260</div>
-      <div class="item__price-old">$300</div>
-      <div class="item__discount">-40%</div>
-    </div>
-    <div class="item__description">
-      This graphic t-shirt which is perfect for any occasion. Crafted from a
-      soft and breathable fabric, it offers superior comfort and style.
-    </div>
-    <div class="horizontal-separator"></div>
-    <div class="item__colors-container">
-      <div class="item__colors-title">Select Colors</div>
-      <div>
-        <div
-          v-for="color in itemColors"
-          :key="color"
-          class="item__colors__button"
-        >
-          {{ color }}
+      </div>
+      <div class="item__interactive-menu">
+        <div class="item__name">One Life Graphic T-shirt</div>
+        <div class="item__rating">
+          <div class="item__rating-stars">4.5 звездочки</div>
+          <div class="item__rating-number">{{ itemRating }}/5</div>
+        </div>
+        <div class="item__price">
+          <div class="item__price-current">$260</div>
+          <div class="item__price-old">$300</div>
+          <div class="item__discount">-40%</div>
+        </div>
+        <div class="item__description">
+          This graphic t-shirt which is perfect for any occasion. Crafted from a
+          soft and breathable fabric, it offers superior comfort and style.
+        </div>
+        <div class="horizontal-separator-100 mt-5"></div>
+        <div class="item__colors-container">
+          <div class="item__colors__title">Select Colors</div>
+          <div class="item__colors__list">
+            <div
+              v-for="color in itemColors"
+              :key="color.hex"
+              class="item__colors__button"
+            >
+              <div
+                class="item__available-colors"
+                :style="{ backgroundColor: color.hex }"
+              ></div>
+            </div>
+          </div>
+        </div>
+        <div class="horizontal-separator-100 mt-5"></div>
+        <div class="item__size-container">
+          <div class="item__size__title">Choose size</div>
+          <div class="item__size__list">
+            <div
+              v-for="size in itemSizes"
+              :key="size"
+              class="item__size__button"
+            >
+              {{ size }}
+            </div>
+          </div>
+        </div>
+        <div class="horizontal-separator-100 mt-5"></div>
+        <div class="item__cart-container">
+          <div class="item__cart-quantity">
+            <div @click="decrementCounter" class="item__cart-quantity--minus">
+              -
+            </div>
+            <div class="item__cart-quantity--number">{{ counter }}</div>
+            <div @click="incrementCounter" class="item__cart-quantity--plus">
+              +
+            </div>
+          </div>
+          <div class="item__cart-button">Add to Cart</div>
         </div>
       </div>
-    </div>
-    <div class="horizontal-separator"></div>
-    <div class="item__size-container">
-      <div class="item__size-title">Choose size</div>
-      <div>
-        <div v-for="size in itemSizes" :key="size" class="item__colors__button">
-          {{ size }}
-        </div>
-      </div>
-    </div>
-    <div class="horizontal-separator"></div>
-    <div class="item__cart-container">
-      <div class="item__cart-quantity">
-        <div @click="decrementCounter" class="item__cart-quantity--minus">
-          -
-        </div>
-        <div class="item__cart-quantity--number">{{ counter }}</div>
-        <div @click="incrementCounter" class="item__cart-quantity--plus">+</div>
-      </div>
-      <div class="item__cart-button">Add to Cart</div>
     </div>
     <div class="item__tabs-menu">
       <div class="item__details-tab">Product Destails</div>
       <div class="item__reviews-tab">Rating & Reviews</div>
       <div class="item__reviews-FAQ">FAQs</div>
     </div>
-    <div class="reviews">
+    <!-- <div class="reviews">
       <div class="reviews__menu">
         <div class="reviews__menu__title">All reviews ({{ 451 }})</div>
         <button class="reviews__menu__button">Write a Review</button>
@@ -127,7 +140,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script setup>
@@ -163,7 +176,20 @@ onBeforeMount(() => {
 const path = ref('');
 const itemId = ref(null);
 const itemRating = ref(0);
-const itemColors = ref([]);
+const itemColors = ref([
+  {
+    name: 'green',
+    hex: '#4F4631',
+  },
+  {
+    name: 'gray',
+    hex: '#314F4A',
+  },
+  {
+    name: 'blue',
+    hex: '#31344F',
+  },
+]);
 const itemSizes = ref([]);
 const itemStock = ref([]);
 async function setChosenItem() {

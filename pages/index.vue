@@ -105,7 +105,7 @@
       >
         View All
       </NuxtLink>
-      <div class="horizontal-separator mt-10"></div>
+      <div class="horizontal-separator-90 mt-10"></div>
     </div>
     <div class="top-selling mt-10">
       <div
@@ -336,7 +336,7 @@
           </div>
         </div>
       </div>
-      <div class="horizontal-separator mt-8"></div>
+      <div class="horizontal-separator-90 mt-8"></div>
       <div
         class="footer__copyright SatoshiRegular mt-4 text-center text-base text-gray-500"
       >
