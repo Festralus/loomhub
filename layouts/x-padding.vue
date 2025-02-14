@@ -226,7 +226,7 @@
         </form>
       </div>
     </header>
-    <div class="website mt-16">
+    <div class="website website-padding mt-16">
       <slot></slot>
     </div>
     <footer class="mb-6">
@@ -533,4 +533,8 @@ function logMeOut() {
 
 <style scoped>
 @import '/assets/styles/default_layout.css';
+
+.website-padding {
+  padding: 0px calc(min(7vw, 100px));
+}
 </style>

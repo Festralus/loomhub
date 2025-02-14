@@ -55,13 +55,15 @@
           <div class="item__colors__title">Select Colors</div>
           <div class="item__colors__list">
             <div
-              v-for="color in itemColors"
+              v-for="(color, i) in itemColors"
               :key="color.hex"
               class="item__colors__button"
             >
               <div
+                @click="chooseColor(i)"
                 class="item__available-colors"
                 :style="{ backgroundColor: color.hex }"
+                :class="chosenColor == i ? 'selected' : ''"
               ></div>
             </div>
           </div>
@@ -71,33 +73,44 @@
           <div class="item__size__title">Choose size</div>
           <div class="item__size__list">
             <div
-              v-for="size in itemSizes"
+              v-for="(size, i) in itemSizes"
               :key="size"
+              @click="chooseSize(i)"
               class="item__size__button"
+              :class="chosenSize == i ? 'chosen-size-highlighted' : ''"
             >
               {{ size }}
             </div>
           </div>
         </div>
         <div class="horizontal-separator-100 mt-5"></div>
-        <div class="item__cart-container">
+        <div class="item__cart">
           <div class="item__cart-quantity">
-            <div @click="decrementCounter" class="item__cart-quantity--minus">
-              -
-            </div>
+            <MinusIcon
+              @click="decrementCounter"
+              class="item__cart-quantity--minus"
+            >
+            </MinusIcon>
             <div class="item__cart-quantity--number">{{ counter }}</div>
-            <div @click="incrementCounter" class="item__cart-quantity--plus">
-              +
-            </div>
+            <PlusIcon
+              @click="incrementCounter"
+              class="item__cart-quantity--plus"
+            >
+            </PlusIcon>
           </div>
           <div class="item__cart-button">Add to Cart</div>
         </div>
       </div>
     </div>
-    <div class="item__tabs-menu">
-      <div class="item__details-tab">Product Destails</div>
-      <div class="item__reviews-tab">Rating & Reviews</div>
-      <div class="item__reviews-FAQ">FAQs</div>
+    <div class="item__tabs">
+      <div class="tabs__list">
+        <div class="item__details-tab">Product Destails</div>
+        <div class="item__reviews-tab">Rating & Reviews</div>
+        <div class="item__reviews-FAQ">FAQs</div>
+      </div>
+      <div class="tabs__details"></div>
+      <div class="tabs__reviews"></div>
+      <div class="tabs__faqs"></div>
     </div>
     <!-- <div class="reviews">
       <div class="reviews__menu">
@@ -152,7 +165,13 @@ import {
 import axios from 'axios';
 import { useAuthStore } from '@/stores/index';
 
+import MinusIcon from '@/assets/icons/MinusIcon.vue';
+import PlusIcon from '@/assets/icons/PlusIcon.vue';
 // import BreadcrumbsComponent from '@/components/breadcrumbs_component.vue';
+
+definePageMeta({
+  layout: 'x-padding',
+});
 
 // changing baseURL for axios
 const api = axios.create({
@@ -190,7 +209,7 @@ const itemColors = ref([
     hex: '#31344F',
   },
 ]);
-const itemSizes = ref([]);
+const itemSizes = ref(['Small', 'Medium', 'Large', 'X-Large']);
 const itemStock = ref([]);
 async function setChosenItem() {
   path.value = window.location.pathname;
@@ -199,6 +218,7 @@ async function setChosenItem() {
 
   try {
     const res = await api.post('/api/productByGid', { itemGID: lastSegment });
+    console.log(res.data);
     itemId.value = res.data;
     itemRating.value = res.data.rating;
     itemColors.value = res.data.colors;
@@ -209,7 +229,7 @@ async function setChosenItem() {
   }
 }
 
-// Counter unfinished
+// Product quantity counter
 const counter = ref(1);
 function incrementCounter() {
   if (counter.value >= itemStock.value[0].quantity) {
@@ -238,6 +258,18 @@ const pictures = [
 const chosenPicture = ref(1);
 function choosePicture(i) {
   chosenPicture.value = i;
+}
+
+// Choose color
+const chosenColor = ref(null);
+function chooseColor(index) {
+  chosenColor.value = index;
+}
+
+// Choose size
+const chosenSize = ref(null);
+function chooseSize(index) {
+  chosenSize.value = index;
 }
 </script>
 <style scoped>
