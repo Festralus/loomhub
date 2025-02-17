@@ -200,3 +200,21 @@
   border-radius: 16px;
   padding: 8px 20px;
 }
+
+.footer__section-title {
+  margin-bottom: 26px;
+}
+.links__container {
+  width: 360px;
+  justify-content: space-evenly;
+}
+.links__block {
+  width: 180px;
+  padding-left: 10px;
+}
+.links__link {
+  display: block;
+  margin-top: 12px;
+  font-family: 'Satoshi-Regular';
+  color: rgba(0, 0, 0, 0.6);
+}

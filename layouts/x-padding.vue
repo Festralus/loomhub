@@ -253,10 +253,10 @@
             >
               COMPANY
             </div>
-            <NuxtLink to="/" class="footer__links-link">About</NuxtLink>
-            <NuxtLink to="/" class="footer__links-link">Features</NuxtLink>
-            <NuxtLink to="/" class="footer__links-link">Works</NuxtLink>
-            <NuxtLink to="/" class="footer__links-link">Career</NuxtLink>
+            <NuxtLink to="/" class="links__link">About</NuxtLink>
+            <NuxtLink to="/" class="links__link">Features</NuxtLink>
+            <NuxtLink to="/" class="links__link">Works</NuxtLink>
+            <NuxtLink to="/" class="links__link">Career</NuxtLink>
           </div>
           <div class="links__block pb-6">
             <div
@@ -264,18 +264,10 @@
             >
               HELP
             </div>
-            <NuxtLink to="/" class="footer__links-link"
-              >Customer support</NuxtLink
-            >
-            <NuxtLink to="/" class="footer__links-link"
-              >Delivery Details</NuxtLink
-            >
-            <NuxtLink to="/" class="footer__links-link"
-              >Terms & Conditions</NuxtLink
-            >
-            <NuxtLink to="/" class="footer__links-link"
-              >Privacy Policy</NuxtLink
-            >
+            <NuxtLink to="/" class="links__link">Customer support</NuxtLink>
+            <NuxtLink to="/" class="links__link">Delivery Details</NuxtLink>
+            <NuxtLink to="/" class="links__link">Terms & Conditions</NuxtLink>
+            <NuxtLink to="/" class="links__link">Privacy Policy</NuxtLink>
           </div>
         </div>
         <div class="links__container inline-flex">
@@ -285,12 +277,10 @@
             >
               FAQ
             </div>
-            <NuxtLink to="/" class="footer__links-link">Account</NuxtLink>
-            <NuxtLink to="/" class="footer__links-link"
-              >Manage Deliveries</NuxtLink
-            >
-            <NuxtLink to="/" class="footer__links-link">Orders</NuxtLink>
-            <NuxtLink to="/" class="footer__links-link">Payment</NuxtLink>
+            <NuxtLink to="/" class="links__link">Account</NuxtLink>
+            <NuxtLink to="/" class="links__link">Manage Deliveries</NuxtLink>
+            <NuxtLink to="/" class="links__link">Orders</NuxtLink>
+            <NuxtLink to="/" class="links__link">Payment</NuxtLink>
           </div>
           <div class="links__block pb-6">
             <div
@@ -298,14 +288,10 @@
             >
               RESOURCES
             </div>
-            <NuxtLink to="/" class="footer__links-link">Free eBook</NuxtLink>
-            <NuxtLink to="/" class="footer__links-link"
-              >Developer Tutorial</NuxtLink
-            >
-            <NuxtLink to="/" class="footer__links-link">How to - Blog</NuxtLink>
-            <NuxtLink to="/" class="footer__links-link"
-              >Youtube Playlist</NuxtLink
-            >
+            <NuxtLink to="/" class="links__link">Free eBook</NuxtLink>
+            <NuxtLink to="/" class="links__link">Developer Tutorial</NuxtLink>
+            <NuxtLink to="/" class="links__link">How to - Blog</NuxtLink>
+            <NuxtLink to="/" class="links__link">Youtube Playlist</NuxtLink>
           </div>
         </div>
       </div>
@@ -346,6 +332,15 @@ import PointerIcon from '../assets/icons/PointerIcon.vue';
 import ProfileIcon from '../assets/icons/ProfileIcon.vue';
 import SearchIconBlack from '../assets/icons/SearchIconBlack.vue';
 import SearchIconGray from '../assets/icons/SearchIconGray.vue';
+import PaymentAppleIcon from '../assets/icons/PaymentAppleIcon.vue';
+import PaymentGoogleIcon from '../assets/icons/PaymentGoogleIcon.vue';
+import PaymentMastercardIcon from '../assets/icons/PaymentMastercardIcon.vue';
+import PaymentPaypalIcon from '../assets/icons/PaymentPaypalIcon.vue';
+import PaymentVisaIcon from '../assets/icons/PaymentVisaIcon.vue';
+import ShareTwitterX from '../assets/icons/ShareTwitterXIcon.vue';
+import ShareFacebook from '../assets/icons/ShareFacebookIcon.vue';
+import ShareInstagram from '../assets/icons/ShareInstagramIcon.vue';
+import ShareGithub from '../assets/icons/ShareGithubIcon.vue';
 
 // Change BaseURL for axios
 const api = axios.create({

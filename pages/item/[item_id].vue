@@ -56,7 +56,7 @@
           <div class="item__colors__list">
             <div
               v-for="(color, i) in itemColors"
-              :key="color.hex"
+              :key="color.i"
               class="item__colors__button"
             >
               <div

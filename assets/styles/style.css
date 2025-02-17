@@ -89,15 +89,6 @@
 .links__block {
   min-width: 160px;
 }
-.footer__section-title {
-  margin-bottom: 26px;
-}
-.footer__links-link {
-  display: block;
-  margin-top: 12px;
-  font-family: 'Satoshi-Regular';
-  color: rgba(0, 0, 0, 0.6);
-}
 
 .style-masonry__tile {
   aspect-ratio: 2/ 1;

@@ -203,8 +203,8 @@
                   class="h-5 w-5"
                 />
                 <RatingHalfStarIcon
-                  v-if="product.rating % 1 !== 0"
-                  :key="'half-' + product.id"
+                  v-if="review.rating % 1 !== 0"
+                  :key="'half-' + review.id"
                   class="h-5 w-5"
                 />
                 <RatingEmptyStarIcon
@@ -275,15 +275,7 @@ import PradaIcon from '../assets/icons/PradaIcon.vue';
 import VersaceIcon from '../assets/icons/VersaceIcon.vue';
 import ZaraIcon from '../assets/icons/ZaraIcon.vue';
 import CalvinKleinIcon from '../assets/icons/CalvinKleinIcon.vue';
-import PaymentAppleIcon from '../assets/icons/PaymentAppleIcon.vue';
-import PaymentGoogleIcon from '../assets/icons/PaymentGoogleIcon.vue';
-import PaymentMastercardIcon from '../assets/icons/PaymentMastercardIcon.vue';
-import PaymentPaypalIcon from '../assets/icons/PaymentPaypalIcon.vue';
-import PaymentVisaIcon from '../assets/icons/PaymentVisaIcon.vue';
-import ShareTwitterX from '../assets/icons/ShareTwitterXIcon.vue';
-import ShareFacebook from '../assets/icons/ShareFacebookIcon.vue';
-import ShareInstagram from '../assets/icons/ShareInstagramIcon.vue';
-import ShareGithub from '../assets/icons/ShareGithubIcon.vue';
+import RatingHalfStarIcon from '../assets/icons/RatingHalfStarIcon.vue';
 import StarIcon from '../assets/icons/StarIconBig.vue';
 import VerifiedTickIcon from '../assets/icons/VerifiedTickIcon.vue';
 
