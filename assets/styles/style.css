@@ -54,7 +54,8 @@
 }
 
 .home-description__background--big-star {
-  right: 0;
+  top: 10px;
+  right: 10px;
   max-width: 20vw;
   aspect-ratio: 1;
 }

@@ -26,6 +26,7 @@ function goToItem(itemId) {
 }
 </script>
 <style scoped>
+@import '/assets/styles/default_layout.css';
 .result:not(:first-child) {
   margin-top: 8px;
 }

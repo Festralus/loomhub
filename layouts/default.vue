@@ -15,6 +15,18 @@
         :class="{ active: isModalOverlayActive }"
       ></div>
       <div
+        class="native-overlay native-search-overlay"
+        :class="{
+          active: searchQuery && !outsideClickOccurance,
+        }"
+      ></div>
+      <div
+        class="native-overlay native-shop-hover-overlay hidden sm:block"
+        :class="{
+          active: isShopHovered,
+        }"
+      ></div>
+      <div
         class="BurgerMenu__dropdown"
         :class="{
           active: isBurgerDropdownActive,
@@ -34,17 +46,18 @@
       <NuxtLink
         to="/"
         class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none sm:ml-[10%] sm:block 2xl:ml-[6%] 2xl:text-3xl"
-        :class="isSearchActive ? 'hidden' : ''"
+        :class="isMobileSearchActive ? 'hidden' : ''"
       >
         LOOM.HUB
       </NuxtLink>
       <nav
         class="top-menu__nav SatoshiRegular hidden max-h-[10px] flex-row text-base sm:flex sm:w-full sm:justify-evenly lg:flex xl:w-[30%] 2xl:text-xl"
-        :class="{ 'sm:hidden': isSearchActive }"
+        :class="{ 'sm:hidden': isMobileSearchActive }"
       >
         <div
           @mouseover="isShopHovered = true"
           @mouseleave="isShopHovered = false"
+          :class="{ 'z-[140]': isShopHovered }"
           class="top-menu__nav-item top-menu__nav-item__shop relative flex cursor-pointer flex-row items-center"
         >
           <NuxtLink to="/shop" class="top-menu__nav-item__shop-text"
@@ -54,11 +67,15 @@
             class="top-menu__nav-item top-menu__nav-item__shop-arrow mt-[2px] h-6 pl-[3px] 2xl:w-[14px]"
           ></PointerIcon>
           <div v-show="isShopHovered" class="top-menu__nav-item__shop-dropdown">
-            <div class="shop-dropdown__item"></div>
-            <div class="shop-dropdown__item">Casual</div>
-            <div class="shop-dropdown__item">Formal</div>
-            <div class="shop-dropdown__item">Party</div>
-            <div class="shop-dropdown__item">Sport</div>
+            <NuxtLink
+              v-for="(style, index) in dress_styles_list"
+              @click=""
+              :key="index"
+              :to="style.path"
+              class="shop-dropdown__item"
+            >
+              {{ style.name }}
+            </NuxtLink>
           </div>
         </div>
         <NuxtLink to="/on_sale" class="top-menu__nav-item">On Sale</NuxtLink>
@@ -69,7 +86,9 @@
       </nav>
       <div
         class="top-menu__search hidden w-full flex-row rounded-3xl bg-[#F0F0F0] p-2 lg:flex xl:w-[40vw]"
+        :class="{ 'z-[140]': searchQuery }"
         @click="focusHomePageSearch"
+        ref="searchContainer"
       >
         <SearchIconGray
           class="top-menu__search-icon mr-3 hidden pl-1 lg:block"
@@ -78,7 +97,7 @@
         <div class="top-menu__search-dropdown relative hidden w-full lg:block">
           <input
             type="text"
-            class="top-menu__search-input h-6 w-full bg-[#F0F0F0]"
+            class="top-menu__search-input h-6 w-[99%] bg-[#F0F0F0]"
             placeholder="Search for products..."
             aria-label="Search for products"
             ref="HomePageSearch"
@@ -86,9 +105,10 @@
             @input="performQuickSearch"
             @change="performQuickSearch"
             @paste="performPasteQuickSearch"
+            @focus="openDropdown"
           />
           <Search_results_dropdown
-            v-show="searchQuery"
+            v-show="searchQuery && !outsideClickOccurance"
             :query="searchQuery"
             :searchResults="searchResults"
           ></Search_results_dropdown>
@@ -96,20 +116,22 @@
       </div>
       <div
         class="top-menu__actions mr-4 flex w-[30%] flex-shrink-0 flex-row justify-end sm:w-auto xl:mr-6 xl:w-[10%]"
+        :class="{ 'z-[140]': searchQuery }"
       >
         <SearchIconBlack
           class="top-menu__search-icon lg:hidden"
-          :class="isSearchActive ? 'hidden' : ''"
+          :class="isMobileSearchActive ? 'hidden' : ''"
           aria-label="Search"
           @click="openMobileSearch"
         />
         <div
           class="mobile-search__container hidden sm:max-w-[64%]"
           :class="{
-            active: isSearchActive,
-            closed: !isSearchActive,
+            active: isMobileSearchActive,
+            closed: !isMobileSearchActive,
             'no-animation': !isSearchAnimationActive,
           }"
+          ref="mobileSearchContainer"
         >
           <SearchIconGray
             class="top-menu__search-icon ml-2 mr-3"
@@ -127,10 +149,12 @@
               @input="performQuickSearch"
               @change="performQuickSearch"
               @paste="performPasteQuickSearch"
+              @click="openDropdown"
+              @focus="openDropdown"
             />
 
             <Search_results_dropdown
-              v-show="searchQuery"
+              v-show="searchQuery && !outsideClickOccurance"
               :query="searchQuery"
               :searchResults="searchResults"
             ></Search_results_dropdown>
@@ -139,12 +163,12 @@
         <NuxtLink
           to="/cart"
           class="top-menu__actions-cart ml-[14px] lg:block"
-          :class="isSearchActive ? 'hidden' : ''"
+          :class="isMobileSearchActive ? 'hidden' : ''"
           ><CartIcon></CartIcon
         ></NuxtLink>
         <ProfileIcon
           class="top-menu__actions-profile ml-[14px] cursor-pointer lg:block"
-          :class="isSearchActive ? 'hidden' : ''"
+          :class="isMobileSearchActive ? 'hidden' : ''"
           @click="openAuthPopup"
         ></ProfileIcon>
       </div>
@@ -370,6 +394,19 @@ const api = axios.create({
 
 onMounted(() => {
   checkSession();
+
+  watch(searchQuery, (newValue) => {
+    if (newValue) {
+      document.addEventListener('click', closeDropdown);
+    } else {
+      document.removeEventListener('click', closeDropdown);
+      outsideClickOccurance.value = false;
+    }
+  });
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', closeDropdown);
 });
 
 // Padding for certain pages
@@ -385,6 +422,32 @@ watch(
     searchQuery.value = '';
   }
 );
+
+// Watch for outside clicks to close native overlay
+const outsideClickOccurance = ref(false);
+const searchContainer = ref();
+const mobileSearchContainer = ref();
+
+function closeDropdown(event) {
+  if (
+    window.innerWidth < 1024 &&
+    mobileSearchContainer.value &&
+    !mobileSearchContainer.value.contains(event.target)
+  ) {
+    outsideClickOccurance.value = true;
+  }
+  if (
+    window.innerWidth > 1023 &&
+    searchContainer.value &&
+    !searchContainer.value.contains(event.target)
+  ) {
+    outsideClickOccurance.value = true;
+  }
+}
+
+function openDropdown() {
+  outsideClickOccurance.value = false;
+}
 
 // Focus shop upon hovering over
 const isShopHovered = ref(false);
@@ -425,19 +488,20 @@ function closeBurgerDropdown() {
   isBurgerDropdownActive.value = false;
 }
 
-// Product search
-const isSearchActive = ref(false);
+// Product search mobile view control
+const isMobileSearchActive = ref(false);
 const isSearchAnimationActive = ref(false);
 const MobileSearchInput = ref(null);
 function openMobileSearch() {
   isSearchAnimationActive.value = true;
-  isSearchActive.value = true;
+  isMobileSearchActive.value = true;
   MobileSearchInput.value?.focus();
 }
 function closeMobileSearch() {
-  isSearchActive.value = false;
+  isMobileSearchActive.value = false;
 }
 
+// Search process
 const searchQuery = ref('');
 let searchResults = ref([]);
 
@@ -446,13 +510,17 @@ watch(searchQuery, async () => {
 });
 
 async function performQuickSearch() {
+  outsideClickOccurance.value = false;
   const query = searchQuery.value.trim();
   if (!query) {
     searchResults.value = [];
+    closeMobileSearch();
     return;
   }
 
   try {
+    openMobileSearch();
+    outsideClickOccurance.value = false;
     const res = await api.get(`api/products/search?query=${query}`);
     if (!res.data.length) {
       searchResults.value = [{ name: 'No match' }];
@@ -545,14 +613,6 @@ async function submitLoginForm() {
     console.error(err);
   }
 }
-
-// An array for Browse by dress style
-// const dress_styles_list = [
-//   { name: 'Casual', backgroundPicture: '/assets/images/browse-casual' },
-//   { name: 'Formal', backgroundPicture: '/assets/images/browse-formal' },
-//   { name: 'Party', backgroundPicture: '/assets/images/browse-party' },
-//   { name: 'Sport', backgroundPicture: '/assets/images/browse-gym' },
-// ];
 
 // Log out function
 function logMeOut() {

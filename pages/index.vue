@@ -52,7 +52,7 @@
         </div>
       </div>
       <div
-        class="home-description__background pointer-events-none relative z-0 mx-auto max-w-[700px] select-none overflow-clip"
+        class="home-description__background pointer-events-none relative z-0 mx-auto max-w-[700px] select-none overflow-clip lg:mt-10 xl:mt-0"
       >
         <StarIcon
           class="home-description__background--big-star absolute"
