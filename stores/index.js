@@ -2,9 +2,15 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const api = axios.create({
-  baseURL: 'http://localhost:3001',
-});
+// const api = axios.create({
+//   baseURL: 'http://localhost:3001',
+// });
+
+// const config = useRuntimeConfig();
+// const api = axios.create({
+//   baseURL: config.public.apiBase,
+// });
+// const api = useApi();
 
 export const useAuthStore = defineStore({
   id: 'auth',

@@ -279,10 +279,16 @@ import RatingHalfStarIcon from '../assets/icons/RatingHalfStarIcon.vue';
 import StarIcon from '../assets/icons/StarIconBig.vue';
 import VerifiedTickIcon from '../assets/icons/VerifiedTickIcon.vue';
 
-// Change BaseURL for axios
+// Change BaseURL
+// const api = axios.create({
+//   baseURL: 'http://localhost:3001',
+// });
+
+const config = useRuntimeConfig();
 const api = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: config.public.apiBase,
 });
+// const api = useApi();
 
 onMounted(() => {
   getSliderProducts('getNewArrivals');
@@ -371,7 +377,7 @@ const dress_styles_list = [
   { name: 'Casual', backgroundPicture: '/assets/images/browse-casual' },
   { name: 'Formal', backgroundPicture: '/assets/images/browse-formal' },
   { name: 'Party', backgroundPicture: '/assets/images/browse-party' },
-  { name: 'Gym', backgroundPicture: '/assets/images/browse-gym' },
+  { name: 'Sport', backgroundPicture: '/assets/images/browse-gym' },
 ];
 
 // Method to Get 5 website reviews

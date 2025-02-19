@@ -17,10 +17,16 @@ import { defineProps, onMounted } from 'vue';
 import PointerIcon from '/assets/icons/PointerIcon';
 
 import axios from 'axios';
-// Change BaseURL for axios
+// Change BaseURL
+// const api = axios.create({
+//   baseURL: 'http://localhost:3001',
+// });
+
+const config = useRuntimeConfig();
 const api = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: config.public.apiBase,
 });
+// const api = useApi();
 
 onMounted(() => {
   setBreadcrumbs();

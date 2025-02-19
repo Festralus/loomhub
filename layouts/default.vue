@@ -23,7 +23,9 @@
         }"
       >
         <NuxtLink to="/shop" class="BurgerMenu__item">Shop</NuxtLink>
-        <NuxtLink to="/on_sale" class="BurgerMenu__item">On Sale</NuxtLink>
+        <NuxtLink to="/top_selling" class="BurgerMenu__item"
+          >Top Selling</NuxtLink
+        >
         <NuxtLink to="/new_arrivals" class="BurgerMenu__item"
           >New Arrivals</NuxtLink
         >
@@ -41,14 +43,22 @@
         :class="{ 'sm:hidden': isSearchActive }"
       >
         <div
-          class="top-menu__nav-item top-menu__nav-item--shop flex flex-row items-center"
+          @mouseover="isShopHovered = true"
+          @mouseleave="isShopHovered = false"
+          class="top-menu__nav-item top-menu__nav-item__shop relative flex cursor-pointer flex-row items-center"
         >
-          <NuxtLink to="/shop" class="top-menu__nav-item--shop-text"
+          <NuxtLink to="/shop" class="top-menu__nav-item__shop-text"
             ><div>Shop</div></NuxtLink
           >
           <PointerIcon
-            class="top-menu__nav-item top-menu__nav-item--shop-dropdown size-3 pl-1 2xl:size-[14px]"
+            class="top-menu__nav-item top-menu__nav-item__shop-arrow mt-[2px] h-6 pl-[3px] 2xl:w-[14px]"
           ></PointerIcon>
+          <div v-show="isShopHovered" class="top-menu__nav-item__shop-dropdown">
+            <div class="shop-dropdown__item">Casual</div>
+            <div class="shop-dropdown__item">Formal</div>
+            <div class="shop-dropdown__item">Party</div>
+            <div class="shop-dropdown__item">Sport</div>
+          </div>
         </div>
         <NuxtLink to="/on_sale" class="top-menu__nav-item">On Sale</NuxtLink>
         <NuxtLink to="/new_arrivals" class="top-menu__nav-item"
@@ -226,7 +236,10 @@
         </form>
       </div>
     </header>
-    <div class="website mt-16">
+    <div
+      class="website mt-16"
+      :class="{ 'website-padding': useWebsitePadding }"
+    >
       <slot></slot>
     </div>
     <footer class="mb-6">
@@ -342,14 +355,23 @@ import ShareFacebook from '../assets/icons/ShareFacebookIcon.vue';
 import ShareInstagram from '../assets/icons/ShareInstagramIcon.vue';
 import ShareGithub from '../assets/icons/ShareGithubIcon.vue';
 
-// Change BaseURL for axios
+// Change BaseURL
+// const api = axios.create({
+//   baseURL: 'http://localhost:3001',
+// });
+
+const config = useRuntimeConfig();
 const api = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: config.public.apiBase,
 });
+// const api = useApi();
 
 onMounted(() => {
   checkSession();
 });
+
+// Padding for certain pages
+const useWebsitePadding = computed(() => route.meta.useWebsitePadding ?? false);
 
 // Global variables
 const { nickname, profilePicUrl } = storeToRefs(useAuthStore());
@@ -361,6 +383,9 @@ watch(
     searchQuery.value = '';
   }
 );
+
+// Focus shop upon hovering over
+const isShopHovered = ref(false);
 
 // Focus search upon opening it
 const HomePageSearch = ref();

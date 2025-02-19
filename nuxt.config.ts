@@ -1,6 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2024-11-01',
   devtools: { enabled: false },
   css: [
     '/assets/styles/input.css',
@@ -8,4 +7,9 @@ export default defineNuxtConfig({
     '/assets/styles/styleGlobal.css',
     '/assets/styles/styleFonts.css',
   ],
+  runtimeConfig: {
+    public: {
+      apiBase: process.env.API_BASE || 'https://loomhub-backend.vercel.app',
+    },
+  },
 });

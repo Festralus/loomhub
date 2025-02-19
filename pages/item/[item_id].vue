@@ -170,18 +170,29 @@ import PlusIcon from '@/assets/icons/PlusIcon.vue';
 // import BreadcrumbsComponent from '@/components/breadcrumbs_component.vue';
 
 definePageMeta({
-  layout: 'x-padding',
+  // layout: 'x-padding',
+  useWebsitePadding: true,
 });
 
-// changing baseURL for axios
+// Change BaseURL
+// const api = axios.create({
+//   baseURL: 'http://localhost:3001',
+// });
+
+const config = useRuntimeConfig();
 const api = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: config.public.apiBase,
 });
+
 const checkSession = useAuthStore().checkSession;
 
 onBeforeMount(() => {
   checkSession();
   setChosenItem();
+});
+
+onMounted(() => {
+  console.log(config.public.apiBase);
 });
 
 // onMounted(() => {

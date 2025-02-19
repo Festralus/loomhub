@@ -27,3 +27,6 @@ logs
 # Secret files
 assets/styles/123.css
 assets/icons/1 sample.vue
+
+# Useless files
+layouts/x-padding.vue

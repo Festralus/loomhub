@@ -791,6 +791,10 @@ video {
   margin-top: 100px;
 }
 
+.mt-\[2px\] {
+  margin-top: 2px;
+}
+
 .mt-auto {
   margin-top: auto;
 }
@@ -1164,6 +1168,10 @@ video {
   padding-left: 1rem;
 }
 
+.pl-\[3px\] {
+  padding-left: 3px;
+}
+
 .pr-3 {
   padding-right: 0.75rem;
 }
@@ -1488,6 +1496,10 @@ video {
   .\32xl\:size-\[14px\] {
     width: 14px;
     height: 14px;
+  }
+
+  .\32xl\:w-\[14px\] {
+    width: 14px;
   }
 
   .\32xl\:max-w-full {

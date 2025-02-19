@@ -74,20 +74,6 @@ defineProps({
   },
 });
 
-// export default {
-//   props: {
-//     productsList: {
-//       type: Array,
-//       required: true,
-//     },
-//   },
-//   components: {
-//     RatingEmptyStarIcon,
-//     RatingHalfStarIcon,
-//     RatingStarIcon,
-//   },
-// };
-
 const scrollContainer = ref(null);
 let isDragging = false;
 let startX, scrollLeft, moved;
@@ -132,5 +118,21 @@ function goToItem(itemId) {
 }
 .new-arrivals__items-item:last-child {
   padding-right: 16px;
+}
+
+/* Scrollbar */
+.new-arrivals__items::-webkit-scrollbar {
+  height: 8px;
+  cursor: pointer;
+}
+.new-arrivals__items::-webkit-scrollbar-track {
+  background: transparent;
+}
+.new-arrivals__items::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+.new-arrivals__items::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
 }
 </style>

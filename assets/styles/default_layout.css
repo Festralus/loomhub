@@ -1,3 +1,8 @@
+/* Props */
+.website-padding {
+  padding: 0px calc(min(7vw, 100px));
+}
+
 /* Mobile && Tablet view */
 @media screen and (max-width: 1023px) {
   /* Search button functionality */
@@ -135,6 +140,16 @@
 .top-menu__nav-item {
   display: flex;
   align-items: center;
+}
+
+.top-menu__nav-item__shop-dropdown {
+  position: absolute;
+  left: -10px;
+  top: -10px;
+  width: 200px;
+  height: 200px;
+  background-color: gray;
+  border-radius: 20px;
 }
 
 .search-results {
