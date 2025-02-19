@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   ],
   runtimeConfig: {
     public: {
-      apiBase: process.env.API_BASE || 'https://loomhub-backend.vercel.app',
+      apiBase: process.env.API_BASE,
     },
   },
 });
