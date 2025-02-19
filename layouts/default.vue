@@ -54,6 +54,7 @@
             class="top-menu__nav-item top-menu__nav-item__shop-arrow mt-[2px] h-6 pl-[3px] 2xl:w-[14px]"
           ></PointerIcon>
           <div v-show="isShopHovered" class="top-menu__nav-item__shop-dropdown">
+            <div class="shop-dropdown__item"></div>
             <div class="shop-dropdown__item">Casual</div>
             <div class="shop-dropdown__item">Formal</div>
             <div class="shop-dropdown__item">Party</div>
@@ -336,6 +337,7 @@ const route = useRoute();
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
+import dress_styles_list from '~/data/dress_styles.js';
 import Search_results_dropdown from '~/components/search_results_dropdown.vue';
 
 import ArrowIcon from '../assets/icons/ArrowIcon.vue';
@@ -543,6 +545,14 @@ async function submitLoginForm() {
     console.error(err);
   }
 }
+
+// An array for Browse by dress style
+// const dress_styles_list = [
+//   { name: 'Casual', backgroundPicture: '/assets/images/browse-casual' },
+//   { name: 'Formal', backgroundPicture: '/assets/images/browse-formal' },
+//   { name: 'Party', backgroundPicture: '/assets/images/browse-party' },
+//   { name: 'Sport', backgroundPicture: '/assets/images/browse-gym' },
+// ];
 
 // Log out function
 function logMeOut() {

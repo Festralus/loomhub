@@ -265,7 +265,9 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 import axios from 'axios';
 
+import dress_styles_list from '~/data/dress_styles.js';
 import Slider_component from '~/components/slider_component.vue';
+
 import ArrowIcon from '../assets/icons/ArrowIcon.vue';
 import LetterIcon from '../assets/icons/LetterIcon.vue';
 import RatingEmptyStarIcon from '../assets/icons/RatingEmptyStarIcon.vue';
@@ -373,12 +375,12 @@ async function updateOrderStatus(orderId, newStatus) {
 }
 
 // An array for Browse by dress style
-const dress_styles_list = [
-  { name: 'Casual', backgroundPicture: '/assets/images/browse-casual' },
-  { name: 'Formal', backgroundPicture: '/assets/images/browse-formal' },
-  { name: 'Party', backgroundPicture: '/assets/images/browse-party' },
-  { name: 'Sport', backgroundPicture: '/assets/images/browse-gym' },
-];
+// const dress_styles_list = [
+//   { name: 'Casual', backgroundPicture: '/assets/images/browse-casual' },
+//   { name: 'Formal', backgroundPicture: '/assets/images/browse-formal' },
+//   { name: 'Party', backgroundPicture: '/assets/images/browse-party' },
+//   { name: 'Sport', backgroundPicture: '/assets/images/browse-gym' },
+// ];
 
 // Method to Get 5 website reviews
 const websiteReviewsArray = ref([]);

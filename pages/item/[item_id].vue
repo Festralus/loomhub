@@ -16,24 +16,6 @@
           :class="{ chosen: chosenPicture === image.id }"
           @click="choosePicture(image.id)"
         />
-        <!-- <img
-        :src="'/assets/images/product-image-1.png'"
-        class="item__secondary-picture secondary-picture-one"
-        :class="{ chosen: chosenPicture === 1 }"
-        @click="choosePicture(1)"
-      />
-      <img
-        :src="'/assets/images/product-image-2.png'"
-        class="item__secondary-picture secondary-picture-two"
-        :class="{ chosen: chosenPicture === 2 }"
-        @click="choosePicture(2)"
-      />
-      <img
-        :src="'/assets/images/product-image-3.png'"
-        class="item__secondary-picture secondary-picture-three"
-        :class="{ chosen: chosenPicture === 3 }"
-        @click="choosePicture(3)"
-      /> -->
       </div>
       <div class="item__interactive-menu">
         <div class="item__name">One Life Graphic T-shirt</div>
