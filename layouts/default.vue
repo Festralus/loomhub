@@ -514,12 +514,12 @@ async function performQuickSearch() {
   const query = searchQuery.value.trim();
   if (!query) {
     searchResults.value = [];
-    closeMobileSearch();
+    // closeMobileSearch();
     return;
   }
 
   try {
-    openMobileSearch();
+    // openMobileSearch();
     outsideClickOccurance.value = false;
     const res = await api.get(`api/products/search?query=${query}`);
     if (!res.data.length) {
