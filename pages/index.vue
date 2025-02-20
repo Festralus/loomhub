@@ -136,9 +136,10 @@
       <div
         class="style-masonry__tileset relative flex flex-col flex-wrap items-center justify-center px-2 xl:flex-row xl:gap-5"
       >
-        <div
+        <nuxtLink
           v-for="(style, index) in dress_styles_list"
           :key="style.name"
+          :to="style.path"
           class="style-masonry__tile relative mb-4 w-[90%] rounded-3xl bg-white"
           :class="[
             index === 1 || index === 2
@@ -166,7 +167,7 @@
               alt="Background image"
             />
           </picture>
-        </div>
+        </nuxtLink>
       </div>
     </div>
     <div class="reviews mt-10">

@@ -54,22 +54,19 @@
         class="top-menu__nav SatoshiRegular hidden max-h-[10px] flex-row text-base sm:flex sm:w-full sm:justify-evenly lg:flex xl:w-[30%] 2xl:text-xl"
         :class="{ 'sm:hidden': isMobileSearchActive }"
       >
-        <div
+        <!-- <div
           @mouseover="isShopHovered = true"
           @mouseleave="isShopHovered = false"
           :class="{ 'z-[140]': isShopHovered }"
-          class="top-menu__nav-item top-menu__nav-item__shop relative flex cursor-pointer flex-row items-center"
+          class="top-menu__nav-item top-menu__nav-item__shop relative hidden cursor-pointer flex-row items-center 2xl:flex"
         >
-          <NuxtLink to="/shop" class="top-menu__nav-item__shop-text"
-            ><div>Shop</div></NuxtLink
-          >
+          <div class="top-menu__nav-item__shop-text">Shop</div>
           <PointerIcon
             class="top-menu__nav-item top-menu__nav-item__shop-arrow mt-[2px] h-6 pl-[3px] 2xl:w-[14px]"
           ></PointerIcon>
           <div v-show="isShopHovered" class="top-menu__nav-item__shop-dropdown">
             <NuxtLink
               v-for="(style, index) in dress_styles_list"
-              @click=""
               :key="index"
               :to="style.path"
               class="shop-dropdown__item"
@@ -77,12 +74,63 @@
               {{ style.name }}
             </NuxtLink>
           </div>
+        </div> -->
+        <div
+          @mouseenter="isShopHovered = true"
+          @mouseleave="isShopHovered = false"
+          :class="{ 'z-[140]': isShopHovered }"
+          class="top-menu__nav-item top-menu__nav-item__shop relative hidden cursor-pointer flex-row items-center 2xl:flex"
+        >
+          <div class="top-menu__nav-item__shop-text">Shop</div>
+          <PointerIcon
+            class="top-menu__nav-item__shop-arrow mt-[2px] h-6 pl-[3px] 2xl:w-[14px]"
+          />
+          <!-- Dropdown menu -->
+          <div
+            v-show="isShopHovered"
+            class="top-menu__nav-item__shop-dropdown relative flex flex-col gap-2 p-2"
+          >
+            <NuxtLink
+              v-for="(style, index) in dress_styles_list"
+              :key="index"
+              :to="style.path"
+              class="shop-dropdown__item"
+              :class="[
+                hoveredIndex == index
+                  ? 'shop-dropdown__item__border text-black'
+                  : 'text-white',
+              ]"
+              :style="{
+                backgroundImage: `url(${style.backgroundPicture}.png)`,
+              }"
+              @mouseover="hoveredIndex = index"
+              @mouseleave="hoveredIndex = null"
+            >
+              <span class="relative z-10 text-lg font-semibold">{{
+                style.name
+              }}</span>
+
+              <div
+                v-if="hoveredIndex !== index"
+                class="shop-dropdown__item__shadow"
+              ></div>
+            </NuxtLink>
+          </div>
         </div>
-        <NuxtLink to="/on_sale" class="top-menu__nav-item">On Sale</NuxtLink>
-        <NuxtLink to="/new_arrivals" class="top-menu__nav-item"
+
+        <NuxtLink
+          to="/shop"
+          class="top-menu__nav-item top-menu__nav-item__shop relative flex cursor-pointer flex-row items-center 2xl:hidden"
+        >
+          <div class="top-menu__nav-item__shop-text">Shop</div>
+        </NuxtLink>
+        <NuxtLink to="/on_sale" class="top-menu__nav-item flex"
+          >On Sale</NuxtLink
+        >
+        <NuxtLink to="/new_arrivals" class="top-menu__nav-item flex"
           >New Arrivals</NuxtLink
         >
-        <NuxtLink to="/brands" class="top-menu__nav-item">Brands</NuxtLink>
+        <NuxtLink to="/brands" class="top-menu__nav-item flex">Brands</NuxtLink>
       </nav>
       <div
         class="top-menu__search hidden w-full flex-row rounded-3xl bg-[#F0F0F0] p-2 lg:flex xl:w-[40vw]"
@@ -136,7 +184,7 @@
           <SearchIconGray
             class="top-menu__search-icon ml-2 mr-3"
             aria-label="Search"
-            @click="closeMobileSearch"
+            @click="(closeMobileSearch(), (outsideClickOccurance = true))"
           />
           <div class="search-dropdown">
             <input
@@ -442,6 +490,7 @@ function closeDropdown(event) {
     !searchContainer.value.contains(event.target)
   ) {
     outsideClickOccurance.value = true;
+    closeMobileSearch();
   }
 }
 
@@ -451,6 +500,12 @@ function openDropdown() {
 
 // Focus shop upon hovering over
 const isShopHovered = ref(false);
+
+// EXP EXP EXP
+
+const hoveredIndex = ref(null);
+
+// EXP EXP EXP
 
 // Focus search upon opening it
 const HomePageSearch = ref();
@@ -519,11 +574,13 @@ async function performQuickSearch() {
   }
 
   try {
-    // openMobileSearch();
+    openMobileSearch();
     outsideClickOccurance.value = false;
     const res = await api.get(`api/products/search?query=${query}`);
     if (!res.data.length) {
-      searchResults.value = [{ name: 'No match' }];
+      searchResults.value = [
+        { name: 'No match', description: null, images: null },
+      ];
       return;
     }
     searchResults.value = res.data.length < 5 ? res.data : res.data.slice(0, 5);
