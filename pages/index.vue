@@ -80,13 +80,21 @@
     <div
       class="popular-brands flex w-full flex-row flex-wrap justify-evenly overflow-hidden bg-black pb-3 pt-5"
     >
-      <VersaceIcon class="popular-brands__brand mx-3 my-2"></VersaceIcon>
-      <ZaraIcon class="popular-brands__brand mx-3 my-2"></ZaraIcon>
-      <GucciIcon class="popular-brands__brand mx-3 my-2"></GucciIcon>
-      <PradaIcon class="popular-brands__brand mx-3 my-2"></PradaIcon>
-      <CalvinKleinIcon
-        class="popular-brands__brand mx-3 my-2"
-      ></CalvinKleinIcon>
+      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
+        <VersaceIcon class="h-full w-full" />
+      </NuxtLink>
+      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
+        <ZaraIcon class="h-full w-full" />
+      </NuxtLink>
+      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
+        <GucciIcon class="h-full w-full" />
+      </NuxtLink>
+      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
+        <PradaIcon class="h-full w-full" />
+      </NuxtLink>
+      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
+        <CalvinKleinIcon class="h-full w-full" />
+      </NuxtLink>
     </div>
     <div class="new-arrivals">
       <div

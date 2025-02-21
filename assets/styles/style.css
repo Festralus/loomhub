@@ -51,6 +51,7 @@
   object-fit: contain;
   height: auto;
   max-height: calc(8vw);
+  cursor: pointer;
 }
 
 .home-description__background--big-star {
