@@ -4,17 +4,14 @@
     <BreadcrumbsComponent :history="path"></BreadcrumbsComponent>
     <div class="top__section">
       <div class="item__gallery">
+        <img :src="`${itemImages[chosenPicture]}`" class="item__main-picture" />
         <img
-          :src="`/assets/images/product-image-${chosenPicture}.png`"
-          class="item__main-picture"
-        />
-        <img
-          v-for="image in pictures"
-          :key="`image-${image.id}`"
-          :src="`/assets/images/product-image-${image.id}.png`"
+          v-for="(image, i) in itemImages"
+          :key="`image-${i}`"
+          :src="`${image}`"
           class="item__secondary-picture"
-          :class="{ chosen: chosenPicture === image.id }"
-          @click="choosePicture(image.id)"
+          :class="{ chosen: chosenPicture === i }"
+          @click="choosePicture(i)"
         />
       </div>
       <div class="item__interactive-menu">
@@ -173,10 +170,6 @@ onBeforeMount(() => {
   setChosenItem();
 });
 
-onMounted(() => {
-  console.log(config.public.apiBase);
-});
-
 // onMounted(() => {
 //   checkSession();
 //   setChosenItem();
@@ -202,8 +195,9 @@ const itemColors = ref([
     hex: '#31344F',
   },
 ]);
-const itemSizes = ref(['Small', 'Medium', 'Large', 'X-Large']);
+const itemSizes = ref([]);
 const itemStock = ref([]);
+const itemImages = ref([]);
 async function setChosenItem() {
   path.value = window.location.pathname;
   const segments = path.value.split('/');
@@ -211,12 +205,13 @@ async function setChosenItem() {
 
   try {
     const res = await api.post('/api/productByGid', { itemGID: lastSegment });
-    console.log(res.data);
+    // console.log(res.data);
     itemId.value = res.data;
     itemRating.value = res.data.rating;
     itemColors.value = res.data.colors;
     itemSizes.value = res.data.sizes;
     itemStock.value = res.data.stock;
+    itemImages.value = res.data.images;
   } catch (err) {
     console.error(err);
   }
@@ -240,15 +235,8 @@ function decrementCounter() {
   counter.value--;
 }
 
-// Product gallery
-const pictures = [
-  { id: 1, src: '/assets/images/product-image-1.png' },
-  { id: 2, src: '/assets/images/product-image-2.png' },
-  { id: 3, src: '/assets/images/product-image-3.png' },
-];
-
 // Choose product picture
-const chosenPicture = ref(1);
+const chosenPicture = ref(0);
 function choosePicture(i) {
   chosenPicture.value = i;
 }

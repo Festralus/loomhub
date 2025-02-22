@@ -1,16 +1,6 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
 import Cookies from 'js-cookie';
-
-// const api = axios.create({
-//   baseURL: 'http://localhost:3001',
-// });
-
-// const config = useRuntimeConfig();
-// const api = axios.create({
-//   baseURL: config.public.apiBase,
-// });
-// const api = useApi();
+import useApi from '/utils/api';
 
 export const useAuthStore = defineStore({
   id: 'auth',
@@ -25,6 +15,7 @@ export const useAuthStore = defineStore({
   actions: {
     // Method to check whether a user is logged in
     async checkSession() {
+      const api = useApi();
       const token = Cookies.get('token');
 
       if (token) {
