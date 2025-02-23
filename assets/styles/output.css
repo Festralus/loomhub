@@ -634,6 +634,10 @@ video {
   z-index: 0;
 }
 
+.z-10 {
+  z-index: 10;
+}
+
 .z-30 {
   z-index: 30;
 }
@@ -834,6 +838,10 @@ video {
   height: 3rem;
 }
 
+.h-14 {
+  height: 3.5rem;
+}
+
 .h-4 {
   height: 1rem;
 }
@@ -860,6 +868,10 @@ video {
 
 .h-\[64px\] {
   height: 64px;
+}
+
+.h-full {
+  height: 100%;
 }
 
 .max-h-\[10px\] {
@@ -922,6 +934,10 @@ video {
   width: 90vw;
 }
 
+.w-\[99\%\] {
+  width: 99%;
+}
+
 .w-full {
   width: 100%;
 }
@@ -952,6 +968,10 @@ video {
 
 .max-w-\[94vw\] {
   max-width: 94vw;
+}
+
+.flex-shrink {
+  flex-shrink: 1;
 }
 
 .flex-shrink-0 {
@@ -1027,6 +1047,10 @@ video {
   justify-content: space-evenly;
 }
 
+.gap-2 {
+  gap: 0.5rem;
+}
+
 .gap-3 {
   gap: 0.75rem;
 }
@@ -1059,6 +1083,10 @@ video {
   border-radius: 62px;
 }
 
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
 .border-gray-500 {
   --tw-border-opacity: 1;
   border-color: rgb(107 114 128 / var(--tw-border-opacity, 1));
@@ -1081,6 +1109,20 @@ video {
 .bg-black {
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
+}
+
+.bg-gray-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
+}
+
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
+}
+
+.bg-transparent {
+  background-color: transparent;
 }
 
 .bg-white {
@@ -1250,6 +1292,10 @@ video {
   line-height: 1.75rem;
 }
 
+.text-\[16px\] {
+  font-size: 16px;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -1276,6 +1322,10 @@ video {
 
 .leading-tight {
   line-height: 1.25;
+}
+
+.leading-\[22px\] {
+  line-height: 22px;
 }
 
 .tracking-\[3px\] {
@@ -1384,6 +1434,10 @@ video {
     margin-left: 0px;
   }
 
+  .lg\:mt-10 {
+    margin-top: 2.5rem;
+  }
+
   .lg\:block {
     display: block;
   }
@@ -1431,6 +1485,10 @@ video {
 
   .xl\:mr-6 {
     margin-right: 1.5rem;
+  }
+
+  .xl\:mt-0 {
+    margin-top: 0px;
   }
 
   .xl\:flex {
@@ -1491,6 +1549,14 @@ video {
 
   .\32xl\:ml-\[6\%\] {
     margin-left: 6%;
+  }
+
+  .\32xl\:flex {
+    display: flex;
+  }
+
+  .\32xl\:hidden {
+    display: none;
   }
 
   .\32xl\:size-\[14px\] {
