@@ -75,9 +75,9 @@ const hoveredIndex = ref(null);
 .result__name {
   font-family: 'Satoshi-Bold';
   font-size: 16px;
-  overflow: hidden;
+  /* overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: nowrap; */
 }
 .result__description {
   min-width: 0;

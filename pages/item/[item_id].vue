@@ -1,33 +1,46 @@
 <template>
   <div>
-    {{ itemId }}
+    {{ item }}
     <BreadcrumbsComponent :history="path"></BreadcrumbsComponent>
     <div class="top__section">
       <div class="item__gallery">
-        <img :src="`${itemImages[chosenPicture]}`" class="item__main-picture" />
-        <img
-          v-for="(image, i) in itemImages"
-          :key="`image-${i}`"
-          :src="`${image}`"
-          class="item__secondary-picture"
-          :class="{ chosen: chosenPicture === i }"
-          @click="choosePicture(i)"
-        />
+        <div class="secondary-pictures">
+          <img
+            v-for="(image, i) in itemImages"
+            :key="`image-${i}`"
+            :src="`${image}`"
+            class="item__secondary-picture"
+            :class="{ chosen: chosenPicture === i }"
+            @click="choosePicture(i)"
+          />
+        </div>
+        <div class="main-picture">
+          <img
+            class="item__main-picture"
+            :src="`${itemImages[chosenPicture]}`"
+          />
+        </div>
       </div>
       <div class="item__interactive-menu">
-        <div class="item__name">One Life Graphic T-shirt</div>
+        <div class="item__name">{{ item?.name }}</div>
         <div class="item__rating">
-          <div class="item__rating-stars">4.5 звездочки</div>
-          <div class="item__rating-number">{{ itemRating }}/5</div>
+          <ProductRatingComponent
+            v-if="item"
+            :product="item"
+            class="item__rating-stars"
+          />
         </div>
         <div class="item__price">
-          <div class="item__price-current">$260</div>
-          <div class="item__price-old">$300</div>
-          <div class="item__discount">-40%</div>
+          <div class="item__price-current">${{ modifiedPrice }}</div>
+          <div v-if="item?.oldPrice" class="item__price-old">
+            ${{ item?.oldPrice }}
+          </div>
+          <div v-if="item?.oldPrice" class="item__discount">
+            -{{ discountPercentage }}%
+          </div>
         </div>
         <div class="item__description">
-          This graphic t-shirt which is perfect for any occasion. Crafted from a
-          soft and breathable fabric, it offers superior comfort and style.
+          {{ item?.description }}
         </div>
         <div class="horizontal-separator-100 mt-5"></div>
         <div class="item__colors-container">
@@ -149,14 +162,8 @@ import PlusIcon from '@/assets/icons/PlusIcon.vue';
 // import BreadcrumbsComponent from '@/components/breadcrumbs_component.vue';
 
 definePageMeta({
-  // layout: 'x-padding',
   useWebsitePadding: true,
 });
-
-// Change BaseURL
-// const api = axios.create({
-//   baseURL: 'http://localhost:3001',
-// });
 
 const config = useRuntimeConfig();
 const api = axios.create({
@@ -179,8 +186,7 @@ onBeforeMount(() => {
 
 // Getting product information
 const path = ref('');
-const itemId = ref(null);
-const itemRating = ref(0);
+const item = ref(null);
 const itemColors = ref([
   {
     name: 'green',
@@ -198,6 +204,9 @@ const itemColors = ref([
 const itemSizes = ref([]);
 const itemStock = ref([]);
 const itemImages = ref([]);
+const modifiedPrice = ref(null);
+const discountPercentage = ref(null);
+const currencyMultiplier = 1;
 async function setChosenItem() {
   path.value = window.location.pathname;
   const segments = path.value.split('/');
@@ -205,17 +214,31 @@ async function setChosenItem() {
 
   try {
     const res = await api.post('/api/productByGid', { itemGID: lastSegment });
-    // console.log(res.data);
-    itemId.value = res.data;
-    itemRating.value = res.data.rating;
-    itemColors.value = res.data.colors;
-    itemSizes.value = res.data.sizes;
-    itemStock.value = res.data.stock;
+    console.log(res.data.stock);
+    item.value = res.data;
     itemImages.value = res.data.images;
+    itemStock.value = res.data.stock;
+    modifiedPrice.value = (res.data.price * currencyMultiplier).toFixed(2);
+    if (res.data.oldPrice) {
+      const modifiedOldPrice = (res.data.oldPrice * currencyMultiplier).toFixed(
+        2
+      );
+
+      discountPercentage.value = Math.round(
+        100 - (modifiedPrice.value / modifiedOldPrice) * 100
+      );
+    }
   } catch (err) {
     console.error(err);
   }
 }
+
+// Item gallery style
+// const secondaryPictureWidth = computed(() => {
+//   return {
+//     maxWidth: `${100 / itemImages.value.length}%`,
+//   };
+// });
 
 // Product quantity counter
 const counter = ref(1);
