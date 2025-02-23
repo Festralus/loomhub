@@ -15,6 +15,18 @@
         :class="{ active: isModalOverlayActive }"
       ></div>
       <div
+        class="native-overlay native-search-overlay"
+        :class="{
+          active: searchQuery && !outsideClickOccurance,
+        }"
+      ></div>
+      <div
+        class="native-overlay native-shop-hover-overlay hidden sm:block"
+        :class="{
+          active: isShopHovered,
+        }"
+      ></div>
+      <div
         class="BurgerMenu__dropdown"
         :class="{
           active: isBurgerDropdownActive,
@@ -34,41 +46,97 @@
       <NuxtLink
         to="/"
         class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none sm:ml-[10%] sm:block 2xl:ml-[6%] 2xl:text-3xl"
-        :class="isSearchActive ? 'hidden' : ''"
+        :class="isMobileSearchActive ? 'hidden' : ''"
       >
         LOOM.HUB
       </NuxtLink>
       <nav
         class="top-menu__nav SatoshiRegular hidden max-h-[10px] flex-row text-base sm:flex sm:w-full sm:justify-evenly lg:flex xl:w-[30%] 2xl:text-xl"
-        :class="{ 'sm:hidden': isSearchActive }"
+        :class="{ 'sm:hidden': isMobileSearchActive }"
       >
-        <div
+        <!-- <div
           @mouseover="isShopHovered = true"
           @mouseleave="isShopHovered = false"
-          class="top-menu__nav-item top-menu__nav-item__shop relative flex cursor-pointer flex-row items-center"
+          :class="{ 'z-[140]': isShopHovered }"
+          class="top-menu__nav-item top-menu__nav-item__shop relative hidden cursor-pointer flex-row items-center 2xl:flex"
         >
-          <NuxtLink to="/shop" class="top-menu__nav-item__shop-text"
-            ><div>Shop</div></NuxtLink
-          >
+          <div class="top-menu__nav-item__shop-text">Shop</div>
           <PointerIcon
             class="top-menu__nav-item top-menu__nav-item__shop-arrow mt-[2px] h-6 pl-[3px] 2xl:w-[14px]"
           ></PointerIcon>
           <div v-show="isShopHovered" class="top-menu__nav-item__shop-dropdown">
-            <div class="shop-dropdown__item">Casual</div>
-            <div class="shop-dropdown__item">Formal</div>
-            <div class="shop-dropdown__item">Party</div>
-            <div class="shop-dropdown__item">Sport</div>
+            <NuxtLink
+              v-for="(style, index) in dress_styles_list"
+              :key="index"
+              :to="style.path"
+              class="shop-dropdown__item"
+            >
+              {{ style.name }}
+            </NuxtLink>
+          </div>
+        </div> -->
+        <div
+          @mouseenter="isShopHovered = true"
+          @mouseleave="isShopHovered = false"
+          :class="{ 'z-[140]': isShopHovered }"
+          class="top-menu__nav-item top-menu__nav-item__shop relative hidden cursor-pointer flex-row items-center 2xl:flex"
+        >
+          <div class="top-menu__nav-item__shop-text">Shop</div>
+          <PointerIcon
+            class="top-menu__nav-item__shop-arrow mt-[2px] h-6 pl-[3px] 2xl:w-[14px]"
+          />
+          <!-- Dropdown menu -->
+          <div
+            v-show="isShopHovered"
+            class="top-menu__nav-item__shop-dropdown relative flex flex-col gap-2 p-2"
+          >
+            <NuxtLink
+              v-for="(style, index) in dress_styles_list"
+              :key="index"
+              :to="style.path"
+              class="shop-dropdown__item"
+              :class="[
+                hoveredIndex == index
+                  ? 'shop-dropdown__item__border text-black'
+                  : 'text-white',
+              ]"
+              :style="{
+                backgroundImage: `url(${style.backgroundPicture}.png)`,
+              }"
+              @mouseover="hoveredIndex = index"
+              @mouseleave="hoveredIndex = null"
+            >
+              <span class="relative z-10 text-lg font-semibold">{{
+                style.name
+              }}</span>
+
+              <div
+                v-if="hoveredIndex !== index"
+                class="shop-dropdown__item__shadow"
+              ></div>
+            </NuxtLink>
           </div>
         </div>
-        <NuxtLink to="/on_sale" class="top-menu__nav-item">On Sale</NuxtLink>
-        <NuxtLink to="/new_arrivals" class="top-menu__nav-item"
+
+        <NuxtLink
+          to="/shop"
+          class="top-menu__nav-item top-menu__nav-item__shop relative flex cursor-pointer flex-row items-center 2xl:hidden"
+        >
+          <div class="top-menu__nav-item__shop-text">Shop</div>
+        </NuxtLink>
+        <NuxtLink to="/on_sale" class="top-menu__nav-item flex"
+          >On Sale</NuxtLink
+        >
+        <NuxtLink to="/new_arrivals" class="top-menu__nav-item flex"
           >New Arrivals</NuxtLink
         >
-        <NuxtLink to="/brands" class="top-menu__nav-item">Brands</NuxtLink>
+        <NuxtLink to="/brands" class="top-menu__nav-item flex">Brands</NuxtLink>
       </nav>
       <div
         class="top-menu__search hidden w-full flex-row rounded-3xl bg-[#F0F0F0] p-2 lg:flex xl:w-[40vw]"
+        :class="{ 'z-[140]': searchQuery }"
         @click="focusHomePageSearch"
+        ref="searchContainer"
       >
         <SearchIconGray
           class="top-menu__search-icon mr-3 hidden pl-1 lg:block"
@@ -77,7 +145,7 @@
         <div class="top-menu__search-dropdown relative hidden w-full lg:block">
           <input
             type="text"
-            class="top-menu__search-input h-6 w-full bg-[#F0F0F0]"
+            class="top-menu__search-input h-6 w-[99%] bg-[#F0F0F0]"
             placeholder="Search for products..."
             aria-label="Search for products"
             ref="HomePageSearch"
@@ -85,9 +153,10 @@
             @input="performQuickSearch"
             @change="performQuickSearch"
             @paste="performPasteQuickSearch"
+            @focus="openDropdown"
           />
           <Search_results_dropdown
-            v-show="searchQuery"
+            v-show="searchQuery && !outsideClickOccurance"
             :query="searchQuery"
             :searchResults="searchResults"
           ></Search_results_dropdown>
@@ -95,25 +164,27 @@
       </div>
       <div
         class="top-menu__actions mr-4 flex w-[30%] flex-shrink-0 flex-row justify-end sm:w-auto xl:mr-6 xl:w-[10%]"
+        :class="{ 'z-[140]': searchQuery }"
       >
         <SearchIconBlack
           class="top-menu__search-icon lg:hidden"
-          :class="isSearchActive ? 'hidden' : ''"
+          :class="isMobileSearchActive ? 'hidden' : ''"
           aria-label="Search"
           @click="openMobileSearch"
         />
         <div
           class="mobile-search__container hidden sm:max-w-[64%]"
           :class="{
-            active: isSearchActive,
-            closed: !isSearchActive,
+            active: isMobileSearchActive,
+            closed: !isMobileSearchActive,
             'no-animation': !isSearchAnimationActive,
           }"
+          ref="mobileSearchContainer"
         >
           <SearchIconGray
             class="top-menu__search-icon ml-2 mr-3"
             aria-label="Search"
-            @click="closeMobileSearch"
+            @click="(closeMobileSearch(), (outsideClickOccurance = true))"
           />
           <div class="search-dropdown">
             <input
@@ -126,10 +197,12 @@
               @input="performQuickSearch"
               @change="performQuickSearch"
               @paste="performPasteQuickSearch"
+              @click="openDropdown"
+              @focus="openDropdown"
             />
 
             <Search_results_dropdown
-              v-show="searchQuery"
+              v-show="searchQuery && !outsideClickOccurance"
               :query="searchQuery"
               :searchResults="searchResults"
             ></Search_results_dropdown>
@@ -138,12 +211,12 @@
         <NuxtLink
           to="/cart"
           class="top-menu__actions-cart ml-[14px] lg:block"
-          :class="isSearchActive ? 'hidden' : ''"
+          :class="isMobileSearchActive ? 'hidden' : ''"
           ><CartIcon></CartIcon
         ></NuxtLink>
         <ProfileIcon
           class="top-menu__actions-profile ml-[14px] cursor-pointer lg:block"
-          :class="isSearchActive ? 'hidden' : ''"
+          :class="isMobileSearchActive ? 'hidden' : ''"
           @click="openAuthPopup"
         ></ProfileIcon>
       </div>
@@ -246,7 +319,7 @@
       <div class="footer__branding ml-4 block lg:ml-0 lg:text-center">
         <div class="share__title IntegralBold mt-6 text-2xl">LOOM.HUB</div>
         <div
-          class="share__description SatoshiRegular mt-3 text-base text-gray-500"
+          class="share__description SatoshiRegular mt-3 text-[16px] leading-[22px] text-gray-500"
         >
           The place where fashion meets your lifestyle. Explore the collection
           today.
@@ -336,6 +409,7 @@ const route = useRoute();
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
+import dress_styles_list from '~/data/dress_styles.js';
 import Search_results_dropdown from '~/components/search_results_dropdown.vue';
 
 import ArrowIcon from '../assets/icons/ArrowIcon.vue';
@@ -368,6 +442,19 @@ const api = axios.create({
 
 onMounted(() => {
   checkSession();
+
+  watch(searchQuery, (newValue) => {
+    if (newValue) {
+      document.addEventListener('click', closeDropdown);
+    } else {
+      document.removeEventListener('click', closeDropdown);
+      outsideClickOccurance.value = false;
+    }
+  });
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', closeDropdown);
 });
 
 // Padding for certain pages
@@ -384,8 +471,41 @@ watch(
   }
 );
 
+// Watch for outside clicks to close native overlay
+const outsideClickOccurance = ref(false);
+const searchContainer = ref();
+const mobileSearchContainer = ref();
+
+function closeDropdown(event) {
+  if (
+    window.innerWidth < 1024 &&
+    mobileSearchContainer.value &&
+    !mobileSearchContainer.value.contains(event.target)
+  ) {
+    outsideClickOccurance.value = true;
+  }
+  if (
+    window.innerWidth > 1023 &&
+    searchContainer.value &&
+    !searchContainer.value.contains(event.target)
+  ) {
+    outsideClickOccurance.value = true;
+    closeMobileSearch();
+  }
+}
+
+function openDropdown() {
+  outsideClickOccurance.value = false;
+}
+
 // Focus shop upon hovering over
 const isShopHovered = ref(false);
+
+// EXP EXP EXP
+
+const hoveredIndex = ref(null);
+
+// EXP EXP EXP
 
 // Focus search upon opening it
 const HomePageSearch = ref();
@@ -423,19 +543,20 @@ function closeBurgerDropdown() {
   isBurgerDropdownActive.value = false;
 }
 
-// Product search
-const isSearchActive = ref(false);
+// Product search mobile view control
+const isMobileSearchActive = ref(false);
 const isSearchAnimationActive = ref(false);
 const MobileSearchInput = ref(null);
 function openMobileSearch() {
   isSearchAnimationActive.value = true;
-  isSearchActive.value = true;
+  isMobileSearchActive.value = true;
   MobileSearchInput.value?.focus();
 }
 function closeMobileSearch() {
-  isSearchActive.value = false;
+  isMobileSearchActive.value = false;
 }
 
+// Search process
 const searchQuery = ref('');
 let searchResults = ref([]);
 
@@ -444,16 +565,22 @@ watch(searchQuery, async () => {
 });
 
 async function performQuickSearch() {
+  outsideClickOccurance.value = false;
   const query = searchQuery.value.trim();
   if (!query) {
     searchResults.value = [];
+    // closeMobileSearch();
     return;
   }
 
   try {
+    openMobileSearch();
+    outsideClickOccurance.value = false;
     const res = await api.get(`api/products/search?query=${query}`);
     if (!res.data.length) {
-      searchResults.value = [{ name: 'No match' }];
+      searchResults.value = [
+        { name: 'No match', description: null, images: null },
+      ];
       return;
     }
     searchResults.value = res.data.length < 5 ? res.data : res.data.slice(0, 5);

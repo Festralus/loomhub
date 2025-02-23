@@ -20,7 +20,8 @@
       <div class="new-arrivals__items-item__title mt-2 text-lg font-bold">
         {{ product.name }}
       </div>
-      <div class="new-arrivals__items-item__rating mt-1 flex items-center">
+      <ProductRatingComponent :product="product" />
+      <!-- <div class="new-arrivals__items-item__rating mt-1 flex items-center">
         <span class="flex">
           <RatingStarIcon
             v-for="n in Math.floor(product.rating)"
@@ -39,7 +40,7 @@
           />
         </span>
         <span class="ml-2 text-sm text-gray-600">({{ product.rating }})</span>
-      </div>
+      </div> -->
       <div
         class="new-arrivals__items-item__price SatoshiBold mt-1 flex items-center text-xl font-semibold"
       >
@@ -62,10 +63,6 @@
 <script setup>
 import { defineProps } from 'vue';
 import { useRouter } from 'vue-router';
-
-import RatingEmptyStarIcon from '../assets/icons/RatingEmptyStarIcon.vue';
-import RatingHalfStarIcon from '../assets/icons/RatingHalfStarIcon.vue';
-import RatingStarIcon from '../assets/icons/RatingFullStarIcon.vue';
 
 defineProps({
   productsList: {
@@ -118,6 +115,11 @@ function goToItem(itemId) {
 }
 .new-arrivals__items-item:last-child {
   padding-right: 16px;
+}
+.new-arrivals__items-item__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Scrollbar */

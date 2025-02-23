@@ -45,7 +45,7 @@ async function setBreadcrumbs() {
 
   try {
     const res = await api.post('/api/productByGid', { itemGID: lastSegment });
-    console.log(res);
+    // console.log(res);
   } catch (err) {
     console.error(err);
   }

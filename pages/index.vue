@@ -52,7 +52,7 @@
         </div>
       </div>
       <div
-        class="home-description__background pointer-events-none relative z-0 mx-auto max-w-[700px] select-none overflow-clip"
+        class="home-description__background pointer-events-none relative z-0 mx-auto max-w-[700px] select-none overflow-clip lg:mt-10 xl:mt-0"
       >
         <StarIcon
           class="home-description__background--big-star absolute"
@@ -80,13 +80,21 @@
     <div
       class="popular-brands flex w-full flex-row flex-wrap justify-evenly overflow-hidden bg-black pb-3 pt-5"
     >
-      <VersaceIcon class="popular-brands__brand mx-3 my-2"></VersaceIcon>
-      <ZaraIcon class="popular-brands__brand mx-3 my-2"></ZaraIcon>
-      <GucciIcon class="popular-brands__brand mx-3 my-2"></GucciIcon>
-      <PradaIcon class="popular-brands__brand mx-3 my-2"></PradaIcon>
-      <CalvinKleinIcon
-        class="popular-brands__brand mx-3 my-2"
-      ></CalvinKleinIcon>
+      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
+        <VersaceIcon class="h-full w-full" />
+      </NuxtLink>
+      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
+        <ZaraIcon class="h-full w-full" />
+      </NuxtLink>
+      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
+        <GucciIcon class="h-full w-full" />
+      </NuxtLink>
+      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
+        <PradaIcon class="h-full w-full" />
+      </NuxtLink>
+      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
+        <CalvinKleinIcon class="h-full w-full" />
+      </NuxtLink>
     </div>
     <div class="new-arrivals">
       <div
@@ -136,9 +144,10 @@
       <div
         class="style-masonry__tileset relative flex flex-col flex-wrap items-center justify-center px-2 xl:flex-row xl:gap-5"
       >
-        <div
+        <nuxtLink
           v-for="(style, index) in dress_styles_list"
           :key="style.name"
+          :to="style.path"
           class="style-masonry__tile relative mb-4 w-[90%] rounded-3xl bg-white"
           :class="[
             index === 1 || index === 2
@@ -166,7 +175,7 @@
               alt="Background image"
             />
           </picture>
-        </div>
+        </nuxtLink>
       </div>
     </div>
     <div class="reviews mt-10">
@@ -265,7 +274,9 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 import axios from 'axios';
 
+import dress_styles_list from '~/data/dress_styles.js';
 import Slider_component from '~/components/slider_component.vue';
+
 import ArrowIcon from '../assets/icons/ArrowIcon.vue';
 import LetterIcon from '../assets/icons/LetterIcon.vue';
 import RatingEmptyStarIcon from '../assets/icons/RatingEmptyStarIcon.vue';
@@ -373,12 +384,12 @@ async function updateOrderStatus(orderId, newStatus) {
 }
 
 // An array for Browse by dress style
-const dress_styles_list = [
-  { name: 'Casual', backgroundPicture: '/assets/images/browse-casual' },
-  { name: 'Formal', backgroundPicture: '/assets/images/browse-formal' },
-  { name: 'Party', backgroundPicture: '/assets/images/browse-party' },
-  { name: 'Sport', backgroundPicture: '/assets/images/browse-gym' },
-];
+// const dress_styles_list = [
+//   { name: 'Casual', backgroundPicture: '/assets/images/browse-casual' },
+//   { name: 'Formal', backgroundPicture: '/assets/images/browse-formal' },
+//   { name: 'Party', backgroundPicture: '/assets/images/browse-party' },
+//   { name: 'Sport', backgroundPicture: '/assets/images/browse-gym' },
+// ];
 
 // Method to Get 5 website reviews
 const websiteReviewsArray = ref([]);
