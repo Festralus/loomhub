@@ -39,7 +39,7 @@
             -{{ discountPercentage }}%
           </div>
         </div>
-        <div class="item__description">
+        <div class="item__description SatoshiRegular text-4">
           {{ item?.description }}
         </div>
         <div class="horizontal-separator-100 mt-5"></div>
@@ -48,13 +48,13 @@
           <div class="item__colors__list">
             <div
               v-for="(color, i) in itemColors"
-              :key="color.i"
+              :key="i"
               class="item__colors__button"
             >
               <div
                 @click="chooseColor(i)"
                 class="item__available-colors"
-                :style="{ backgroundColor: color.hex }"
+                :style="{ backgroundColor: `#${color}` }"
                 :class="chosenColor == i ? 'selected' : ''"
               ></div>
             </div>
@@ -65,7 +65,7 @@
           <div class="item__size__title">Choose size</div>
           <div class="item__size__list">
             <div
-              v-for="(size, i) in itemSizes"
+              v-for="(size, i) in item?.sizes"
               :key="size"
               @click="chooseSize(i)"
               class="item__size__button"
@@ -156,6 +156,7 @@ import {
 // import { useRouter } from 'vue-router';
 import axios from 'axios';
 import { useAuthStore } from '@/stores/index';
+import all_colors from '@/data/colors';
 
 import MinusIcon from '@/assets/icons/MinusIcon.vue';
 import PlusIcon from '@/assets/icons/PlusIcon.vue';
@@ -187,21 +188,7 @@ onBeforeMount(() => {
 // Getting product information
 const path = ref('');
 const item = ref(null);
-const itemColors = ref([
-  {
-    name: 'green',
-    hex: '#4F4631',
-  },
-  {
-    name: 'gray',
-    hex: '#314F4A',
-  },
-  {
-    name: 'blue',
-    hex: '#31344F',
-  },
-]);
-const itemSizes = ref([]);
+const itemColors = ref([]);
 const itemStock = ref([]);
 const itemImages = ref([]);
 const modifiedPrice = ref(null);
@@ -214,10 +201,10 @@ async function setChosenItem() {
 
   try {
     const res = await api.post('/api/productByGid', { itemGID: lastSegment });
-    console.log(res.data.stock);
     item.value = res.data;
     itemImages.value = res.data.images;
     itemStock.value = res.data.stock;
+
     modifiedPrice.value = (res.data.price * currencyMultiplier).toFixed(2);
     if (res.data.oldPrice) {
       const modifiedOldPrice = (res.data.oldPrice * currencyMultiplier).toFixed(
@@ -228,12 +215,17 @@ async function setChosenItem() {
         100 - (modifiedPrice.value / modifiedOldPrice) * 100
       );
     }
+
+    itemColors.value = res.data.colors.map((color) => {
+      const hex_value = all_colors.find((item) => item.name == color).hex;
+      return hex_value;
+    });
   } catch (err) {
     console.error(err);
   }
 }
 
-// Item gallery style
+// Item gallery style, 33% or 50% width depending on image quantity?
 // const secondaryPictureWidth = computed(() => {
 //   return {
 //     maxWidth: `${100 / itemImages.value.length}%`,

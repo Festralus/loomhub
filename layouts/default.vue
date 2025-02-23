@@ -319,7 +319,7 @@
       <div class="footer__branding ml-4 block lg:ml-0 lg:text-center">
         <div class="share__title IntegralBold mt-6 text-2xl">LOOM.HUB</div>
         <div
-          class="share__description SatoshiRegular mt-3 text-base text-gray-500"
+          class="share__description SatoshiRegular mt-3 text-[16px] leading-[22px] text-gray-500"
         >
           The place where fashion meets your lifestyle. Explore the collection
           today.

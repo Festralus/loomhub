@@ -163,12 +163,15 @@
 }
 .item__colors__list {
   display: flex;
+  margin-top: 12px;
 }
 .item__available-colors {
   width: 37px;
   height: 37px;
   border-radius: 50%;
   margin-right: 16px;
+  border: 1px solid black;
+  cursor: pointer;
 }
 .item__available-colors.selected {
   background-image: url('/public/assets/icons/ChosenTickIcon.svg');
@@ -194,6 +197,7 @@
   padding: 12px 24px;
   background-color: #f0f0f0;
   border-radius: 30px;
+  cursor: pointer;
 }
 
 .item__cart {
@@ -219,6 +223,18 @@
 
 .item__colors__button {
   position: relative;
+}
+
+.item__cart-button {
+  margin-top: auto;
+  margin-left: 20px;
+  color: white;
+  background-color: #000;
+  height: 52px;
+  line-height: 52px;
+  width: 400px;
+  border-radius: 40px;
+  text-align: center;
 }
 
 /*  */

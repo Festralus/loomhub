@@ -1292,6 +1292,10 @@ video {
   line-height: 1.75rem;
 }
 
+.text-\[16px\] {
+  font-size: 16px;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -1318,6 +1322,10 @@ video {
 
 .leading-tight {
   line-height: 1.25;
+}
+
+.leading-\[22px\] {
+  line-height: 22px;
 }
 
 .tracking-\[3px\] {
