@@ -1,5 +1,11 @@
 <template>
   <div>
+    <In_development_component
+      v-if="showInDev"
+      :target="currentTarget"
+      :inDevActive="showInDev"
+      @close="showInDev = false"
+    />
     <header
       class="top-menu fixed left-0 top-0 z-[100] flex h-[64px] w-full flex-row items-center justify-between bg-white"
     >
@@ -34,14 +40,26 @@
           'no-animation': !isBurgerAnimationActive,
         }"
       >
-        <NuxtLink to="/shop" class="BurgerMenu__item">Shop</NuxtLink>
+        <!-- <NuxtLink to="/shop" class="BurgerMenu__item">Shop</NuxtLink>
         <NuxtLink to="/top_selling" class="BurgerMenu__item"
           >Top Selling</NuxtLink
         >
         <NuxtLink to="/new_arrivals" class="BurgerMenu__item"
           >New Arrivals</NuxtLink
         >
-        <NuxtLink to="/brands" class="BurgerMenu__item">Brands</NuxtLink>
+        <NuxtLink to="/brands" class="BurgerMenu__item">Brands</NuxtLink> -->
+        <div @click="openInDev('Shopping Navigation')" class="BurgerMenu__item">
+          Shop
+        </div>
+        <div @click="openInDev('Shopping Navigation')" class="BurgerMenu__item">
+          Top Selling
+        </div>
+        <div @click="openInDev('Shopping Navigation')" class="BurgerMenu__item">
+          New Arrivals
+        </div>
+        <div @click="openInDev('Shopping Navigation')" class="BurgerMenu__item">
+          Brands
+        </div>
       </div>
       <NuxtLink
         to="/"
@@ -90,7 +108,7 @@
             v-show="isShopHovered"
             class="top-menu__nav-item__shop-dropdown relative flex flex-col gap-2 p-2"
           >
-            <NuxtLink
+            <!-- <NuxtLink
               v-for="(style, index) in dress_styles_list"
               :key="index"
               :to="style.path"
@@ -114,11 +132,36 @@
                 v-if="hoveredIndex !== index"
                 class="shop-dropdown__item__shadow"
               ></div>
-            </NuxtLink>
+            </NuxtLink> -->
+            <div
+              v-for="(style, index) in dress_styles_list"
+              @click="openInDev('Shopping Navigation')"
+              :key="index"
+              class="shop-dropdown__item"
+              :class="[
+                hoveredIndex == index
+                  ? 'shop-dropdown__item__border text-black'
+                  : 'text-white',
+              ]"
+              :style="{
+                backgroundImage: `url(${style.backgroundPicture}.png)`,
+              }"
+              @mouseover="hoveredIndex = index"
+              @mouseleave="hoveredIndex = null"
+            >
+              <span class="relative z-10 text-lg font-semibold">{{
+                style.name
+              }}</span>
+
+              <div
+                v-if="hoveredIndex !== index"
+                class="shop-dropdown__item__shadow"
+              ></div>
+            </div>
           </div>
         </div>
 
-        <NuxtLink
+        <!-- <NuxtLink
           to="/shop"
           class="top-menu__nav-item top-menu__nav-item__shop relative flex cursor-pointer flex-row items-center 2xl:hidden"
         >
@@ -130,7 +173,36 @@
         <NuxtLink to="/new_arrivals" class="top-menu__nav-item flex"
           >New Arrivals</NuxtLink
         >
-        <NuxtLink to="/brands" class="top-menu__nav-item flex">Brands</NuxtLink>
+        <NuxtLink to="/brands" class="top-menu__nav-item flex">Brands</NuxtLink> -->
+        <div
+          @click="openInDev('Shopping Navigation')"
+          class="top-menu__nav-item top-menu__nav-item__shop relative flex cursor-pointer flex-row items-center 2xl:hidden"
+        >
+          <div
+            @click="openInDev('Shopping Navigation')"
+            class="top-menu__nav-item__shop-text cursor-pointer"
+          >
+            Shop
+          </div>
+        </div>
+        <div
+          @click="openInDev('Shopping Navigation')"
+          class="top-menu__nav-item flex cursor-pointer"
+        >
+          On Sale
+        </div>
+        <div
+          @click="openInDev('Shopping Navigation')"
+          class="top-menu__nav-item flex cursor-pointer"
+        >
+          New Arrivals
+        </div>
+        <div
+          @click="openInDev('Shopping Navigation')"
+          class="top-menu__nav-item flex cursor-pointer"
+        >
+          Brands
+        </div>
       </nav>
       <div
         class="top-menu__search hidden w-full flex-row rounded-3xl bg-[#F0F0F0] p-2 lg:flex xl:w-[40vw]"
@@ -208,12 +280,19 @@
             ></Search_results_dropdown>
           </div>
         </div>
-        <NuxtLink
+        <!-- <NuxtLink
           to="/cart"
           class="top-menu__actions-cart ml-[14px] lg:block"
           :class="isMobileSearchActive ? 'hidden' : ''"
           ><CartIcon></CartIcon
-        ></NuxtLink>
+        ></NuxtLink> -->
+        <div
+          class="top-menu__actions-cart ml-[14px] cursor-pointer lg:block"
+          :class="isMobileSearchActive ? 'hidden' : ''"
+          @click="openInDev('Cart')"
+        >
+          <CartIcon></CartIcon>
+        </div>
         <ProfileIcon
           class="top-menu__actions-profile ml-[14px] cursor-pointer lg:block"
           :class="isMobileSearchActive ? 'hidden' : ''"
@@ -429,10 +508,15 @@ import ShareFacebook from '../assets/icons/ShareFacebookIcon.vue';
 import ShareInstagram from '../assets/icons/ShareInstagramIcon.vue';
 import ShareGithub from '../assets/icons/ShareGithubIcon.vue';
 
-// Change BaseURL
-// const api = axios.create({
-//   baseURL: 'http://localhost:3001',
-// });
+import In_development_component from '@/components/in_development_component.vue';
+
+// In development popup
+const showInDev = ref(false);
+const currentTarget = ref('');
+function openInDev(string) {
+  currentTarget.value = string;
+  showInDev.value = true;
+}
 
 const config = useRuntimeConfig();
 const api = axios.create({

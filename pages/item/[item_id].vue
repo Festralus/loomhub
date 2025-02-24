@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ item }}
     <BreadcrumbsComponent :history="path"></BreadcrumbsComponent>
     <div class="top__section">
       <div class="item__gallery">
@@ -22,7 +21,7 @@
         </div>
       </div>
       <div class="item__interactive-menu">
-        <div class="item__name">{{ item?.name }}</div>
+        <div class="item__name">{{ item?.name }} ({{ item?.brand }})</div>
         <div class="item__rating">
           <ProductRatingComponent
             v-if="item"
@@ -54,8 +53,18 @@
               <div
                 @click="chooseColor(i)"
                 class="item__available-colors"
-                :style="{ backgroundColor: `#${color}` }"
-                :class="chosenColor == i ? 'selected' : ''"
+                :style="
+                  color?.isMulticolor
+                    ? {}
+                    : { backgroundColor: `#${color.hexValue}` }
+                "
+                :class="[
+                  chosenColor == i && !color?.isMulticolor ? 'selected' : '',
+                  color.isMulticolor ? 'multicolor-image' : '',
+                  chosenColor == i && color?.isMulticolor
+                    ? 'multicolor-selected'
+                    : '',
+                ]"
               ></div>
             </div>
           </div>
@@ -65,7 +74,7 @@
           <div class="item__size__title">Choose size</div>
           <div class="item__size__list">
             <div
-              v-for="(size, i) in item?.sizes"
+              v-for="(size, i) in itemSizes"
               :key="size"
               @click="chooseSize(i)"
               class="item__size__button"
@@ -78,19 +87,37 @@
         <div class="horizontal-separator-100 mt-5"></div>
         <div class="item__cart">
           <div class="item__cart-quantity">
-            <MinusIcon
+            <div
               @click="decrementCounter"
-              class="item__cart-quantity--minus"
+              class="item__cart-quantity--minus flex h-full cursor-pointer items-center justify-center"
             >
-            </MinusIcon>
-            <div class="item__cart-quantity--number">{{ counter }}</div>
-            <PlusIcon
+              <MinusIcon />
+            </div>
+            <div class="item__cart-quantity--number select-none">
+              {{ counter }}
+            </div>
+            <div
               @click="incrementCounter"
-              class="item__cart-quantity--plus"
+              class="item__cart-quantity--plus flex h-full cursor-pointer items-center justify-center"
             >
-            </PlusIcon>
+              <PlusIcon />
+            </div>
+            <div class="item__cart-possible-quantity">
+              (available:
+              <span class="item__cart-possible-quantity__span">
+                &nbsp{{ +availableQuantity }}</span
+              >)
+            </div>
           </div>
-          <div class="item__cart-button">Add to Cart</div>
+          <div class="item__cart-button select-none" @click="openInDev('Cart')">
+            Add to Cart
+          </div>
+          <In_development_component
+            v-if="showInDev"
+            :target="currentTarget"
+            :inDevActive="showInDev"
+            @close="showInDev = false"
+          />
         </div>
       </div>
     </div>
@@ -149,48 +176,55 @@
   </div>
 </template>
 <script setup>
-import {
-  onBeforeMount,
-  //  onMounted
-} from 'vue';
-// import { useRouter } from 'vue-router';
 import axios from 'axios';
 import { useAuthStore } from '@/stores/index';
 import all_colors from '@/data/colors';
 
 import MinusIcon from '@/assets/icons/MinusIcon.vue';
 import PlusIcon from '@/assets/icons/PlusIcon.vue';
-// import BreadcrumbsComponent from '@/components/breadcrumbs_component.vue';
+import BreadcrumbsComponent from '@/components/breadcrumbs_component.vue';
+import In_development_component from '@/components/in_development_component.vue';
 
+// In development popup
+const showInDev = ref(false);
+const currentTarget = ref('');
+function openInDev(string) {
+  currentTarget.value = string;
+  showInDev.value = true;
+}
+
+// Layout settings
 definePageMeta({
   useWebsitePadding: true,
 });
 
+// API settings
 const config = useRuntimeConfig();
 const api = axios.create({
   baseURL: config.public.apiBase,
 });
 
+// Check and set global variables
 const checkSession = useAuthStore().checkSession;
 
 onBeforeMount(() => {
   checkSession();
   setChosenItem();
 });
+onMounted(() => {
+  // fetchAvailableStock();
+});
 
-// onMounted(() => {
-//   checkSession();
-//   setChosenItem();
-// });
+// Enable routing
+const router = useRouter();
 
-// const router = useRouter();
-
-// Getting product information
+// Get product information
 const path = ref('');
 const item = ref(null);
-const itemColors = ref([]);
-const itemStock = ref([]);
 const itemImages = ref([]);
+const itemStock = ref([]);
+const itemColors = ref([]);
+const itemSizes = ref([]);
 const modifiedPrice = ref(null);
 const discountPercentage = ref(null);
 const currencyMultiplier = 1;
@@ -205,6 +239,7 @@ async function setChosenItem() {
     itemImages.value = res.data.images;
     itemStock.value = res.data.stock;
 
+    // Set the price
     modifiedPrice.value = (res.data.price * currencyMultiplier).toFixed(2);
     if (res.data.oldPrice) {
       const modifiedOldPrice = (res.data.oldPrice * currencyMultiplier).toFixed(
@@ -216,10 +251,30 @@ async function setChosenItem() {
       );
     }
 
-    itemColors.value = res.data.colors.map((color) => {
-      const hex_value = all_colors.find((item) => item.name == color).hex;
-      return hex_value;
+    // Set available colors
+    const availableColors = res.data.stock.map((product) => {
+      return product.color;
     });
+    const uniqueColors = [...new Set(availableColors)];
+
+    itemColors.value = uniqueColors.map((color) => {
+      if (color.toLowerCase() == 'multicolor') {
+        return { hex: null, name: color, isMulticolor: true };
+      }
+      const hexValue = all_colors.find(
+        (item) => item.name.toLowerCase() == color.toLowerCase()
+      ).hex;
+      return { hexValue, name: color, isMulticolor: false };
+    });
+
+    // Set available sizes
+    const availableSizes = res.data.stock.map((product) => {
+      return product.size;
+    });
+    itemSizes.value = [...new Set(availableSizes)];
+
+    // Set available quantity
+    fetchAvailableStock();
   } catch (err) {
     console.error(err);
   }
@@ -246,26 +301,62 @@ function decrementCounter() {
     counter.value = 1;
     return;
   }
-
   counter.value--;
 }
 
 // Choose product picture
 const chosenPicture = ref(0);
-function choosePicture(i) {
-  chosenPicture.value = i;
+function choosePicture(index) {
+  chosenPicture.value = index;
 }
 
 // Choose color
-const chosenColor = ref(null);
+const chosenColor = ref(0);
 function chooseColor(index) {
   chosenColor.value = index;
+  chosenSize.value = 0;
+
+  // Filter out unavailable sizes
+  itemSizes.value = item.value.stock
+    .filter(
+      (product) => product.color == itemColors.value[chosenColor.value].name
+    )
+    .map((product) => product.size);
 }
 
 // Choose size
-const chosenSize = ref(null);
+const chosenSize = ref(0);
 function chooseSize(index) {
   chosenSize.value = index;
+}
+
+// Track color and size changes
+watch([chosenColor, chosenSize], () => {
+  fetchAvailableStock();
+});
+
+// Get product quantity for chosen color and size
+const availableQuantity = ref(1);
+const chosenColorName = ref(null);
+function fetchAvailableStock() {
+  // Reverse color from hex to name
+  if (itemColors.value[chosenColor.value].isMulticolor) {
+    chosenColorName.value = 'multicolor';
+  } else {
+    // chosenColorName.value = all_colors.find(
+    //   (item) =>
+    //     item.hex.toLowerCase() ==
+    //     itemColors.value[chosenColor.value].hexValue.toLowerCase()
+    // ).name;
+    chosenColorName.value = itemColors.value[chosenColor.value].name;
+  }
+
+  const result = item.value.stock.find(
+    (product) =>
+      chosenColorName.value.toLowerCase() == product.color.toLowerCase() &&
+      itemSizes.value[chosenSize.value] == product.size
+  );
+  availableQuantity.value = result ? result.quantity : 0;
 }
 </script>
 <style scoped>

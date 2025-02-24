@@ -1,5 +1,11 @@
 <template>
   <div>
+    <In_development_component
+      v-if="showInDev"
+      :target="currentTarget"
+      :inDevActive="showInDev"
+      @close="showInDev = false"
+    />
     <div
       class="home-description relative z-50 w-full bg-[#f2f0f1] xl:flex xl:flex-nowrap xl:justify-evenly 2xl:items-center 2xl:justify-between"
     >
@@ -18,12 +24,18 @@
           designed to bring out your individuality and cater to your sense of
           style.
         </div>
-        <NuxtLink
+        <!-- <NuxtLink
           to="/shop"
           class="home-description__button SatoshiRegular16White mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] select-none items-center justify-center rounded-3xl bg-black"
         >
           Shop Now
-        </NuxtLink>
+        </NuxtLink> -->
+        <div
+          @click="openInDev('Shopping Navigation')"
+          class="home-description__button SatoshiRegular16White mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] cursor-pointer select-none items-center justify-center rounded-3xl bg-black"
+        >
+          Shop Now
+        </div>
         <div
           class="home-description__stats mt-4 flex flex-wrap justify-center gap-y-4"
         >
@@ -107,12 +119,19 @@
         :productsList="newArrivalsList"
         :getSliderProducts="() => getSliderProducts('getNewArrivals')"
       ></Slider_component>
-      <NuxtLink
+      <!-- <NuxtLink
         to="/new_arrivals"
         class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] select-none justify-center rounded-[62px] py-3 text-base"
       >
         View All
-      </NuxtLink>
+      </NuxtLink> -->
+      <div
+        @click="openInDev('Shopping Navigation')"
+        class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] cursor-pointer select-none justify-center rounded-[62px] py-3 text-base"
+      >
+        View All
+      </div>
+
       <div class="horizontal-separator-90 mt-10"></div>
     </div>
     <div class="top-selling mt-10">
@@ -126,12 +145,18 @@
         :productsList="topSellingList"
         :getSliderProducts="() => getSliderProducts('getTopSelling')"
       ></Slider_component>
-      <NuxtLink
+      <!-- <NuxtLink
         to="/top_selling"
         class="top-selling__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] select-none justify-center rounded-[62px] py-3 text-base"
       >
         View All
-      </NuxtLink>
+      </NuxtLink> -->
+      <div
+        @click="openInDev('Shopping Navigation')"
+        class="top-selling__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] cursor-pointer select-none justify-center rounded-[62px] py-3 text-base"
+      >
+        View All
+      </div>
     </div>
     <div
       class="style-masonry mx-auto mt-10 w-[1800px] max-w-[94vw] rounded-2xl bg-[#F0F0F0] pb-2 pt-9"
@@ -144,7 +169,7 @@
       <div
         class="style-masonry__tileset relative flex flex-col flex-wrap items-center justify-center px-2 xl:flex-row xl:gap-5"
       >
-        <nuxtLink
+        <!-- <NuxtLink
           v-for="(style, index) in dress_styles_list"
           :key="style.name"
           :to="style.path"
@@ -175,7 +200,40 @@
               alt="Background image"
             />
           </picture>
-        </nuxtLink>
+        </NuxtLink> -->
+
+        <div
+          v-for="(style, index) in dress_styles_list"
+          @click="openInDev('Shopping Navigation')"
+          :to="style.path"
+          class="style-masonry__tile relative mb-4 w-[90%] cursor-pointer rounded-3xl bg-white"
+          :class="[
+            index === 1 || index === 2
+              ? 'style-masonry__tile-big'
+              : 'style-masonry__tile-small',
+          ]"
+        >
+          <div
+            class="style-masonry__tile-text SatoshiBold absolute ml-6 mt-4 text-2xl"
+          >
+            {{ style.name }}
+          </div>
+          <picture>
+            <source
+              :srcset="`${style.backgroundPicture}.png`"
+              media="(max-width: 400px)"
+            />
+            <source
+              :srcset="`${style.backgroundPicture}-xl.png`"
+              media="(min-width: 401px)"
+            />
+            <img
+              class="style-masonry__tile-background select-none rounded-3xl"
+              :src="`${style.backgroundPicture}-xl.png`"
+              alt="Background image"
+            />
+          </picture>
+        </div>
       </div>
     </div>
     <div class="reviews mt-10">
@@ -290,10 +348,15 @@ import RatingHalfStarIcon from '../assets/icons/RatingHalfStarIcon.vue';
 import StarIcon from '../assets/icons/StarIconBig.vue';
 import VerifiedTickIcon from '../assets/icons/VerifiedTickIcon.vue';
 
-// Change BaseURL
-// const api = axios.create({
-//   baseURL: 'http://localhost:3001',
-// });
+import In_development_component from '@/components/in_development_component.vue';
+
+// In development popup
+const showInDev = ref(false);
+const currentTarget = ref('');
+function openInDev(string) {
+  currentTarget.value = string;
+  showInDev.value = true;
+}
 
 const config = useRuntimeConfig();
 const api = axios.create({
@@ -382,14 +445,6 @@ async function updateOrderStatus(orderId, newStatus) {
     return { success: false, message: 'Internal server error' };
   }
 }
-
-// An array for Browse by dress style
-// const dress_styles_list = [
-//   { name: 'Casual', backgroundPicture: '/assets/images/browse-casual' },
-//   { name: 'Formal', backgroundPicture: '/assets/images/browse-formal' },
-//   { name: 'Party', backgroundPicture: '/assets/images/browse-party' },
-//   { name: 'Sport', backgroundPicture: '/assets/images/browse-gym' },
-// ];
 
 // Method to Get 5 website reviews
 const websiteReviewsArray = ref([]);
