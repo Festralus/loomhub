@@ -281,15 +281,15 @@
                 />
               </span>
             </div>
-            <div class="reviews__card-name-line flex items-end">
-              <div class="reviews__card-name SatoshiBold mt-2 text-base">
+            <div class="reviews__card__name-line flex items-end">
+              <div class="reviews__card__name SatoshiBold mt-2 text-base">
                 {{ review.user }}
               </div>
               <VerifiedTickIcon
-                class="reviews__card-verified mb-1 ml-1 size-4"
+                class="reviews__card__verified mb-1 ml-1 size-4"
               ></VerifiedTickIcon>
             </div>
-            <div class="reviews__card-text SatoshiRegular mt-1 text-gray-500">
+            <div class="reviews__card__text SatoshiRegular mt-1 text-gray-500">
               {{ review.comment }}
             </div>
           </div>

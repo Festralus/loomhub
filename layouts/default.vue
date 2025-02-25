@@ -96,6 +96,7 @@
         <div
           @mouseenter="isShopHovered = true"
           @mouseleave="isShopHovered = false"
+          @click="isShopHovered = true"
           :class="{ 'z-[140]': isShopHovered }"
           class="top-menu__nav-item top-menu__nav-item__shop relative hidden cursor-pointer flex-row items-center 2xl:flex"
         >
@@ -104,10 +105,11 @@
             class="top-menu__nav-item__shop-arrow mt-[2px] h-6 pl-[3px] 2xl:w-[14px]"
           />
           <!-- Dropdown menu -->
-          <div
-            v-show="isShopHovered"
-            class="top-menu__nav-item__shop-dropdown relative flex flex-col gap-2 p-2"
-          >
+          <div v-show="isShopHovered" class="shop-dropdown__title">
+            <div class="shop-dropdown__title-text">Shop</div>
+            <PointerIcon class="shop-dropdown__title-arrow" />
+          </div>
+          <div v-show="isShopHovered" class="top-menu__nav-item__shop-dropdown">
             <!-- <NuxtLink
               v-for="(style, index) in dress_styles_list"
               :key="index"
@@ -135,7 +137,6 @@
             </NuxtLink> -->
             <div
               v-for="(style, index) in dress_styles_list"
-              @click="openInDev('Shopping Navigation')"
               :key="index"
               class="shop-dropdown__item"
               :class="[
@@ -146,13 +147,14 @@
               :style="{
                 backgroundImage: `url(${style.backgroundPicture}.png)`,
               }"
-              @mouseover="hoveredIndex = index"
-              @mouseleave="hoveredIndex = null"
+              @mouseover="[(hoveredIndex = index)]"
+              @mouseleave="[(hoveredIndex = null)]"
+              @click="[(hoveredIndex = index)]"
             >
-              <span class="relative z-10 text-lg font-semibold">{{
-                style.name
-              }}</span>
-
+              <span
+                class="shop-dropdown__item__name relative z-10 text-lg font-semibold"
+                >{{ style.name }}</span
+              >
               <div
                 v-if="hoveredIndex !== index"
                 class="shop-dropdown__item__shadow"
@@ -416,7 +418,7 @@
             <div
               class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
-              COMPANY
+              CONTACTS
             </div>
             <NuxtLink to="/" class="links__link">About</NuxtLink>
             <NuxtLink to="/" class="links__link">Features</NuxtLink>
@@ -427,12 +429,12 @@
             <div
               class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
-              HELP
+              LINKS
             </div>
-            <NuxtLink to="/" class="links__link">Customer support</NuxtLink>
+            <NuxtLink to="/" class="links__link">X / Twitter</NuxtLink>
             <NuxtLink to="/" class="links__link">Delivery Details</NuxtLink>
             <NuxtLink to="/" class="links__link">Terms & Conditions</NuxtLink>
-            <NuxtLink to="/" class="links__link">Privacy Policy</NuxtLink>
+            <NuxtLink to="/" class="links__link">Github</NuxtLink>
           </div>
         </div>
         <div class="links__container inline-flex">
@@ -456,7 +458,7 @@
             <NuxtLink to="/" class="links__link">Free eBook</NuxtLink>
             <NuxtLink to="/" class="links__link">Developer Tutorial</NuxtLink>
             <NuxtLink to="/" class="links__link">How to - Blog</NuxtLink>
-            <NuxtLink to="/" class="links__link">Youtube Playlist</NuxtLink>
+            <NuxtLink to="/" class="links__link">About me</NuxtLink>
           </div>
         </div>
       </div>
@@ -584,12 +586,7 @@ function openDropdown() {
 
 // Focus shop upon hovering over
 const isShopHovered = ref(false);
-
-// EXP EXP EXP
-
 const hoveredIndex = ref(null);
-
-// EXP EXP EXP
 
 // Focus search upon opening it
 const HomePageSearch = ref();

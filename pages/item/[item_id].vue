@@ -26,6 +26,7 @@
           <ProductRatingComponent
             v-if="item"
             :product="item"
+            :showRatingNumber="false"
             class="item__rating-stars"
           />
         </div>
@@ -109,7 +110,10 @@
               >)
             </div>
           </div>
-          <div class="item__cart-button select-none" @click="openInDev('Cart')">
+          <div
+            class="item__cart-button cursor-pointer select-none"
+            @click="openInDev('Cart')"
+          >
             Add to Cart
           </div>
           <In_development_component
@@ -123,56 +127,62 @@
     </div>
     <div class="item__tabs">
       <div class="tabs__list">
-        <div class="item__details-tab">Product Destails</div>
-        <div class="item__reviews-tab">Rating & Reviews</div>
-        <div class="item__reviews-FAQ">FAQs</div>
+        <div class="item-tabs__details-tab">Product Destails</div>
+        <div class="item-tabs__reviews-tab">Rating & Reviews</div>
+        <div class="item-tabs__FAQ-tab">FAQs</div>
       </div>
-      <div class="tabs__details"></div>
-      <div class="tabs__reviews"></div>
-      <div class="tabs__faqs"></div>
-    </div>
-    <!-- <div class="reviews">
-      <div class="reviews__menu">
-        <div class="reviews__menu__title">All reviews ({{ 451 }})</div>
-        <button class="reviews__menu__button">Write a Review</button>
+      <div class="details-tab__container">
+        <div>DETAILS INFORMATION: COUNTRY, MATERIAL, ETC</div>
       </div>
-      <div class="reviews__list" ref="reviewCardsContainer">
-        <div class="reviews__cards">
-          <div
-            class="reviews__card button-border"
-            v-for="review in websiteReviewsArray"
-            :key="'main' + review.id"
-            ref="reviewCardRefs"
-          >
-            <div class="reviews__card-rating mt-1 flex items-center">
-              <span class="flex">
-                <RatingStarIcon
-                  v-for="n in Math.floor(review.rating)"
-                  :key="'full-' + review.id"
-                  class="h-5 w-5"
-                />
-                <RatingEmptyStarIcon
-                  v-for="n in Math.floor(5 - review.rating)"
-                  :key="'empty-' + review.id"
-                  class="h-5 w-5"
-                />
-              </span>
+      <div class="reviews-tab__container">
+        <div class="reviews__top-line">
+          <div class="reviews">
+            <div class="reviews__menu">
+              <div class="reviews-menu__title">All reviews ({{ 451 }})</div>
+              <button class="reviews-menu__filter-button">
+                <div class="reviews-menu__filter-popup">POPUP WINDOW</div>
+              </button>
+              <button class="reviews-menu__write-button">Write a Review</button>
             </div>
-            <div class="reviews__card-name-line flex items-end">
-              <div class="reviews__card-name SatoshiBold mt-2 text-base">
-                {{ review.user }}
+
+            <!-- Reviews block -->
+            <div class="reviews__list">
+              <div
+                class="reviews__card button-border"
+                v-for="(review, index) in productReviews"
+                :key="'main' + index"
+                ref="reviewCardRefs"
+              >
+                <ProductRatingComponent
+                  class="reviews__card__stars"
+                  v-if="review"
+                  :product="review"
+                  :starsSize="6"
+                />
+                <div class="reviews__card__name-line flex items-end">
+                  <div class="reviews__card__name SatoshiBold mt-2 text-xl">
+                    {{ review?.user }}
+                  </div>
+                  <VerifiedTickIcon
+                    class="reviews__card__verified mb-1 ml-1 size-5"
+                  ></VerifiedTickIcon>
+                </div>
+                <div
+                  class="reviews__card__text SatoshiRegular mt-1 text-gray-500"
+                >
+                  {{ review?.comment }}
+                </div>
+                <div class="reviews__card__date">{{ review?.createdAt }}</div>
               </div>
-              <VerifiedTickIcon
-                class="reviews__card-verified mb-1 ml-1 size-4"
-              ></VerifiedTickIcon>
-            </div>
-            <div class="reviews__card-text SatoshiRegular mt-1 text-gray-500">
-              {{ review.comment }}
             </div>
           </div>
         </div>
       </div>
-    </div> -->
+      <div class="FAQ-tab__container">
+        GENERAL QUESTIONS (SIMILAR FOR EACH ITEM): DELIVERY DETAILS, REFUND
+        OPTIONS, ETC
+      </div>
+    </div>
   </div>
 </template>
 <script setup>
@@ -182,6 +192,8 @@ import all_colors from '@/data/colors';
 
 import MinusIcon from '@/assets/icons/MinusIcon.vue';
 import PlusIcon from '@/assets/icons/PlusIcon.vue';
+import VerifiedTickIcon from '@/assets/icons/VerifiedTickIcon.vue';
+
 import BreadcrumbsComponent from '@/components/breadcrumbs_component.vue';
 import In_development_component from '@/components/in_development_component.vue';
 
@@ -211,15 +223,13 @@ onBeforeMount(() => {
   checkSession();
   setChosenItem();
 });
-onMounted(() => {
-  // fetchAvailableStock();
-});
 
 // Enable routing
 const router = useRouter();
 
 // Get product information
 const path = ref('');
+const productID = ref('');
 const item = ref(null);
 const itemImages = ref([]);
 const itemStock = ref([]);
@@ -231,10 +241,12 @@ const currencyMultiplier = 1;
 async function setChosenItem() {
   path.value = window.location.pathname;
   const segments = path.value.split('/');
-  const lastSegment = segments.pop();
+  productID.value = segments.pop();
 
   try {
-    const res = await api.post('/api/productByGid', { itemGID: lastSegment });
+    const res = await api.post('/api/productByGid', {
+      itemGID: productID.value,
+    });
     item.value = res.data;
     itemImages.value = res.data.images;
     itemStock.value = res.data.stock;
@@ -275,6 +287,7 @@ async function setChosenItem() {
 
     // Set available quantity
     fetchAvailableStock();
+    getProductReviews();
   } catch (err) {
     console.error(err);
   }
@@ -290,8 +303,8 @@ async function setChosenItem() {
 // Product quantity counter
 const counter = ref(1);
 function incrementCounter() {
-  if (counter.value >= itemStock.value[0].quantity) {
-    counter.value = itemStock.value[0].quantity;
+  if (counter.value >= availableQuantity.value) {
+    counter.value = availableQuantity.value;
     return;
   }
   counter.value++;
@@ -315,6 +328,7 @@ const chosenColor = ref(0);
 function chooseColor(index) {
   chosenColor.value = index;
   chosenSize.value = 0;
+  counter.value = 1;
 
   // Filter out unavailable sizes
   itemSizes.value = item.value.stock
@@ -328,6 +342,7 @@ function chooseColor(index) {
 const chosenSize = ref(0);
 function chooseSize(index) {
   chosenSize.value = index;
+  counter.value = 1;
 }
 
 // Track color and size changes
@@ -357,6 +372,27 @@ function fetchAvailableStock() {
       itemSizes.value[chosenSize.value] == product.size
   );
   availableQuantity.value = result ? result.quantity : 0;
+}
+
+// Get product reviews
+const productReviews = ref([]);
+async function getProductReviews() {
+  try {
+    // Get an array of reviews
+    const res = await api.post('/api/findProductReview', {
+      productID: productID.value,
+    });
+
+    // Modify nicknames to match case rules
+    productReviews.value = res.data.map((review) => ({
+      ...review,
+      user:
+        review.user.charAt(0).toLocaleUpperCase() +
+        review.user.slice(1).toLocaleLowerCase(),
+    }));
+  } catch (err) {
+    console.error(err);
+  }
 }
 </script>
 <style scoped>
