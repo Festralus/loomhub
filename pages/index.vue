@@ -26,13 +26,13 @@
         </div>
         <!-- <NuxtLink
           to="/shop"
-          class="home-description__button SatoshiRegular16White mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] select-none items-center justify-center rounded-3xl bg-black"
+          class="home-description__button SatoshiRegular text-white text-base mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] select-none items-center justify-center rounded-3xl bg-black"
         >
           Shop Now
         </NuxtLink> -->
         <div
           @click="openInDev('Shopping Navigation')"
-          class="home-description__button SatoshiRegular16White mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] cursor-pointer select-none items-center justify-center rounded-3xl bg-black"
+          class="home-description__button SatoshiRegular mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] cursor-pointer select-none items-center justify-center rounded-3xl bg-black text-base text-white"
         >
           Shop Now
         </div>
@@ -42,13 +42,15 @@
           <div
             class="home-description__stat home-description__stats-brands SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
-            <span class="SatoshiBold24 home-description__stat-value">200+</span>
+            <span class="SatoshiBold home-description__stat-value text-2xl"
+              >200+</span
+            >
             <br class="home-description__stat-label" />International Brands
           </div>
           <div
             class="home-description__stat home-description__stats-products SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
-            <span class="SatoshiBold24 home-description__stat-value"
+            <span class="SatoshiBold home-description__stat-value text-2xl"
               >2,000+</span
             >
             <br class="home-description__stat-label" />High-Quality Products
@@ -56,7 +58,7 @@
           <div
             class="home-description__stat home-description__stats-customers SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
-            <span class="SatoshiBold24 home-description__stat-value"
+            <span class="SatoshiBold home-description__stat-value text-2xl"
               >30,000+</span
             ><br class="home-description__stat-label" />
             Happy Customers
@@ -357,6 +359,11 @@ function openInDev(string) {
   currentTarget.value = string;
   showInDev.value = true;
 }
+
+// Page title and environment
+useHead({
+  title: 'LoomHub',
+});
 
 const config = useRuntimeConfig();
 const api = axios.create({

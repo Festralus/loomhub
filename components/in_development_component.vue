@@ -14,7 +14,7 @@
         class="in-development__close-button absolute left-3 top-3 size-5 rotate-180 cursor-pointer"
         @click="closeInDev"
       />
-      <div class="in-development__text Satoshi-Regular justify-center text-2xl">
+      <div class="in-development__text justify-center text-2xl">
         The <span class="font-extrabold">{{ target }}</span> page is currently
         in development. Sorry for the inconvenience!
       </div>
