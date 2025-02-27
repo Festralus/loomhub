@@ -76,7 +76,32 @@
   }
 }
 
-/* Burger menu block */
+@media screen and (max-width: 1535px) {
+  /* Dropdown styles */
+  .shop-dropdown__title {
+    left: -10px;
+    top: -13px;
+    padding: 6px 64px 0 10px;
+  }
+  .shop-dropdown__title-arrow {
+    right: 13px;
+    top: 6px;
+  }
+}
+
+/* PC view */
+@media screen and (min-width: 1536px) {
+  /* Dropdown styles */
+  .shop-dropdown__title {
+    left: -10px;
+    top: -15px;
+    padding: 6px 70px 0 10px;
+  }
+  .shop-dropdown__title-arrow {
+    right: 10px;
+    top: 10px;
+  }
+} /* Burger menu block */
 .BurgerMenu__dropdown {
   position: fixed;
   top: 0;
@@ -147,9 +172,6 @@
 .shop-dropdown__title {
   position: absolute;
   display: flex;
-  left: -10px;
-  top: -15px;
-  padding: 6px 70px 0 10px;
 
   width: 62px;
   height: 60px;
@@ -159,8 +181,6 @@
 }
 .shop-dropdown__title-arrow {
   position: absolute;
-  right: 10px;
-  top: 10px;
 
   width: 11px;
   height: 24px;

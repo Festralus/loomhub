@@ -126,27 +126,137 @@
       </div>
     </div>
     <div class="item__tabs">
-      <div class="tabs__list">
-        <div class="item-tabs__details-tab">Product Destails</div>
-        <div class="item-tabs__reviews-tab">Rating & Reviews</div>
-        <div class="item-tabs__FAQ-tab">FAQs</div>
-      </div>
-      <div class="details-tab__container">
-        <div>DETAILS INFORMATION: COUNTRY, MATERIAL, ETC</div>
+      <!-- Tabs menu -->
+      <div class="tabs__list" ref="productTabsRefs">
+        <div
+          @click="switchProductTab(0)"
+          class="tabs__list__tab item-tabs__details-tab"
+          :class="{ chosen: currentProductTab === 0 }"
+        >
+          Product Details
+        </div>
+        <div
+          @click="switchProductTab(1)"
+          class="tabs__list__tab item-tabs__reviews-tab"
+          :class="{ chosen: currentProductTab === 1 }"
+        >
+          Rating & Reviews
+        </div>
+        <div
+          @click="switchProductTab(2)"
+          class="tabs__list__tab item-tabs__FAQ-tab"
+          :class="{ chosen: currentProductTab === 2 }"
+        >
+          FAQs
+        </div>
       </div>
 
-      <!-- Reviews -->
-      <div class="reviews-tab__container">
+      <!-- Details tab -->
+      <div v-if="currentProductTab == 0" class="details-tab__container">
+        <table class="details-tab__table">
+          <tbody>
+            <tr v-for="(value, key) in productDetails" :key="key" class=" ">
+              <th class="details-tab__table-header">
+                {{ formatKey(key) }}
+              </th>
+              <td class="details-tab__table-data">
+                <div class="table-data__value">{{ value }}</div>
+                <div
+                  @click="openInDev('Shopping Navigation')"
+                  v-if="isKeyFilter(key)"
+                  class="table-data__link"
+                >
+                  Click to find similar products
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="details-tab__photos">
+          <img
+            v-for="(item, index) in itemDetailsImages"
+            :key="`image-${index}`"
+            :src="`${item}`"
+            class="details-tab__photo"
+          />
+        </div>
+      </div>
+      <In_development_component
+        v-if="showInDev"
+        :target="currentTarget"
+        :inDevActive="showInDev"
+        @close="showInDev = false"
+      />
+
+      <!-- Reviews tab -->
+      <div v-if="currentProductTab == 1" class="reviews-tab__container">
         <div class="reviews__top-line">
           <div class="reviews">
             <div class="reviews__menu">
               <div class="reviews-menu__title">
-                All reviews ({{ totalReviewsCount }})
+                All reviews
+                <span class="reviews-menu__title__number"
+                  >({{ totalReviewsCount }})</span
+                >
               </div>
-              <button class="reviews-menu__filter-button">
-                <div class="reviews-menu__filter-popup">POPUP WINDOW</div>
-              </button>
-              <button class="reviews-menu__write-button">Write a Review</button>
+              <div class="reviews-menu__management">
+                <div class="reviews-menu__sorting">
+                  <div
+                    class="sorting__dropdown-menu"
+                    @click="toggleSortingList()"
+                  >
+                    <div class="sorting__dropdown-menu__text">
+                      {{ chosenSortingParameterName }}
+                    </div>
+                    <PointerIcon
+                      class="sorting__dropdown-arrow"
+                      :class="{ active: isSortingListActive }"
+                      :strokeWidth="0.5"
+                    />
+                  </div>
+                  <div
+                    v-show="isSortingListActive"
+                    class="sorting__dropdown-menu__options"
+                  >
+                    <div
+                      class="sorting__dropdown-menu__option"
+                      @click="changeSortingParameter(0, 'Newest')"
+                    >
+                      Newest
+                    </div>
+                    <div
+                      class="sorting__dropdown-menu__option"
+                      @click="changeSortingParameter(1, 'Oldest')"
+                    >
+                      Oldest
+                    </div>
+                    <div
+                      class="sorting__dropdown-menu__option"
+                      @click="changeSortingParameter(2, 'Best')"
+                    >
+                      Best
+                    </div>
+                    <div
+                      class="sorting__dropdown-menu__option"
+                      @click="changeSortingParameter(3, 'Worst')"
+                    >
+                      Worst
+                    </div>
+                  </div>
+                </div>
+                <button
+                  class="reviews-menu__write-button"
+                  @click="openInDev('Write Review')"
+                >
+                  Write a Review
+                </button>
+                <In_development_component
+                  v-if="showInDev"
+                  :target="currentTarget"
+                  :inDevActive="showInDev"
+                  @close="showInDev = false"
+                />
+              </div>
             </div>
           </div>
 
@@ -157,7 +267,7 @@
               :class="{ 'review__card-collapsed': !expandedReviews[index] }"
               v-for="(review, index) in paginatedReviews"
               :key="'main-' + index"
-              ref="reviewCardRefs"
+              ref="reviewCardsRefs"
             >
               <ProductRatingComponent
                 class="reviews__card__stars"
@@ -223,9 +333,86 @@
           </div>
         </div>
       </div>
-      <div class="FAQ-tab__container">
-        GENERAL QUESTIONS (SIMILAR FOR EACH ITEM): DELIVERY DETAILS, REFUND
-        OPTIONS, ETC
+
+      <!-- FAQs tab -->
+      <div v-if="currentProductTab == 2" class="FAQ-tab__container">
+        <div class="FAQ-tab__question">
+          <span class="FAQ-tab__question-bullet">•</span> What is the estimated
+          delivery time for this product?
+        </div>
+        <div class="FAQ-tab__answer">
+          The delivery time for this product depends on your location.
+          Typically, it takes 3-5 business days for delivery within the country.
+          For international shipping, delivery can take up to 10 business days.
+        </div>
+
+        <div class="FAQ-tab__question">
+          <span class="FAQ-tab__question-bullet">•</span> Do you offer free
+          shipping?
+        </div>
+        <div class="FAQ-tab__answer">
+          Yes, we offer free standard shipping on orders over $50. For orders
+          below that amount, a flat shipping fee of $5.99 will apply.
+        </div>
+
+        <div class="FAQ-tab__question">
+          <span class="FAQ-tab__question-bullet">•</span> Can I return the
+          product if I'm not satisfied?
+        </div>
+        <div class="FAQ-tab__answer">
+          Absolutely! You can return most products within 30 days of receipt for
+          a full refund. Please ensure that the product is in unused and
+          resalable condition.
+        </div>
+
+        <div class="FAQ-tab__question">
+          <span class="FAQ-tab__question-bullet">•</span> How do I initiate a
+          return or exchange?
+        </div>
+        <div class="FAQ-tab__answer">
+          To initiate a return or exchange, simply
+          <span @click="openInDev('Contacts Page')" class="FAQ__contact-support"
+            >contact our customer support</span
+          >
+          team through our website, and they will guide you through the process.
+          You will need to provide your order number and reason for the return.
+        </div>
+        <In_development_component
+          v-if="showInDev"
+          :target="currentTarget"
+          :inDevActive="showInDev"
+          @close="showInDev = false"
+        />
+
+        <div class="FAQ-tab__question">
+          <span class="FAQ-tab__question-bullet">•</span> What payment methods
+          do you accept?
+        </div>
+        <div class="FAQ-tab__answer">
+          We accept all major credit and debit cards, including Visa,
+          MasterCard, and American Express. We also accept PayPal, Apple Pay,
+          and Google Pay for added convenience.
+        </div>
+
+        <div class="FAQ-tab__question">
+          <span class="FAQ-tab__question-bullet">•</span> How can I track my
+          order?
+        </div>
+        <div class="FAQ-tab__answer">
+          Once your order has shipped, we will send you a tracking number via
+          email. You can use this tracking number to check the status of your
+          delivery on the carrier's website.
+        </div>
+
+        <!-- <div class="FAQ-tab__question">
+          <span class="FAQ-tab__question-bullet">•</span> Do you offer gift
+          cards?
+        </div>
+        <div class="FAQ-tab__answer">
+          Yes, we offer gift cards in various denominations. You can purchase
+          them directly from our website, and they are available for immediate
+          digital delivery.
+        </div> -->
       </div>
     </div>
   </div>
@@ -240,6 +427,7 @@ import ArrowIcon from '../assets/icons/ArrowIcon.vue';
 import MinusIcon from '@/assets/icons/MinusIcon.vue';
 import PlusIcon from '@/assets/icons/PlusIcon.vue';
 import VerifiedTickIcon from '@/assets/icons/VerifiedTickIcon.vue';
+import PointerIcon from '@/assets/icons/PointerIcon.vue';
 
 import BreadcrumbsComponent from '@/components/breadcrumbs_component.vue';
 import In_development_component from '@/components/in_development_component.vue';
@@ -296,6 +484,7 @@ const router = useRouter();
 const path = ref('');
 const productID = ref('');
 const itemImages = ref([]);
+const itemDetailsImages = ref([]);
 const itemStock = ref([]);
 const itemColors = ref([]);
 const itemSizes = ref([]);
@@ -313,6 +502,7 @@ async function setChosenItem() {
     });
     item.value = res.data;
     itemImages.value = res.data.images;
+    itemDetailsImages.value = res.data.detailsImages;
     itemStock.value = res.data.stock;
 
     // Set the price
@@ -352,6 +542,7 @@ async function setChosenItem() {
     // Set available quantity
     fetchAvailableStock();
     getProductReviews();
+    getProductDetails();
   } catch (err) {
     console.error(err);
   }
@@ -438,7 +629,60 @@ function fetchAvailableStock() {
   availableQuantity.value = result ? result.quantity : 0;
 }
 
-// Reviews
+// Product Tabs
+const productTabsRefs = ref([]);
+const currentProductTab = ref(1);
+function switchProductTab(index) {
+  currentProductTab.value = index;
+}
+
+const isSortingListActive = ref(false);
+const chosenSortingParameter = ref(0);
+const chosenSortingParameterName = ref('Newest');
+function changeSortingParameter(par, name) {
+  chosenSortingParameter.value = par;
+  chosenSortingParameterName.value = name;
+  sortReviews();
+  toggleSortingList();
+}
+
+function toggleSortingList() {
+  isSortingListActive.value = !isSortingListActive.value;
+  console.log(isSortingListActive.value);
+}
+
+function sortReviews() {
+  expandedReviews.value = [];
+  shouldShowExpandButton.value = [];
+  switch (chosenSortingParameter.value) {
+    case 0:
+      productReviews.value.sort((a, b) => {
+        const dateA = new Date(a.createdAt);
+        const dateB = new Date(b.createdAt);
+        return dateA.getTime() - dateB.getTime();
+      });
+      break;
+    case 1:
+      productReviews.value.sort((a, b) => {
+        const dateA = new Date(a.createdAt);
+        const dateB = new Date(b.createdAt);
+        return dateB.getTime() - dateA.getTime();
+      });
+      break;
+    case 2:
+      productReviews.value.sort((a, b) => {
+        return b.rating - a.rating;
+      });
+      break;
+    case 3:
+      productReviews.value.sort((a, b) => {
+        return a.rating - b.rating;
+      });
+      break;
+  }
+}
+
+// Reviews tab
 // Get product reviews
 const productReviews = ref([]);
 const totalReviewsCount = computed(() => productReviews.value.length);
@@ -480,16 +724,17 @@ async function getProductReviews() {
 }
 
 // Expand and collapse long reviews
-const reviewCardRefs = ref([]);
+// Might also add checks on window resize to find new reviews that need Expand button. Would hurt performance though, even with debounce.
+const reviewCardsRefs = ref([]);
 const shouldShowExpandButton = ref([]);
 const expandedReviews = ref([]);
 
 function checkReviewHeight() {
   nextTick(() => {
-    if (!reviewCardRefs.value.length) return;
+    if (!reviewCardsRefs.value.length) return;
 
-    paginatedReviews.value.forEach((review, index) => {
-      const el = reviewCardRefs.value[index];
+    paginatedReviews.value.forEach((_, index) => {
+      const el = reviewCardsRefs.value[index];
       if (!el) return;
 
       const textEl = el.querySelector('.reviews__card__text');
@@ -530,6 +775,43 @@ function nextReviewPage() {
   expandedReviews.value = [];
   shouldShowExpandButton.value = [];
   currentReviewPage.value++;
+}
+
+// Details tab
+const productDetails = ref({});
+function getProductDetails() {
+  const availableColors = item.value.colors.join(', ');
+  const availableSizes = item.value.sizes.join(', ');
+
+  productDetails.value = {
+    name: item.value.name,
+    brand: item.value.brand,
+    description: item.value.description,
+    productCategory: item.value.productCategory,
+    composition: item.value.composition,
+    clothingType: item.value.clothingType,
+    availableColors: availableColors,
+    availableSizes: availableSizes,
+    careInstructions: item.value.careInstructions,
+    country: item.value.country,
+    brandStyleId: item.value.brandStyleId,
+  };
+}
+function isKeyFilter(key) {
+  console.log(key);
+  return (
+    key == 'brand' ||
+    key == 'productCategory' ||
+    key == 'clothingType' ||
+    key == 'country'
+  );
+}
+function formatKey(key) {
+  return key
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/_/g, ' ')
+    .replace(/\bId\b/gi, 'ID')
+    .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 </script>
 <style scoped>

@@ -27,9 +27,10 @@
         }"
       ></div>
       <div
+        @click="isShopClicked = false"
         class="native-overlay native-shop-hover-overlay hidden sm:block"
         :class="{
-          active: isShopHovered,
+          active: isShopHovered || isShopClicked,
         }"
       ></div>
       <div
@@ -96,20 +97,26 @@
         <div
           @mouseenter="isShopHovered = true"
           @mouseleave="isShopHovered = false"
-          @click="isShopHovered = true"
-          :class="{ 'z-[140]': isShopHovered }"
-          class="top-menu__nav-item top-menu__nav-item__shop relative hidden cursor-pointer flex-row items-center 2xl:flex"
+          @click="toggleShop()"
+          :class="{ 'z-[140]': isShopHovered || isShopClicked }"
+          class="top-menu__nav-item top-menu__nav-item__shop relative hidden cursor-pointer flex-row items-center sm:flex"
         >
           <div class="top-menu__nav-item__shop-text">Shop</div>
           <PointerIcon
-            class="top-menu__nav-item__shop-arrow mt-[2px] h-6 pl-[3px] 2xl:w-[14px]"
+            class="top-menu__nav-item__shop-arrow mt-[2px] h-6 pl-[3px] sm:w-[14px]"
           />
           <!-- Dropdown menu -->
-          <div v-show="isShopHovered" class="shop-dropdown__title">
+          <div
+            v-show="isShopHovered || isShopClicked"
+            class="shop-dropdown__title"
+          >
             <div class="shop-dropdown__title-text">Shop</div>
             <PointerIcon class="shop-dropdown__title-arrow" />
           </div>
-          <div v-show="isShopHovered" class="top-menu__nav-item__shop-dropdown">
+          <div
+            v-show="isShopHovered || isShopClicked"
+            class="top-menu__nav-item__shop-dropdown"
+          >
             <!-- <NuxtLink
               v-for="(style, index) in dress_styles_list"
               :key="index"
@@ -178,7 +185,7 @@
         <NuxtLink to="/brands" class="top-menu__nav-item flex">Brands</NuxtLink> -->
         <div
           @click="openInDev('Shopping Navigation')"
-          class="top-menu__nav-item top-menu__nav-item__shop relative flex cursor-pointer flex-row items-center 2xl:hidden"
+          class="top-menu__nav-item top-menu__nav-item__shop relative flex cursor-pointer flex-row items-center sm:hidden"
         >
           <div
             @click="openInDev('Shopping Navigation')"
@@ -586,7 +593,19 @@ function openDropdown() {
 
 // Focus shop upon hovering over
 const isShopHovered = ref(false);
+const isShopClicked = ref(false);
 const hoveredIndex = ref(null);
+function toggleShop() {
+  if (isShopClicked.value) {
+    isShopHovered.value = false;
+    isShopClicked.value = false;
+  } else if (isShopHovered.value && !isShopClicked.value) {
+    isShopHovered.value = false;
+    isShopClicked.value = true;
+  } else {
+    isShopClicked.value = true;
+  }
+}
 
 // Focus search upon opening it
 const HomePageSearch = ref();

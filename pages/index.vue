@@ -262,7 +262,7 @@
             class="reviews__card button-border mx-4 mt-6 h-[180px] w-[340px] rounded-3xl border-gray-500 p-6"
             v-for="review in websiteReviewsArray"
             :key="'main' + review.id"
-            ref="reviewCardRefs"
+            ref="reviewCardsRefs"
           >
             <div class="reviews__card-rating mt-1 flex items-center">
               <span class="flex">
