@@ -98,6 +98,11 @@
     margin-left: auto;
     margin-right: auto;
   }
+
+  /* Related items */
+  .relevant-products__title {
+    font-size: 48px;
+  }
 }
 
 /* Tablet view */
@@ -276,6 +281,11 @@
   .FAQ-tab__answer {
     font-size: 16px;
     margin-bottom: 20px;
+  }
+
+  /* Related items */
+  .relevant-products__title {
+    font-size: 28px;
   }
 }
 
@@ -716,4 +726,11 @@
 .FAQ__contact-support {
   color: #007bff;
   cursor: pointer;
+}
+
+/* Related items */
+.relevant-products__title {
+  margin-top: 30px;
+  font-family: 'Integral-Bold';
+  text-align: center;
 }

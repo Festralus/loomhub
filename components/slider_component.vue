@@ -21,26 +21,6 @@
         {{ product.name }}
       </div>
       <ProductRatingComponent :product="product" />
-      <!-- <div class="new-arrivals__items-item__rating mt-1 flex items-center">
-        <span class="flex">
-          <RatingStarIcon
-            v-for="n in Math.floor(product.rating)"
-            :key="'full-' + product.id"
-            class="h-4 w-4"
-          />
-          <RatingHalfStarIcon
-            v-if="product.rating % 1 !== 0"
-            :key="'half-' + product.id"
-            class="h-4 w-4"
-          />
-          <RatingEmptyStarIcon
-            v-for="n in Math.floor(5 - product.rating)"
-            :key="'empty-' + product.id"
-            class="h-4 w-4"
-          />
-        </span>
-        <span class="ml-2 text-sm text-gray-600">({{ product.rating }})</span>
-      </div> -->
       <div
         class="new-arrivals__items-item__price SatoshiBold mt-1 flex items-center text-xl font-semibold"
       >
@@ -61,16 +41,41 @@
 </template>
 
 <script setup>
+import axios from 'axios';
 import { defineProps } from 'vue';
 import { useRouter } from 'vue-router';
 
-defineProps({
-  productsList: {
-    type: Array,
+const props = defineProps({
+  item: {
+    type: Object,
+    required: false,
+  },
+  filterName: {
+    type: String,
     required: true,
+  },
+  limit: {
+    type: Number,
+    required: false,
+    default: 9,
+  },
+  productID: {
+    type: String,
+    required: false,
   },
 });
 
+onMounted(() => {
+  getSliderProducts();
+});
+
+// API endpoint
+const config = useRuntimeConfig();
+const api = axios.create({
+  baseURL: config.public.apiBase,
+});
+
+// Drag settings
 const scrollContainer = ref(null);
 let isDragging = false;
 let startX, scrollLeft, moved;
@@ -95,10 +100,53 @@ function endDrag() {
   isDragging = false;
 }
 
+// Go to product
 const router = useRouter();
 function goToItem(itemId) {
   if (!moved) {
     router.push(`/item/${itemId}`);
+  }
+}
+
+// Get the product list
+const productsList = ref([]);
+const currencyMultiplier = 1;
+
+async function getSliderProducts() {
+  try {
+    const res = await api.get('/api/getSliderProductsList', {
+      params: {
+        filterName: props?.filterName,
+        limit: parseInt(props?.limit) || 9,
+        productCategory: props?.item?.productCategory || null,
+        clothingType: props?.item?.clothingType || null,
+        itemId: props?.productID,
+      },
+    });
+
+    const response = res.data.map((product) => {
+      const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
+      const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
+        2
+      );
+      const discountPercentage =
+        Math.round(100 - (modifiedPrice / modifiedOldPrice) * 100) || 0;
+
+      return {
+        name: product.name,
+        price: modifiedPrice,
+        GID: product.GID,
+        images: product.images,
+        timestamps: product.timestamps,
+        rating: product.rating || 4,
+        oldPrice: modifiedOldPrice || null,
+        discount: discountPercentage,
+      };
+    });
+
+    productsList.value = [...response];
+  } catch (err) {
+    console.error(err);
   }
 }
 </script>

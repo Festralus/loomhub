@@ -5,7 +5,7 @@
       <div class="item__gallery">
         <div class="secondary-pictures">
           <img
-            v-for="(image, i) in itemImages"
+            v-for="(image, i) in item?.images"
             :key="`image-${i}`"
             :src="`${image}`"
             class="item__secondary-picture"
@@ -16,7 +16,7 @@
         <div class="main-picture">
           <img
             class="item__main-picture"
-            :src="`${itemImages[chosenPicture]}`"
+            :src="`${item?.images?.[chosenPicture]}`"
           />
         </div>
       </div>
@@ -174,7 +174,7 @@
         </table>
         <div class="details-tab__photos">
           <img
-            v-for="(item, index) in itemDetailsImages"
+            v-for="(item, index) in item?.detailsImages"
             :key="`image-${index}`"
             :src="`${item}`"
             class="details-tab__photo"
@@ -415,6 +415,18 @@
         </div> -->
       </div>
     </div>
+    <div class="relevant-products">
+      <div class="relevant-products__title">YOU MIGHT ALSO LIKE</div>
+      <Slider_component
+        v-if="item"
+        class="relevant-products__slider"
+        filterName="getRelatedItems"
+        :productID="productID"
+        :item="item"
+      />
+    </div>
+
+    <Subscribe_news_component />
   </div>
 </template>
 <script setup>
@@ -431,6 +443,8 @@ import PointerIcon from '@/assets/icons/PointerIcon.vue';
 
 import BreadcrumbsComponent from '@/components/breadcrumbs_component.vue';
 import In_development_component from '@/components/in_development_component.vue';
+import Slider_component from '~/components/slider_component.vue';
+import Subscribe_news_component from '~/components/subscribe_news_component.vue';
 
 onMounted(() => {
   watch(paginatedReviews, () => {
@@ -438,7 +452,7 @@ onMounted(() => {
   });
 });
 
-// Important refs
+// Product item ref
 const item = ref(null);
 
 // In development popup
@@ -481,11 +495,8 @@ onBeforeMount(() => {
 const router = useRouter();
 
 // Get product information
-const path = ref('');
 const productID = ref('');
-const itemImages = ref([]);
-const itemDetailsImages = ref([]);
-const itemStock = ref([]);
+const path = ref('');
 const itemColors = ref([]);
 const itemSizes = ref([]);
 const modifiedPrice = ref(null);
@@ -501,9 +512,6 @@ async function setChosenItem() {
       itemGID: productID.value,
     });
     item.value = res.data;
-    itemImages.value = res.data.images;
-    itemDetailsImages.value = res.data.detailsImages;
-    itemStock.value = res.data.stock;
 
     // Set the price
     modifiedPrice.value = (res.data.price * currencyMultiplier).toFixed(2);
@@ -551,7 +559,7 @@ async function setChosenItem() {
 // Item gallery style, 33% or 50% width depending on image quantity?
 // const secondaryPictureWidth = computed(() => {
 //   return {
-//     maxWidth: `${100 / itemImages.value.length}%`,
+//     maxWidth: `${100 / item.images.value.length}%`,
 //   };
 // });
 
@@ -648,7 +656,6 @@ function changeSortingParameter(par, name) {
 
 function toggleSortingList() {
   isSortingListActive.value = !isSortingListActive.value;
-  console.log(isSortingListActive.value);
 }
 
 function sortReviews() {
@@ -798,7 +805,6 @@ function getProductDetails() {
   };
 }
 function isKeyFilter(key) {
-  console.log(key);
   return (
     key == 'brand' ||
     key == 'productCategory' ||

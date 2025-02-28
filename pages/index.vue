@@ -116,17 +116,12 @@
       >
         NEW ARRIVALS
       </div>
+
       <Slider_component
         class="new-arrivals__items"
-        :productsList="newArrivalsList"
-        :getSliderProducts="() => getSliderProducts('getNewArrivals')"
+        filterName="getNewArrivals"
       ></Slider_component>
-      <!-- <NuxtLink
-        to="/new_arrivals"
-        class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] select-none justify-center rounded-[62px] py-3 text-base"
-      >
-        View All
-      </NuxtLink> -->
+
       <div
         @click="openInDev('Shopping Navigation')"
         class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] cursor-pointer select-none justify-center rounded-[62px] py-3 text-base"
@@ -142,17 +137,12 @@
       >
         TOP SELLING
       </div>
+
       <Slider_component
-        class="top-selling__items"
-        :productsList="topSellingList"
-        :getSliderProducts="() => getSliderProducts('getTopSelling')"
+        class="new-arrivals__items"
+        filterName="getTopSelling"
       ></Slider_component>
-      <!-- <NuxtLink
-        to="/top_selling"
-        class="top-selling__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] select-none justify-center rounded-[62px] py-3 text-base"
-      >
-        View All
-      </NuxtLink> -->
+
       <div
         @click="openInDev('Shopping Navigation')"
         class="top-selling__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] cursor-pointer select-none justify-center rounded-[62px] py-3 text-base"
@@ -298,33 +288,7 @@
         </div>
       </div>
     </div>
-    <div
-      class="subscribe mx-auto mt-12 w-[1100px] max-w-[94vw] overflow-hidden rounded-2xl bg-black"
-    >
-      <div
-        class="subscribe__title IntegralBold px-6 pt-8 text-center text-[1.8rem] leading-9 text-white"
-      >
-        STAY UP TO DATE ABOUT OUR BEST OFFERS
-      </div>
-      <div
-        class="subscribe__input_wrapper mx-auto mt-8 flex h-[42px] w-[311px] items-center overflow-hidden rounded-3xl bg-white"
-        @click="focusSubscriptionEmail"
-      >
-        <LetterIcon
-          class="subscribe__input-icon ml-4 mr-3 bg-white"
-        ></LetterIcon>
-        <input
-          class="subscribe__input SatoshiRegular w-[80%] bg-white text-sm placeholder-gray-400"
-          placeholder="Enter your email address"
-          ref="SubscriptionEmail"
-        />
-      </div>
-      <div
-        class="subscribe__submit-button SatoshiRegular mx-auto mb-7 mt-3 h-[42px] w-[311px] select-none rounded-3xl bg-white text-center leading-[42px] text-black"
-      >
-        Subscribe to Newsletter
-      </div>
-    </div>
+    <Subscribe_news_component />
 
     <!-- <div class="mb-[500px] mt-[100px]"></div>
     <button @click="updateOrderStatus(orderId, newStatus)">UPDATE</button> -->
@@ -334,11 +298,10 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 import axios from 'axios';
 
-import dress_styles_list from '~/data/dress_styles.js';
-import Slider_component from '~/components/slider_component.vue';
+import dress_styles_list from '@/data/dress_styles.js';
+import Slider_component from '@/components/slider_component.vue';
 
 import ArrowIcon from '../assets/icons/ArrowIcon.vue';
-import LetterIcon from '../assets/icons/LetterIcon.vue';
 import RatingEmptyStarIcon from '../assets/icons/RatingEmptyStarIcon.vue';
 import RatingStarIcon from '../assets/icons/RatingFullStarIcon.vue';
 import GucciIcon from '../assets/icons/GucciIcon.vue';
@@ -351,6 +314,7 @@ import StarIcon from '../assets/icons/StarIconBig.vue';
 import VerifiedTickIcon from '../assets/icons/VerifiedTickIcon.vue';
 
 import In_development_component from '@/components/in_development_component.vue';
+import Subscribe_news_component from '~/components/subscribe_news_component.vue';
 
 // In development popup
 const showInDev = ref(false);
@@ -360,7 +324,7 @@ function openInDev(string) {
   showInDev.value = true;
 }
 
-// Page title and environment
+// Page title and API endpoint
 useHead({
   title: 'LoomHub',
 });
@@ -372,8 +336,8 @@ const api = axios.create({
 // const api = useApi();
 
 onMounted(() => {
-  getSliderProducts('getNewArrivals');
-  getSliderProducts('getTopSelling');
+  // getSliderProducts('getNewArrivals');
+  // getSliderProducts('getTopSelling');
   getWebsiteReviews();
 
   reviewCardsContainer.value.addEventListener('scroll', handleScroll);
@@ -384,45 +348,44 @@ onUnmounted(() => {
 });
 
 // Horizontal product slider component functionality
-const newArrivalsList = ref([]);
-const limit = 9;
-const currencyMultiplier = 1;
-const topSellingList = ref([]);
+// const newArrivalsList = ref([]);
+// const limit = 9;
+// const currencyMultiplier = 1;
+// const topSellingList = ref([]);
 
-async function getSliderProducts(filterName) {
-  try {
-    const res = await api.get(`/api/${filterName}?limit=${limit}`);
-    const arrivalsResponse = res.data.map((product) => {
-      const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
-      const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
-        2
-      );
-      const discountPercentage = Math.round(
-        100 - (modifiedPrice / modifiedOldPrice) * 100
-      );
+// async function getSliderProducts(filterName) {
+//   try {
+//     const res = await api.get(`/api/${filterName}?limit=${limit}`);
+//     const arrivalsResponse = res.data.map((product) => {
+//       const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
+//       const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
+//         2
+//       );
+//       const discountPercentage = Math.round(
+//         100 - (modifiedPrice / modifiedOldPrice) * 100
+//       );
 
-      return {
-        name: product.name,
-        price: modifiedPrice,
-        GID: product.GID,
-        images: product.images,
-        timestamps: product.timestamps,
-        rating: product.rating || 4,
-        oldPrice: modifiedOldPrice || null,
-        discount: discountPercentage,
-      };
-    });
-    // console.log(res);
+//       return {
+//         name: product.name,
+//         price: modifiedPrice,
+//         GID: product.GID,
+//         images: product.images,
+//         timestamps: product.timestamps,
+//         rating: product.rating || 4,
+//         oldPrice: modifiedOldPrice || null,
+//         discount: discountPercentage,
+//       };
+//     });
 
-    if (filterName === 'getNewArrivals') {
-      newArrivalsList.value.push(...arrivalsResponse);
-    } else if (filterName === 'getTopSelling') {
-      topSellingList.value.push(...arrivalsResponse);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-}
+//     if (filterName === 'getNewArrivals') {
+//       newArrivalsList.value.push(...arrivalsResponse);
+//     } else if (filterName === 'getTopSelling') {
+//       topSellingList.value.push(...arrivalsResponse);
+//     }
+//   } catch (err) {
+//     console.error(err);
+//   }
+// }
 
 // Updating an order
 const orderId = '6769bc16c09d4bcd85526087';
@@ -472,7 +435,7 @@ async function getWebsiteReviews() {
 
     websiteReviewsArray.value.push(...modifiedResponse);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 
