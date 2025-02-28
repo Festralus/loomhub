@@ -25,7 +25,8 @@
           class="result__name"
           :class="{ 'text-center': !item.description && !item.images }"
         >
-          {{ item?.name }}
+          <span>{{ item?.name }}</span
+          ><span> ({{ item?.brand }})</span>
         </div>
         <div class="result__description">{{ item?.description }}</div>
       </div>
