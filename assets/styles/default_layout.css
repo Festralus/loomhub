@@ -76,7 +76,32 @@
   }
 }
 
-/* Burger menu block */
+@media screen and (max-width: 1535px) {
+  /* Dropdown styles */
+  .shop-dropdown__title {
+    left: -10px;
+    top: -13px;
+    padding: 6px 64px 0 10px;
+  }
+  .shop-dropdown__title-arrow {
+    right: 13px;
+    top: 6px;
+  }
+}
+
+/* PC view */
+@media screen and (min-width: 1536px) {
+  /* Dropdown styles */
+  .shop-dropdown__title {
+    left: -10px;
+    top: -15px;
+    padding: 6px 70px 0 10px;
+  }
+  .shop-dropdown__title-arrow {
+    right: 10px;
+    top: 10px;
+  }
+} /* Burger menu block */
 .BurgerMenu__dropdown {
   position: fixed;
   top: 0;
@@ -144,29 +169,54 @@
 }
 
 /* Shop hovered Dropdown */
+.shop-dropdown__title {
+  position: absolute;
+  display: flex;
+
+  width: 62px;
+  height: 60px;
+  border-radius: 10px 10px 0 0;
+
+  background-color: white;
+}
+.shop-dropdown__title-arrow {
+  position: absolute;
+
+  width: 11px;
+  height: 24px;
+
+  transform: rotate(180deg);
+}
 .top-menu__nav-item__shop-dropdown {
   position: absolute;
+  display: flex;
+  flex-direction: column;
+
   left: -10px;
-  top: -10px;
+  top: 22px;
   width: 200px;
+  gap: 8px;
+  padding: 8px;
   background-color: white;
   border-radius: 20px;
 }
 .shop-dropdown__item {
   position: relative;
-  display: block;
   padding: 6px 12px;
   border-radius: 10px;
 
   border: 2px solid white;
   background-size: cover;
-  overflow: hidden;
+}
+.shop-dropdown__item__name {
+  position: relative;
 }
 .shop-dropdown__item__shadow {
   position: absolute;
   inset: 0px;
   background-color: black;
   opacity: 0.4;
+  border-radius: 10px;
 }
 .shop-dropdown__item__border {
   border: 2px solid black;

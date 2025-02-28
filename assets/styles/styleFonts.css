@@ -36,6 +36,13 @@
 }
 
 @font-face {
+  font-family: 'Satoshi-Medium';
+  src: url(/assets/fonts/Satoshi/Satoshi-Medium.otf) format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
   font-family: 'Satoshi-Bold';
   src: url(/assets/fonts/Satoshi/Satoshi-Bold.otf) format('truetype');
   font-weight: 700;
@@ -54,30 +61,16 @@
   font-family: 'Integral-ExtraBold';
   font-style: normal;
   font-weight: 900;
-  /* color: #000; */
 }
 
 .SatoshiRegular {
   font-family: 'Satoshi-Regular';
   font-style: normal;
-  /* color: rgba(0, 0, 0, 0.6); */
-}
-.SatoshiRegular16White {
-  font-family: 'Satoshi-Regular';
-  font-style: normal;
-  font-size: 16px;
-  color: rgba(255, 255, 255);
 }
 
 .SatoshiBold {
   font-family: 'Satoshi-Bold';
   font-style: normal;
-}
-.SatoshiBold24 {
-  font-family: 'Satoshi-Bold';
-  font-style: normal;
-  font-size: 24px;
-  /* color: rgba(0, 0, 0); */
 }
 
 .SatoshiLight {

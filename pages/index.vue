@@ -1,5 +1,11 @@
 <template>
   <div>
+    <In_development_component
+      v-if="showInDev"
+      :target="currentTarget"
+      :inDevActive="showInDev"
+      @close="showInDev = false"
+    />
     <div
       class="home-description relative z-50 w-full bg-[#f2f0f1] xl:flex xl:flex-nowrap xl:justify-evenly 2xl:items-center 2xl:justify-between"
     >
@@ -18,25 +24,33 @@
           designed to bring out your individuality and cater to your sense of
           style.
         </div>
-        <NuxtLink
+        <!-- <NuxtLink
           to="/shop"
-          class="home-description__button SatoshiRegular16White mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] select-none items-center justify-center rounded-3xl bg-black"
+          class="home-description__button SatoshiRegular text-white text-base mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] select-none items-center justify-center rounded-3xl bg-black"
         >
           Shop Now
-        </NuxtLink>
+        </NuxtLink> -->
+        <div
+          @click="openInDev('Shopping Navigation')"
+          class="home-description__button SatoshiRegular mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] cursor-pointer select-none items-center justify-center rounded-3xl bg-black text-base text-white"
+        >
+          Shop Now
+        </div>
         <div
           class="home-description__stats mt-4 flex flex-wrap justify-center gap-y-4"
         >
           <div
             class="home-description__stat home-description__stats-brands SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
-            <span class="SatoshiBold24 home-description__stat-value">200+</span>
+            <span class="SatoshiBold home-description__stat-value text-2xl"
+              >200+</span
+            >
             <br class="home-description__stat-label" />International Brands
           </div>
           <div
             class="home-description__stat home-description__stats-products SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
-            <span class="SatoshiBold24 home-description__stat-value"
+            <span class="SatoshiBold home-description__stat-value text-2xl"
               >2,000+</span
             >
             <br class="home-description__stat-label" />High-Quality Products
@@ -44,7 +58,7 @@
           <div
             class="home-description__stat home-description__stats-customers SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
-            <span class="SatoshiBold24 home-description__stat-value"
+            <span class="SatoshiBold home-description__stat-value text-2xl"
               >30,000+</span
             ><br class="home-description__stat-label" />
             Happy Customers
@@ -102,17 +116,19 @@
       >
         NEW ARRIVALS
       </div>
+
       <Slider_component
         class="new-arrivals__items"
-        :productsList="newArrivalsList"
-        :getSliderProducts="() => getSliderProducts('getNewArrivals')"
+        filterName="getNewArrivals"
       ></Slider_component>
-      <NuxtLink
-        to="/new_arrivals"
-        class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] select-none justify-center rounded-[62px] py-3 text-base"
+
+      <div
+        @click="openInDev('Shopping Navigation')"
+        class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] cursor-pointer select-none justify-center rounded-[62px] py-3 text-base"
       >
         View All
-      </NuxtLink>
+      </div>
+
       <div class="horizontal-separator-90 mt-10"></div>
     </div>
     <div class="top-selling mt-10">
@@ -121,17 +137,18 @@
       >
         TOP SELLING
       </div>
+
       <Slider_component
-        class="top-selling__items"
-        :productsList="topSellingList"
-        :getSliderProducts="() => getSliderProducts('getTopSelling')"
+        class="new-arrivals__items"
+        filterName="getTopSelling"
       ></Slider_component>
-      <NuxtLink
-        to="/top_selling"
-        class="top-selling__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] select-none justify-center rounded-[62px] py-3 text-base"
+
+      <div
+        @click="openInDev('Shopping Navigation')"
+        class="top-selling__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] cursor-pointer select-none justify-center rounded-[62px] py-3 text-base"
       >
         View All
-      </NuxtLink>
+      </div>
     </div>
     <div
       class="style-masonry mx-auto mt-10 w-[1800px] max-w-[94vw] rounded-2xl bg-[#F0F0F0] pb-2 pt-9"
@@ -144,7 +161,7 @@
       <div
         class="style-masonry__tileset relative flex flex-col flex-wrap items-center justify-center px-2 xl:flex-row xl:gap-5"
       >
-        <nuxtLink
+        <!-- <NuxtLink
           v-for="(style, index) in dress_styles_list"
           :key="style.name"
           :to="style.path"
@@ -175,7 +192,40 @@
               alt="Background image"
             />
           </picture>
-        </nuxtLink>
+        </NuxtLink> -->
+
+        <div
+          v-for="(style, index) in dress_styles_list"
+          @click="openInDev('Shopping Navigation')"
+          :to="style.path"
+          class="style-masonry__tile relative mb-4 w-[90%] cursor-pointer rounded-3xl bg-white"
+          :class="[
+            index === 1 || index === 2
+              ? 'style-masonry__tile-big'
+              : 'style-masonry__tile-small',
+          ]"
+        >
+          <div
+            class="style-masonry__tile-text SatoshiBold absolute ml-6 mt-4 text-2xl"
+          >
+            {{ style.name }}
+          </div>
+          <picture>
+            <source
+              :srcset="`${style.backgroundPicture}.png`"
+              media="(max-width: 400px)"
+            />
+            <source
+              :srcset="`${style.backgroundPicture}-xl.png`"
+              media="(min-width: 401px)"
+            />
+            <img
+              class="style-masonry__tile-background select-none rounded-3xl"
+              :src="`${style.backgroundPicture}-xl.png`"
+              alt="Background image"
+            />
+          </picture>
+        </div>
       </div>
     </div>
     <div class="reviews mt-10">
@@ -202,7 +252,7 @@
             class="reviews__card button-border mx-4 mt-6 h-[180px] w-[340px] rounded-3xl border-gray-500 p-6"
             v-for="review in websiteReviewsArray"
             :key="'main' + review.id"
-            ref="reviewCardRefs"
+            ref="reviewCardsRefs"
           >
             <div class="reviews__card-rating mt-1 flex items-center">
               <span class="flex">
@@ -223,48 +273,22 @@
                 />
               </span>
             </div>
-            <div class="reviews__card-name-line flex items-end">
-              <div class="reviews__card-name SatoshiBold mt-2 text-base">
+            <div class="reviews__card__name-line flex items-end">
+              <div class="reviews__card__name SatoshiBold mt-2 text-base">
                 {{ review.user }}
               </div>
               <VerifiedTickIcon
-                class="reviews__card-verified mb-1 ml-1 size-4"
+                class="reviews__card__verified mb-1 ml-1 size-4"
               ></VerifiedTickIcon>
             </div>
-            <div class="reviews__card-text SatoshiRegular mt-1 text-gray-500">
+            <div class="reviews__card__text SatoshiRegular mt-1 text-gray-500">
               {{ review.comment }}
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div
-      class="subscribe mx-auto mt-12 w-[1100px] max-w-[94vw] overflow-hidden rounded-2xl bg-black"
-    >
-      <div
-        class="subscribe__title IntegralBold px-6 pt-8 text-center text-[1.8rem] leading-9 text-white"
-      >
-        STAY UP TO DATE ABOUT OUR BEST OFFERS
-      </div>
-      <div
-        class="subscribe__input_wrapper mx-auto mt-8 flex h-[42px] w-[311px] items-center overflow-hidden rounded-3xl bg-white"
-        @click="focusSubscriptionEmail"
-      >
-        <LetterIcon
-          class="subscribe__input-icon ml-4 mr-3 bg-white"
-        ></LetterIcon>
-        <input
-          class="subscribe__input SatoshiRegular w-[80%] bg-white text-sm placeholder-gray-400"
-          placeholder="Enter your email address"
-          ref="SubscriptionEmail"
-        />
-      </div>
-      <div
-        class="subscribe__submit-button SatoshiRegular mx-auto mb-7 mt-3 h-[42px] w-[311px] select-none rounded-3xl bg-white text-center leading-[42px] text-black"
-      >
-        Subscribe to Newsletter
-      </div>
-    </div>
+    <Subscribe_news_component />
 
     <!-- <div class="mb-[500px] mt-[100px]"></div>
     <button @click="updateOrderStatus(orderId, newStatus)">UPDATE</button> -->
@@ -274,11 +298,10 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 import axios from 'axios';
 
-import dress_styles_list from '~/data/dress_styles.js';
-import Slider_component from '~/components/slider_component.vue';
+import dress_styles_list from '@/data/dress_styles.js';
+import Slider_component from '@/components/slider_component.vue';
 
 import ArrowIcon from '../assets/icons/ArrowIcon.vue';
-import LetterIcon from '../assets/icons/LetterIcon.vue';
 import RatingEmptyStarIcon from '../assets/icons/RatingEmptyStarIcon.vue';
 import RatingStarIcon from '../assets/icons/RatingFullStarIcon.vue';
 import GucciIcon from '../assets/icons/GucciIcon.vue';
@@ -290,10 +313,21 @@ import RatingHalfStarIcon from '../assets/icons/RatingHalfStarIcon.vue';
 import StarIcon from '../assets/icons/StarIconBig.vue';
 import VerifiedTickIcon from '../assets/icons/VerifiedTickIcon.vue';
 
-// Change BaseURL
-// const api = axios.create({
-//   baseURL: 'http://localhost:3001',
-// });
+import In_development_component from '@/components/in_development_component.vue';
+import Subscribe_news_component from '~/components/subscribe_news_component.vue';
+
+// In development popup
+const showInDev = ref(false);
+const currentTarget = ref('');
+function openInDev(string) {
+  currentTarget.value = string;
+  showInDev.value = true;
+}
+
+// Page title and API endpoint
+useHead({
+  title: 'LoomHub',
+});
 
 const config = useRuntimeConfig();
 const api = axios.create({
@@ -302,8 +336,8 @@ const api = axios.create({
 // const api = useApi();
 
 onMounted(() => {
-  getSliderProducts('getNewArrivals');
-  getSliderProducts('getTopSelling');
+  // getSliderProducts('getNewArrivals');
+  // getSliderProducts('getTopSelling');
   getWebsiteReviews();
 
   reviewCardsContainer.value.addEventListener('scroll', handleScroll);
@@ -314,45 +348,44 @@ onUnmounted(() => {
 });
 
 // Horizontal product slider component functionality
-const newArrivalsList = ref([]);
-const limit = 9;
-const currencyMultiplier = 1;
-const topSellingList = ref([]);
+// const newArrivalsList = ref([]);
+// const limit = 9;
+// const currencyMultiplier = 1;
+// const topSellingList = ref([]);
 
-async function getSliderProducts(filterName) {
-  try {
-    const res = await api.get(`/api/${filterName}?limit=${limit}`);
-    const arrivalsResponse = res.data.map((product) => {
-      const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
-      const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
-        2
-      );
-      const discountPercentage = Math.round(
-        100 - (modifiedPrice / modifiedOldPrice) * 100
-      );
+// async function getSliderProducts(filterName) {
+//   try {
+//     const res = await api.get(`/api/${filterName}?limit=${limit}`);
+//     const arrivalsResponse = res.data.map((product) => {
+//       const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
+//       const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
+//         2
+//       );
+//       const discountPercentage = Math.round(
+//         100 - (modifiedPrice / modifiedOldPrice) * 100
+//       );
 
-      return {
-        name: product.name,
-        price: modifiedPrice,
-        GID: product.GID,
-        images: product.images,
-        timestamps: product.timestamps,
-        rating: product.rating || 4,
-        oldPrice: modifiedOldPrice || null,
-        discount: discountPercentage,
-      };
-    });
-    // console.log(res);
+//       return {
+//         name: product.name,
+//         price: modifiedPrice,
+//         GID: product.GID,
+//         images: product.images,
+//         timestamps: product.timestamps,
+//         rating: product.rating || 4,
+//         oldPrice: modifiedOldPrice || null,
+//         discount: discountPercentage,
+//       };
+//     });
 
-    if (filterName === 'getNewArrivals') {
-      newArrivalsList.value.push(...arrivalsResponse);
-    } else if (filterName === 'getTopSelling') {
-      topSellingList.value.push(...arrivalsResponse);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-}
+//     if (filterName === 'getNewArrivals') {
+//       newArrivalsList.value.push(...arrivalsResponse);
+//     } else if (filterName === 'getTopSelling') {
+//       topSellingList.value.push(...arrivalsResponse);
+//     }
+//   } catch (err) {
+//     console.error(err);
+//   }
+// }
 
 // Updating an order
 const orderId = '6769bc16c09d4bcd85526087';
@@ -383,14 +416,6 @@ async function updateOrderStatus(orderId, newStatus) {
   }
 }
 
-// An array for Browse by dress style
-// const dress_styles_list = [
-//   { name: 'Casual', backgroundPicture: '/assets/images/browse-casual' },
-//   { name: 'Formal', backgroundPicture: '/assets/images/browse-formal' },
-//   { name: 'Party', backgroundPicture: '/assets/images/browse-party' },
-//   { name: 'Sport', backgroundPicture: '/assets/images/browse-gym' },
-// ];
-
 // Method to Get 5 website reviews
 const websiteReviewsArray = ref([]);
 
@@ -410,7 +435,7 @@ async function getWebsiteReviews() {
 
     websiteReviewsArray.value.push(...modifiedResponse);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 

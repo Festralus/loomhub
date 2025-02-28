@@ -4,20 +4,22 @@
       <RatingStarIcon
         v-for="n in Math.floor(product.rating)"
         :key="'full-' + product.id"
-        class="h-4 w-4"
+        :class="`size-${starsSize}`"
       />
       <RatingHalfStarIcon
         v-if="product.rating % 1 !== 0"
         :key="'half-' + product.id"
-        class="h-4 w-4"
+        :class="`size-${starsSize}`"
       />
       <RatingEmptyStarIcon
         v-for="n in Math.floor(5 - product.rating)"
         :key="'empty-' + product.id"
-        class="h-4 w-4"
+        :class="`size-${starsSize}`"
       />
     </span>
-    <span class="ml-2 text-sm text-gray-600">({{ product.rating }})</span>
+    <span v-show="!showRatingNumber" class="ml-2 text-sm text-gray-600"
+      >({{ product.rating }})</span
+    >
   </div>
 </template>
 <script setup>
@@ -30,6 +32,14 @@ import RatingStarIcon from '../assets/icons/RatingFullStarIcon.vue';
 defineProps({
   product: {
     type: Object,
+  },
+  showRatingNumber: {
+    type: Boolean,
+    default: true,
+  },
+  starsSize: {
+    type: Number,
+    default: 4,
   },
 });
 </script>
