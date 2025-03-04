@@ -12,12 +12,19 @@
       <div class="horizontal-separator-90"></div>
       <!-- Category picker -->
       <div class="filters__list">
-        <div class="filters__category__container">
-          <div class="filters__category__item">
+        <select
+          v-model="filters.productCategory"
+          class="filters__category__container"
+        >
+          <option
+            value="
+          "
+            class="filters__category__item"
+          >
             <div class="category__item-text"></div>
             <div class="category__item-icon"></div>
-          </div>
-        </div>
+          </option>
+        </select>
       </div>
 
       <div class="horizontal-separator-90"></div>
@@ -99,7 +106,40 @@
       <button class="filters__apply-button">Apply Filters</button>
     </div>
     <!-- Product gallery -->
-    <div class="shop__products"></div>
+    <div class="shop__products">
+      <div class="products__title">
+        <div class="products__title__text">Casual</div>
+        <div class="products__title__count">
+          Showing <span class="title__count-range">1-10</span> of
+          <span class="title__count-total">100</span>
+          Products
+        </div>
+        <div class="products__title-sorting">
+          <div class="title-sorting__text">Sort by</div>
+          <div class="title-soting__parameter">Most popular</div>
+          <PointerIcon />
+        </div>
+      </div>
+      <div class="products__gallery">
+        <div class="proucts__gallery__item">
+          <div class="item__image"></div>
+          <div class="item__title"></div>
+          <div class="item__stars"></div>
+          <div class="item__price"></div>
+        </div>
+      </div>
+      <div class="products__pagination">
+        <div class="pagination__previous-page">
+          <ArrowIcon class="previous-page__icon" />
+          <div class="previous-page__text">Previous</div>
+        </div>
+        <div class="pagination__pages"></div>
+        <div class="pagination__Next-page">
+          <div class="Next-page__text">Next</div>
+          <ArrowIcon class="Next-page__icon" />
+        </div>
+      </div>
+    </div>
   </div>
 
   <Subscribe_news_component />
@@ -107,5 +147,44 @@
 <script setup>
 import Breadcrumbs_component from '~/components/breadcrumbs_component.vue';
 import Subscribe_news_component from '~/components/subscribe_news_component.vue';
+
+import PointerIcon from '~/assets/icons/PointerIcon.vue';
+import ArrowIcon from '~/assets/icons/ArrowIcon.vue';
+
+onMounted(() => {
+  getFilterCategories();
+});
+
+// Layout settings
+definePageMeta({
+  useWebsitePadding: true,
+});
+
+// Routing
+const route = useRoute();
+const router = useRouter();
+
+// Filters
+const filters = ref({
+  productCategory: route.query.productCategory || [],
+  priceMin: route.query.priceMin || 0,
+  priceMax: route.query.priceMax || null,
+  colors: route.query.colors || [],
+  sizes: route.query.sizes || [],
+  dressStyle: route.query.dressStyle || [],
+});
+watch(
+  filters,
+  (newFilters) => {
+    router.push({ query: { ...newFilters } });
+  },
+  { deep: true }
+);
+
+function getFilterCategories() {
+  console.log(123);
+}
 </script>
-<style scoped></style>
+<style scoped>
+@import '/assets/styles/shop.css';
+</style>

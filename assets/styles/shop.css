@@ -1,0 +1,9 @@
+.shop-gallery {
+  display: flex;
+}
+.shop__filters {
+  flex: 21;
+}
+.shop__products {
+  flex: 79;
+}
