@@ -4,10 +4,11 @@
   <div class="shop-gallery">
     <!-- Filters -->
     <div class="shop__filters">
-      <div class="filters__title">
+      <!-- <div class="filters__title">
         <div class="filters__title-text">Filters</div>
         <div class="filters__title-icon"></div>
-      </div>
+      </div> -->
+      <Filter_selector_component :products="products" />
 
       <div class="horizontal-separator-90"></div>
       <!-- Category picker -->
@@ -121,11 +122,19 @@
         </div>
       </div>
       <div class="products__gallery">
-        <div class="proucts__gallery__item">
+        <div
+          v-for="(item, index) in products"
+          :key="index"
+          class="proucts__gallery__item"
+        >
           <div class="item__image"></div>
-          <div class="item__title"></div>
+          <div class="item__title">{{ item.name }}</div>
           <div class="item__stars"></div>
-          <div class="item__price"></div>
+          <div class="item__price">
+            <span class="item__price-current">$130</span
+            ><span class="item__price-previous">$160</span
+            ><span class="item__price-discount">-30%</span>
+          </div>
         </div>
       </div>
       <div class="products__pagination">
@@ -134,9 +143,9 @@
           <div class="previous-page__text">Previous</div>
         </div>
         <div class="pagination__pages"></div>
-        <div class="pagination__Next-page">
-          <div class="Next-page__text">Next</div>
-          <ArrowIcon class="Next-page__icon" />
+        <div class="pagination__next-page">
+          <div class="next-page__text">Next</div>
+          <ArrowIcon class="next-page__icon" />
         </div>
       </div>
     </div>
@@ -145,14 +154,24 @@
   <Subscribe_news_component />
 </template>
 <script setup>
+import axios from 'axios';
+
 import Breadcrumbs_component from '~/components/breadcrumbs_component.vue';
+import Filter_selector_component from '~/components/filter_selector_component.vue';
 import Subscribe_news_component from '~/components/subscribe_news_component.vue';
 
 import PointerIcon from '~/assets/icons/PointerIcon.vue';
 import ArrowIcon from '~/assets/icons/ArrowIcon.vue';
+import Profile from './profile.vue';
+
+// API settings
+const config = useRuntimeConfig();
+const api = axios.create({
+  baseURL: config.public.apiBase,
+});
 
 onMounted(() => {
-  getFilterCategories();
+  getAllProducts();
 });
 
 // Layout settings
@@ -181,8 +200,16 @@ watch(
   { deep: true }
 );
 
-function getFilterCategories() {
-  console.log(123);
+// Get all products and filter categories
+const products = ref([]);
+async function getAllProducts() {
+  try {
+    const response = await api.get('/api/products');
+    products.value = [...response.data];
+    console.log(products.value);
+  } catch (err) {
+    console.error(err);
+  }
 }
 </script>
 <style scoped>
