@@ -851,6 +851,11 @@ video {
   display: none;
 }
 
+.size-3 {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
 .size-4 {
   width: 1rem;
   height: 1rem;
@@ -1614,6 +1619,11 @@ video {
 
   .\32xl\:hidden {
     display: none;
+  }
+
+  .\32xl\:size-\[14px\] {
+    width: 14px;
+    height: 14px;
   }
 
   .\32xl\:w-\[14px\] {
