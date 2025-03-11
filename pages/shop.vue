@@ -4,15 +4,19 @@
   <div class="shop-gallery">
     <!-- Filters -->
     <div class="shop__filters">
-      <!-- <div class="filters__title">
+      <div class="filters__title">
         <div class="filters__title-text">Filters</div>
         <div class="filters__title-icon"></div>
-      </div> -->
-      <Filter_selector_component :products="products" />
+      </div>
 
       <div class="horizontal-separator-90"></div>
       <!-- Category picker -->
-      <div class="filters__list">
+      <Filter_selector_component
+        class="filters__list"
+        :products="products"
+        :parameter="'productCategory'"
+      />
+      <!-- <div class="filters__list">
         <select
           v-model="filters.productCategory"
           class="filters__category__container"
@@ -26,7 +30,7 @@
             <div class="category__item-icon"></div>
           </option>
         </select>
-      </div>
+      </div> -->
 
       <div class="horizontal-separator-90"></div>
       <!-- Price picker -->
@@ -62,22 +66,13 @@
           <div class="filters__sizes__title-text">Sizes</div>
           <div class="filters__sizes__title-icon"></div>
         </div>
-
-        <div class="filters__sizes__category">
-          <div class="sizes__caregory__clothes">
-            <div class="sizes__option__list">
-              <div class="sizes__option"></div>
-            </div>
-          </div>
-        </div>
-        <div class="filters__sizes__category">
-          <div class="sizes__caregory__shoes">
-            <div class="sizes__option__list">
-              <div class="sizes__option"></div>
-            </div>
-          </div>
-        </div>
       </div>
+      <Filter_selector_component
+        class="filters__list"
+        :products="products"
+        :parameter="'size'"
+        :nested="true"
+      />
 
       <div class="horizontal-separator-90"></div>
       <!-- Dress Style picker -->
@@ -206,7 +201,7 @@ async function getAllProducts() {
   try {
     const response = await api.get('/api/products');
     products.value = [...response.data];
-    console.log(products.value);
+    // console.log(products.value);
   } catch (err) {
     console.error(err);
   }
