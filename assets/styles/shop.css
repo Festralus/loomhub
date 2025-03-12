@@ -1,9 +1,129 @@
-.shop-gallery {
-  display: flex;
+/* Mobile view */
+@media (min-width: 1px) and (max-width: 425px) {
 }
+
+/* Mobile and Tablet view */
+@media (min-width: 1px) and (max-width: 768px) {
+  /* Filters */
+  .shop__filters {
+    display: none;
+  }
+
+  /* Gallery */
+  .products__title {
+    gap: 10px;
+  }
+  .products__title__text {
+    font-size: 22px;
+    line-height: 24px;
+  }
+  .products__title__count {
+    font-size: 14px;
+    line-height: 24px;
+  }
+  .products__title-sorting {
+    display: none;
+  }
+  .products__title-mobile-sorting {
+    flex-grow: 1;
+  }
+  .filters__icon {
+    width: 36px;
+    height: 36px;
+    margin-left: auto;
+  }
+}
+/* PC view */
+@media (min-width: 769px) {
+  /* Filters */
+  .shop__filters__container {
+    flex: 21;
+  }
+  .shop__filters {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: auto;
+  }
+
+  /* Gallery */
+  .shop-gallery {
+    display: flex;
+  }
+  .shop__products {
+    flex: 79;
+  }
+
+  .products__title {
+    gap: 24px;
+  }
+  .products__title__text {
+    font-size: 32px;
+
+    flex-grow: 1;
+  }
+  .products__title-sorting {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .products__title-mobile-sorting {
+    display: none;
+  }
+}
+
+/* Filters */
 .shop__filters {
-  flex: 21;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  padding: 14px;
 }
-.shop__products {
-  flex: 79;
+.filters__title-text {
+  text-align: center;
+  font-family: 'Satoshi-Bold';
+  font-size: 20px;
+
+  margin: auto auto 14px auto;
+}
+
+/* Gallery */
+
+.products__title {
+  height: 36px;
+  display: flex;
+  align-items: baseline;
+}
+.products__title__text {
+  font-family: 'Satoshi-Bold';
+}
+.products__title__count {
+  font-family: 'Satoshi-Regular';
+  color: rgba(0, 0, 0, 0.6);
+}
+.products__title-sorting {
+  font-family: 'Satoshi-Regular';
+}
+.title-sorting__text {
+  color: rgba(0, 0, 0, 0.6);
+}
+.title-soting__parameter {
+  color: black;
+}
+
+.products__gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 24px;
+}
+.proucts__gallery__item {
+  display: flex;
+  flex-direction: column;
+}
+.item__image {
+  width: 330px;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 1rem;
+  user-select: none;
 }

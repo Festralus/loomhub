@@ -1,53 +1,51 @@
 <template>
-  <!-- <div class="path__breadcrumbs">
-    <div
-      v-for="(segment, i) in modifiedSegments"
-      class="path__breadcrumb"
-      :key="i"
-    >
-      <NuxtLink :to="`${segment}`" class="breadcrumb__name">{{
-        segment
-      }}</NuxtLink>
-      <PointerIcon
-        v-if="i !== segments.length + 1"
-        :currentColor="'#666666'"
-        :strokeWidth="0.2"
-        class="breadcrumb__pointer"
-      ></PointerIcon>
-    </div>
-  </div> -->
-  <div class="path__breadcrumbs">
+  <div
+    v-if="modifiedSegments && modifiedSegments.length > 0"
+    class="path__breadcrumbs"
+  >
     <div class="path__breadcrumb">
       <NuxtLink to="/" class="breadcrumb__name">{{
         modifiedSegments?.[0]
       }}</NuxtLink>
       <PointerIcon
+        v-if="modifiedSegments && modifiedSegments.length > 1"
         :currentColor="'#666666'"
         :strokeWidth="0.2"
         class="breadcrumb__pointer"
       ></PointerIcon>
     </div>
-    <div class="path__breadcrumb">
-      <NuxtLink to="/shop" class="breadcrumb__name">{{
+    <div
+      v-if="modifiedSegments && modifiedSegments.length > 1"
+      class="path__breadcrumb"
+    >
+      <NuxtLink :to="isProductPage ? '/shop' : ''" class="breadcrumb__name">{{
         modifiedSegments?.[1]
       }}</NuxtLink>
       <PointerIcon
+        v-if="modifiedSegments && modifiedSegments.length > 2"
         :currentColor="'#666666'"
         :strokeWidth="0.2"
         class="breadcrumb__pointer"
       ></PointerIcon>
     </div>
-    <div class="path__breadcrumb">
+    <div
+      v-if="modifiedSegments && modifiedSegments.length > 2"
+      class="path__breadcrumb"
+    >
       <NuxtLink :to="``" class="breadcrumb__name">{{
         modifiedSegments?.[2]
       }}</NuxtLink>
       <PointerIcon
+        v-if="modifiedSegments && modifiedSegments.length > 3"
         :currentColor="'#666666'"
         :strokeWidth="0.2"
         class="breadcrumb__pointer"
       ></PointerIcon>
     </div>
-    <div class="path__breadcrumb">
+    <div
+      v-if="modifiedSegments && modifiedSegments.length > 3"
+      class="path__breadcrumb"
+    >
       <NuxtLink :to="``" class="breadcrumb__name">{{
         modifiedSegments?.[3]
       }}</NuxtLink>
@@ -78,20 +76,29 @@ const props = defineProps({
 
 const segments = ref(null);
 const modifiedSegments = ref(null);
+const isProductPage = ref(false);
 async function setBreadcrumbs() {
   segments.value = history.state?.current?.split('/');
   const lastSegment = segments.value.pop();
 
-  try {
-    const res = await api.post('/api/productByGid', { itemGID: lastSegment });
-    modifiedSegments.value = [
-      'Home',
-      'Shop',
-      res.data.clothingType,
-      res.data.productCategory,
-    ];
-  } catch (err) {
-    console.error(err);
+  if (lastSegment.includes('product')) {
+    try {
+      const res = await api.post('/api/productByGid', { itemGID: lastSegment });
+      modifiedSegments.value = [
+        'Home',
+        'Shop',
+        res.data.clothingType,
+        res.data.productCategory,
+      ];
+      isProductPage.value = true;
+    } catch (err) {
+      modifiedSegments.value = ['Home', 'Shop'];
+      isProductPage.value = false;
+      console.error(err);
+    }
+  } else {
+    modifiedSegments.value = ['Home', 'Shop'];
+    isProductPage.value = false;
   }
 }
 </script>
