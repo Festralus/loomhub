@@ -1,105 +1,103 @@
 <template>
-  <!-- <Breadcrumbs_component /> -->
+  <Breadcrumbs_component />
 
   <div class="shop-gallery">
     <!-- Filters -->
-    <div class="shop__filters">
-      <div class="filters__title">
-        <div class="filters__title-text">Filters</div>
-        <div class="filters__title-icon"></div>
-      </div>
-
-      <div class="horizontal-separator-90"></div>
-      <!-- Category picker -->
-      <Filter_selector_component
-        class="filters__list"
-        :products="products"
-        :parameter="'productCategory'"
-      />
-      <!-- <div class="filters__list">
-        <select
-          v-model="filters.productCategory"
-          class="filters__category__container"
-        >
-          <option
-            value="
-          "
-            class="filters__category__item"
-          >
-            <div class="category__item-text"></div>
-            <div class="category__item-icon"></div>
-          </option>
-        </select>
-      </div> -->
-
-      <div class="horizontal-separator-90"></div>
-      <!-- Price picker -->
-      <div class="filters__price__container">
-        <div class="filters__price__title">
-          <div class="filters__price__title-text">Price</div>
-          <div class="filters__price__title-icon"></div>
+    <div class="shop__filters__container">
+      <div class="shop__filters">
+        <div class="filters__title">
+          <div class="filters__title-text">Filters</div>
+          <div class="filters__title-icon"></div>
         </div>
-        <div class="filters__price__slider">
-          <div class="price__slider__line">
-            <div class="price__slider__left-slider"></div>
-            <div class="price__slider__right-slider"></div>
+
+        <div class="horizontal-separator-90"></div>
+
+        <!-- Category picker -->
+        <Filter_selector_component
+          class="filters__list"
+          :products="products"
+          :parameter="'productCategory'"
+        />
+
+        <div class="horizontal-separator-90"></div>
+        <!-- Price picker -->
+        <!-- <div class="filters__price__container">
+          <div class="filters__price__title">
+            <div class="filters__price__title-text">Price</div>
+            <div class="filters__price__title-icon"></div>
+          </div>
+          <div class="filters__price__slider">
+            <div class="price__slider__line">
+              <div class="price__slider__left-slider"></div>
+              <div class="price__slider__right-slider"></div>
+            </div>
+          </div>
+        </div> -->
+
+        <div class="horizontal-separator-90"></div>
+        <!-- Colors picker -->
+        <div class="filters__colors__container">
+          <div class="filters__colors__title">
+            <div class="filters__colors__title-text">Colors</div>
+            <div class="filters__colors__title-icon"></div>
+          </div>
+
+          <Filter_selector_component
+            class="filters__list"
+            :products="products"
+            :parameter="'color'"
+            :nested="true"
+          />
+        </div>
+
+        <div class="horizontal-separator-90"></div>
+        <!-- Size picker -->
+        <div class="filters__sizes__container">
+          <div class="filters__sizes__title">
+            <div class="filters__sizes__title-text">Sizes</div>
+            <div class="filters__sizes__title-icon"></div>
           </div>
         </div>
-      </div>
+        <Filter_selector_component
+          class="filters__list"
+          :products="products"
+          :parameter="'size'"
+          :nested="true"
+        />
 
-      <div class="horizontal-separator-90"></div>
-      <!-- Colors picker -->
-      <div class="filters__colors__container">
-        <div class="filters__colors__title">
-          <div class="filters__colors__title-text">Colors</div>
-          <div class="filters__colors__title-icon"></div>
-        </div>
-        <div class="colors__option__list">
-          <div class="colors__option"></div>
-        </div>
-      </div>
+        <div class="horizontal-separator-90"></div>
+        <!-- Dress Style picker -->
+        <div class="filters__dress-style__container">
+          <div class="filters__dress-style__title">
+            <div class="filters__dress-style__title-text">Dress styles</div>
+            <div class="filters__dress-style__title-icon"></div>
+          </div>
 
-      <div class="horizontal-separator-90"></div>
-      <!-- Size picker -->
-      <div class="filters__sizes__container">
-        <div class="filters__sizes__title">
-          <div class="filters__sizes__title-text">Sizes</div>
-          <div class="filters__sizes__title-icon"></div>
+          <Filter_selector_component
+            class="filters__list"
+            :products="products"
+            :parameter="'dressStyle'"
+          />
         </div>
-      </div>
-      <Filter_selector_component
-        class="filters__list"
-        :products="products"
-        :parameter="'size'"
-        :nested="true"
-      />
 
-      <div class="horizontal-separator-90"></div>
-      <!-- Dress Style picker -->
-      <div class="filters__dress-style__container">
-        <div class="filters__dress-style__title">
-          <div class="filters__dress-style__title-text">Dress styles</div>
-          <div class="filters__dress-style__title-icon"></div>
-        </div>
-        <div class="dress-style__options__list">
-          <div class="dress-style__option"></div>
-        </div>
-      </div>
+        <div class="horizontal-separator-90"></div>
+        <!-- Clothing Type picker -->
+        <div class="filters__clothing-type__container">
+          <div class="filters__clothing-type__title">
+            <div class="filters__clothing-type__title-text">Clothing types</div>
+            <div class="filters__clothing-type__title-icon"></div>
+          </div>
 
-      <div class="horizontal-separator-90"></div>
-      <!-- Dress Style picker -->
-      <div class="filters__clothing-type__container">
-        <div class="filters__clothing-type__title">
-          <div class="filters__clothing-type__title-text">Clothing types</div>
-          <div class="filters__clothing-type__title-icon"></div>
+          <Filter_selector_component
+            class="filters__list"
+            :products="products"
+            :parameter="'clothingType'"
+          />
         </div>
-        <div class="clothing-type__options__list">
-          <div class="clothing-type__option"></div>
-        </div>
-      </div>
 
-      <!-- Apply changes button -->
-      <button class="filters__apply-button">Apply Filters</button>
+        <!-- Apply changes button -->
+        <button class="filters__apply-button">Apply Filters</button>
+      </div>
     </div>
     <!-- Product gallery -->
     <div class="shop__products">
@@ -111,9 +109,12 @@
           Products
         </div>
         <div class="products__title-sorting">
-          <div class="title-sorting__text">Sort by</div>
+          <div class="title-sorting__text">Sort by:</div>
           <div class="title-soting__parameter">Most popular</div>
           <PointerIcon />
+        </div>
+        <div class="products__title-mobile-sorting">
+          <FiltersIcon class="filters__icon" />
         </div>
       </div>
       <div class="products__gallery">
@@ -122,7 +123,7 @@
           :key="index"
           class="proucts__gallery__item"
         >
-          <div class="item__image"></div>
+          <img class="item__image" :src="item.images[0]" />
           <div class="item__title">{{ item.name }}</div>
           <div class="item__stars"></div>
           <div class="item__price">
@@ -155,9 +156,9 @@ import Breadcrumbs_component from '~/components/breadcrumbs_component.vue';
 import Filter_selector_component from '~/components/filter_selector_component.vue';
 import Subscribe_news_component from '~/components/subscribe_news_component.vue';
 
-import PointerIcon from '~/assets/icons/PointerIcon.vue';
 import ArrowIcon from '~/assets/icons/ArrowIcon.vue';
-import Profile from './profile.vue';
+import FiltersIcon from '~/assets/icons/FiltersIcon.vue';
+import PointerIcon from '~/assets/icons/PointerIcon.vue';
 
 // API settings
 const config = useRuntimeConfig();
@@ -186,6 +187,7 @@ const filters = ref({
   colors: route.query.colors || [],
   sizes: route.query.sizes || [],
   dressStyle: route.query.dressStyle || [],
+  clothingType: route.query.clothingType || [],
 });
 watch(
   filters,
