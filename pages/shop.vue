@@ -127,9 +127,12 @@
           <div class="item__title">{{ item.name }}</div>
           <div class="item__stars"></div>
           <div class="item__price">
-            <span class="item__price-current">$130</span
-            ><span class="item__price-previous">$160</span
-            ><span class="item__price-discount">-30%</span>
+            <span class="item__price-current">${{ item.price }}</span
+            ><span v-if="item?.oldPrice" class="item__price-previous"
+              >${{ item.oldPrice }}</span
+            ><span v-if="item?.oldPrice" class="item__price-discount">{{
+              item.discount
+            }}</span>
           </div>
         </div>
       </div>
