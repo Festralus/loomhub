@@ -26,7 +26,7 @@
           :class="{ 'text-center': !item.description && !item.images }"
         >
           <span>{{ item?.name }}</span
-          ><span> ({{ item?.brand }})</span>
+          ><span v-show="item?.brand"> ({{ item?.brand }})</span>
         </div>
         <div class="result__description">{{ item?.description }}</div>
       </div>
@@ -60,9 +60,11 @@ const hoveredIndex = ref(null);
   display: flex;
   align-items: center;
   gap: 10px;
-  padding-left: 10px;
+  /* padding-left: 10px; */
 }
 .result_image {
+  margin-left: 10px;
+
   width: 56px;
   height: 56px;
   border-radius: 20px;

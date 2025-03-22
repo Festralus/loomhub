@@ -20,12 +20,27 @@
     </div>
     <div
       class="subscribe__submit-button SatoshiRegular mx-auto mb-7 mt-3 h-[42px] w-[311px] select-none rounded-3xl bg-white text-center leading-[42px] text-black"
+      @click="openInDev('Newsletter')"
     >
       Subscribe to Newsletter
     </div>
+    <In_development_component
+      v-if="showInDev"
+      :target="currentTarget"
+      :inDevActive="showInDev"
+      @close="showInDev = false"
+    />
   </div>
 </template>
 <script setup>
 import LetterIcon from '../assets/icons/LetterIcon.vue';
+
+// In development popup
+const showInDev = ref(false);
+const currentTarget = ref('');
+function openInDev(string) {
+  currentTarget.value = string;
+  showInDev.value = true;
+}
 </script>
 <style scoped></style>

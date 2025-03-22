@@ -25,7 +25,7 @@
         <div class="item__rating">
           <ProductRatingComponent
             v-if="item"
-            :product="item"
+            :rating="item.rating"
             :showRatingNumber="false"
             class="item__rating-stars"
           />
@@ -272,7 +272,7 @@
               <ProductRatingComponent
                 class="reviews__card__stars"
                 v-if="review"
-                :product="review"
+                :rating="review.rating"
                 :starsSize="6"
               />
               <div class="reviews__card__name-line flex items-end">
@@ -787,8 +787,12 @@ function nextReviewPage() {
 // Details tab
 const productDetails = ref({});
 function getProductDetails() {
-  const availableColors = item.value.colors.join(', ');
-  const availableSizes = item.value.sizes.join(', ');
+  const availableColors =
+    item.value.colors.length > 1
+      ? item.value.colors.join(', ')
+      : item.value.colors[0];
+  const availableSizes =
+    item.value.sizes > 1 ? item.value.sizes.join(', ') : item.value.sizes;
 
   productDetails.value = {
     name: item.value.name,

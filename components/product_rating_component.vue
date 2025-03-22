@@ -1,24 +1,23 @@
 <template>
-  <div class="new-arrivals__items-item__rating mt-1 flex items-center">
+  <div class="new-arrivals__items-item__rating flex items-center">
     <span class="flex">
       <RatingStarIcon
-        v-for="n in Math.floor(product.rating)"
-        :key="'full-' + product.id"
+        v-for="(_, i) in Math.floor(rating)"
+        :key="'full-' + i"
         :class="`size-${starsSize}`"
       />
       <RatingHalfStarIcon
-        v-if="product.rating % 1 !== 0"
-        :key="'half-' + product.id"
+        v-if="rating % 1 !== 0"
         :class="`size-${starsSize}`"
       />
       <RatingEmptyStarIcon
-        v-for="n in Math.floor(5 - product.rating)"
-        :key="'empty-' + product.id"
+        v-for="(_, i) in Math.floor(5 - rating)"
+        :key="'empty-' + i"
         :class="`size-${starsSize}`"
       />
     </span>
     <span v-show="!showRatingNumber" class="ml-2 text-sm text-gray-600"
-      >({{ product.rating }})</span
+      >({{ rating }})</span
     >
   </div>
 </template>
@@ -30,8 +29,11 @@ import RatingHalfStarIcon from '../assets/icons/RatingHalfStarIcon.vue';
 import RatingStarIcon from '../assets/icons/RatingFullStarIcon.vue';
 
 defineProps({
-  product: {
-    type: Object,
+  // product: {
+  //   type: Object,
+  // },
+  rating: {
+    type: Number,
   },
   showRatingNumber: {
     type: Boolean,
