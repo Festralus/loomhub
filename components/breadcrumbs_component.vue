@@ -103,5 +103,28 @@ async function setBreadcrumbs() {
 }
 </script>
 <style scoped>
-@import '@/assets/styles/item.css';
+/* Breadcrumbs */
+.path__breadcrumbs {
+  display: flex;
+  gap: 10px;
+  margin-top: 78px;
+  margin-bottom: 20px;
+
+  font-family: 'Satoshi-Regular';
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.6);
+}
+.path__breadcrumb {
+  display: flex;
+  gap: 10px;
+}
+.breadcrumb__pointer {
+  display: inline-block;
+  margin-top: auto;
+  margin-bottom: auto;
+
+  transform: rotate(-90deg);
+  width: 12px;
+  height: 12px;
+}
 </style>

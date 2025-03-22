@@ -42,7 +42,7 @@ function getFilterValues(parameter) {
     filterValues.value = [
       ...new Set(props.products.flatMap((item) => item[parameter])),
     ];
-    console.log(filterValues.value);
+    filterValues.value = sortFilterValues(filterValues.value);
   } else {
     filterValues.value = [
       ...new Set(
@@ -51,8 +51,24 @@ function getFilterValues(parameter) {
         )
       ),
     ];
-    console.log(filterValues.value);
+    filterValues.value = sortFilterValues(filterValues.value);
   }
+}
+
+function isNum(val) {
+  return !isNaN(val) && Number.isInteger(Number(val));
+}
+
+function sortFilterValues(vals) {
+  return vals.sort((a, b) => {
+    if (isNum(a) && isNum(b)) {
+      return Number(a) - Number(b);
+    } else if (!isNum(a) && !isNum(b)) {
+      return a.localeCompare(b);
+    } else {
+      return isNum(a) ? -1 : 1;
+    }
+  });
 }
 
 watch(

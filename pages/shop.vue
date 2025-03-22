@@ -93,6 +93,21 @@
             :products="products"
             :parameter="'clothingType'"
           />
+
+          <div class="horizontal-separator-90"></div>
+          <!-- Brands -->
+          <div class="filters__brands__container">
+            <div class="filters__brands__title">
+              <div class="filters__brands__title-text">Brands</div>
+              <div class="filters__brands__title-icon"></div>
+            </div>
+
+            <Filter_selector_component
+              class="filters__list"
+              :products="products"
+              :parameter="'brand'"
+            />
+          </div>
         </div>
 
         <!-- Apply changes button -->
@@ -102,10 +117,11 @@
     <!-- Product gallery -->
     <div class="shop__products">
       <div class="products__title">
-        <div class="products__title__text">Casual</div>
+        <div class="products__title__text">Products</div>
         <div class="products__title__count">
-          Showing <span class="title__count-range">1-10</span> of
-          <span class="title__count-total">100</span>
+          Showing
+          <span class="title__count-range">1-{{ products.length }}</span> of
+          <span class="title__count-total">{{ products.length }}</span>
           Products
         </div>
         <div class="products__title-sorting">
@@ -119,30 +135,37 @@
       </div>
       <div class="products__gallery">
         <div
-          v-for="(item, index) in products"
+          v-for="(item, index) in paginatedProducts"
           :key="index"
+          @click="goToItem(item.GID)"
           class="proucts__gallery__item"
         >
           <img class="item__image" :src="item.images[0]" />
           <div class="item__title">{{ item.name }}</div>
-          <div class="item__stars"></div>
+          <Product_rating_component class="item__stars" :rating="item.rating" />
           <div class="item__price">
-            <span class="item__price-current">${{ item.price }}</span
+            <span class="item__price-current">${{ item.modifiedPrice }}</span
             ><span v-if="item?.oldPrice" class="item__price-previous"
-              >${{ item.oldPrice }}</span
-            ><span v-if="item?.oldPrice" class="item__price-discount">{{
-              item.discount
-            }}</span>
+              >${{ item.modifiedOldPrice }}</span
+            ><span v-if="item?.oldPrice" class="item__price-discount"
+              >-{{ item.discountPercentage }}%</span
+            >
           </div>
         </div>
       </div>
       <div class="products__pagination">
-        <div class="pagination__previous-page">
+        <div
+          class="pagination__previous-page pagination__navigate-button"
+          @click="previousProductPage()"
+        >
           <ArrowIcon class="previous-page__icon" />
           <div class="previous-page__text">Previous</div>
         </div>
-        <div class="pagination__pages"></div>
-        <div class="pagination__next-page">
+        <div class="pagination__pages">{{ currentProductPage }}</div>
+        <div
+          class="pagination__next-page pagination__navigate-button"
+          @click="nextProductPage()"
+        >
           <div class="next-page__text">Next</div>
           <ArrowIcon class="next-page__icon" />
         </div>
@@ -157,6 +180,7 @@ import axios from 'axios';
 
 import Breadcrumbs_component from '~/components/breadcrumbs_component.vue';
 import Filter_selector_component from '~/components/filter_selector_component.vue';
+import Product_rating_component from '~/components/product_rating_component.vue';
 import Subscribe_news_component from '~/components/subscribe_news_component.vue';
 
 import ArrowIcon from '~/assets/icons/ArrowIcon.vue';
@@ -202,14 +226,57 @@ watch(
 
 // Get all products and filter categories
 const products = ref([]);
+const currencyMultiplier = 1;
+
 async function getAllProducts() {
   try {
     const response = await api.get('/api/products');
-    products.value = [...response.data];
-    // console.log(products.value);
+    products.value = [...response.data].map((product) => {
+      const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
+      const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
+        2
+      );
+      const discountPercentage =
+        Math.round(100 - (modifiedPrice / modifiedOldPrice) * 100) || 0;
+
+      return {
+        ...product,
+        modifiedPrice,
+        modifiedOldPrice,
+        discountPercentage,
+      };
+    });
   } catch (err) {
     console.error(err);
   }
+}
+
+// Products pagination
+const currentProductPage = ref(1);
+const productsPerPage = 6; //24
+
+const paginatedProducts = computed(() => {
+  const start = (currentProductPage.value - 1) * productsPerPage;
+  return products.value.slice(start, start + productsPerPage);
+});
+
+const totalProductPages = computed(() =>
+  Math.ceil(productProducts.value.length / productsPerPage)
+);
+
+function previousProductPage() {
+  if (currentProductPage.value == 1) return;
+  currentProductPage.value--;
+}
+
+function nextProductPage() {
+  if (currentProductPage.value == totalProductPages) return;
+  currentProductPage.value++;
+}
+
+function goToItem(itemId) {
+  if (!itemId) return;
+  router.push(`/item/${itemId}`);
 }
 </script>
 <style scoped>

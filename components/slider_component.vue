@@ -20,7 +20,7 @@
       <div class="new-arrivals__items-item__title mt-2 text-lg font-bold">
         {{ product.name }}
       </div>
-      <ProductRatingComponent :product="product" />
+      <Product_rating_component :rating="product.rating" class="mt-1" />
       <div
         class="new-arrivals__items-item__price SatoshiBold mt-1 flex items-center text-xl font-semibold"
       >
@@ -44,6 +44,8 @@
 import axios from 'axios';
 import { defineProps } from 'vue';
 import { useRouter } from 'vue-router';
+
+import Product_rating_component from '../components/product_rating_component.vue';
 
 const props = defineProps({
   item: {
@@ -184,5 +186,9 @@ async function getSliderProducts() {
 }
 .new-arrivals__items::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.5);
+}
+
+.new-arrivals__items-item__pic {
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 </style>
