@@ -7,7 +7,10 @@
     >
       <div class="selector__filter__text">{{ item }}</div>
       <div class="option__checkbox__container">
-        <CheckboxEmptyIcon class="option__checkbox" />
+        <CheckboxEmptyIcon
+          class="option__checkbox"
+          :class="{ checked: isCheckboxChecked }"
+        />
       </div>
     </div>
   </div>
@@ -93,6 +96,7 @@ watch(
   justify-content: space-between;
   align-items: center;
 }
+
 .option__checkbox__container {
   width: 30px;
   height: 30px;
@@ -104,5 +108,8 @@ watch(
   width: 26px;
   height: 26px;
   display: block;
+}
+.option__checkbox .checked {
+  background-color: rgb(0, 163, 0);
 }
 </style>

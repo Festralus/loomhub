@@ -184,15 +184,39 @@
 
   font-family: 'Satoshi-Regular';
   font-size: 16px;
+
+  user-select: none;
+  cursor: pointer;
 }
 .previous-page__icon {
   transform: rotate(180deg);
 }
 .pagination__pages {
   font-size: 30px;
-  width: 50px;
+  padding: 0px 5px;
+  min-width: 50px;
   height: 50px;
   text-align: center;
   background-color: #f0f0f0;
   border-radius: 20px;
 }
+
+.filters__children__title-text {
+  font-family: 'Satoshi-Bold';
+  font-size: 20px;
+  margin-top: 18px;
+}
+
+/* .filters__apply-button {
+  font-family: 'Satoshi-Regular';
+  font-size: 16px;
+  color: white;
+  text-align: center;
+
+  width: 90%;
+  height: 48px;
+  margin: auto;
+
+  background-color: black;
+  border-radius: 40px;
+} */
