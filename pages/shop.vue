@@ -13,13 +13,22 @@
         <div class="horizontal-separator-90"></div>
 
         <!-- Category picker -->
+        <div class="filters__sizes__container">
+          <div class="filters__sizes__title">
+            <div
+              class="filters__sizes__title-text filters__children__title-text"
+            >
+              Categories
+            </div>
+            <div class="filters__sizes__title-icon"></div>
+          </div>
+        </div>
         <Filter_selector_component
           class="filters__list"
           :products="products"
           :parameter="'productCategory'"
         />
 
-        <div class="horizontal-separator-90"></div>
         <!-- Price picker -->
         <!-- <div class="filters__price__container">
           <div class="filters__price__title">
@@ -34,11 +43,15 @@
           </div>
         </div> -->
 
-        <div class="horizontal-separator-90"></div>
+        <div class="horizontal-separator-90 mt-4"></div>
         <!-- Colors picker -->
         <div class="filters__colors__container">
           <div class="filters__colors__title">
-            <div class="filters__colors__title-text">Colors</div>
+            <div
+              class="filters__colors__title-text filters__children__title-text"
+            >
+              Colors
+            </div>
             <div class="filters__colors__title-icon"></div>
           </div>
 
@@ -50,11 +63,15 @@
           />
         </div>
 
-        <div class="horizontal-separator-90"></div>
+        <div class="horizontal-separator-90 mt-4"></div>
         <!-- Size picker -->
         <div class="filters__sizes__container">
           <div class="filters__sizes__title">
-            <div class="filters__sizes__title-text">Sizes</div>
+            <div
+              class="filters__sizes__title-text filters__children__title-text"
+            >
+              Sizes
+            </div>
             <div class="filters__sizes__title-icon"></div>
           </div>
         </div>
@@ -65,11 +82,15 @@
           :nested="true"
         />
 
-        <div class="horizontal-separator-90"></div>
+        <div class="horizontal-separator-90 mt-4"></div>
         <!-- Dress Style picker -->
         <div class="filters__dress-style__container">
           <div class="filters__dress-style__title">
-            <div class="filters__dress-style__title-text">Dress styles</div>
+            <div
+              class="filters__dress-style__title-text filters__children__title-text"
+            >
+              Dress styles
+            </div>
             <div class="filters__dress-style__title-icon"></div>
           </div>
 
@@ -80,11 +101,15 @@
           />
         </div>
 
-        <div class="horizontal-separator-90"></div>
+        <div class="horizontal-separator-90 mt-4"></div>
         <!-- Clothing Type picker -->
         <div class="filters__clothing-type__container">
           <div class="filters__clothing-type__title">
-            <div class="filters__clothing-type__title-text">Clothing types</div>
+            <div
+              class="filters__clothing-type__title-text filters__children__title-text"
+            >
+              Clothing types
+            </div>
             <div class="filters__clothing-type__title-icon"></div>
           </div>
 
@@ -98,7 +123,11 @@
           <!-- Brands -->
           <div class="filters__brands__container">
             <div class="filters__brands__title">
-              <div class="filters__brands__title-text">Brands</div>
+              <div
+                class="filters__brands__title-text filters__children__title-text"
+              >
+                Brands
+              </div>
               <div class="filters__brands__title-icon"></div>
             </div>
 
@@ -111,7 +140,7 @@
         </div>
 
         <!-- Apply changes button -->
-        <button class="filters__apply-button">Apply Filters</button>
+        <!-- <button class="filters__apply-button">Apply Filters</button> -->
       </div>
     </div>
     <!-- Product gallery -->
@@ -153,16 +182,28 @@
           </div>
         </div>
       </div>
-      <div class="products__pagination">
+      <div v-show="totalProductPages > 0" class="products__pagination">
         <div
+          v-show="currentProductPage !== 1"
           class="pagination__previous-page pagination__navigate-button"
           @click="previousProductPage()"
         >
           <ArrowIcon class="previous-page__icon" />
           <div class="previous-page__text">Previous</div>
         </div>
-        <div class="pagination__pages">{{ currentProductPage }}</div>
         <div
+          class="pagination__pages"
+          :class="[
+            {
+              'ml-[140px]': currentProductPage == 1 && totalProductPages !== 1,
+            },
+            { 'mr-[140px]': currentProductPage == totalProductPages },
+          ]"
+        >
+          {{ currentProductPage }}
+        </div>
+        <div
+          v-show="currentProductPage !== totalProductPages"
           class="pagination__next-page pagination__navigate-button"
           @click="nextProductPage()"
         >
@@ -253,7 +294,7 @@ async function getAllProducts() {
 
 // Products pagination
 const currentProductPage = ref(1);
-const productsPerPage = 6; //24
+const productsPerPage = 6; //12?
 
 const paginatedProducts = computed(() => {
   const start = (currentProductPage.value - 1) * productsPerPage;
@@ -261,7 +302,7 @@ const paginatedProducts = computed(() => {
 });
 
 const totalProductPages = computed(() =>
-  Math.ceil(productProducts.value.length / productsPerPage)
+  Math.ceil(products.value.length / productsPerPage)
 );
 
 function previousProductPage() {
