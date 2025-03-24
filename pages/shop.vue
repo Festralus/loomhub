@@ -247,23 +247,17 @@ definePageMeta({
 const route = useRoute();
 const router = useRouter();
 
-// Filters
+// Updating filters and URL
+const query = {};
+
 const filters = ref({
-  productCategory: route.query.productCategory || [],
-  priceMin: route.query.priceMin || 0,
-  priceMax: route.query.priceMax || null,
-  colors: route.query.colors || [],
-  sizes: route.query.sizes || [],
-  dressStyle: route.query.dressStyle || [],
-  clothingType: route.query.clothingType || [],
+  categories: ref([]),
+  colors: ref([]),
+  sizes: ref([]),
+  styles: ref([]),
+  types: ref([]),
+  brands: ref([]),
 });
-watch(
-  filters,
-  (newFilters) => {
-    router.push({ query: { ...newFilters } });
-  },
-  { deep: true }
-);
 
 // Get all products and filter categories
 const products = ref([]);
@@ -311,7 +305,7 @@ function previousProductPage() {
 }
 
 function nextProductPage() {
-  if (currentProductPage.value == totalProductPages) return;
+  if (currentProductPage.value == totalProductPages.value) return;
   currentProductPage.value++;
 }
 
