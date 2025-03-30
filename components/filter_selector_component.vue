@@ -9,15 +9,18 @@
       <div class="selector__filter__text">{{ item }}</div>
       <div class="option__checkbox__container">
         <CheckboxEmptyIcon
-          class="option__checkbox"
-          :class="{ checked: checkedItems[index] }"
+          v-show="!checkedItems[index]"
+          class="option__checkbox-unchecked"
+        />
+        <CheckboxFilledIcon
+          v-show="checkedItems[index]"
+          class="option__checkbox-checked"
         />
       </div>
     </div>
   </div>
 </template>
 <script setup>
-import ArrowIcon from '@/assets/icons/ArrowIcon.vue';
 import CheckboxEmptyIcon from '~/assets/icons/CheckboxEmptyIcon.vue';
 import CheckboxFilledIcon from '~/assets/icons/CheckboxFilledIcon.vue';
 
@@ -35,6 +38,8 @@ const props = defineProps({
     default: false,
   },
 });
+
+const emits = defineEmits(['filter-updated']);
 
 onMounted(() => {});
 
@@ -87,19 +92,18 @@ watch(
 );
 
 const checkedItems = ref(Array(filterValues.value.length).fill(false));
-const areFiltersFetching = ref(false);
 function toggleCheckbox(index) {
-  if (areFiltersFetching.value) return;
+  if (!props.parameter) return;
   checkedItems.value[index] = !checkedItems.value[index];
 
-  try {
-    areFiltersFetching.value = true;
-    // const res = await api.get('api/')
-  } catch (err) {
-    console.error(err);
-  } finally {
-    areFiltersFetching.value = false;
-  }
+  // Emit toggled filters to the parent component
+  const selectedValues = filterValues.value.filter(
+    (_, i) => checkedItems.value[i]
+  );
+  emits('filter-updated', {
+    key: props.parameter,
+    values: selectedValues,
+  });
 }
 
 // Emit toggled filters to the parent component
@@ -124,12 +128,14 @@ function toggleCheckbox(index) {
   align-items: center;
   justify-content: center;
 }
-.option__checkbox {
+.option__checkbox-unchecked {
   width: 26px;
   height: 26px;
   display: block;
 }
-.option__checkbox.checked {
-  background-color: rgb(0, 163, 0);
+.option__checkbox-checked {
+  width: 24px;
+  height: 24px;
+  display: block;
 }
 </style>

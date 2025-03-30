@@ -201,22 +201,28 @@
   border-radius: 20px;
 }
 
+.filters__categories__title,
+.filters__colors__title,
+.filters__sizes__title,
+.filters__dress-style__title,
+.filters__clothing-type__title,
+.filters__brands__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 14px;
+}
 .filters__children__title-text {
   font-family: 'Satoshi-Bold';
   font-size: 20px;
-  margin-top: 18px;
+}
+.filters__sizes__title-icon {
+  height: 10px;
 }
 
-/* .filters__apply-button {
-  font-family: 'Satoshi-Regular';
-  font-size: 16px;
-  color: white;
-  text-align: center;
-
-  width: 90%;
-  height: 48px;
-  margin: auto;
-
-  background-color: black;
-  border-radius: 40px;
-} */
+.filters__list {
+  max-height: auto;
+}
+.filters__list.collapsed {
+  max-height: 0;
+}

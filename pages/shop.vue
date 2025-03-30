@@ -7,27 +7,27 @@
       <div class="shop__filters">
         <div class="filters__title">
           <div class="filters__title-text">Filters</div>
-          <div class="filters__title-icon"></div>
         </div>
 
-        <div class="horizontal-separator-90"></div>
+        <div class="horizontal-separator-90 mb-4"></div>
 
         <!-- Category picker -->
-        <div class="filters__sizes__container">
-          <div class="filters__sizes__title">
+        <div class="filters__categories__container">
+          <div @click="toggle" class="filters__categories__title">
             <div
-              class="filters__sizes__title-text filters__children__title-text"
+              class="filters__categories__title-text filters__children__title-text"
             >
               Categories
             </div>
-            <div class="filters__sizes__title-icon"></div>
+            <PointerIcon class="filters__categories__title-icon"></PointerIcon>
           </div>
+          <Filter_selector_component
+            class="filters__list"
+            :products="products"
+            :parameter="'productCategory'"
+            @filter-updated="(value) => updateFilters(value)"
+          />
         </div>
-        <Filter_selector_component
-          class="filters__list"
-          :products="products"
-          :parameter="'productCategory'"
-        />
 
         <!-- Price picker -->
         <!-- <div class="filters__price__container">
@@ -43,7 +43,7 @@
           </div>
         </div> -->
 
-        <div class="horizontal-separator-90 mt-4"></div>
+        <div class="horizontal-separator-90 mb-4 mt-4"></div>
         <!-- Colors picker -->
         <div class="filters__colors__container">
           <div class="filters__colors__title">
@@ -52,18 +52,18 @@
             >
               Colors
             </div>
-            <div class="filters__colors__title-icon"></div>
+            <PointerIcon class="filters__colors__title-icon"></PointerIcon>
           </div>
-
           <Filter_selector_component
             class="filters__list"
             :products="products"
             :parameter="'color'"
             :nested="true"
+            @filter-updated="(value) => updateFilters(value)"
           />
         </div>
 
-        <div class="horizontal-separator-90 mt-4"></div>
+        <div class="horizontal-separator-90 mb-4 mt-4"></div>
         <!-- Size picker -->
         <div class="filters__sizes__container">
           <div class="filters__sizes__title">
@@ -72,17 +72,18 @@
             >
               Sizes
             </div>
-            <div class="filters__sizes__title-icon"></div>
+            <PointerIcon class="filters__sizes__title-icon"></PointerIcon>
           </div>
+          <Filter_selector_component
+            class="filters__list"
+            :products="products"
+            :parameter="'size'"
+            :nested="true"
+            @filter-updated="(value) => updateFilters(value)"
+          />
         </div>
-        <Filter_selector_component
-          class="filters__list"
-          :products="products"
-          :parameter="'size'"
-          :nested="true"
-        />
 
-        <div class="horizontal-separator-90 mt-4"></div>
+        <div class="horizontal-separator-90 mb-4 mt-4"></div>
         <!-- Dress Style picker -->
         <div class="filters__dress-style__container">
           <div class="filters__dress-style__title">
@@ -91,17 +92,17 @@
             >
               Dress styles
             </div>
-            <div class="filters__dress-style__title-icon"></div>
+            <PointerIcon class="filters__dress-style__title-icon"></PointerIcon>
           </div>
-
           <Filter_selector_component
             class="filters__list"
             :products="products"
             :parameter="'dressStyle'"
+            @filter-updated="(value) => updateFilters(value)"
           />
         </div>
 
-        <div class="horizontal-separator-90 mt-4"></div>
+        <div class="horizontal-separator-90 mb-4 mt-4"></div>
         <!-- Clothing Type picker -->
         <div class="filters__clothing-type__container">
           <div class="filters__clothing-type__title">
@@ -110,37 +111,36 @@
             >
               Clothing types
             </div>
-            <div class="filters__clothing-type__title-icon"></div>
+            <PointerIcon
+              class="filters__clothing-type__title-icon"
+            ></PointerIcon>
           </div>
-
           <Filter_selector_component
             class="filters__list"
             :products="products"
             :parameter="'clothingType'"
+            @filter-updated="(value) => updateFilters(value)"
           />
-
-          <div class="horizontal-separator-90"></div>
-          <!-- Brands -->
-          <div class="filters__brands__container">
-            <div class="filters__brands__title">
-              <div
-                class="filters__brands__title-text filters__children__title-text"
-              >
-                Brands
-              </div>
-              <div class="filters__brands__title-icon"></div>
-            </div>
-
-            <Filter_selector_component
-              class="filters__list"
-              :products="products"
-              :parameter="'brand'"
-            />
-          </div>
         </div>
 
-        <!-- Apply changes button -->
-        <!-- <button class="filters__apply-button">Apply Filters</button> -->
+        <div class="horizontal-separator-90 mb-4"></div>
+        <!-- Brands -->
+        <div class="filters__brands__container">
+          <div class="filters__brands__title">
+            <div
+              class="filters__brands__title-text filters__children__title-text"
+            >
+              Brands
+            </div>
+            <PointerIcon class="filters__brands__title-icon"></PointerIcon>
+          </div>
+          <Filter_selector_component
+            class="filters__list"
+            :products="products"
+            :parameter="'brand'"
+            @filter-updated="(value) => updateFilters(value)"
+          />
+        </div>
       </div>
     </div>
     <!-- Product gallery -->
@@ -258,6 +258,32 @@ const filters = ref({
   types: ref([]),
   brands: ref([]),
 });
+
+const areFiltersFetching = false;
+async function updateFilters({ key, values }) {
+  if (areFiltersFetching.value) return;
+  const newQuery = {};
+
+  // Receive chosen filters from a component
+  filters.value[key] = values;
+  console.log(values);
+  for (const key in filters.value) {
+    if (filters.value[key].length > 0) {
+      newQuery[key] = JSON.stringify(filters.value[key]);
+    }
+    query.value = newQuery;
+    router.push({ query: query.value });
+  }
+
+  // try {
+  //   areFiltersFetching = true;
+  //   api.get('/api/');
+  // } catch (err) {
+  //   console.error(err);
+  // } finally {
+  //   areFiltersFetching.value = false;
+  // }
+}
 
 // Get all products and filter categories
 const products = ref([]);
