@@ -81,7 +81,7 @@ async function setBreadcrumbs() {
   segments.value = history.state?.current?.split('/');
   const lastSegment = segments.value.pop();
 
-  if (lastSegment.includes('product')) {
+  if (lastSegment.includes('productGID')) {
     try {
       const res = await api.post('/api/productByGid', { itemGID: lastSegment });
       modifiedSegments.value = [

@@ -142,6 +142,7 @@
                 class="shop-dropdown__item__shadow"
               ></div>
             </NuxtLink> -->
+
             <div
               v-for="(style, index) in dress_styles_list"
               :key="index"
@@ -183,6 +184,7 @@
           >New Arrivals</NuxtLink
         >
         <NuxtLink to="/brands" class="top-menu__nav-item flex">Brands</NuxtLink> -->
+
         <div
           @click="openInDev('Shopping Navigation')"
           class="top-menu__nav-item top-menu__nav-item__shop relative flex cursor-pointer flex-row items-center sm:hidden"
@@ -425,11 +427,11 @@
             <div
               class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
-              CONTACTS
+              CREATOR
             </div>
-            <NuxtLink to="/" class="links__link">About</NuxtLink>
-            <NuxtLink to="/" class="links__link">Features</NuxtLink>
-            <NuxtLink to="/" class="links__link">Works</NuxtLink>
+            <NuxtLink to="/" class="links__link">About me</NuxtLink>
+            <NuxtLink to="/" class="links__link">123</NuxtLink>
+            <NuxtLink to="/" class="links__link">Inspirations</NuxtLink>
             <NuxtLink to="/" class="links__link">Career</NuxtLink>
           </div>
           <div class="links__block pb-6">
@@ -438,10 +440,10 @@
             >
               LINKS
             </div>
-            <NuxtLink to="/" class="links__link">X / Twitter</NuxtLink>
-            <NuxtLink to="/" class="links__link">Delivery Details</NuxtLink>
-            <NuxtLink to="/" class="links__link">Terms & Conditions</NuxtLink>
-            <NuxtLink to="/" class="links__link">Github</NuxtLink>
+            <NuxtLink to="/" class="links__link">GutHub</NuxtLink>
+            <NuxtLink to="/" class="links__link">Codewars</NuxtLink>
+            <NuxtLink to="/" class="links__link">123</NuxtLink>
+            <NuxtLink to="/" class="links__link">123</NuxtLink>
           </div>
         </div>
         <div class="links__container inline-flex">
@@ -449,23 +451,23 @@
             <div
               class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
-              FAQ
+              CONTACTS
             </div>
-            <NuxtLink to="/" class="links__link">Account</NuxtLink>
-            <NuxtLink to="/" class="links__link">Manage Deliveries</NuxtLink>
-            <NuxtLink to="/" class="links__link">Orders</NuxtLink>
-            <NuxtLink to="/" class="links__link">Payment</NuxtLink>
+            <NuxtLink to="/" class="links__link">X / Twitter</NuxtLink>
+            <NuxtLink to="/" class="links__link">E-mail</NuxtLink>
+            <NuxtLink to="/" class="links__link">Telegram</NuxtLink>
+            <NuxtLink to="/" class="links__link">Facebook</NuxtLink>
           </div>
           <div class="links__block pb-6">
             <div
               class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
-              RESOURCES
+              THE WEBSITE
             </div>
-            <NuxtLink to="/" class="links__link">Free eBook</NuxtLink>
-            <NuxtLink to="/" class="links__link">Developer Tutorial</NuxtLink>
-            <NuxtLink to="/" class="links__link">How to - Blog</NuxtLink>
-            <NuxtLink to="/" class="links__link">About me</NuxtLink>
+            <NuxtLink to="/" class="links__link">Why LoomHub</NuxtLink>
+            <NuxtLink to="/" class="links__link">Roadmap</NuxtLink>
+            <NuxtLink to="/" class="links__link">Features</NuxtLink>
+            <NuxtLink to="/" class="links__link">Credits</NuxtLink>
           </div>
         </div>
       </div>
