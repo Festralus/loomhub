@@ -6,11 +6,14 @@
       class="selector__filter"
       @click="toggleCheckbox(index)"
     >
-      <div class="selector__filter__text">{{ item }}</div>
+      <div class="selector__filter__text">
+        {{ item }}
+        <span>({{ combinedQuantity?.[props.parameter]?.[item] ?? 0 }})</span>
+      </div>
       <div class="option__checkbox__container">
         <CheckboxEmptyIcon
           v-show="!checkedItems[index]"
-          class="option__checkbox-unchecked"
+          class="option__checkbox"
         />
         <CheckboxFilledIcon
           v-show="checkedItems[index]"
@@ -37,12 +40,21 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  selected: {
+    type: Array,
+  },
+  combinedQuantity: {
+    type: Object,
+  },
 });
 
 const emits = defineEmits(['filter-updated']);
 
-onMounted(() => {});
+onMounted(() => {
+  // initializeCheckedItems();
+});
 
+// Get filter options
 let filterValues = ref([]);
 function getFilterValues(parameter) {
   if (!props.products || props.products === undefined) return;
@@ -62,8 +74,18 @@ function getFilterValues(parameter) {
     ];
     filterValues.value = sortFilterValues(filterValues.value);
   }
+
+  // const vals = props.nested
+  //   ? props.products.flatMap((item) =>
+  //       item.stock.map((item) => item[parameter])
+  //     )
+  //   : props.products.flatMap((item) => item[parameter]);
+
+  // filterValues.value = sortFilterValues(...new Set(vals));
+  // }
 }
 
+// Check if the passed value is an integer
 function isNum(val) {
   return !isNaN(val) && Number.isInteger(Number(val));
 }
@@ -91,7 +113,12 @@ watch(
   { deep: true }
 );
 
-const checkedItems = ref(Array(filterValues.value.length).fill(false));
+// REVIEW START
+// Toggle a filter value
+const checkedItems = computed(() => {
+  return filterValues?.value?.map((value) => props?.selected?.includes(value));
+});
+
 function toggleCheckbox(index) {
   if (!props.parameter) return;
   checkedItems.value[index] = !checkedItems.value[index];
@@ -106,7 +133,17 @@ function toggleCheckbox(index) {
   });
 }
 
-// Emit toggled filters to the parent component
+// EXP
+
+watch(
+  () => props.combinedQuantity,
+  (newValue) => {
+    console.log('Updated combinedQuantity in child:', newValue);
+  }
+);
+// Check toggled filters on page init (via URL)
+// function initializeCheckedItems() {}
+// REVIEW END
 </script>
 <style scoped>
 .filters {
@@ -128,7 +165,7 @@ function toggleCheckbox(index) {
   align-items: center;
   justify-content: center;
 }
-.option__checkbox-unchecked {
+.option__checkbox {
   width: 26px;
   height: 26px;
   display: block;
