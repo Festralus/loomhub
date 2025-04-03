@@ -79,3 +79,37 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.no-scroll {
+  overflow: hidden;
+  margin-right: 8px;
+}
+
+/* Scrollbar starts */
+/* WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #ffffff;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background: #b2b2b2;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #7f7f7f;
+}
+::-webkit-scrollbar-thumb:active {
+  background: #414141;
+}
+/* IE and Edge */
+body {
+  -ms-overflow-style: none;
+}
+body::-webkit-scrollbar {
+  display: block;
+}
+/* Scrollbar ends */

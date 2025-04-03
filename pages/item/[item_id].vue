@@ -484,10 +484,10 @@ const api = axios.create({
 });
 
 // Check and set global variables
-const checkSession = useAuthStore().checkSession;
+const getSession = useAuthStore().getSession;
 
 onBeforeMount(() => {
-  checkSession();
+  getSession();
   setChosenItem();
 });
 
@@ -792,7 +792,9 @@ function getProductDetails() {
       ? item.value.colors.join(', ')
       : item.value.colors[0];
   const availableSizes =
-    item.value.sizes > 1 ? item.value.sizes.join(', ') : item.value.sizes;
+    item.value.sizes.length > 1
+      ? item.value.sizes.join(', ')
+      : item.value.sizes;
 
   productDetails.value = {
     name: item.value.name,

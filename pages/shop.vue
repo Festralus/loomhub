@@ -21,22 +21,30 @@
 
           <!-- Category picker -->
           <div class="filters__categories__container">
-            <div @click="toggle" class="filters__categories__title">
+            <div class="filters__categories__title">
               <div
                 class="filters__categories__title-text filters__children__title-text"
               >
                 Categories
               </div>
-              <PointerIcon
-                class="filters__categories__title-icon"
-              ></PointerIcon>
+              <div
+                @click="toggleSection('productCategory')"
+                class="filters__title-icon__container"
+              >
+                <PointerIcon
+                  class="filters__title-icon filters__categories__title-icon"
+                  :class="{ rotated: isSectionOpened.productCategory }"
+                />
+              </div>
             </div>
             <Filter_selector_component
               class="filters__list"
+              :class="{ opened: isSectionOpened.productCategory }"
               :products="products"
               :parameter="'productCategory'"
               :selected="filters.productCategory"
               :combinedQuantity="combinedQuantity"
+              :isAnyFilterActive="isAnyFilterActive"
               @filter-updated="(value) => updateFilters(value)"
             />
           </div>
@@ -64,16 +72,25 @@
               >
                 Colors
               </div>
-              <PointerIcon class="filters__colors__title-icon"></PointerIcon>
+              <div
+                @click="toggleSection('color')"
+                class="filters__title-icon__container"
+              >
+                <PointerIcon
+                  class="filters__title-icon filters__colors__title-icon"
+                  :class="{ rotated: isSectionOpened.color }"
+                />
+              </div>
             </div>
             <Filter_selector_component
               class="filters__list"
+              :class="{ opened: isSectionOpened.color }"
               :products="products"
               :parameter="'color'"
               :nested="true"
               :selected="filters.color"
               :combinedQuantity="combinedQuantity"
-              @update:combinedQuantity="handleUpdate"
+              :isAnyFilterActive="isAnyFilterActive"
               @filter-updated="(value) => updateFilters(value)"
             />
           </div>
@@ -87,15 +104,25 @@
               >
                 Sizes
               </div>
-              <PointerIcon class="filters__sizes__title-icon"></PointerIcon>
+              <div
+                @click="toggleSection('size')"
+                class="filters__title-icon__container"
+              >
+                <PointerIcon
+                  class="filters__title-icon filters__sizes__title-icon"
+                  :class="{ rotated: isSectionOpened.size }"
+                />
+              </div>
             </div>
             <Filter_selector_component
               class="filters__list"
+              :class="{ opened: isSectionOpened.size }"
               :products="products"
               :parameter="'size'"
               :nested="true"
               :selected="filters.size"
               :combinedQuantity="combinedQuantity"
+              :isAnyFilterActive="isAnyFilterActive"
               @filter-updated="(value) => updateFilters(value)"
             />
           </div>
@@ -109,16 +136,24 @@
               >
                 Dress styles
               </div>
-              <PointerIcon
-                class="filters__dress-style__title-icon"
-              ></PointerIcon>
+              <div
+                @click="toggleSection('dressStyle')"
+                class="filters__title-icon__container"
+              >
+                <PointerIcon
+                  class="filters__title-icon filters__dress-style__title-icon"
+                  :class="{ rotated: isSectionOpened.dressStyle }"
+                />
+              </div>
             </div>
             <Filter_selector_component
               class="filters__list"
+              :class="{ opened: isSectionOpened.dressStyle }"
               :products="products"
               :parameter="'dressStyle'"
               :selected="filters.dressStyle"
               :combinedQuantity="combinedQuantity"
+              :isAnyFilterActive="isAnyFilterActive"
               @filter-updated="(value) => updateFilters(value)"
             />
           </div>
@@ -132,21 +167,29 @@
               >
                 Clothing types
               </div>
-              <PointerIcon
-                class="filters__clothing-type__title-icon"
-              ></PointerIcon>
+              <div
+                @click="toggleSection('clothingType')"
+                class="filters__title-icon__container"
+              >
+                <PointerIcon
+                  class="filters__title-icon filters__clothing-type__title-icon"
+                  :class="{ rotated: isSectionOpened.clothingType }"
+                />
+              </div>
             </div>
             <Filter_selector_component
               class="filters__list"
+              :class="{ opened: isSectionOpened.clothingType }"
               :products="products"
               :parameter="'clothingType'"
               :selected="filters.clothingType"
               :combinedQuantity="combinedQuantity"
+              :isAnyFilterActive="isAnyFilterActive"
               @filter-updated="(value) => updateFilters(value)"
             />
           </div>
 
-          <div class="horizontal-separator-90 mb-4"></div>
+          <div class="horizontal-separator-90 mb-4 mt-4"></div>
           <!-- Brands -->
           <div class="filters__brands__container">
             <div class="filters__brands__title">
@@ -155,14 +198,24 @@
               >
                 Brands
               </div>
-              <PointerIcon class="filters__brands__title-icon"></PointerIcon>
+              <div
+                @click="toggleSection('brand')"
+                class="filters__title-icon__container"
+              >
+                <PointerIcon
+                  class="filters__title-icon filters__brands__title-icon"
+                  :class="{ rotated: isSectionOpened.brand }"
+                />
+              </div>
             </div>
             <Filter_selector_component
               class="filters__list"
+              :class="{ opened: isSectionOpened.brand }"
               :products="products"
               :parameter="'brand'"
               :selected="filters.brand"
               :combinedQuantity="combinedQuantity"
+              :isAnyFilterActive="isAnyFilterActive"
               @filter-updated="(value) => updateFilters(value)"
             />
           </div>
@@ -179,13 +232,35 @@
               >{{ visibleProductsStart }}-{{ visibleProductsEnd }}</span
             >
             of
-            <span class="title__count-total">{{ products.length }}</span>
+            <span class="title__count-total">{{
+              filteredProducts.length
+            }}</span>
             Products
           </div>
           <div class="products__title-sorting">
             <div class="title-sorting__text">Sort by:</div>
-            <div class="title-soting__parameter">Most popular</div>
-            <PointerIcon />
+            <div class="title-sorting__parameter__container">
+              <div @click="toggleSorting()" class="title-soting__parameter">
+                Most popular
+              </div>
+              <PointerIcon
+                @click="toggleSorting()"
+                class="filters__title-icon"
+              />
+              <div class="sorting__dropdown">
+                <div
+                  v-for="(option, key) in sortingOptions"
+                  @click="(setSortingOption(key), setSortingOption2())"
+                  class="sorting-option"
+                  :class="{
+                    'text-red-500':
+                      option.name == sortingOptions[chosenSortingOption].name,
+                  }"
+                >
+                  {{ option.name }}
+                </div>
+              </div>
+            </div>
           </div>
           <div class="products__title-mobile-sorting">
             <FiltersIcon class="filters__icon" />
@@ -199,7 +274,7 @@
             class="proucts__gallery__item"
           > -->
           <div
-            v-for="(item, index) in filteredProducts"
+            v-for="(item, index) in paginatedProducts"
             :key="index"
             @click="goToItem(item.GID)"
             class="proucts__gallery__item"
@@ -258,6 +333,7 @@
 </template>
 <script setup>
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 import Breadcrumbs_component from '~/components/breadcrumbs_component.vue';
 import Filter_selector_component from '~/components/filter_selector_component.vue';
@@ -268,6 +344,10 @@ import ArrowIcon from '~/assets/icons/ArrowIcon.vue';
 import FiltersIcon from '~/assets/icons/FiltersIcon.vue';
 import PointerIcon from '~/assets/icons/PointerIcon.vue';
 
+import { storeToRefs } from 'pinia';
+import { useSortingStore } from '~/stores';
+import { sortingOptions } from '~/stores';
+
 // API settings
 const config = useRuntimeConfig();
 const api = axios.create({
@@ -277,8 +357,6 @@ const api = axios.create({
 onMounted(() => {
   getProducts();
   initializeFiltersFromURL();
-  // getAllProducts();
-  // getFilteredProducts();
 });
 
 // Layout settings
@@ -305,14 +383,15 @@ const filters = ref({
 const areFiltersFetching = false;
 async function updateFilters({ key, values }) {
   if (areFiltersFetching.value) return;
-  const newQuery = {};
 
-  // Receive chosen filters from a component
   filters.value[key] = values;
+  // Receive chosen filters from a component
+  const newQuery = {};
   for (const key in filters.value) {
     if (filters.value[key].length > 0) {
       newQuery[key] = JSON.stringify(filters.value[key]);
     }
+
     query.value = newQuery;
     router.push({ query: query.value });
   }
@@ -365,6 +444,7 @@ async function getAllProducts() {
     });
 
     filteredProducts.value = products.value;
+    combinedQuantity.value = response.data.filterCounts;
   } catch (err) {
     console.error(err);
   }
@@ -428,16 +508,11 @@ async function getProducts() {
 
 // Reset all filters
 async function resetAllFilters() {
-  filters.value = {
-    productCategory: ref([]),
-    color: ref([]),
-    size: ref([]),
-    dressStyle: ref([]),
-    clothingType: ref([]),
-    brand: ref([]),
-  };
+  for (const key in filters.value) {
+    filters.value[key] = [];
+  }
 
-  await getAllProducts();
+  await getProducts();
 }
 
 // Filter out items based on chosen filter values
@@ -450,17 +525,20 @@ watch(
 );
 
 // Loading screen while items are being fetched
-watch(isFetching, (newVal) => {
-  if (newVal) {
-    document.body.classList.add('no-scroll');
-  } else {
-    document.body.classList.remove('no-scroll');
+watch(
+  () => isFetching.value,
+  (newVal) => {
+    if (newVal) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
   }
-});
+);
 
 // Add available combination numbers to the filters
 
-const emit = defineEmits(['updateCombinedQuantity']);
+const emit = defineEmits(['update:combinedQuantity']);
 
 watch(
   combinedQuantity,
@@ -480,31 +558,60 @@ function updateCombinedQuantity(newQuantity) {
   }
 }
 
-function handleUpdate({ key, value }) {
-  combinedQuantity.value[key] = value;
-}
+// If no filters active - hide the combined numbers
+const isAnyFilterActive = computed(() => {
+  return Object.values(filters.value).some((arr) => arr.length > 0);
+});
+
 // REVIEW END
+
+// Manage opening and closing filter sections
+const isSectionOpened = ref({
+  productCategory: true,
+  color: true,
+  size: true,
+  dressStyle: false,
+  clothingType: true,
+  brand: true,
+});
+
+function toggleSection(secName) {
+  isSectionOpened.value[secName] = !isSectionOpened.value[secName];
+  console.log(isSectionOpened.value[secName]);
+}
+
+// Manage products sorting
+const isSortingOpened = ref(false);
+function toggleSorting() {
+  isSortingOpened.value = !isSortingOpened.value;
+}
+
+const chosenSortingOption = Cookies.get('shopSortingOption') || 0;
+const setSortingOption = useSortingStore().setSortingOption;
+function setSortingOption2() {
+  // console.log(sortingOptions[chosenSortingOption]);
+}
 
 // Products pagination
 const currentProductPage = ref(1);
-const productsPerPage = 4; //12?
+const productsPerPage = 12;
 const visibleProductsStart = computed(() => {
   return productsPerPage * currentProductPage.value + 1 - productsPerPage;
 });
 const visibleProductsEnd = computed(() => {
   if (currentProductPage.value == totalProductPages.value) {
-    return products?.value.length;
+    return filteredProducts?.value.length;
   }
   return productsPerPage * currentProductPage.value;
 });
 
 const paginatedProducts = computed(() => {
   const start = (currentProductPage.value - 1) * productsPerPage;
-  return products.value.slice(start, start + productsPerPage);
+  return filteredProducts.value.slice(start, start + productsPerPage);
 });
 
 const totalProductPages = computed(() =>
-  Math.ceil(products.value.length / productsPerPage)
+  Math.ceil(filteredProducts.value.length / productsPerPage)
 );
 
 function previousProductPage() {
