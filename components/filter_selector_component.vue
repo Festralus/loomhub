@@ -6,9 +6,20 @@
       class="selector__filter"
       @click="toggleCheckbox(index)"
     >
-      <div class="selector__filter__text">
+      <div
+        :class="
+          combinedQuantity?.[props.parameter]?.[item] ? 'active' : 'inactive'
+        "
+        class="selector__filter__text"
+      >
         {{ item }}
-        <span>({{ combinedQuantity?.[props.parameter]?.[item] ?? 0 }})</span>
+        <span
+          :class="
+            combinedQuantity?.[props.parameter]?.[item] ? 'active' : 'inactive'
+          "
+          v-if="isAnyFilterActive"
+          >({{ combinedQuantity?.[props.parameter]?.[item] ?? 0 }})</span
+        >
       </div>
       <div class="option__checkbox__container">
         <CheckboxEmptyIcon
@@ -46,6 +57,9 @@ const props = defineProps({
   combinedQuantity: {
     type: Object,
   },
+  isAnyFilterActive: {
+    type: Boolean,
+  },
 });
 
 const emits = defineEmits(['filter-updated']);
@@ -74,15 +88,6 @@ function getFilterValues(parameter) {
     ];
     filterValues.value = sortFilterValues(filterValues.value);
   }
-
-  // const vals = props.nested
-  //   ? props.products.flatMap((item) =>
-  //       item.stock.map((item) => item[parameter])
-  //     )
-  //   : props.products.flatMap((item) => item[parameter]);
-
-  // filterValues.value = sortFilterValues(...new Set(vals));
-  // }
 }
 
 // Check if the passed value is an integer
@@ -103,6 +108,7 @@ function sortFilterValues(vals) {
   });
 }
 
+// REVIEW START
 watch(
   () => props.products,
   (newProducts) => {
@@ -113,7 +119,6 @@ watch(
   { deep: true }
 );
 
-// REVIEW START
 // Toggle a filter value
 const checkedItems = computed(() => {
   return filterValues?.value?.map((value) => props?.selected?.includes(value));
@@ -133,16 +138,6 @@ function toggleCheckbox(index) {
   });
 }
 
-// EXP
-
-watch(
-  () => props.combinedQuantity,
-  (newValue) => {
-    console.log('Updated combinedQuantity in child:', newValue);
-  }
-);
-// Check toggled filters on page init (via URL)
-// function initializeCheckedItems() {}
 // REVIEW END
 </script>
 <style scoped>
@@ -174,5 +169,9 @@ watch(
   width: 24px;
   height: 24px;
   display: block;
+}
+
+.inactive {
+  color: rgba(0, 0, 0, 0.2);
 }
 </style>

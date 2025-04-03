@@ -536,7 +536,7 @@ const api = axios.create({
 // const api = useApi();
 
 onMounted(() => {
-  checkSession();
+  getSession();
 
   watch(searchQuery, (newValue) => {
     if (newValue) {
@@ -755,7 +755,7 @@ async function checkNicknameAvailability() {
 // Login and Session
 const loginName = ref('Guppi');
 const loginPassword = ref('123123');
-const checkSession = useAuthStore().checkSession;
+const getSession = useAuthStore().getSession;
 async function submitLoginForm() {
   try {
     const response = await api.post('/api/login', {
@@ -767,7 +767,7 @@ async function submitLoginForm() {
 
     // console.log(`You are: ${response.data.user}. Your token is: ${token}`);
 
-    await checkSession();
+    await getSession();
   } catch (err) {
     console.error(err);
   }

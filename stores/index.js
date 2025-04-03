@@ -4,6 +4,7 @@ import useApi from '/utils/api';
 
 export const useAuthStore = defineStore({
   id: 'auth',
+
   state: () => {
     return {
       token: null,
@@ -12,9 +13,10 @@ export const useAuthStore = defineStore({
       authenticated: false,
     };
   },
+
   actions: {
     // Method to check whether a user is logged in
-    async checkSession() {
+    async getSession() {
       const api = useApi();
       const token = Cookies.get('token');
 
@@ -64,3 +66,37 @@ export const useAuthStore = defineStore({
     },
   },
 });
+
+export const useSortingStore = defineStore({
+  id: 'sort',
+
+  state: () => {
+    return {
+      shopSortingOption: 0,
+    };
+  },
+
+  actions: {
+    getSortingOption() {
+      const shopSortingOption = Cookies.get('shopSortingOption');
+      console.log(shopSortingOption);
+    },
+    setSortingOption(payload) {
+      if (payload !== undefined) {
+        this.shopSortingOption = this.sortingOptions[payload];
+      } else {
+        this.shopSortingOption = 0;
+      }
+    },
+  },
+});
+
+export const sortingOptions = {
+  0: { name: 'Most popular' },
+  1: { name: 'Newest Arrivals' },
+  2: { name: 'Highest Rated' },
+  3: { name: 'Price: Low to High' },
+  4: { name: 'Price: High to Low' },
+  5: { name: 'Name: A-Z ' },
+  6: { name: 'Name: Z-A ' },
+};
