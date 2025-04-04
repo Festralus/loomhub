@@ -21,16 +21,16 @@
 
           <!-- Category picker -->
           <div class="filters__categories__container">
-            <div class="filters__categories__title">
+            <div
+              class="filters__section__title filters__categories__title"
+              @click="toggleSection('productCategory')"
+            >
               <div
                 class="filters__categories__title-text filters__children__title-text"
               >
                 Categories
               </div>
-              <div
-                @click="toggleSection('productCategory')"
-                class="filters__title-icon__container"
-              >
+              <div class="filters__title-icon__container">
                 <PointerIcon
                   class="filters__title-icon filters__categories__title-icon"
                   :class="{ rotated: isSectionOpened.productCategory }"
@@ -66,16 +66,16 @@
           <div class="horizontal-separator-90 mb-4 mt-4"></div>
           <!-- Colors picker -->
           <div class="filters__colors__container">
-            <div class="filters__colors__title">
+            <div
+              class="filters__section__title filters__colors__title"
+              @click="toggleSection('color')"
+            >
               <div
                 class="filters__colors__title-text filters__children__title-text"
               >
                 Colors
               </div>
-              <div
-                @click="toggleSection('color')"
-                class="filters__title-icon__container"
-              >
+              <div class="filters__title-icon__container">
                 <PointerIcon
                   class="filters__title-icon filters__colors__title-icon"
                   :class="{ rotated: isSectionOpened.color }"
@@ -98,16 +98,16 @@
           <div class="horizontal-separator-90 mb-4 mt-4"></div>
           <!-- Size picker -->
           <div class="filters__sizes__container">
-            <div class="filters__sizes__title">
+            <div
+              class="filters__section__title filters__sizes__title"
+              @click="toggleSection('size')"
+            >
               <div
                 class="filters__sizes__title-text filters__children__title-text"
               >
                 Sizes
               </div>
-              <div
-                @click="toggleSection('size')"
-                class="filters__title-icon__container"
-              >
+              <div class="filters__title-icon__container">
                 <PointerIcon
                   class="filters__title-icon filters__sizes__title-icon"
                   :class="{ rotated: isSectionOpened.size }"
@@ -130,16 +130,16 @@
           <div class="horizontal-separator-90 mb-4 mt-4"></div>
           <!-- Dress Style picker -->
           <div class="filters__dress-style__container">
-            <div class="filters__dress-style__title">
+            <div
+              class="filters__section__title filters__dress-style__title"
+              @click="toggleSection('dressStyle')"
+            >
               <div
                 class="filters__dress-style__title-text filters__children__title-text"
               >
                 Dress styles
               </div>
-              <div
-                @click="toggleSection('dressStyle')"
-                class="filters__title-icon__container"
-              >
+              <div class="filters__title-icon__container">
                 <PointerIcon
                   class="filters__title-icon filters__dress-style__title-icon"
                   :class="{ rotated: isSectionOpened.dressStyle }"
@@ -161,16 +161,16 @@
           <div class="horizontal-separator-90 mb-4 mt-4"></div>
           <!-- Clothing Type picker -->
           <div class="filters__clothing-type__container">
-            <div class="filters__clothing-type__title">
+            <div
+              class="filters__section__title filters__clothing-type__title"
+              @click="toggleSection('clothingType')"
+            >
               <div
                 class="filters__clothing-type__title-text filters__children__title-text"
               >
                 Clothing types
               </div>
-              <div
-                @click="toggleSection('clothingType')"
-                class="filters__title-icon__container"
-              >
+              <div class="filters__title-icon__container">
                 <PointerIcon
                   class="filters__title-icon filters__clothing-type__title-icon"
                   :class="{ rotated: isSectionOpened.clothingType }"
@@ -192,16 +192,16 @@
           <div class="horizontal-separator-90 mb-4 mt-4"></div>
           <!-- Brands -->
           <div class="filters__brands__container">
-            <div class="filters__brands__title">
+            <div
+              class="filters__section__title filters__brands__title"
+              @click="toggleSection('brand')"
+            >
               <div
                 class="filters__brands__title-text filters__children__title-text"
               >
                 Brands
               </div>
-              <div
-                @click="toggleSection('brand')"
-                class="filters__title-icon__container"
-              >
+              <div class="filters__title-icon__container">
                 <PointerIcon
                   class="filters__title-icon filters__brands__title-icon"
                   :class="{ rotated: isSectionOpened.brand }"
@@ -250,14 +250,14 @@
               <div class="sorting__dropdown">
                 <div
                   v-for="(option, key) in sortingOptions"
-                  @click="(setSortingOption(key), setSortingOption2())"
+                  @click="setSortingOption(key)"
                   class="sorting-option"
                   :class="{
-                    'text-red-500':
-                      option.name == sortingOptions[chosenSortingOption].name,
+                    highlighted:
+                      option?.name == sortingOptions[chosenSortingOption]?.name,
                   }"
                 >
-                  {{ option.name }}
+                  {{ key }} {{ option.name }}
                 </div>
               </div>
             </div>
@@ -355,6 +355,7 @@ const api = axios.create({
 });
 
 onMounted(() => {
+  console.log(getSortingOption());
   getProducts();
   initializeFiltersFromURL();
 });
@@ -577,7 +578,7 @@ const isSectionOpened = ref({
 
 function toggleSection(secName) {
   isSectionOpened.value[secName] = !isSectionOpened.value[secName];
-  console.log(isSectionOpened.value[secName]);
+  // console.log(isSectionOpened.value[secName]);
 }
 
 // Manage products sorting
@@ -586,11 +587,8 @@ function toggleSorting() {
   isSortingOpened.value = !isSortingOpened.value;
 }
 
-const chosenSortingOption = Cookies.get('shopSortingOption') || 0;
+const getSortingOption = useSortingStore().getSortingOption;
 const setSortingOption = useSortingStore().setSortingOption;
-function setSortingOption2() {
-  // console.log(sortingOptions[chosenSortingOption]);
-}
 
 // Products pagination
 const currentProductPage = ref(1);
