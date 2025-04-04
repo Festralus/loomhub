@@ -78,11 +78,11 @@ export const useSortingStore = defineStore({
 
   actions: {
     getSortingOption() {
-      const shopSortingOption = Cookies.get('shopSortingOption');
-      console.log(shopSortingOption);
+      const shopSortingOption = Cookies.get('shopSortingOption') || 0;
     },
     setSortingOption(payload) {
-      if (payload !== undefined) {
+      if (payload !== undefined && sortingOptions[savedOption]) {
+        console.log(payload);
         this.shopSortingOption = this.sortingOptions[payload];
       } else {
         this.shopSortingOption = 0;
@@ -97,6 +97,6 @@ export const sortingOptions = {
   2: { name: 'Highest Rated' },
   3: { name: 'Price: Low to High' },
   4: { name: 'Price: High to Low' },
-  5: { name: 'Name: A-Z ' },
-  6: { name: 'Name: Z-A ' },
+  5: { name: 'Name: A-Z' },
+  6: { name: 'Name: Z-A' },
 };
