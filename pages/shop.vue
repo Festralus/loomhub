@@ -40,7 +40,7 @@
             <Filter_selector_component
               class="filters__list"
               :class="{ opened: isSectionOpened.productCategory }"
-              :products="products"
+              :products="allProducts"
               :parameter="'productCategory'"
               :selected="filters.productCategory"
               :combinedQuantity="combinedQuantity"
@@ -85,7 +85,7 @@
             <Filter_selector_component
               class="filters__list"
               :class="{ opened: isSectionOpened.color }"
-              :products="products"
+              :products="allProducts"
               :parameter="'color'"
               :nested="true"
               :selected="filters.color"
@@ -117,7 +117,7 @@
             <Filter_selector_component
               class="filters__list"
               :class="{ opened: isSectionOpened.size }"
-              :products="products"
+              :products="allProducts"
               :parameter="'size'"
               :nested="true"
               :selected="filters.size"
@@ -149,7 +149,7 @@
             <Filter_selector_component
               class="filters__list"
               :class="{ opened: isSectionOpened.dressStyle }"
-              :products="products"
+              :products="allProducts"
               :parameter="'dressStyle'"
               :selected="filters.dressStyle"
               :combinedQuantity="combinedQuantity"
@@ -180,7 +180,7 @@
             <Filter_selector_component
               class="filters__list"
               :class="{ opened: isSectionOpened.clothingType }"
-              :products="products"
+              :products="allProducts"
               :parameter="'clothingType'"
               :selected="filters.clothingType"
               :combinedQuantity="combinedQuantity"
@@ -211,7 +211,7 @@
             <Filter_selector_component
               class="filters__list"
               :class="{ opened: isSectionOpened.brand }"
-              :products="products"
+              :products="allProducts"
               :parameter="'brand'"
               :selected="filters.brand"
               :combinedQuantity="combinedQuantity"
@@ -250,11 +250,11 @@
               <div class="sorting__dropdown">
                 <div
                   v-for="(option, key) in sortingOptions"
-                  @click="setSortingOption(key)"
+                  :key="key"
+                  @click="setSortingOption(Number(key))"
                   class="sorting-option"
                   :class="{
-                    highlighted:
-                      option?.name == sortingOptions[chosenSortingOption]?.name,
+                    highlighted: Number(key) === Number(shopSortingOption),
                   }"
                 >
                   {{ key }} {{ option.name }}
@@ -267,12 +267,6 @@
           </div>
         </div>
         <div class="products__gallery">
-          <!-- <div
-            v-for="(item, index) in paginatedProducts"
-            :key="index"
-            @click="goToItem(item.GID)"
-            class="proucts__gallery__item"
-          > -->
           <div
             v-for="(item, index) in paginatedProducts"
             :key="index"
@@ -344,9 +338,8 @@ import ArrowIcon from '~/assets/icons/ArrowIcon.vue';
 import FiltersIcon from '~/assets/icons/FiltersIcon.vue';
 import PointerIcon from '~/assets/icons/PointerIcon.vue';
 
+import { useSortingStore } from '~/stores/index.js';
 import { storeToRefs } from 'pinia';
-import { useSortingStore } from '~/stores';
-import { sortingOptions } from '~/stores';
 
 // API settings
 const config = useRuntimeConfig();
@@ -354,20 +347,28 @@ const api = axios.create({
   baseURL: config.public.apiBase,
 });
 
+// Routing
+const route = useRoute();
+const router = useRouter();
+
 onMounted(() => {
-  console.log(getSortingOption());
-  getProducts();
   initializeFiltersFromURL();
+  getProducts();
 });
+
+// onMounted+NuxtLink vue fix
+watch(
+  () => route?.query,
+  () => {
+    initializeFiltersFromURL();
+    getProducts();
+  }
+);
 
 // Layout settings
 definePageMeta({
   useWebsitePadding: true,
 });
-
-// Routing
-const route = useRoute();
-const router = useRouter();
 
 // Updating filters and URL
 const query = {};
@@ -396,15 +397,6 @@ async function updateFilters({ key, values }) {
     query.value = newQuery;
     router.push({ query: query.value });
   }
-
-  // try {
-  //   areFiltersFetching = true;
-  //   api.get('/api/');
-  // } catch (err) {
-  //   console.error(err);
-  // } finally {
-  //   areFiltersFetching.value = false;
-  // }
 }
 
 // REVIEW START
@@ -428,6 +420,13 @@ const currencyMultiplier = 1;
 async function getAllProducts() {
   try {
     const response = await api.get('/api/products');
+
+    // A products list copy for receiving correct filters. Smth to refactor:
+
+    allProducts.value = response.data.allProducts;
+
+    // ^ A products list copy for receiving correct filters. Smth to refactor
+
     products.value = [...response.data.products].map((product) => {
       const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
       const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
@@ -450,7 +449,8 @@ async function getAllProducts() {
     console.error(err);
   }
 }
-
+// A products list copy for receiving correct filters. Smth to refactor:
+const allProducts = ref([]);
 async function getProducts() {
   if (
     filters.value.productCategory.length == 0 &&
@@ -482,6 +482,12 @@ async function getProducts() {
         brand: filters.value.brand,
       },
     });
+
+    // A products list copy for receiving correct filters. Smth to refactor:
+
+    allProducts.value = response.data.allProducts;
+
+    // ^ A products list copy for receiving correct filters. Smth to refactor
 
     filteredProducts.value = response.data.products.map((product) => {
       const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
@@ -571,14 +577,13 @@ const isSectionOpened = ref({
   productCategory: true,
   color: true,
   size: true,
-  dressStyle: false,
+  dressStyle: true,
   clothingType: true,
   brand: true,
 });
 
 function toggleSection(secName) {
   isSectionOpened.value[secName] = !isSectionOpened.value[secName];
-  // console.log(isSectionOpened.value[secName]);
 }
 
 // Manage products sorting
@@ -587,8 +592,9 @@ function toggleSorting() {
   isSortingOpened.value = !isSortingOpened.value;
 }
 
-const getSortingOption = useSortingStore().getSortingOption;
-const setSortingOption = useSortingStore().setSortingOption;
+const sortingStore = useSortingStore();
+const { sortingOptions, shopSortingOption } = storeToRefs(sortingStore);
+const { setSortingOption } = sortingStore;
 
 // Products pagination
 const currentProductPage = ref(1);

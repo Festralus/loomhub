@@ -41,14 +41,6 @@
           'no-animation': !isBurgerAnimationActive,
         }"
       >
-        <!-- <NuxtLink to="/shop" class="BurgerMenu__item">Shop</NuxtLink>
-        <NuxtLink to="/top_selling" class="BurgerMenu__item"
-          >Top Selling</NuxtLink
-        >
-        <NuxtLink to="/new_arrivals" class="BurgerMenu__item"
-          >New Arrivals</NuxtLink
-        >
-        <NuxtLink to="/brands" class="BurgerMenu__item">Brands</NuxtLink> -->
         <div @click="openInDev('Shopping Navigation')" class="BurgerMenu__item">
           Shop
         </div>
@@ -59,47 +51,26 @@
           New Arrivals
         </div>
         <div @click="openInDev('Shopping Navigation')" class="BurgerMenu__item">
-          Brands
+          Best Choice
         </div>
       </div>
       <NuxtLink
         to="/"
-        class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none sm:ml-[10%] sm:block 2xl:ml-[6%] 2xl:text-3xl"
+        class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none sm:ml-[20px] sm:block md:ml-[8%] 2xl:ml-[6%] 2xl:text-3xl"
         :class="isMobileSearchActive ? 'hidden' : ''"
       >
         LOOM.HUB
       </NuxtLink>
       <nav
-        class="top-menu__nav SatoshiRegular hidden max-h-[10px] flex-row text-base sm:flex sm:w-full sm:justify-evenly lg:flex xl:w-[30%] 2xl:text-xl"
+        class="top-menu__nav SatoshiRegular hidden max-h-[10px] flex-row items-center text-base sm:flex sm:w-full sm:justify-evenly lg:flex xl:w-[30%] 2xl:text-xl"
         :class="{ 'sm:hidden': isMobileSearchActive }"
       >
-        <!-- <div
-          @mouseover="isShopHovered = true"
-          @mouseleave="isShopHovered = false"
-          :class="{ 'z-[140]': isShopHovered }"
-          class="top-menu__nav-item top-menu__nav-item__shop relative hidden cursor-pointer flex-row items-center 2xl:flex"
-        >
-          <div class="top-menu__nav-item__shop-text">Shop</div>
-          <PointerIcon
-            class="top-menu__nav-item top-menu__nav-item__shop-arrow mt-[2px] h-6 pl-[3px] 2xl:w-[14px]"
-          ></PointerIcon>
-          <div v-show="isShopHovered" class="top-menu__nav-item__shop-dropdown">
-            <NuxtLink
-              v-for="(style, index) in dress_styles_list"
-              :key="index"
-              :to="style.path"
-              class="shop-dropdown__item"
-            >
-              {{ style.name }}
-            </NuxtLink>
-          </div>
-        </div> -->
         <div
           @mouseenter="isShopHovered = true"
           @mouseleave="isShopHovered = false"
           @click="toggleShop()"
           :class="{ 'z-[140]': isShopHovered || isShopClicked }"
-          class="top-menu__nav-item top-menu__nav-item__shop relative hidden cursor-pointer flex-row items-center sm:flex"
+          class="top-menu__nav-item top-menu__nav-item__shop relative hidden h-16 cursor-pointer flex-row sm:flex"
         >
           <div class="top-menu__nav-item__shop-text">Shop</div>
           <PointerIcon
@@ -117,10 +88,10 @@
             v-show="isShopHovered || isShopClicked"
             class="top-menu__nav-item__shop-dropdown"
           >
-            <!-- <NuxtLink
+            <NuxtLink
+              :to="style.path"
               v-for="(style, index) in dress_styles_list"
               :key="index"
-              :to="style.path"
               class="shop-dropdown__item"
               :class="[
                 hoveredIndex == index
@@ -132,32 +103,7 @@
               }"
               @mouseover="hoveredIndex = index"
               @mouseleave="hoveredIndex = null"
-            >
-              <span class="relative z-10 text-lg font-semibold">{{
-                style.name
-              }}</span>
-
-              <div
-                v-if="hoveredIndex !== index"
-                class="shop-dropdown__item__shadow"
-              ></div>
-            </NuxtLink> -->
-
-            <div
-              v-for="(style, index) in dress_styles_list"
-              :key="index"
-              class="shop-dropdown__item"
-              :class="[
-                hoveredIndex == index
-                  ? 'shop-dropdown__item__border text-black'
-                  : 'text-white',
-              ]"
-              :style="{
-                backgroundImage: `url(${style.backgroundPicture}.png)`,
-              }"
-              @mouseover="[(hoveredIndex = index)]"
-              @mouseleave="[(hoveredIndex = null)]"
-              @click="[(hoveredIndex = index)]"
+              @click="hoveredIndex = index"
             >
               <span
                 class="shop-dropdown__item__name relative z-10 text-lg font-semibold"
@@ -167,23 +113,9 @@
                 v-if="hoveredIndex !== index"
                 class="shop-dropdown__item__shadow"
               ></div>
-            </div>
+            </NuxtLink>
           </div>
         </div>
-
-        <!-- <NuxtLink
-          to="/shop"
-          class="top-menu__nav-item top-menu__nav-item__shop relative flex cursor-pointer flex-row items-center 2xl:hidden"
-        >
-          <div class="top-menu__nav-item__shop-text">Shop</div>
-        </NuxtLink>
-        <NuxtLink to="/on_sale" class="top-menu__nav-item flex"
-          >On Sale</NuxtLink
-        >
-        <NuxtLink to="/new_arrivals" class="top-menu__nav-item flex"
-          >New Arrivals</NuxtLink
-        >
-        <NuxtLink to="/brands" class="top-menu__nav-item flex">Brands</NuxtLink> -->
 
         <div
           @click="openInDev('Shopping Navigation')"
@@ -212,7 +144,7 @@
           @click="openInDev('Shopping Navigation')"
           class="top-menu__nav-item flex cursor-pointer"
         >
-          Brands
+          Best Choice
         </div>
       </nav>
       <div
@@ -491,7 +423,6 @@
 </template>
 
 <script setup>
-import { ref, watch, nextTick, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/index';
 import { storeToRefs } from 'pinia';
 const route = useRoute();
@@ -537,19 +468,12 @@ const api = axios.create({
 
 onMounted(() => {
   getSession();
-
-  watch(searchQuery, (newValue) => {
-    if (newValue) {
-      document.addEventListener('click', closeDropdown);
-    } else {
-      document.removeEventListener('click', closeDropdown);
-      outsideClickOccurance.value = false;
-    }
-  });
+  setCloseShopRoute();
+  setCloseShopOutside();
 });
 
 onUnmounted(() => {
-  document.removeEventListener('click', closeDropdown);
+  removeCloseShopOutside();
 });
 
 // Padding for certain pages
@@ -628,6 +552,38 @@ function closeModalOverlay() {
     authPopupActive.value = false;
   }
   isModalOverlayActive.value = false;
+}
+
+// Close dropdown on route change
+const router = useRouter();
+let stopSearchWatcher = null;
+
+function setCloseShopRoute() {
+  router.afterEach(closeShop);
+}
+
+function closeShop() {
+  isShopClicked.value = false;
+  isShopHovered.value = false;
+}
+
+// Close dropdown on outside click
+function setCloseShopOutside() {
+  stopSearchWatcher = watch(searchQuery, (newValue) => {
+    if (newValue) {
+      document.addEventListener('click', closeDropdown);
+    } else {
+      document.removeEventListener('click', closeDropdown);
+      outsideClickOccurance.value = false;
+    }
+  });
+}
+
+function removeCloseShopOutside() {
+  if (stopSearchWatcher) {
+    stopSearchWatcher();
+  }
+  document.removeEventListener('click', closeDropdown);
 }
 
 // Burger Dropdown

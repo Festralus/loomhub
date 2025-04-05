@@ -64,9 +64,7 @@ const props = defineProps({
 
 const emits = defineEmits(['filter-updated']);
 
-onMounted(() => {
-  // initializeCheckedItems();
-});
+onMounted(() => {});
 
 // Get filter options
 let filterValues = ref([]);
