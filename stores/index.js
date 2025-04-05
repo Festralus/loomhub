@@ -72,31 +72,33 @@ export const useSortingStore = defineStore({
 
   state: () => {
     return {
-      shopSortingOption: 0,
+      shopSortingOption: Number(Cookies.get('shopSortingOption')) || 0,
+      sortingOptions: {
+        0: { name: 'Most popular' },
+        1: { name: 'Newest Arrivals' },
+        2: { name: 'Most discounted' },
+        3: { name: 'Highest Rated' },
+        4: { name: 'Price: Low to High' },
+        5: { name: 'Price: High to Low' },
+        6: { name: 'Name: A-Z' },
+        7: { name: 'Name: Z-A' },
+      },
     };
   },
 
   actions: {
-    getSortingOption() {
-      const shopSortingOption = Cookies.get('shopSortingOption') || 0;
-    },
     setSortingOption(payload) {
-      if (payload !== undefined && sortingOptions[savedOption]) {
-        console.log(payload);
-        this.shopSortingOption = this.sortingOptions[payload];
+      if (payload in this.sortingOptions) {
+        this.shopSortingOption = payload;
+        Cookies.set('shopSortingOption', String(payload), {
+          expires: 7,
+        });
       } else {
         this.shopSortingOption = 0;
+        Cookies.set('shopSortingOption', '0', {
+          expires: 7,
+        });
       }
     },
   },
 });
-
-export const sortingOptions = {
-  0: { name: 'Most popular' },
-  1: { name: 'Newest Arrivals' },
-  2: { name: 'Highest Rated' },
-  3: { name: 'Price: Low to High' },
-  4: { name: 'Price: High to Low' },
-  5: { name: 'Name: A-Z' },
-  6: { name: 'Name: Z-A' },
-};
