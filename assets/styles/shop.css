@@ -149,6 +149,7 @@
   color: rgba(0, 0, 0, 0.6);
 }
 .title-sorting__parameter__container {
+  width: 150px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -165,7 +166,7 @@
   white-space: nowrap;
   overflow: hidden;
   top: 24px;
-  left: -14px;
+  left: -24px;
   background-color: rgb(224, 224, 224);
   padding: 4px 10px 4px 10px;
   border-radius: 10px;

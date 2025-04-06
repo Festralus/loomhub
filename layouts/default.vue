@@ -41,18 +41,10 @@
           'no-animation': !isBurgerAnimationActive,
         }"
       >
-        <div @click="openInDev('Shopping Navigation')" class="BurgerMenu__item">
-          Shop
-        </div>
-        <div @click="openInDev('Shopping Navigation')" class="BurgerMenu__item">
-          Top Selling
-        </div>
-        <div @click="openInDev('Shopping Navigation')" class="BurgerMenu__item">
-          New Arrivals
-        </div>
-        <div @click="openInDev('Shopping Navigation')" class="BurgerMenu__item">
-          Best Choice
-        </div>
+        <NuxtLink :to="'/shop'" class="BurgerMenu__item">Shop</NuxtLink>
+        <NuxtLink :to="'/shop'" class="BurgerMenu__item">Top Selling</NuxtLink>
+        <NuxtLink :to="'/shop'" class="BurgerMenu__item">New Arrivals</NuxtLink>
+        <NuxtLink :to="'/shop'" class="BurgerMenu__item">Best Choice</NuxtLink>
       </div>
       <NuxtLink
         to="/"
@@ -116,36 +108,24 @@
             </NuxtLink>
           </div>
         </div>
-
-        <div
-          @click="openInDev('Shopping Navigation')"
-          class="top-menu__nav-item top-menu__nav-item__shop relative flex cursor-pointer flex-row items-center sm:hidden"
-        >
-          <div
-            @click="openInDev('Shopping Navigation')"
-            class="top-menu__nav-item__shop-text cursor-pointer"
-          >
-            Shop
-          </div>
-        </div>
-        <div
-          @click="openInDev('Shopping Navigation')"
-          class="top-menu__nav-item flex cursor-pointer"
+        <NuxtLink
+          :to="'/shop'"
+          class="top-menu__nav-item flex cursor-pointer select-none"
         >
           On Sale
-        </div>
-        <div
-          @click="openInDev('Shopping Navigation')"
-          class="top-menu__nav-item flex cursor-pointer"
+        </NuxtLink>
+        <NuxtLink
+          :to="'/shop'"
+          class="top-menu__nav-item flex cursor-pointer select-none"
         >
           New Arrivals
-        </div>
-        <div
-          @click="openInDev('Shopping Navigation')"
-          class="top-menu__nav-item flex cursor-pointer"
+        </NuxtLink>
+        <NuxtLink
+          :to="'/shop'"
+          class="top-menu__nav-item flex cursor-pointer select-none"
         >
           Best Choice
-        </div>
+        </NuxtLink>
       </nav>
       <div
         class="top-menu__search hidden w-full flex-row rounded-3xl bg-[#F0F0F0] p-2 lg:flex xl:w-[40vw]"
@@ -468,12 +448,12 @@ const api = axios.create({
 
 onMounted(() => {
   getSession();
+  setStopSearchWatcher();
   setCloseShopRoute();
-  setCloseShopOutside();
 });
 
 onUnmounted(() => {
-  removeCloseShopOutside();
+  removeStopSearchWatcher();
 });
 
 // Padding for certain pages
@@ -556,7 +536,6 @@ function closeModalOverlay() {
 
 // Close dropdown on route change
 const router = useRouter();
-let stopSearchWatcher = null;
 
 function setCloseShopRoute() {
   router.afterEach(closeShop);
@@ -568,7 +547,8 @@ function closeShop() {
 }
 
 // Close dropdown on outside click
-function setCloseShopOutside() {
+let stopSearchWatcher = null;
+function setStopSearchWatcher() {
   stopSearchWatcher = watch(searchQuery, (newValue) => {
     if (newValue) {
       document.addEventListener('click', closeDropdown);
@@ -579,7 +559,7 @@ function setCloseShopOutside() {
   });
 }
 
-function removeCloseShopOutside() {
+function removeStopSearchWatcher() {
   if (stopSearchWatcher) {
     stopSearchWatcher();
   }
