@@ -72,23 +72,23 @@ export const useSortingStore = defineStore({
 
   state: () => {
     return {
-      shopSortingOption: Number(Cookies.get('shopSortingOption')) || 0,
-      sortingOptions: {
-        0: { name: 'Most popular' },
-        1: { name: 'Newest Arrivals' },
-        2: { name: 'Most discounted' },
-        3: { name: 'Highest Rated' },
-        4: { name: 'Price: Low to High' },
-        5: { name: 'Price: High to Low' },
-        6: { name: 'Name: A-Z' },
-        7: { name: 'Name: Z-A' },
-      },
+      shopSortingOption: ref(Number(Cookies.get('shopSortingOption')) || 0),
+      sortingOptions: [
+        { name: 'Most popular' },
+        { name: 'Newest Arrivals' },
+        { name: 'Most discounted' },
+        { name: 'Highest Rated' },
+        { name: 'Price: Low to High' },
+        { name: 'Price: High to Low' },
+        { name: 'Name: A-Z' },
+        { name: 'Name: Z-A' },
+      ],
     };
   },
 
   actions: {
     setSortingOption(payload) {
-      if (payload in this.sortingOptions) {
+      if (this.sortingOptions[payload]) {
         this.shopSortingOption = payload;
         Cookies.set('shopSortingOption', String(payload), {
           expires: 7,

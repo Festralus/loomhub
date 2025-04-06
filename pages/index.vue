@@ -94,19 +94,59 @@
     <div
       class="popular-brands flex w-full flex-row flex-wrap justify-evenly overflow-hidden bg-black pb-3 pt-5"
     >
-      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
+      <NuxtLink
+        :to="{
+          path: '/shop',
+          query: {
+            brand: JSON.stringify(['Versace']),
+          },
+        }"
+        class="popular-brands__brand mx-3 my-2"
+      >
         <VersaceIcon class="h-full w-full" />
       </NuxtLink>
-      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
+      <NuxtLink
+        :to="{
+          path: '/shop',
+          query: {
+            brand: JSON.stringify(['Zara']),
+          },
+        }"
+        class="popular-brands__brand mx-3 my-2"
+      >
         <ZaraIcon class="h-full w-full" />
       </NuxtLink>
-      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
+      <NuxtLink
+        :to="{
+          path: '/shop',
+          query: {
+            brand: JSON.stringify(['Gucci']),
+          },
+        }"
+        class="popular-brands__brand mx-3 my-2"
+      >
         <GucciIcon class="h-full w-full" />
       </NuxtLink>
-      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
+      <NuxtLink
+        :to="{
+          path: '/shop',
+          query: {
+            brand: JSON.stringify(['Prada']),
+          },
+        }"
+        class="popular-brands__brand mx-3 my-2"
+      >
         <PradaIcon class="h-full w-full" />
       </NuxtLink>
-      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
+      <NuxtLink
+        :to="{
+          path: '/shop',
+          query: {
+            brand: JSON.stringify(['Calvin Klein']),
+          },
+        }"
+        class="popular-brands__brand mx-3 my-2"
+      >
         <CalvinKleinIcon class="h-full w-full" />
       </NuxtLink>
     </div>
@@ -194,7 +234,7 @@
           </picture>
         </NuxtLink> -->
 
-        <div
+        <NuxtLink
           v-for="(style, index) in dress_styles_list"
           @click="openInDev('Shopping Navigation')"
           :to="style.path"
@@ -225,7 +265,7 @@
               alt="Background image"
             />
           </picture>
-        </div>
+        </NuxtLink>
       </div>
     </div>
     <div class="reviews mt-10">

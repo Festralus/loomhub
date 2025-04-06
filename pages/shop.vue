@@ -3,7 +3,6 @@
     <div v-if="isFetching" class="waiting-screen">
       <div class="loader"></div>
     </div>
-
     <Breadcrumbs_component />
 
     <div class="shop-gallery">
@@ -240,24 +239,28 @@
           <div class="products__title-sorting">
             <div class="title-sorting__text">Sort by:</div>
             <div class="title-sorting__parameter__container">
-              <div @click="toggleSorting()" class="title-soting__parameter">
-                Most popular
+              <div
+                @click="toggleSortingDropdown()"
+                class="title-soting__parameter"
+              >
+                {{ sortingOptions[shopSortingOption].name }}
               </div>
               <PointerIcon
-                @click="toggleSorting()"
+                @click="toggleSortingDropdown()"
                 class="filters__title-icon"
+                :class="{ rotated: isSortingOpened }"
               />
               <div class="sorting__dropdown">
                 <div
-                  v-for="(option, key) in sortingOptions"
-                  :key="key"
-                  @click="setSortingOption(Number(key))"
+                  v-for="(option, index) in sortingOptions"
+                  :key="option.name"
+                  @click="(setSortingOption(index), toggleSortingDropdown())"
                   class="sorting-option"
                   :class="{
-                    highlighted: Number(key) === Number(shopSortingOption),
+                    highlighted: index === Number(sortingOptionRef),
                   }"
                 >
-                  {{ key }} {{ option.name }}
+                  {{ option.name }}
                 </div>
               </div>
             </div>
@@ -352,8 +355,13 @@ const route = useRoute();
 const router = useRouter();
 
 onMounted(() => {
+  getSortingOption();
   initializeFiltersFromURL();
   getProducts();
+});
+
+onUnmounted(() => {
+  watchLayoutDropdownNavigation();
 });
 
 // onMounted+NuxtLink vue fix
@@ -443,7 +451,18 @@ async function getAllProducts() {
       };
     });
 
-    filteredProducts.value = products.value;
+    filteredProducts.value = products.value.sort((a, b) => {
+      switch (sortingOptionRef) {
+        case 0:
+          return a.modifiedPrice - b.modifiedPrice;
+
+        case 1:
+          return b.modifiedPrice - a.modifiedPrice;
+
+        default:
+          return 0;
+      }
+    });
     combinedQuantity.value = response.data.filterCounts;
   } catch (err) {
     console.error(err);
@@ -489,21 +508,34 @@ async function getProducts() {
 
     // ^ A products list copy for receiving correct filters. Smth to refactor
 
-    filteredProducts.value = response.data.products.map((product) => {
-      const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
-      const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
-        2
-      );
-      const discountPercentage =
-        Math.round(100 - (modifiedPrice / modifiedOldPrice) * 100) || 0;
+    filteredProducts.value = response.data.products
+      .map((product) => {
+        const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
+        const modifiedOldPrice = (
+          product.oldPrice * currencyMultiplier
+        ).toFixed(2);
+        const discountPercentage =
+          Math.round(100 - (modifiedPrice / modifiedOldPrice) * 100) || 0;
 
-      return {
-        ...product,
-        modifiedPrice,
-        modifiedOldPrice,
-        discountPercentage,
-      };
-    });
+        return {
+          ...product,
+          modifiedPrice,
+          modifiedOldPrice,
+          discountPercentage,
+        };
+      })
+      .sort((a, b) => {
+        switch (sortingOptionRef) {
+          case 0:
+            return a.modifiedPrice - b.modifiedPrice;
+
+          case 1:
+            return b.modifiedPrice - a.modifiedPrice;
+
+          default:
+            return 0;
+        }
+      });
 
     combinedQuantity.value = response.data.filterCounts;
   } catch (err) {
@@ -570,6 +602,16 @@ const isAnyFilterActive = computed(() => {
   return Object.values(filters.value).some((arr) => arr.length > 0);
 });
 
+// If user is navigating via Layout Dropdown while being in the /shop, reset filters to avoid bugs
+const watchLayoutDropdownNavigation = watch(
+  () => router?.currentRoute?.value,
+  () => {
+    resetAllFilters();
+    initializeFiltersFromURL();
+    getProducts();
+  }
+);
+
 // REVIEW END
 
 // Manage opening and closing filter sections
@@ -587,14 +629,19 @@ function toggleSection(secName) {
 }
 
 // Manage products sorting
-const isSortingOpened = ref(false);
-function toggleSorting() {
+const isSortingOpened = ref(true);
+function toggleSortingDropdown() {
   isSortingOpened.value = !isSortingOpened.value;
 }
 
 const sortingStore = useSortingStore();
 const { sortingOptions, shopSortingOption } = storeToRefs(sortingStore);
 const { setSortingOption } = sortingStore;
+
+const sortingOptionRef = ref(0);
+function getSortingOption() {
+  sortingOptionRef.value = Cookies.get('shopSortingOption') || 0;
+}
 
 // Products pagination
 const currentProductPage = ref(1);
