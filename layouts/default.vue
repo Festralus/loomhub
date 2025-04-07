@@ -109,18 +109,21 @@
           </div>
         </div>
         <NuxtLink
+          @click="setSortingOption(2)"
           :to="'/shop'"
           class="top-menu__nav-item flex cursor-pointer select-none"
         >
           On Sale
         </NuxtLink>
         <NuxtLink
+          @click="setSortingOption(1)"
           :to="'/shop'"
           class="top-menu__nav-item flex cursor-pointer select-none"
         >
           New Arrivals
         </NuxtLink>
         <NuxtLink
+          @click="setSortingOption(3)"
           :to="'/shop'"
           class="top-menu__nav-item flex cursor-pointer select-none"
         >
@@ -403,8 +406,9 @@
 </template>
 
 <script setup>
-import { useAuthStore } from '@/stores/index';
 import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/index';
+import { useSortingStore } from '@/stores/index.js';
 const route = useRoute();
 
 import axios from 'axios';
@@ -714,6 +718,10 @@ function logMeOut() {
   Cookies.remove('token');
   location.reload();
 }
+
+// Set sorting option and go to /shop
+const sortingStore = useSortingStore();
+const { setSortingOption } = sortingStore;
 </script>
 
 <style scoped>

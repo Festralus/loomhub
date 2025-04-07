@@ -106,7 +106,7 @@
             <div class="item__cart-possible-quantity">
               (available:
               <span class="item__cart-possible-quantity__span">
-                &nbsp{{ +availableQuantity }}</span
+                &nbsp;{{ +availableQuantity }}</span
               >)
             </div>
           </div>
@@ -162,7 +162,7 @@
               <td class="details-tab__table-data">
                 <div class="table-data__value">{{ value }}</div>
                 <div
-                  @click="openInDev('Shopping Navigation')"
+                  @click="console.log(123)"
                   v-if="isKeyFilter(key)"
                   class="table-data__link"
                 >
@@ -371,8 +371,8 @@
         </div>
         <div class="FAQ-tab__answer">
           To initiate a return or exchange, simply
-          <span @click="openInDev('Contacts Page')" class="FAQ__contact-support"
-            >contact our customer support</span
+          <NuxtLink to="/contacts" class="FAQ__contact-support"
+            >contact our customer support</NuxtLink
           >
           team through our website, and they will guide you through the process.
           You will need to provide your order number and reason for the return.
@@ -491,9 +491,6 @@ onBeforeMount(() => {
   setChosenItem();
 });
 
-// Enable routing
-const router = useRouter();
-
 // Get product information
 const productID = ref('');
 const path = ref('');
@@ -502,6 +499,11 @@ const itemSizes = ref([]);
 const modifiedPrice = ref(null);
 const discountPercentage = ref(null);
 const currencyMultiplier = 1;
+const similarBrand = ref('');
+const similarProductCategory = ref('');
+const similarClothingType = ref('');
+const similarCountry = ref('');
+
 async function setChosenItem() {
   path.value = window.location.pathname;
   const segments = path.value.split('/');
@@ -551,9 +553,57 @@ async function setChosenItem() {
     fetchAvailableStock();
     getProductReviews();
     getProductDetails();
+
+    // Set similar links
+    similarBrand.value = setLink('brand', res.data.brand);
+    similarProductCategory.value = setLink(
+      'productCategory',
+      res.data.productCategory
+    );
+    similarClothingType.value = setLink('clothingType', res.data.clothingType);
+    similarCountry.value = setLink('country', res.data.country);
+
+    console.log(similarClothingType.value);
   } catch (err) {
     console.error(err);
   }
+}
+
+function setLink(parameter, paramValue) {
+  if (
+    paramValue.toLowerCase() !== 'men' ||
+    paramValue.toLowerCase() !== 'women'
+  ) {
+    // if (res.data.clothingType.toLowerCase() == 'women') {
+    //     clothingTypeSegment.value = {
+    //       path: '/shop',
+    //       query: {
+    //         clothingType: JSON.stringify(['Unisex', 'Women']),
+    //       },
+    //     };
+    //   } else if (res.data.clothingType.toLowerCase() == 'men') {
+    //     clothingTypeSegment.value = {
+    //       path: '/shop',
+    //       query: {
+    //         clothingType: JSON.stringify(['Men', 'Unisex']),
+    //       },
+    //     };
+    //   } else {
+    //     clothingTypeSegment.value = {
+    //       path: '/shop',
+    //       query: {
+    //         clothingType: JSON.stringify(['Unisex']),
+    //       },
+    //     };
+    //   }
+    // return
+  }
+  return {
+    path: '/shop',
+    query: {
+      [parameter]: JSON.stringify([paramValue]),
+    },
+  };
 }
 
 // Item gallery style, 33% or 50% width depending on image quantity?
