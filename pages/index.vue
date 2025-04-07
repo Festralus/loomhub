@@ -1,11 +1,5 @@
 <template>
   <div>
-    <In_development_component
-      v-if="showInDev"
-      :target="currentTarget"
-      :inDevActive="showInDev"
-      @close="showInDev = false"
-    />
     <div
       class="home-description relative z-50 w-full bg-[#f2f0f1] xl:flex xl:flex-nowrap xl:justify-evenly 2xl:items-center 2xl:justify-between"
     >
@@ -24,18 +18,12 @@
           designed to bring out your individuality and cater to your sense of
           style.
         </div>
-        <!-- <NuxtLink
+        <NuxtLink
           to="/shop"
-          class="home-description__button SatoshiRegular text-white text-base mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] select-none items-center justify-center rounded-3xl bg-black"
+          class="home-description__button SatoshiRegular mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] select-none items-center justify-center rounded-3xl bg-black text-base text-white"
         >
           Shop Now
-        </NuxtLink> -->
-        <div
-          @click="openInDev('Shopping Navigation')"
-          class="home-description__button SatoshiRegular mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] cursor-pointer select-none items-center justify-center rounded-3xl bg-black text-base text-white"
-        >
-          Shop Now
-        </div>
+        </NuxtLink>
         <div
           class="home-description__stats mt-4 flex flex-wrap justify-center gap-y-4"
         >
@@ -162,12 +150,12 @@
         filterName="getNewArrivals"
       ></Slider_component>
 
-      <div
-        @click="openInDev('Shopping Navigation')"
+      <NuxtLink
+        :to="'/shop'"
         class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] cursor-pointer select-none justify-center rounded-[62px] py-3 text-base"
       >
         View All
-      </div>
+      </NuxtLink>
 
       <div class="horizontal-separator-90 mt-10"></div>
     </div>
@@ -183,12 +171,12 @@
         filterName="getTopSelling"
       ></Slider_component>
 
-      <div
-        @click="openInDev('Shopping Navigation')"
+      <NuxtLink
+        :to="'/shop'"
         class="top-selling__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] cursor-pointer select-none justify-center rounded-[62px] py-3 text-base"
       >
         View All
-      </div>
+      </NuxtLink>
     </div>
     <div
       class="style-masonry mx-auto mt-10 w-[1800px] max-w-[94vw] rounded-2xl bg-[#F0F0F0] pb-2 pt-9"
@@ -236,7 +224,6 @@
 
         <NuxtLink
           v-for="(style, index) in dress_styles_list"
-          @click="openInDev('Shopping Navigation')"
           :to="style.path"
           class="style-masonry__tile relative mb-4 w-[90%] cursor-pointer rounded-3xl bg-white"
           :class="[
@@ -356,14 +343,6 @@ import VerifiedTickIcon from '../assets/icons/VerifiedTickIcon.vue';
 import In_development_component from '@/components/in_development_component.vue';
 import Subscribe_news_component from '~/components/subscribe_news_component.vue';
 
-// In development popup
-const showInDev = ref(false);
-const currentTarget = ref('');
-function openInDev(string) {
-  currentTarget.value = string;
-  showInDev.value = true;
-}
-
 // Page title and API endpoint
 useHead({
   title: 'LoomHub',
@@ -373,11 +352,8 @@ const config = useRuntimeConfig();
 const api = axios.create({
   baseURL: config.public.apiBase,
 });
-// const api = useApi();
 
 onMounted(() => {
-  // getSliderProducts('getNewArrivals');
-  // getSliderProducts('getTopSelling');
   getWebsiteReviews();
 
   reviewCardsContainer.value.addEventListener('scroll', handleScroll);

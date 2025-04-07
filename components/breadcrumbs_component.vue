@@ -18,9 +18,11 @@
       v-if="modifiedSegments && modifiedSegments.length > 1"
       class="path__breadcrumb"
     >
-      <NuxtLink :to="isProductPage ? '/shop' : ''" class="breadcrumb__name">{{
-        modifiedSegments?.[1]
-      }}</NuxtLink>
+      <NuxtLink
+        :to="isProductPage ? '/shop' : ''"
+        class="breadcrumb breadcrumb__name"
+        >{{ modifiedSegments?.[1] }}</NuxtLink
+      >
       <PointerIcon
         v-if="modifiedSegments && modifiedSegments.length > 2"
         :currentColor="'#666666'"
@@ -32,9 +34,12 @@
       v-if="modifiedSegments && modifiedSegments.length > 2"
       class="path__breadcrumb"
     >
-      <NuxtLink :to="``" class="breadcrumb__name">{{
-        modifiedSegments?.[2]
-      }}</NuxtLink>
+      <NuxtLink
+        v-if="clothingTypeSegment"
+        :to="clothingTypeSegment"
+        class="breadcrumb__name"
+        >{{ modifiedSegments?.[2] }}</NuxtLink
+      >
       <PointerIcon
         v-if="modifiedSegments && modifiedSegments.length > 3"
         :currentColor="'#666666'"
@@ -46,9 +51,12 @@
       v-if="modifiedSegments && modifiedSegments.length > 3"
       class="path__breadcrumb"
     >
-      <NuxtLink :to="``" class="breadcrumb__name">{{
-        modifiedSegments?.[3]
-      }}</NuxtLink>
+      <NuxtLink
+        v-if="productCategorySegment"
+        :to="productCategorySegment"
+        class="breadcrumb__name"
+        >{{ modifiedSegments?.[3] }}</NuxtLink
+      >
     </div>
   </div>
 </template>
@@ -77,6 +85,9 @@ const props = defineProps({
 const segments = ref(null);
 const modifiedSegments = ref(null);
 const isProductPage = ref(false);
+const clothingTypeSegment = ref('');
+const productCategorySegment = ref('');
+
 async function setBreadcrumbs() {
   segments.value = history.state?.current?.split('/');
   const lastSegment = segments.value.pop();
@@ -90,7 +101,37 @@ async function setBreadcrumbs() {
         res.data.clothingType,
         res.data.productCategory,
       ];
-      isProductPage.value = true;
+
+      if (res.data.clothingType.toLowerCase() == 'women') {
+        clothingTypeSegment.value = {
+          path: '/shop',
+          query: {
+            clothingType: JSON.stringify(['Unisex', 'Women']),
+          },
+        };
+      } else if (res.data.clothingType.toLowerCase() == 'men') {
+        clothingTypeSegment.value = {
+          path: '/shop',
+          query: {
+            clothingType: JSON.stringify(['Men', 'Unisex']),
+          },
+        };
+      } else {
+        clothingTypeSegment.value = {
+          path: '/shop',
+          query: {
+            clothingType: JSON.stringify(['Unisex']),
+          },
+        };
+      }
+
+      (productCategorySegment.value = {
+        path: '/shop',
+        query: {
+          productCategory: JSON.stringify([res.data.productCategory]),
+        },
+      }),
+        (isProductPage.value = true);
     } catch (err) {
       modifiedSegments.value = ['Home', 'Shop'];
       isProductPage.value = false;
@@ -104,6 +145,10 @@ async function setBreadcrumbs() {
 </script>
 <style scoped>
 /* Breadcrumbs */
+.breadcrumb__name {
+  cursor: pointer;
+  user-select: none;
+}
 .path__breadcrumbs {
   display: flex;
   gap: 10px;

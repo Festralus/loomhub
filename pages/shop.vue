@@ -238,26 +238,26 @@
           </div>
           <div class="products__title-sorting">
             <div class="title-sorting__text">Sort by:</div>
-            <div class="title-sorting__parameter__container">
-              <div
-                @click="toggleSortingDropdown()"
-                class="title-soting__parameter"
-              >
+            <div
+              v-if="isHydrated"
+              class="title-sorting__parameter__container"
+              @click="toggleSortingDropdown()"
+            >
+              <div class="title-sorting__parameter">
                 {{ sortingOptions[shopSortingOption].name }}
               </div>
               <PointerIcon
-                @click="toggleSortingDropdown()"
                 class="filters__title-icon"
                 :class="{ rotated: isSortingOpened }"
               />
-              <div class="sorting__dropdown">
+              <div v-show="isSortingOpened" class="sorting__dropdown">
                 <div
                   v-for="(option, index) in sortingOptions"
                   :key="option.name"
-                  @click="(setSortingOption(index), toggleSortingDropdown())"
+                  @click="setSortingOption(index)"
                   class="sorting-option"
                   :class="{
-                    highlighted: index === Number(sortingOptionRef),
+                    highlighted: index === Number(shopSortingOption),
                   }"
                 >
                   {{ option.name }}
@@ -330,18 +330,17 @@
 </template>
 <script setup>
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
-import Breadcrumbs_component from '~/components/breadcrumbs_component.vue';
-import Filter_selector_component from '~/components/filter_selector_component.vue';
-import Product_rating_component from '~/components/product_rating_component.vue';
-import Subscribe_news_component from '~/components/subscribe_news_component.vue';
+import Breadcrumbs_component from '@/components/breadcrumbs_component.vue';
+import Filter_selector_component from '@/components/filter_selector_component.vue';
+import Product_rating_component from '@/components/product_rating_component.vue';
+import Subscribe_news_component from '@/components/subscribe_news_component.vue';
 
-import ArrowIcon from '~/assets/icons/ArrowIcon.vue';
-import FiltersIcon from '~/assets/icons/FiltersIcon.vue';
-import PointerIcon from '~/assets/icons/PointerIcon.vue';
+import ArrowIcon from '@/assets/icons/ArrowIcon.vue';
+import FiltersIcon from '@/assets/icons/FiltersIcon.vue';
+import PointerIcon from '@/assets/icons/PointerIcon.vue';
 
-import { useSortingStore } from '~/stores/index.js';
+import { useSortingStore } from '@/stores/index.js';
 import { storeToRefs } from 'pinia';
 
 // API settings
@@ -354,10 +353,15 @@ const api = axios.create({
 const route = useRoute();
 const router = useRouter();
 
+// Hydration mismatch guard
+const isHydrated = ref(false);
+
 onMounted(() => {
-  getSortingOption();
   initializeFiltersFromURL();
   getProducts();
+
+  // Hydration mismatch guard
+  isHydrated.value = true;
 });
 
 onUnmounted(() => {
@@ -381,13 +385,21 @@ definePageMeta({
 // Updating filters and URL
 const query = {};
 
+// const filters = ref({
+//   productCategory: ref([]),
+//   color: ref([]),
+//   size: ref([]),
+//   dressStyle: ref([]),
+//   clothingType: ref([]),
+//   brand: ref([]),
+// });
 const filters = ref({
-  productCategory: ref([]),
-  color: ref([]),
-  size: ref([]),
-  dressStyle: ref([]),
-  clothingType: ref([]),
-  brand: ref([]),
+  productCategory: [],
+  color: [],
+  size: [],
+  dressStyle: [],
+  clothingType: [],
+  brand: [],
 });
 
 const areFiltersFetching = false;
@@ -435,34 +447,13 @@ async function getAllProducts() {
 
     // ^ A products list copy for receiving correct filters. Smth to refactor
 
-    products.value = [...response.data.products].map((product) => {
-      const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
-      const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
-        2
-      );
-      const discountPercentage =
-        Math.round(100 - (modifiedPrice / modifiedOldPrice) * 100) || 0;
+    products.value = mapProductPrices(response.data.products);
 
-      return {
-        ...product,
-        modifiedPrice,
-        modifiedOldPrice,
-        discountPercentage,
-      };
-    });
+    filteredProducts.value = sortProducts(
+      products.value,
+      shopSortingOption.value
+    );
 
-    filteredProducts.value = products.value.sort((a, b) => {
-      switch (sortingOptionRef) {
-        case 0:
-          return a.modifiedPrice - b.modifiedPrice;
-
-        case 1:
-          return b.modifiedPrice - a.modifiedPrice;
-
-        default:
-          return 0;
-      }
-    });
     combinedQuantity.value = response.data.filterCounts;
   } catch (err) {
     console.error(err);
@@ -471,6 +462,7 @@ async function getAllProducts() {
 // A products list copy for receiving correct filters. Smth to refactor:
 const allProducts = ref([]);
 async function getProducts() {
+  if (isFetching.value) return;
   if (
     filters.value.productCategory.length == 0 &&
     filters.value.color.length == 0 &&
@@ -503,39 +495,16 @@ async function getProducts() {
     });
 
     // A products list copy for receiving correct filters. Smth to refactor:
-
     allProducts.value = response.data.allProducts;
 
     // ^ A products list copy for receiving correct filters. Smth to refactor
 
-    filteredProducts.value = response.data.products
-      .map((product) => {
-        const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
-        const modifiedOldPrice = (
-          product.oldPrice * currencyMultiplier
-        ).toFixed(2);
-        const discountPercentage =
-          Math.round(100 - (modifiedPrice / modifiedOldPrice) * 100) || 0;
+    const mappedProducts = mapProductPrices(response.data.products);
 
-        return {
-          ...product,
-          modifiedPrice,
-          modifiedOldPrice,
-          discountPercentage,
-        };
-      })
-      .sort((a, b) => {
-        switch (sortingOptionRef) {
-          case 0:
-            return a.modifiedPrice - b.modifiedPrice;
-
-          case 1:
-            return b.modifiedPrice - a.modifiedPrice;
-
-          default:
-            return 0;
-        }
-      });
+    filteredProducts.value = sortProducts(
+      mappedProducts,
+      shopSortingOption.value
+    );
 
     combinedQuantity.value = response.data.filterCounts;
   } catch (err) {
@@ -545,6 +514,27 @@ async function getProducts() {
   }
 }
 
+// Map product prices
+function mapProductPrices(products) {
+  return products.map((product) => {
+    {
+      const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
+      const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
+        2
+      );
+      const discountPercentage =
+        Math.round(100 - (modifiedPrice / modifiedOldPrice) * 100) || 0;
+
+      return {
+        ...product,
+        modifiedPrice,
+        modifiedOldPrice,
+        discountPercentage,
+      };
+    }
+  });
+}
+
 // Reset all filters
 async function resetAllFilters() {
   for (const key in filters.value) {
@@ -552,6 +542,15 @@ async function resetAllFilters() {
   }
 
   await getProducts();
+}
+
+// Reset some filters without fetch
+function resetSomeFilters(filterKeys = []) {
+  for (const key of filterKeys) {
+    if (key in filters.value) {
+      filters.value[key] = [];
+    }
+  }
 }
 
 // Filter out items based on chosen filter values
@@ -606,7 +605,13 @@ const isAnyFilterActive = computed(() => {
 const watchLayoutDropdownNavigation = watch(
   () => router?.currentRoute?.value,
   () => {
-    resetAllFilters();
+    resetSomeFilters([
+      'productCategory',
+      'color',
+      'size',
+      'clothingType',
+      'brand',
+    ]);
     initializeFiltersFromURL();
     getProducts();
   }
@@ -629,7 +634,7 @@ function toggleSection(secName) {
 }
 
 // Manage products sorting
-const isSortingOpened = ref(true);
+const isSortingOpened = ref(false);
 function toggleSortingDropdown() {
   isSortingOpened.value = !isSortingOpened.value;
 }
@@ -638,9 +643,40 @@ const sortingStore = useSortingStore();
 const { sortingOptions, shopSortingOption } = storeToRefs(sortingStore);
 const { setSortingOption } = sortingStore;
 
-const sortingOptionRef = ref(0);
-function getSortingOption() {
-  sortingOptionRef.value = Cookies.get('shopSortingOption') || 0;
+// const sortingOptionRef = ref(0);
+// function getSortingOption() {
+//   sortingOptionRef.value = Cookies.get('shopSortingOption');
+// }
+
+watch(
+  shopSortingOption,
+  () => {
+    getProducts();
+  },
+  { deep: true }
+);
+
+function sortProducts(products, sortingOption) {
+  return [...products].sort((a, b) => {
+    switch (sortingOption) {
+      case 0:
+        return b.salesCount - a.salesCount;
+      case 1:
+        return a.createdAt - b.createdAt;
+      case 2:
+        return b.discountPercentage - a.discountPercentage;
+      case 3:
+        return b.rating - a.rating;
+      case 4:
+        return a.modifiedPrice - b.modifiedPrice;
+      case 5:
+        return b.modifiedPrice - a.modifiedPrice;
+      case 6:
+        return a.name.localeCompare(b.name);
+      case 7:
+        return b.name.localeCompare(a.name);
+    }
+  });
 }
 
 // Products pagination
