@@ -541,6 +541,8 @@ async function resetAllFilters() {
     filters.value[key] = [];
   }
 
+  router.push({ query: {} });
+
   await getProducts();
 }
 

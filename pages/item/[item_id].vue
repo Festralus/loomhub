@@ -73,7 +73,7 @@
         <div class="horizontal-separator-100 mt-5"></div>
         <div class="item__size-container">
           <div class="item__size__title">Choose size</div>
-          <div class="item__size__list">
+          <div class="item__size__list select-none">
             <div
               v-for="(size, i) in itemSizes"
               :key="size"
@@ -103,7 +103,7 @@
             >
               <PlusIcon />
             </div>
-            <div class="item__cart-possible-quantity">
+            <div class="item__cart-possible-quantity select-none">
               (available:
               <span class="item__cart-possible-quantity__span">
                 &nbsp;{{ +availableQuantity }}</span
@@ -161,13 +161,13 @@
               </th>
               <td class="details-tab__table-data">
                 <div class="table-data__value">{{ value }}</div>
-                <div
-                  @click="console.log(123)"
+                <NuxtLink
+                  :to="similarLinks[key]"
                   v-if="isKeyFilter(key)"
                   class="table-data__link"
                 >
                   Click to find similar products
-                </div>
+                </NuxtLink>
               </td>
             </tr>
           </tbody>
@@ -499,10 +499,9 @@ const itemSizes = ref([]);
 const modifiedPrice = ref(null);
 const discountPercentage = ref(null);
 const currencyMultiplier = 1;
-const similarBrand = ref('');
-const similarProductCategory = ref('');
-const similarClothingType = ref('');
-const similarCountry = ref('');
+const similarLinks = ref({});
+const filterKeys = ref(['brand', 'productCategory', 'clothingType']);
+// const filterKeys = ref(['brand', 'productCategory', 'clothingType', 'country']);
 
 async function setChosenItem() {
   path.value = window.location.pathname;
@@ -555,49 +554,50 @@ async function setChosenItem() {
     getProductDetails();
 
     // Set similar links
-    similarBrand.value = setLink('brand', res.data.brand);
-    similarProductCategory.value = setLink(
-      'productCategory',
-      res.data.productCategory
-    );
-    similarClothingType.value = setLink('clothingType', res.data.clothingType);
-    similarCountry.value = setLink('country', res.data.country);
-
-    console.log(similarClothingType.value);
+    setSimilarLinks(res.data);
   } catch (err) {
     console.error(err);
   }
 }
 
+function setSimilarLinks(data) {
+  filterKeys.value.forEach((key) => {
+    const value = data[key];
+    if (value) {
+      similarLinks.value[key] = setLink(key, value);
+      console.log(similarLinks.value);
+    }
+  });
+}
+
 function setLink(parameter, paramValue) {
-  if (
-    paramValue.toLowerCase() !== 'men' ||
-    paramValue.toLowerCase() !== 'women'
-  ) {
-    // if (res.data.clothingType.toLowerCase() == 'women') {
-    //     clothingTypeSegment.value = {
-    //       path: '/shop',
-    //       query: {
-    //         clothingType: JSON.stringify(['Unisex', 'Women']),
-    //       },
-    //     };
-    //   } else if (res.data.clothingType.toLowerCase() == 'men') {
-    //     clothingTypeSegment.value = {
-    //       path: '/shop',
-    //       query: {
-    //         clothingType: JSON.stringify(['Men', 'Unisex']),
-    //       },
-    //     };
-    //   } else {
-    //     clothingTypeSegment.value = {
-    //       path: '/shop',
-    //       query: {
-    //         clothingType: JSON.stringify(['Unisex']),
-    //       },
-    //     };
-    //   }
-    // return
+  const lowerValue = paramValue.toLowerCase();
+
+  if (parameter === 'clothingType') {
+    if (lowerValue === 'women') {
+      return {
+        path: '/shop',
+        query: {
+          clothingType: JSON.stringify(['Unisex', 'Women']),
+        },
+      };
+    } else if (lowerValue === 'men') {
+      return {
+        path: '/shop',
+        query: {
+          clothingType: JSON.stringify(['Men', 'Unisex']),
+        },
+      };
+    } else {
+      return {
+        path: '/shop',
+        query: {
+          clothingType: JSON.stringify(['Unisex']),
+        },
+      };
+    }
   }
+
   return {
     path: '/shop',
     query: {
@@ -847,26 +847,21 @@ function getProductDetails() {
       : item.value.sizes;
 
   productDetails.value = {
-    name: item.value.name,
-    brand: item.value.brand,
-    description: item.value.description,
-    productCategory: item.value.productCategory,
-    composition: item.value.composition,
-    clothingType: item.value.clothingType,
+    name: item.value?.name,
+    brand: item.value?.brand,
+    description: item.value?.description,
+    productCategory: item.value?.productCategory,
+    composition: item.value?.composition,
+    clothingType: item.value?.clothingType,
     availableColors: availableColors,
     availableSizes: availableSizes,
-    careInstructions: item.value.careInstructions,
-    country: item.value.country,
-    brandStyleId: item.value.brandStyleId,
+    careInstructions: item.value?.careInstructions,
+    country: item.value?.country,
+    brandStyleId: item.value?.brandStyleId,
   };
 }
 function isKeyFilter(key) {
-  return (
-    key == 'brand' ||
-    key == 'productCategory' ||
-    key == 'clothingType' ||
-    key == 'country'
-  );
+  return filterKeys.value.includes(key);
 }
 function formatKey(key) {
   return key
