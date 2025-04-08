@@ -19,6 +19,7 @@
           style.
         </div>
         <NuxtLink
+          @click="setSortingOption(0)"
           to="/shop"
           class="home-description__button SatoshiRegular mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] select-none items-center justify-center rounded-3xl bg-black text-base text-white"
         >
@@ -151,6 +152,7 @@
       ></Slider_component>
 
       <NuxtLink
+        @click="setSortingOption(1)"
         :to="'/shop'"
         class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] cursor-pointer select-none justify-center rounded-[62px] py-3 text-base"
       >
@@ -172,6 +174,7 @@
       ></Slider_component>
 
       <NuxtLink
+        @click="setSortingOption(0)"
         :to="'/shop'"
         class="top-selling__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] cursor-pointer select-none justify-center rounded-[62px] py-3 text-base"
       >
@@ -324,6 +327,7 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue';
 import axios from 'axios';
+import { useSortingStore } from '@/stores/index.js';
 
 import dress_styles_list from '@/data/dress_styles.js';
 import Slider_component from '@/components/slider_component.vue';
@@ -340,7 +344,6 @@ import RatingHalfStarIcon from '../assets/icons/RatingHalfStarIcon.vue';
 import StarIcon from '../assets/icons/StarIconBig.vue';
 import VerifiedTickIcon from '../assets/icons/VerifiedTickIcon.vue';
 
-import In_development_component from '@/components/in_development_component.vue';
 import Subscribe_news_component from '~/components/subscribe_news_component.vue';
 
 // Page title and API endpoint
@@ -404,35 +407,35 @@ onUnmounted(() => {
 // }
 
 // Updating an order
-const orderId = '6769bc16c09d4bcd85526087';
-const newStatus = 'delivered';
-async function updateOrderStatus(orderId, newStatus) {
-  const validStatuses = ['pending', 'shipped', 'delivered', 'cancelled'];
-  if (!validStatuses.includes(newStatus)) {
-    console.error('Invalid order status');
-    return { success: false, message: 'Invalid order status' };
-  }
+// const orderId = '6769bc16c09d4bcd85526087';
+// const newStatus = 'delivered';
+// async function updateOrderStatus(orderId, newStatus) {
+//   const validStatuses = ['pending', 'shipped', 'delivered', 'cancelled'];
+//   if (!validStatuses.includes(newStatus)) {
+//     console.error('Invalid order status');
+//     return { success: false, message: 'Invalid order status' };
+//   }
 
-  try {
-    const res = await api.put(`/api/orders/${orderId}`, {
-      orderStatus: newStatus,
-    });
+//   try {
+//     const res = await api.put(`/api/orders/${orderId}`, {
+//       orderStatus: newStatus,
+//     });
 
-    if (res.status === 200) {
-      console.log('Order status updated successfully:', res.data.order);
-      return { success: true, order: res.data.order };
-    }
-  } catch (err) {
-    if (err.response?.status === 404) {
-      console.error('Order not found');
-      return { success: false, message: 'Order not found' };
-    }
-    console.error('Internal server error:', err.message);
-    return { success: false, message: 'Internal server error' };
-  }
-}
+//     if (res.status === 200) {
+//       console.log('Order status updated successfully:', res.data.order);
+//       return { success: true, order: res.data.order };
+//     }
+//   } catch (err) {
+//     if (err.response?.status === 404) {
+//       console.error('Order not found');
+//       return { success: false, message: 'Order not found' };
+//     }
+//     console.error('Internal server error:', err.message);
+//     return { success: false, message: 'Internal server error' };
+//   }
+// }
 
-// Method to Get 5 website reviews
+// Method to get 5 website reviews
 const websiteReviewsArray = ref([]);
 
 async function getWebsiteReviews() {
@@ -493,6 +496,10 @@ function handleScroll() {
   const cardWidth = container.children[0]?.children[0]?.offsetWidth;
   reviewCardIndex.value = Math.round(scrollLeft / cardWidth);
 }
+
+// Set sorting option and go to /shop
+const sortingStore = useSortingStore();
+const { setSortingOption } = sortingStore;
 </script>
 <style scoped>
 @import '/assets/styles/style.css';

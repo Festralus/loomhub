@@ -679,7 +679,9 @@
   font-family: 'Satoshi-Regular';
 }
 .table-data__link {
-  margin-top: 10px;
+  display: block;
+  position: relative;
+  margin-top: 14px;
   color: #0353f4;
   cursor: pointer;
 }
