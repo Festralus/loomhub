@@ -31,7 +31,12 @@
           >${{ product.oldPrice }}</span
         >
         <span
-          v-if="product.discount"
+          v-if="
+            product.discount &&
+            product.oldPrice &&
+            product.oldPrice !== null &&
+            product.oldPrice !== undefined
+          "
           class="SatoshiLight ml-2 rounded-[62px] bg-[rgba(255,51,51,0.1)] px-2 py-1 text-sm text-[#FF3333]"
           >-{{ product.discount }}%</span
         >
@@ -128,12 +133,14 @@ async function getSliderProducts() {
 
     const response = res.data.map((product) => {
       const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
-      const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
-        2
-      );
-      const discountPercentage =
-        Math.round(100 - (modifiedPrice / modifiedOldPrice) * 100) || 0;
+      let modifiedOldPrice = null;
+      let discountPercentage = null;
+      if (product.oldPrice) {
+        modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(2);
 
+        discountPercentage =
+          Math.round(100 - (modifiedPrice / modifiedOldPrice) * 100) || 0;
+      }
       return {
         name: product.name,
         price: modifiedPrice,
@@ -142,7 +149,7 @@ async function getSliderProducts() {
         timestamps: product.timestamps,
         rating: product.rating || 4,
         oldPrice: modifiedOldPrice || null,
-        discount: discountPercentage,
+        discount: discountPercentage || null,
       };
     });
 

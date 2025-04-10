@@ -549,9 +549,10 @@ async function setChosenItem() {
     itemSizes.value = [...new Set(availableSizes)];
 
     // Set available quantity
-    fetchAvailableStock();
-    getProductReviews();
-    getProductDetails();
+    await fetchAvailableStock();
+    await getProductReviews();
+    await getProductDetails();
+    chooseColor(0);
 
     // Set similar links
     setSimilarLinks(res.data);
@@ -565,7 +566,7 @@ function setSimilarLinks(data) {
     const value = data[key];
     if (value) {
       similarLinks.value[key] = setLink(key, value);
-      console.log(similarLinks.value);
+      // console.log(similarLinks.value);
     }
   });
 }
@@ -644,7 +645,8 @@ function chooseColor(index) {
   counter.value = 1;
 
   // Filter out unavailable sizes
-  itemSizes.value = item.value.stock
+  itemSizes.value = item?.value?.stock;
+  itemSizes.value = item?.value?.stock
     .filter(
       (product) => product.color == itemColors.value[chosenColor.value].name
     )
@@ -857,7 +859,7 @@ function getProductDetails() {
     availableSizes: availableSizes,
     careInstructions: item.value?.careInstructions,
     country: item.value?.country,
-    brandStyleId: item.value?.brandStyleId,
+    brandStyleID: item.value?.brandStyleID,
   };
 }
 function isKeyFilter(key) {

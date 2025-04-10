@@ -686,7 +686,7 @@ async function checkNicknameAvailability() {
     const response = await api.post('/api/nicknameAvailability', {
       nickname: regName.value,
     });
-    console.log(response);
+    // console.log(response);
   } catch (err) {
     console.error(err);
   }
