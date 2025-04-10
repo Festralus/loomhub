@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import Cookies from 'js-cookie';
-import useApi from '/utils/api';
+// import useApi from '/utils/api';
+import { useApi } from '@/composables/useApi.js';
 
 export const useAuthStore = defineStore({
   id: 'auth',

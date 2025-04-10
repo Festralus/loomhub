@@ -192,39 +192,6 @@
       <div
         class="style-masonry__tileset relative flex flex-col flex-wrap items-center justify-center px-2 xl:flex-row xl:gap-5"
       >
-        <!-- <NuxtLink
-          v-for="(style, index) in dress_styles_list"
-          :key="style.name"
-          :to="style.path"
-          class="style-masonry__tile relative mb-4 w-[90%] rounded-3xl bg-white"
-          :class="[
-            index === 1 || index === 2
-              ? 'style-masonry__tile-big'
-              : 'style-masonry__tile-small',
-          ]"
-        >
-          <div
-            class="style-masonry__tile-text SatoshiBold absolute ml-6 mt-4 text-2xl"
-          >
-            {{ style.name }}
-          </div>
-          <picture>
-            <source
-              :srcset="`${style.backgroundPicture}.png`"
-              media="(max-width: 400px)"
-            />
-            <source
-              :srcset="`${style.backgroundPicture}-xl.png`"
-              media="(min-width: 401px)"
-            />
-            <img
-              class="style-masonry__tile-background select-none rounded-3xl"
-              :src="`${style.backgroundPicture}-xl.png`"
-              alt="Background image"
-            />
-          </picture>
-        </NuxtLink> -->
-
         <NuxtLink
           v-for="(style, index) in dress_styles_list"
           :to="style.path"
@@ -326,7 +293,7 @@
 </template>
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue';
-import axios from 'axios';
+// import axios from 'axios';
 import { useSortingStore } from '@/stores/index.js';
 
 import dress_styles_list from '@/data/dress_styles.js';
@@ -344,17 +311,21 @@ import RatingHalfStarIcon from '../assets/icons/RatingHalfStarIcon.vue';
 import StarIcon from '../assets/icons/StarIconBig.vue';
 import VerifiedTickIcon from '../assets/icons/VerifiedTickIcon.vue';
 
-import Subscribe_news_component from '~/components/subscribe_news_component.vue';
+import Subscribe_news_component from '@/components/subscribe_news_component.vue';
+
+// API setup
+import { useApi } from '@/composables/useApi.js';
+const api = useApi();
 
 // Page title and API endpoint
 useHead({
   title: 'LoomHub',
 });
 
-const config = useRuntimeConfig();
-const api = axios.create({
-  baseURL: config.public.apiBase,
-});
+// const config = useRuntimeConfig();
+// const api = axios.create({
+//   baseURL: config.public.apiBase,
+// });
 
 onMounted(() => {
   getWebsiteReviews();
@@ -365,75 +336,6 @@ onMounted(() => {
 onUnmounted(() => {
   reviewCardsContainer.value?.removeEventListener('scroll', handleScroll);
 });
-
-// Horizontal product slider component functionality
-// const newArrivalsList = ref([]);
-// const limit = 9;
-// const currencyMultiplier = 1;
-// const topSellingList = ref([]);
-
-// async function getSliderProducts(filterName) {
-//   try {
-//     const res = await api.get(`/api/${filterName}?limit=${limit}`);
-//     const arrivalsResponse = res.data.map((product) => {
-//       const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
-//       const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
-//         2
-//       );
-//       const discountPercentage = Math.round(
-//         100 - (modifiedPrice / modifiedOldPrice) * 100
-//       );
-
-//       return {
-//         name: product.name,
-//         price: modifiedPrice,
-//         GID: product.GID,
-//         images: product.images,
-//         timestamps: product.timestamps,
-//         rating: product.rating || 4,
-//         oldPrice: modifiedOldPrice || null,
-//         discount: discountPercentage,
-//       };
-//     });
-
-//     if (filterName === 'getNewArrivals') {
-//       newArrivalsList.value.push(...arrivalsResponse);
-//     } else if (filterName === 'getTopSelling') {
-//       topSellingList.value.push(...arrivalsResponse);
-//     }
-//   } catch (err) {
-//     console.error(err);
-//   }
-// }
-
-// Updating an order
-// const orderId = '6769bc16c09d4bcd85526087';
-// const newStatus = 'delivered';
-// async function updateOrderStatus(orderId, newStatus) {
-//   const validStatuses = ['pending', 'shipped', 'delivered', 'cancelled'];
-//   if (!validStatuses.includes(newStatus)) {
-//     console.error('Invalid order status');
-//     return { success: false, message: 'Invalid order status' };
-//   }
-
-//   try {
-//     const res = await api.put(`/api/orders/${orderId}`, {
-//       orderStatus: newStatus,
-//     });
-
-//     if (res.status === 200) {
-//       console.log('Order status updated successfully:', res.data.order);
-//       return { success: true, order: res.data.order };
-//     }
-//   } catch (err) {
-//     if (err.response?.status === 404) {
-//       console.error('Order not found');
-//       return { success: false, message: 'Order not found' };
-//     }
-//     console.error('Internal server error:', err.message);
-//     return { success: false, message: 'Internal server error' };
-//   }
-// }
 
 // Method to get 5 website reviews
 const websiteReviewsArray = ref([]);

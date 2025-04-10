@@ -1,35 +1,48 @@
 <template>
-  <div class="filters" v-if="products">
-    <div
-      v-for="(item, index) in filterValues"
-      :key="index"
-      class="selector__filter"
-      @click="toggleCheckbox(index)"
-    >
+  <!-- <div
+    class="filters"
+    :style="hasFewFilters ? { 'padding-right': '14px' } : {}"
+    v-if="products"
+  > -->
+  <div
+    class="filters"
+    :style="hasFewFilters ? { 'padding-left': '14px' } : {}"
+    v-if="products"
+  >
+    <div class="filter__contents">
       <div
-        :class="
-          combinedQuantity?.[props.parameter]?.[item] ? 'active' : 'inactive'
-        "
-        class="selector__filter__text"
+        v-for="(item, index) in filterValues"
+        :key="index"
+        class="selector__filter"
+        @click="toggleCheckbox(index)"
       >
-        {{ item }}
-        <span
+        <div
           :class="
             combinedQuantity?.[props.parameter]?.[item] ? 'active' : 'inactive'
           "
-          v-if="isAnyFilterActive"
-          >({{ combinedQuantity?.[props.parameter]?.[item] ?? 0 }})</span
+          class="selector__filter__text"
         >
-      </div>
-      <div class="option__checkbox__container">
-        <CheckboxEmptyIcon
-          v-show="!checkedItems[index]"
-          class="option__checkbox"
-        />
-        <CheckboxFilledIcon
-          v-show="checkedItems[index]"
-          class="option__checkbox-checked"
-        />
+          {{ item }}
+          <span
+            :class="
+              combinedQuantity?.[props.parameter]?.[item]
+                ? 'active'
+                : 'inactive'
+            "
+            v-if="isAnyFilterActive"
+            >({{ combinedQuantity?.[props.parameter]?.[item] ?? 0 }})</span
+          >
+        </div>
+        <div class="option__checkbox__container">
+          <CheckboxEmptyIcon
+            v-show="!checkedItems[index]"
+            class="option__checkbox"
+          />
+          <CheckboxFilledIcon
+            v-show="checkedItems[index]"
+            class="option__checkbox-checked"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -88,6 +101,9 @@ function getFilterValues(parameter) {
   }
 }
 
+// Check filterValues length
+const hasFewFilters = computed(() => filterValues.value.length < 7);
+
 // Check if the passed value is an integer
 function isNum(val) {
   return !isNaN(val) && Number.isInteger(Number(val));
@@ -142,10 +158,13 @@ function toggleCheckbox(index) {
 .filters {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin: 8px;
+  direction: rtl;
+}
+.filter__contents {
+  direction: ltr;
 }
 .selector__filter {
+  padding: 4px 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;

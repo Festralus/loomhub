@@ -77,10 +77,13 @@ onMounted(() => {
 });
 
 // API endpoint
-const config = useRuntimeConfig();
-const api = axios.create({
-  baseURL: config.public.apiBase,
-});
+import { useApi } from '@/composables/useApi.js';
+const api = useApi();
+
+// const config = useRuntimeConfig();
+// const api = axios.create({
+//   baseURL: config.public.apiBase,
+// });
 
 // Drag settings
 const scrollContainer = ref(null);

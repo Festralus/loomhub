@@ -45,7 +45,7 @@
         :key="arrayField.name"
       >
         <label :for="arrayField.name"
-          >{{ arrayField.label }} (comma separated)</label
+          >{{ arrayField.label }} (separated by space)</label
         >
         <input
           :id="arrayField.name"
@@ -68,12 +68,17 @@
 
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
 
-const config = useRuntimeConfig();
-const api = axios.create({
-  baseURL: config.public.apiBase,
-});
+// API endpoint
+import { useApi } from '@/composables/useApi.js';
+const api = useApi();
+
+// import axios from 'axios';
+
+// const config = useRuntimeConfig();
+// const api = axios.create({
+//   baseURL: config.public.apiBase,
+// });
 
 const form = ref({
   name: '',
@@ -189,7 +194,8 @@ const handleSubmit = async () => {
   }
 
   if (!form.value.rating) {
-    form.value.rating = Math.floor(Math.random() * 5) + 1;
+    const random = Math.random() * (5 - 0.1) + 0.1;
+    form.value.rating = Math.round(random * 10) / 10;
   }
 
   if (!form.value.composition) {
@@ -228,7 +234,7 @@ const handleSubmit = async () => {
     description: form.value.description,
     price: form.value.price,
     oldPrice: form.value.oldPrice,
-    images: form.value.images.split(',').map((img) => img.trim()),
+    images: form.value.images.split(' ').map((img) => img.trim()),
     brand: form.value.brand,
     productCategory: form.value.productCategory,
     clothingType: form.value.clothingType,
@@ -239,13 +245,13 @@ const handleSubmit = async () => {
     stock: form.value.stock,
     rating: form.value.rating,
     salesCount: form.value.salesCount,
-    sizes: form.value.sizes.split(',').map((s) => s.trim()),
-    colors: form.value.colors.split(',').map((c) => c.trim()),
+    sizes: form.value.sizes.split(' ').map((s) => s.trim()),
+    colors: form.value.colors.split(' ').map((c) => c.trim()),
     composition: form.value.composition,
     country: form.value.country,
     brandStyleID: form.value.brandStyleID,
     careInstructions: form.value.careInstructions,
-    detailsImages: form.value.detailsImages.split(',').map((img) => img.trim()),
+    detailsImages: form.value.detailsImages.split(' ').map((img) => img.trim()),
   };
 
   console.log('Payload being sent:', payload);

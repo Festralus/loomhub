@@ -477,11 +477,14 @@ definePageMeta({
   useWebsitePadding: true,
 });
 
-// API settings
-const config = useRuntimeConfig();
-const api = axios.create({
-  baseURL: config.public.apiBase,
-});
+// API endpoint
+import { useApi } from '@/composables/useApi.js';
+const api = useApi();
+
+// const config = useRuntimeConfig();
+// const api = axios.create({
+//   baseURL: config.public.apiBase,
+// });
 
 // Check and set global variables
 const getSession = useAuthStore().getSession;
