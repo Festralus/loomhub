@@ -304,11 +304,13 @@
     padding: 10px 10px;
   }
   .details-tab__photos {
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     gap: 20px;
   }
   .details-tab__photo {
+    object-fit: contain;
     max-height: 600px;
     border-radius: 50px;
   }

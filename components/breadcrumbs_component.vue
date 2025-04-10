@@ -65,12 +65,16 @@ import { defineProps, onMounted } from 'vue';
 
 import PointerIcon from '/assets/icons/PointerIcon';
 
-import axios from 'axios';
+// API endpoint
+import { useApi } from '@/composables/useApi.js';
+const api = useApi();
 
-const config = useRuntimeConfig();
-const api = axios.create({
-  baseURL: config.public.apiBase,
-});
+// import axios from 'axios';
+
+// const config = useRuntimeConfig();
+// const api = axios.create({
+//   baseURL: config.public.apiBase,
+// });
 
 onMounted(() => {
   setBreadcrumbs();
@@ -92,7 +96,7 @@ async function setBreadcrumbs() {
   segments.value = history.state?.current?.split('/');
   const lastSegment = segments.value.pop();
 
-  if (lastSegment.includes('productGID')) {
+  if (lastSegment.includes('item-')) {
     try {
       const res = await api.post('/api/productByGid', { itemGID: lastSegment });
       modifiedSegments.value = [

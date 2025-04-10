@@ -41,10 +41,30 @@
           'no-animation': !isBurgerAnimationActive,
         }"
       >
-        <NuxtLink :to="'/shop'" class="BurgerMenu__item">Shop</NuxtLink>
-        <NuxtLink :to="'/shop'" class="BurgerMenu__item">Top Selling</NuxtLink>
-        <NuxtLink :to="'/shop'" class="BurgerMenu__item">New Arrivals</NuxtLink>
-        <NuxtLink :to="'/shop'" class="BurgerMenu__item">Best Choice</NuxtLink>
+        <NuxtLink
+          @click="setSortingOption(0)"
+          to="/shop"
+          class="BurgerMenu__item"
+          >Shop</NuxtLink
+        >
+        <NuxtLink
+          @click="setSortingOption(2)"
+          to="/shop"
+          class="BurgerMenu__item"
+          >On Sale</NuxtLink
+        >
+        <NuxtLink
+          @click="setSortingOption(1)"
+          to="/shop"
+          class="BurgerMenu__item"
+          >New Arrivals</NuxtLink
+        >
+        <NuxtLink
+          @click="setSortingOption(4)"
+          to="/shop"
+          class="BurgerMenu__item"
+          >Best Choice</NuxtLink
+        >
       </div>
       <NuxtLink
         to="/"
@@ -411,7 +431,7 @@ import { useAuthStore } from '@/stores/index';
 import { useSortingStore } from '@/stores/index.js';
 const route = useRoute();
 
-import axios from 'axios';
+// import axios from 'axios';
 import Cookies from 'js-cookie';
 
 import dress_styles_list from '~/data/dress_styles.js';
@@ -444,11 +464,14 @@ function openInDev(string) {
   showInDev.value = true;
 }
 
-const config = useRuntimeConfig();
-const api = axios.create({
-  baseURL: config.public.apiBase,
-});
-// const api = useApi();
+// API endpoint
+import { useApi } from '@/composables/useApi.js';
+const api = useApi();
+
+// const config = useRuntimeConfig();
+// const api = axios.create({
+//   baseURL: config.public.apiBase,
+// });
 
 onMounted(() => {
   getSession();

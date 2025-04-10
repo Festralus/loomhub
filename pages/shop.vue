@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div
+      class="shop_modal_overlay"
+      @click="closeFiltersMobile"
+      :class="{ active: isOverlayActive }"
+    ></div>
     <div v-if="isFetching" class="waiting-screen">
       <div class="loader"></div>
     </div>
@@ -8,16 +13,14 @@
     <div class="shop-gallery">
       <!-- Filters -->
       <div class="shop__filters__container">
-        <div class="shop__filters">
+        <div class="shop__filters" :class="{ opened: areFiltersShownMobile }">
           <div class="filters__title">
             <div class="filters__title-text">Filters</div>
           </div>
           <div @click="resetAllFilters()" class="filters__reset-button">
             <div class="reset-button__text">Reset all</div>
           </div>
-
           <div class="horizontal-separator-90 mb-4"></div>
-
           <!-- Category picker -->
           <div class="filters__categories__container">
             <div
@@ -218,6 +221,13 @@
               @filter-updated="(value) => updateFilters(value)"
             />
           </div>
+
+          <div
+            class="mobile-horizontal-separator horizontal-separator-90 mb-4 mt-4"
+          ></div>
+          <div class="filters__mobile__close-button">
+            <button @click="toggleFiltersMobile()">Close window</button>
+          </div>
         </div>
       </div>
 
@@ -265,7 +275,10 @@
               </div>
             </div>
           </div>
-          <div class="products__title-mobile-sorting">
+          <div
+            @click="toggleFiltersMobile"
+            class="products__title-mobile-sorting"
+          >
             <FiltersIcon class="filters__icon" />
           </div>
         </div>
@@ -329,7 +342,7 @@
   </div>
 </template>
 <script setup>
-import axios from 'axios';
+// import axios from 'axios';
 
 import Breadcrumbs_component from '@/components/breadcrumbs_component.vue';
 import Filter_selector_component from '@/components/filter_selector_component.vue';
@@ -343,11 +356,14 @@ import PointerIcon from '@/assets/icons/PointerIcon.vue';
 import { useSortingStore } from '@/stores/index.js';
 import { storeToRefs } from 'pinia';
 
-// API settings
-const config = useRuntimeConfig();
-const api = axios.create({
-  baseURL: config.public.apiBase,
-});
+// API endpoint
+import { useApi } from '@/composables/useApi.js';
+const api = useApi();
+
+// const config = useRuntimeConfig();
+// const api = axios.create({
+//   baseURL: config.public.apiBase,
+// });
 
 // Routing
 const route = useRoute();
@@ -620,6 +636,19 @@ const watchLayoutDropdownNavigation = watch(
 );
 
 // REVIEW END
+
+// Hide and show filters window for mobile view
+const areFiltersShownMobile = ref(false);
+const isOverlayActive = ref(false);
+function toggleFiltersMobile() {
+  areFiltersShownMobile.value = !areFiltersShownMobile.value;
+  isOverlayActive.value = !isOverlayActive.value;
+}
+
+function closeFiltersMobile() {
+  areFiltersShownMobile.value = false;
+  isOverlayActive.value = false;
+}
 
 // Manage opening and closing filter sections
 const isSectionOpened = ref({
