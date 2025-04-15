@@ -1,3 +1,3 @@
-<template><div></div></template>
+<template><div class="footer"></div></template>
 <script setup></script>
 <style scoped></style>

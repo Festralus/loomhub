@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div
+    <section
       class="home-description relative z-50 w-full bg-[#f2f0f1] xl:flex xl:flex-nowrap xl:justify-evenly 2xl:items-center 2xl:justify-between"
     >
       <div
@@ -11,13 +11,13 @@
         >
           FIND CLOTHES THAT MATCHES YOUR STYLE
         </h2>
-        <div
+        <p
           class="home-description__text SatoshiRegular mt-4 text-[14px] lg:text-xl"
         >
           Browse through our diverse range of meticulously crafted garments,
           designed to bring out your individuality and cater to your sense of
           style.
-        </div>
+        </p>
         <NuxtLink
           @click="setSortingOption(0)"
           to="/shop"
@@ -25,34 +25,34 @@
         >
           Shop Now
         </NuxtLink>
-        <div
+        <ul
           class="home-description__stats mt-4 flex flex-wrap justify-center gap-y-4"
         >
-          <div
+          <li
             class="home-description__stat home-description__stats-brands SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
             <span class="SatoshiBold home-description__stat-value text-2xl"
               >200+</span
             >
             <br class="home-description__stat-label" />International Brands
-          </div>
-          <div
+          </li>
+          <li
             class="home-description__stat home-description__stats-products SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
             <span class="SatoshiBold home-description__stat-value text-2xl"
               >2,000+</span
             >
             <br class="home-description__stat-label" />High-Quality Products
-          </div>
-          <div
+          </li>
+          <li
             class="home-description__stat home-description__stats-customers SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
             <span class="SatoshiBold home-description__stat-value text-2xl"
               >30,000+</span
             ><br class="home-description__stat-label" />
             Happy Customers
-          </div>
-        </div>
+          </li>
+        </ul>
       </div>
       <div
         class="home-description__background pointer-events-none relative z-0 mx-auto max-w-[700px] select-none overflow-clip lg:mt-10 xl:mt-0"
@@ -79,8 +79,10 @@
           />
         </picture>
       </div>
-    </div>
-    <div
+    </section>
+
+    <!-- Possible to refactor this section via v-for and brands import from data folder -->
+    <section
       class="popular-brands flex w-full flex-row flex-wrap justify-evenly overflow-hidden bg-black pb-3 pt-5"
     >
       <NuxtLink
@@ -138,13 +140,14 @@
       >
         <CalvinKleinIcon class="h-full w-full" />
       </NuxtLink>
-    </div>
-    <div class="new-arrivals">
-      <div
+    </section>
+
+    <section class="new-arrivals">
+      <h3
         class="new-arrivals__title IntergralExtraBold mb-6 mt-9 text-center text-[32px] leading-none"
       >
         NEW ARRIVALS
-      </div>
+      </h3>
 
       <Slider_component
         class="new-arrivals__items"
@@ -160,13 +163,14 @@
       </NuxtLink>
 
       <div class="horizontal-separator-90 mt-10"></div>
-    </div>
-    <div class="top-selling mt-10">
-      <div
+    </section>
+
+    <section class="top-selling mt-10">
+      <h3
         class="top-selling__title IntergralExtraBold mb-6 mt-9 text-center text-[32px] leading-none"
       >
         TOP SELLING
-      </div>
+      </h3>
 
       <Slider_component
         class="new-arrivals__items"
@@ -180,20 +184,23 @@
       >
         View All
       </NuxtLink>
-    </div>
-    <div
+    </section>
+
+    <section
       class="style-masonry mx-auto mt-10 w-[1800px] max-w-[94vw] rounded-2xl bg-[#F0F0F0] pb-2 pt-9"
     >
-      <div
+      <h3
         class="style-masonry__title IntergralExtraBold mb-7 px-10 text-center text-[32px] leading-none"
       >
         BROWSE BY DRESS STYLE
-      </div>
+      </h3>
+
       <div
         class="style-masonry__tileset relative flex flex-col flex-wrap items-center justify-center px-2 xl:flex-row xl:gap-5"
       >
         <NuxtLink
           v-for="(style, index) in dress_styles_list"
+          :key="'style-' + index"
           :to="style.path"
           class="style-masonry__tile relative mb-4 w-[90%] cursor-pointer rounded-3xl bg-white"
           :class="[
@@ -202,11 +209,11 @@
               : 'style-masonry__tile-small',
           ]"
         >
-          <div
+          <p
             class="style-masonry__tile-text SatoshiBold absolute ml-6 mt-4 text-2xl"
           >
             {{ style.name }}
-          </div>
+          </p>
           <picture>
             <source
               :srcset="`${style.backgroundPicture}.png`"
@@ -224,28 +231,33 @@
           </picture>
         </NuxtLink>
       </div>
-    </div>
-    <div class="reviews mt-10">
+    </section>
+
+    <section class="reviews mt-10">
       <div class="reviews__header mx-4 flex">
-        <div
+        <h3
           class="reviews__title IntergralExtraBold mr-10 text-left text-[32px] leading-none"
         >
           OUR HAPPY CUSTOMERS
-        </div>
+        </h3>
         <div class="reviews__arrows mt-auto flex sm:hidden">
-          <ArrowIcon
+          <button
             class="reviews__arrow--left mr-4 size-6 rotate-180"
             @click="scrollToCard(reviewCardIndex - 1)"
-          ></ArrowIcon>
-          <ArrowIcon
+          >
+            <ArrowIcon class="size-6" />
+          </button>
+          <button
             class="reviews__arrow--right size-6"
             @click="scrollToCard(reviewCardIndex + 1)"
-          ></ArrowIcon>
+          >
+            <ArrowIcon class="size-6" />
+          </button>
         </div>
       </div>
       <div class="reviews__list" ref="reviewCardsContainer">
         <div class="reviews__cards">
-          <div
+          <article
             class="reviews__card button-border mx-4 mt-6 h-[180px] w-[340px] rounded-3xl border-gray-500 p-6"
             v-for="review in websiteReviewsArray"
             :key="'main' + review.id"
@@ -254,8 +266,8 @@
             <div class="reviews__card-rating mt-1 flex items-center">
               <span class="flex">
                 <RatingStarIcon
-                  v-for="n in Math.floor(review.rating)"
-                  :key="'full-' + review.id"
+                  v-for="(n, index) in Math.floor(review.rating)"
+                  :key="'full-' + index"
                   class="h-5 w-5"
                 />
                 <RatingHalfStarIcon
@@ -264,27 +276,30 @@
                   class="h-5 w-5"
                 />
                 <RatingEmptyStarIcon
-                  v-for="n in Math.floor(5 - review.rating)"
-                  :key="'empty-' + review.id"
+                  v-for="(n, index) in Math.floor(5 - review.rating)"
+                  :key="'empty-' + index"
                   class="h-5 w-5"
                 />
               </span>
             </div>
+
             <div class="reviews__card__name-line flex items-end">
-              <div class="reviews__card__name SatoshiBold mt-2 text-base">
+              <strong class="reviews__card__name SatoshiBold mt-2 text-base">
                 {{ review.user }}
-              </div>
+              </strong>
               <VerifiedTickIcon
                 class="reviews__card__verified mb-1 ml-1 size-4"
-              ></VerifiedTickIcon>
+              />
             </div>
-            <div class="reviews__card__text SatoshiRegular mt-1 text-gray-500">
+
+            <p class="reviews__card__text SatoshiRegular mt-1 text-gray-500">
               {{ review.comment }}
-            </div>
-          </div>
+            </p>
+          </article>
         </div>
       </div>
-    </div>
+    </section>
+
     <Subscribe_news_component />
 
     <!-- <div class="mb-[500px] mt-[100px]"></div>
@@ -297,6 +312,7 @@ import { onMounted, onUnmounted, ref } from 'vue';
 import { useSortingStore } from '@/stores/index.js';
 
 import dress_styles_list from '@/data/dress_styles.js';
+// import brands from '@/data/brands.js';
 import Slider_component from '@/components/slider_component.vue';
 
 import ArrowIcon from '../assets/icons/ArrowIcon.vue';

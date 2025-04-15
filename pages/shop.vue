@@ -1,13 +1,34 @@
 <template>
   <div>
     <div
-      class="shop_modal_overlay"
-      @click="closeFiltersMobile"
+      class="shop__modal__overlay"
+      @click="closeModalsMobile"
       :class="{ active: isOverlayActive }"
     ></div>
+
     <div v-if="isFetching" class="waiting-screen">
       <div class="loader"></div>
     </div>
+
+    <div v-show="isSortingShownMobile" class="sorting__modal__container">
+      <div class="sorting__modal">
+        <div class="sorting__modal__title">Sorting options:</div>
+        <ul class="sorting__modal__options">
+          <div
+            v-for="(option, index) in sortingOptions"
+            :key="option.name"
+            @click="setSortingOption(index)"
+            class="sorting__modal__option"
+            :class="{
+              highlighted: index === Number(shopSortingOption),
+            }"
+          >
+            213S
+          </div>
+        </ul>
+      </div>
+    </div>
+
     <Breadcrumbs_component />
 
     <div class="shop-gallery">
@@ -276,8 +297,14 @@
             </div>
           </div>
           <div
-            @click="toggleFiltersMobile"
+            @click="toggleSortingMobile"
             class="products__title-mobile-sorting"
+          >
+            <SortingIcon class="sorting__icon" />
+          </div>
+          <div
+            @click="toggleFiltersMobile"
+            class="products__title-mobile-filters"
           >
             <FiltersIcon class="filters__icon" />
           </div>
@@ -352,6 +379,7 @@ import Subscribe_news_component from '@/components/subscribe_news_component.vue'
 import ArrowIcon from '@/assets/icons/ArrowIcon.vue';
 import FiltersIcon from '@/assets/icons/FiltersIcon.vue';
 import PointerIcon from '@/assets/icons/PointerIcon.vue';
+import SortingIcon from '@/assets/icons/SortingIcon.vue';
 
 import { useSortingStore } from '@/stores/index.js';
 import { storeToRefs } from 'pinia';
@@ -639,14 +667,21 @@ const watchLayoutDropdownNavigation = watch(
 
 // Hide and show filters window for mobile view
 const areFiltersShownMobile = ref(false);
+const isSortingShownMobile = ref(false);
 const isOverlayActive = ref(false);
 function toggleFiltersMobile() {
   areFiltersShownMobile.value = !areFiltersShownMobile.value;
   isOverlayActive.value = !isOverlayActive.value;
 }
 
-function closeFiltersMobile() {
+function toggleSortingMobile() {
+  isSortingShownMobile.value = !isSortingShownMobile.value;
+  isOverlayActive.value = !isOverlayActive.value;
+}
+
+function closeModalsMobile() {
   areFiltersShownMobile.value = false;
+  isSortingShownMobile.value = false;
   isOverlayActive.value = false;
 }
 
@@ -712,7 +747,7 @@ function sortProducts(products, sortingOption) {
 
 // Products pagination
 const currentProductPage = ref(1);
-const productsPerPage = 12;
+const productsPerPage = 9;
 const visibleProductsStart = computed(() => {
   return productsPerPage * currentProductPage.value + 1 - productsPerPage;
 });
