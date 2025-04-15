@@ -7,11 +7,11 @@
         :class="`size-${starsSize}`"
       />
       <RatingHalfStarIcon
-        v-if="rating % 1 !== 0"
+        v-if="rating % 1 > 0.25"
         :class="`size-${starsSize}`"
       />
       <RatingEmptyStarIcon
-        v-for="(_, i) in Math.floor(5 - rating)"
+        v-for="(_, i) in 5 - Math.floor(rating) - (rating % 1 > 0.25)"
         :key="'empty-' + i"
         :class="`size-${starsSize}`"
       />
@@ -29,9 +29,6 @@ import RatingHalfStarIcon from '../assets/icons/RatingHalfStarIcon.vue';
 import RatingStarIcon from '../assets/icons/RatingFullStarIcon.vue';
 
 defineProps({
-  // product: {
-  //   type: Object,
-  // },
   rating: {
     type: Number,
   },

@@ -1,7 +1,7 @@
 <template>
   <div>
     <BreadcrumbsComponent :history="path"></BreadcrumbsComponent>
-    <div class="top__section">
+    <div v-if="item" class="top__section">
       <div class="item__gallery">
         <div class="secondary-pictures">
           <img
@@ -24,7 +24,6 @@
         <div class="item__name">{{ item?.name }} ({{ item?.brand }})</div>
         <div class="item__rating">
           <ProductRatingComponent
-            v-if="item"
             :rating="item.rating"
             :showRatingNumber="false"
             class="item__rating-stars"
@@ -125,7 +124,7 @@
         </div>
       </div>
     </div>
-    <div class="item__tabs">
+    <div v-if="item" class="item__tabs">
       <!-- Tabs menu -->
       <div class="tabs__list" ref="productTabsRefs">
         <div
@@ -415,7 +414,7 @@
         </div> -->
       </div>
     </div>
-    <div class="relevant-products">
+    <div v-if="item" class="relevant-products">
       <div class="relevant-products__title">YOU MIGHT ALSO LIKE</div>
       <Slider_component
         v-if="item"
@@ -433,7 +432,6 @@
 // Imports
 import { useAuthStore } from '@/stores/index';
 import all_colors from '@/data/colors';
-import axios from 'axios';
 
 import ArrowIcon from '../assets/icons/ArrowIcon.vue';
 import MinusIcon from '@/assets/icons/MinusIcon.vue';

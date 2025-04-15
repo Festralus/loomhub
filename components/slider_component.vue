@@ -15,7 +15,7 @@
       <img
         :src="product.images[0]"
         alt="Product Image"
-        class="new-arrivals__items-item__pic pointer-events-none h-[200px] w-full select-none rounded-2xl object-cover"
+        class="new-arrivals__items-item__pic pointer-events-none h-[340px] w-full select-none rounded-2xl object-contain"
       />
       <div class="new-arrivals__items-item__title mt-2 text-lg font-bold">
         {{ product.name }}

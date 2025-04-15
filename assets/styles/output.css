@@ -843,6 +843,10 @@ video {
   display: block;
 }
 
+.inline-block {
+  display: inline-block;
+}
+
 .flex {
   display: flex;
 }
@@ -903,8 +907,8 @@ video {
   height: 180px;
 }
 
-.h-\[200px\] {
-  height: 200px;
+.h-\[340px\] {
+  height: 340px;
 }
 
 .h-\[42px\] {
@@ -1204,9 +1208,9 @@ video {
   background-position: center;
 }
 
-.object-cover {
-  -o-object-fit: cover;
-     object-fit: cover;
+.object-contain {
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 
 .object-center {
@@ -1456,6 +1460,37 @@ video {
 
 * {
   font-family: 'Times New Roman', Times, serif;
+}
+
+.active\:after\:pointer-events-none:active::after {
+  content: var(--tw-content);
+  pointer-events: none;
+}
+
+.active\:after\:absolute:active::after {
+  content: var(--tw-content);
+  position: absolute;
+}
+
+.active\:after\:inset-0:active::after {
+  content: var(--tw-content);
+  inset: 0px;
+}
+
+.active\:after\:bg-black:active::after {
+  content: var(--tw-content);
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
+}
+
+.active\:after\:opacity-30:active::after {
+  content: var(--tw-content);
+  opacity: 0.3;
+}
+
+.active\:after\:content-\[\'\'\]:active::after {
+  --tw-content: '';
+  content: var(--tw-content);
 }
 
 @media (min-width: 640px) {
