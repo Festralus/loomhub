@@ -173,11 +173,14 @@
             @paste="performPasteQuickSearch"
             @focus="openDropdown"
           />
+
           <Search_results_dropdown
             v-show="searchQuery && !outsideClickOccurance"
             :query="searchQuery"
             :searchResults="searchResults"
-          ></Search_results_dropdown>
+            :isFetching="isFetching"
+          >
+          </Search_results_dropdown>
         </div>
       </div>
       <div
@@ -629,6 +632,7 @@ watch(searchQuery, async () => {
   await performQuickSearch();
 });
 
+const isFetching = ref(false);
 async function performQuickSearch() {
   outsideClickOccurance.value = false;
   const query = searchQuery.value.trim();
@@ -639,6 +643,7 @@ async function performQuickSearch() {
   }
 
   try {
+    isFetching.value = true;
     openMobileSearch();
     outsideClickOccurance.value = false;
     const res = await api.get(`api/products/search?query=${query}`);
@@ -651,6 +656,8 @@ async function performQuickSearch() {
     searchResults.value = res.data.length < 5 ? res.data : res.data.slice(0, 5);
   } catch (err) {
     console.error(err);
+  } finally {
+    isFetching.value = false;
   }
 }
 

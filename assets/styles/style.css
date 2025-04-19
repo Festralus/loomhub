@@ -1,3 +1,14 @@
+/* Tailwind SM */
+@media screen and (max-width: 640px) {
+  .reviews__list {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .reviews__list::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* Mobile view */
 @media screen and (min-width: 1px) and (max-width: 481px) {
   .home-description__stat:first-child::after {
@@ -71,13 +82,8 @@
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   width: 100%;
+}
 
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-}
-.reviews__list::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, and Edge */
-}
 .reviews__cards {
   display: flex;
   flex-wrap: nowrap;

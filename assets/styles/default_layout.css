@@ -161,7 +161,7 @@
     transform 0.3s;
 }
 .BurgerMenu__item:active {
-  color: #007bff;
+  color: var(--active-action-secondary);
   transform: scale(1.05);
 }
 

@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-show="isFetching || initialLoading" class="waiting-screen">
+      <div class="loader"></div>
+    </div>
     <BreadcrumbsComponent :history="path"></BreadcrumbsComponent>
     <div v-if="item" class="top__section">
       <div class="item__gallery">
@@ -488,8 +491,9 @@ const api = useApi();
 const getSession = useAuthStore().getSession;
 
 onBeforeMount(() => {
-  getSession();
+  initialLoading.value = false;
   setChosenItem();
+  getSession();
 });
 
 // Get product information
@@ -504,12 +508,37 @@ const similarLinks = ref({});
 const filterKeys = ref(['brand', 'productCategory', 'clothingType']);
 // const filterKeys = ref(['brand', 'productCategory', 'clothingType', 'country']);
 
+// Waiting screen while items are being fetched
+const isFetching = ref(false);
+const initialLoading = ref(true);
+
+useHead({
+  bodyAttrs: {
+    class: 'no-scroll',
+  },
+});
+// Loading screen while items are being fetched
+if (isFetching.value) {
+  document?.body.classList.add('no-scroll');
+}
+
+watchEffect(() => {
+  if (isFetching.value || initialLoading.value) {
+    document?.body.classList.add('no-scroll');
+  } else {
+    document?.body.classList.remove('no-scroll');
+  }
+});
+
 async function setChosenItem() {
+  if (isFetching.value) return;
   path.value = window.location.pathname;
   const segments = path.value.split('/');
   productID.value = segments.pop();
 
   try {
+    isFetching.value = true;
+
     const res = await api.post('/api/productByGid', {
       itemGID: productID.value,
     });
@@ -559,6 +588,8 @@ async function setChosenItem() {
     setSimilarLinks(res.data);
   } catch (err) {
     console.error(err);
+  } finally {
+    isFetching.value = false;
   }
 }
 

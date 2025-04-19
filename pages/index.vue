@@ -255,9 +255,13 @@
           </button>
         </div>
       </div>
-      <div class="reviews__list" ref="reviewCardsContainer">
+      <div
+        class="reviews__list relative min-h-[204px]"
+        ref="reviewCardsContainer"
+      >
         <div class="reviews__cards">
           <article
+            v-show="websiteReviewsArray.length"
             class="reviews__card button-border mx-4 mt-6 h-[180px] w-[340px] rounded-3xl border-gray-500 p-6"
             v-for="review in websiteReviewsArray"
             :key="'main' + review.id"
@@ -296,6 +300,14 @@
               {{ review.comment }}
             </p>
           </article>
+        </div>
+
+        <!-- Loading screen while items are being fetched -->
+        <div
+          v-show="!websiteReviewsArray.length"
+          class="waiting-screen-local mt-1"
+        >
+          <div class="loader"></div>
         </div>
       </div>
     </section>
@@ -346,11 +358,14 @@ useHead({
 onMounted(() => {
   getWebsiteReviews();
 
-  reviewCardsContainer.value.addEventListener('scroll', handleScroll);
+  reviewCardsContainer.value.addEventListener('scroll', debouncedHandleScroll);
 });
 
 onUnmounted(() => {
-  reviewCardsContainer.value?.removeEventListener('scroll', handleScroll);
+  reviewCardsContainer.value?.removeEventListener(
+    'scroll',
+    debouncedHandleScroll
+  );
 });
 
 // Method to get 5 website reviews
@@ -381,6 +396,7 @@ const reviewCardIndex = ref(0);
 const reviewCardsContainer = ref(null);
 function scrollToCard(index) {
   if (!reviewCardsContainer.value) return;
+
   reviewCardIndex.value = index;
 
   if (index < 0) {
@@ -400,6 +416,7 @@ function scrollToCard(index) {
 }
 
 // Focus Newsletter subscription
+
 const SubscriptionEmail = ref();
 function focusSubscriptionEmail() {
   SubscriptionEmail.value?.focus();
@@ -408,7 +425,6 @@ function focusSubscriptionEmail() {
 // Website review scroll help for arrows
 function handleScroll() {
   if (!reviewCardsContainer.value) return;
-
   const container = reviewCardsContainer.value;
   const scrollLeft = container.scrollLeft;
   const cardWidth = container.children[0]?.children[0]?.offsetWidth;
@@ -418,6 +434,21 @@ function handleScroll() {
 // Set sorting option and go to /shop
 const sortingStore = useSortingStore();
 const { setSortingOption } = sortingStore;
+
+// Review starts
+function debounce(fn, delay) {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      fn(...args);
+    }, delay);
+  };
+}
+
+const debouncedHandleScroll = debounce(handleScroll, 30);
+
+// Review ends
 </script>
 <style scoped>
 @import '/assets/styles/style.css';

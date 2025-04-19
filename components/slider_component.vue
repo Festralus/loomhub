@@ -1,12 +1,20 @@
 <template>
   <div
-    class="new-arrivals__items flex w-full max-w-[100vw] cursor-grab select-none flex-row justify-start overflow-x-auto xl:my-4 xl:origin-center xl:transform"
+    class="new-arrivals__items relative flex min-h-[476px] w-full max-w-[100vw] cursor-grab select-none flex-row justify-start overflow-x-auto xl:my-4 xl:origin-center xl:transform"
     @mousedown="startDrag"
     @mousemove="onDrag"
     @mouseup="endDrag"
     ref="scrollContainer"
   >
+    <!-- Loading screen while items are being fetched -->
     <div
+      v-show="!productsList.length || productsList.length < 1"
+      class="waiting-screen-local"
+    >
+      <div class="loader"></div>
+    </div>
+    <div
+      v-show="productsList.length"
       v-for="product in productsList"
       :key="product.GID"
       class="new-arrivals__items-item w-[272px] flex-shrink-0 pl-4"
