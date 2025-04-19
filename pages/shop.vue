@@ -2,36 +2,50 @@
   <div>
     <div
       class="shop__modal__overlay"
-      @click="closeModalsMobile"
+      @click="closeModalsMobile()"
       :class="{ active: isOverlayActive }"
     ></div>
 
-    <div v-if="isFetching" class="waiting-screen">
+    <!-- Loading screen while items are being fetched -->
+    <div v-show="isFetching || initialLoading" class="waiting-screen">
       <div class="loader"></div>
     </div>
 
-    <div v-show="isSortingShownMobile" class="sorting__modal__container">
+    <div
+      v-if="isHydrated"
+      v-show="isSortingShownMobile"
+      class="sorting__modal__container"
+    >
       <div class="sorting__modal">
-        <div class="sorting__modal__title">Sorting options:</div>
+        <div class="sorting__modal__title">Sorting options</div>
         <ul class="sorting__modal__options">
-          <div
+          <li
             v-for="(option, index) in sortingOptions"
             :key="option.name"
             @click="setSortingOption(index)"
             class="sorting__modal__option"
             :class="{
-              highlighted: index === Number(shopSortingOption),
+              checked: index === Number(shopSortingOption),
             }"
           >
-            213S
-          </div>
+            <div class="modal__option__text">
+              {{ option.name }}
+            </div>
+            <div
+              class="modal__option__checkbox"
+              :class="{ checked: index === Number(shopSortingOption) }"
+            ></div>
+          </li>
         </ul>
+        <button @click="closeModalsMobile()" class="modal__close-button">
+          Close
+        </button>
       </div>
     </div>
 
     <Breadcrumbs_component />
 
-    <div class="shop-gallery">
+    <div v-show="isHydrated" class="shop-gallery">
       <!-- Filters -->
       <div class="shop__filters__container">
         <div class="shop__filters" :class="{ opened: areFiltersShownMobile }">
@@ -270,7 +284,7 @@
           <div class="products__title-sorting">
             <div class="title-sorting__text">Sort by:</div>
             <div
-              v-if="isHydrated"
+              v-show="isHydrated"
               class="title-sorting__parameter__container"
               @click="toggleSortingDropdown()"
             >
@@ -400,7 +414,14 @@ const router = useRouter();
 // Hydration mismatch guard
 const isHydrated = ref(false);
 
+useHead({
+  bodyAttrs: {
+    class: 'no-scroll',
+  },
+});
+
 onMounted(() => {
+  initialLoading.value = false;
   initializeFiltersFromURL();
   getProducts();
 
@@ -457,10 +478,10 @@ async function updateFilters({ key, values }) {
     if (filters.value[key].length > 0) {
       newQuery[key] = JSON.stringify(filters.value[key]);
     }
-
-    query.value = newQuery;
-    router.push({ query: query.value });
   }
+
+  query.value = newQuery;
+  router.push({ query: query.value });
 }
 
 // REVIEW START
@@ -479,6 +500,7 @@ const products = ref([]);
 const filteredProducts = ref([]);
 const combinedQuantity = ref({});
 const isFetching = ref(false);
+const initialLoading = ref(true);
 const currencyMultiplier = 1;
 
 async function getAllProducts() {
@@ -609,16 +631,13 @@ watch(
 );
 
 // Loading screen while items are being fetched
-watch(
-  () => isFetching.value,
-  (newVal) => {
-    if (newVal) {
-      document.body.classList.add('no-scroll');
-    } else {
-      document.body.classList.remove('no-scroll');
-    }
+watchEffect(() => {
+  if (isFetching.value || initialLoading.value) {
+    document?.body.classList.add('no-scroll');
+  } else {
+    document?.body.classList.remove('no-scroll');
   }
-);
+});
 
 // Add available combination numbers to the filters
 
@@ -747,7 +766,7 @@ function sortProducts(products, sortingOption) {
 
 // Products pagination
 const currentProductPage = ref(1);
-const productsPerPage = 9;
+const productsPerPage = 12;
 const visibleProductsStart = computed(() => {
   return productsPerPage * currentProductPage.value + 1 - productsPerPage;
 });
@@ -770,12 +789,27 @@ const totalProductPages = computed(() =>
 function previousProductPage() {
   if (currentProductPage.value == 1) return;
   currentProductPage.value--;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function nextProductPage() {
   if (currentProductPage.value == totalProductPages.value) return;
   currentProductPage.value++;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// Avoid empty pages when filters are activated or deactivated
+function checkPageExistence() {
+  if (currentProductPage.value > totalProductPages.value) {
+    currentProductPage.value = totalProductPages.value;
+  } else if (currentProductPage.value < 1) {
+    currentProductPage.value = 1;
+  }
+}
+
+watch(filteredProducts, () => {
+  checkPageExistence();
+});
 
 function goToItem(itemId) {
   if (!itemId) return;

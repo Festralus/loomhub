@@ -18,6 +18,8 @@
   --btn-secondary-bg-hover-color: ;
   --btn-secondary-bg-hover-shadow: ;
   --btn-secondary-bg-active-color: ;
+
+  --active-action-secondary: #007bff;
 }
 
 .website {
@@ -113,3 +115,54 @@ body::-webkit-scrollbar {
   display: block;
 }
 /* Scrollbar ends */
+/* Waiting screen while items are being fetched */
+.waiting-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.01);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  backdrop-filter: blur(3px);
+  transition: opacity 0.3s ease;
+  pointer-events: all;
+}
+.waiting-screen-local {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  justify-content: center;
+
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(3px);
+
+  z-index: 999;
+  pointer-events: all;
+  transition: opacity 0.3s ease;
+}
+.loader {
+  width: 60px;
+  height: 60px;
+  border: 5px solid rgba(133, 133, 133, 0.3);
+  border-top: 5px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+body.no-scroll {
+  overflow: hidden;
+}

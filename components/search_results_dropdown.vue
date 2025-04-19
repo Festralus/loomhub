@@ -1,5 +1,10 @@
 <template>
-  <div class="search-results">
+  <div class="search-results min-h-[70px]">
+    <!-- Loading screen while items are being fetched -->
+    <div v-show="isFetching" class="waiting-screen-local mt-1">
+      <div class="loader"></div>
+    </div>
+
     <div
       v-if="searchResults"
       v-for="(item, i) in searchResults"
@@ -39,6 +44,9 @@ import { useRouter } from 'vue-router';
 defineProps({
   searchResults: {
     type: Array,
+  },
+  isFetching: {
+    type: Boolean,
   },
 });
 
