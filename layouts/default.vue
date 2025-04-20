@@ -276,6 +276,7 @@
         <div v-if="nickname">
           <div class="Auth__user-nickname">{{ nickname }}</div>
           <img
+            @click="openInDev('Change profile picture')"
             :src="`${profilePicUrl}`"
             v-show="profilePicUrl"
             class="Auth__user-avatar"
@@ -290,18 +291,22 @@
         <form v-if="authLoginActive && !nickname" class="Auth__Login">
           <input
             class="Auth-input Auth__login-input"
+            :class="!nicknameLoginError ? 'mb-3' : ''"
             type="text"
             placeholder="Nickname"
             autocomplete="nickname"
             v-model="loginName"
           />
+          <div class="error-message">{{ nicknameLoginError }}</div>
           <input
             class="Auth-input Auth__password-input"
+            :class="!passwordLoginError ? 'mb-4' : ''"
             type="password"
             placeholder="Password"
             autocomplete="password"
             v-model="loginPassword"
           />
+          <div class="error-message">{{ passwordLoginError }}</div>
           <button
             class="Auth__popup-btn mx-auto block cursor-pointer select-none"
             @click.prevent="submitLoginForm"
@@ -315,19 +320,25 @@
         >
           <input
             class="Auth-input Auth__login-input"
+            :class="!nicknameRegError ? 'mb-3' : ''"
             type="text"
             placeholder="Nickname"
             autocomplete="nickname"
             v-model="regName"
-            @keyup="checkNicknameAvailability"
           />
+          <div class="error-message">{{ nicknameRegError }}</div>
           <input
             class="Auth-input Auth__password-input"
+            :class="!passwordRegError ? 'mb-4' : ''"
             type="password"
             placeholder="Password"
             autocomplete="password"
             v-model="regPassword"
           />
+          <div class="error-message">{{ passwordRegError }}</div>
+          <div class="success-message" v-if="isRegistrationSuccessful">
+            ✅ Registration is successful! Logging in...
+          </div>
           <button
             class="Auth__popup-btn mx-auto cursor-pointer select-none"
             @click.prevent="submitRegistrationForm"
@@ -701,25 +712,78 @@ function AuthStepBack() {
 const regName = ref('');
 const regPassword = ref('');
 async function submitRegistrationForm() {
+  isRegistrationSuccessful.value = false;
+  nicknameRegError.value = validateNickname(regName.value);
+  passwordRegError.value = validatePassword(regPassword.value);
+
+  if (nicknameRegError.value || passwordRegError.value) {
+    return;
+  }
+
+  const res = await api.post('/api/nicknameAvailability', {
+    nickname: regName.value,
+  });
+  if (!res.data.available) {
+    nicknameRegError.value = 'This nickname is already taken';
+    return;
+  } else {
+    nicknameRegError.value = '';
+  }
+
   try {
     await api.post('/api/registration', {
       nickname: regName.value,
       password: regPassword.value,
     });
+
+    isRegistrationSuccessful.value = true;
+
+    loginName.value = regName.value;
+    loginPassword.value = regPassword.value;
+
+    regName.value = '';
+    regPassword.value = '';
+
+    setTimeout(() => {
+      authRegistrationActive.value = false;
+      authGreetingsActive.value = true;
+      isRegistrationSuccessful.value = false;
+      nextTick(() => {
+        submitLoginForm();
+      });
+    }, 2000);
   } catch (err) {
-    console.error(err);
+    const msg = err?.response?.data?.message;
+    if (msg?.includes('Nickname')) {
+      nicknameRegError.value = msg;
+    } else if (msg?.includes('Password')) {
+      passwordRegError.value = msg;
+    } else {
+      console.error(err);
+    }
   }
 }
 
-async function checkNicknameAvailability() {
-  try {
-    const response = await api.post('/api/nicknameAvailability', {
-      nickname: regName.value,
-    });
-    // console.log(response);
-  } catch (err) {
-    console.error(err);
-  }
+// Registration error messages
+const nicknameRegError = ref('');
+const passwordRegError = ref('');
+const isRegistrationSuccessful = ref(false);
+
+function validateNickname(nickname) {
+  if (nickname.length < 5) return 'Nickname is too short (min 5 characters)';
+  if (nickname.length > 20) return 'Nickname is too long (max 20 characters)';
+  if (!/^[a-zA-Z0-9_]+$/.test(nickname))
+    return 'Only english letters, numbers and underscores are allowed';
+
+  return null;
+}
+
+function validatePassword(password) {
+  if (password.length < 5) return 'Password is too short (min 5 characters)';
+  if (password.length > 20) return 'Password is too long (max 20 characters)';
+  if (!/^[a-zA-Z0-9]+$/.test(password))
+    return 'Only english letters and numbers are allowed';
+  return null;
 }
 
 // Login and Session
@@ -727,21 +791,37 @@ const loginName = ref('Guppi');
 const loginPassword = ref('123123');
 const getSession = useAuthStore().getSession;
 async function submitLoginForm() {
+  nicknameLoginError.value = validateNickname(loginName.value);
+  passwordLoginError.value = validatePassword(loginPassword.value);
+
+  if (nicknameLoginError.value || passwordLoginError.value) {
+    return;
+  }
+
   try {
     const response = await api.post('/api/login', {
       nickname: loginName.value,
       password: loginPassword.value,
     });
+
     const { token } = response.data;
     Cookies.set('token', token, { expires: 1 });
 
-    // console.log(`You are: ${response.data.user}. Your token is: ${token}`);
-
     await getSession();
   } catch (err) {
-    console.error(err);
+    const msg = err?.response?.data?.message;
+    if (msg?.includes('credentials')) {
+      nicknameLoginError.value = '';
+      passwordLoginError.value = 'Invalid nickname or password';
+    } else {
+      console.error(err);
+    }
   }
 }
+
+// Login error messages
+const nicknameLoginError = ref('');
+const passwordLoginError = ref('');
 
 // Log out function
 function logMeOut() {

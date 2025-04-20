@@ -295,7 +295,6 @@
   width: 100%;
   display: block;
   background-color: #f0f0f0;
-  margin: auto auto 14px auto;
   border-radius: 16px;
   padding: 8px 20px;
 }
@@ -329,4 +328,22 @@
 
 .animate-shine {
   animation: shine 0.5s ease-out forwards;
+}
+
+/* Login and Registration errors */
+.error-message {
+  font-family: 'Satoshi-Bold';
+  font-size: 14px;
+  line-height: 28px;
+  color: red;
+  padding-left: 14px;
+  margin-bottom: 4px;
+}
+.success-message {
+  font-family: 'Satoshi-Bold';
+  font-size: 14px;
+  line-height: 28px;
+  color: rgb(0, 162, 0);
+  padding-left: 14px;
+  margin-bottom: 6px;
 }
