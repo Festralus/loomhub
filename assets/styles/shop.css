@@ -78,7 +78,7 @@
     display: flex;
     margin: 20px auto;
     justify-content: center;
-    border: 1px solid rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--border-default-color);
     border-radius: 20px;
     padding: 6px 10px;
     max-width: 140px;
@@ -133,7 +133,7 @@
     padding: 4px 10px;
   }
   .sorting__modal__option.checked {
-    border: 1px solid rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--border-default-color);
   }
   .modal__option__checkbox {
     display: flex;
@@ -168,7 +168,7 @@
   }
   .modal__close-button {
     display: block;
-    border: 1px solid rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--border-default-color);
     border-radius: 16px;
     padding: 8px 20px;
     margin: 20px auto auto auto;
@@ -293,7 +293,7 @@
 }
 
 .filters__reset-button {
-  border: 1px solid rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--border-default-color);
   border-radius: 20px;
   display: flex;
   justify-content: center;
@@ -315,13 +315,13 @@
 }
 .products__title__count {
   font-family: 'Satoshi-Regular';
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--border-default-color);
 }
 .products__title-sorting {
   font-family: 'Satoshi-Regular';
 }
 .title-sorting__text {
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--border-default-color);
 }
 .title-sorting__parameter__container {
   width: 150px;

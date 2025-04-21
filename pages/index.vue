@@ -21,7 +21,7 @@
         <NuxtLink
           @click="setSortingOption(0)"
           to="/shop"
-          class="home-description__button SatoshiRegular mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] select-none items-center justify-center rounded-3xl bg-black text-base text-white"
+          class="home-description__button SatoshiRegular mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] select-none items-center justify-center rounded-3xl bg-black text-base text-white hover:[background-color:var(--btn-primary-bg-hover)] active:[background-color:var(--btn-primary-bg-active)]"
         >
           Shop Now
         </NuxtLink>
@@ -31,7 +31,7 @@
           <li
             class="home-description__stat home-description__stats-brands SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
-            <span class="SatoshiBold home-description__stat-value text-2xl"
+            <span class="satoshiBold home-description__stat-value text-2xl"
               >200+</span
             >
             <br class="home-description__stat-label" />International Brands
@@ -39,7 +39,7 @@
           <li
             class="home-description__stat home-description__stats-products SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
-            <span class="SatoshiBold home-description__stat-value text-2xl"
+            <span class="satoshiBold home-description__stat-value text-2xl"
               >2,000+</span
             >
             <br class="home-description__stat-label" />High-Quality Products
@@ -47,7 +47,7 @@
           <li
             class="home-description__stat home-description__stats-customers SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
-            <span class="SatoshiBold home-description__stat-value text-2xl"
+            <span class="satoshiBold home-description__stat-value text-2xl"
               >30,000+</span
             ><br class="home-description__stat-label" />
             Happy Customers
@@ -82,66 +82,16 @@
     </section>
 
     <!-- Possible to refactor this section via v-for and brands import from data folder -->
-    <section
-      class="popular-brands flex w-full flex-row flex-wrap justify-evenly overflow-hidden bg-black pb-3 pt-5"
-    >
+    <section class="brands__menu mt-4 flex flex-wrap bg-black xl:mt-0">
       <NuxtLink
-        :to="{
-          path: '/shop',
-          query: {
-            brand: JSON.stringify(['Versace']),
-          },
-        }"
-        class="popular-brands__brand mx-3 my-2"
+        v-for="brand in ['Prada', 'Zara', 'Gucci', 'Versace', 'Calvin Klein']"
+        :key="brand"
+        :to="{ path: '/shop', query: { brand: JSON.stringify([brand]) } }"
+        class="brands__brand flex h-[10vw] flex-1 basis-1/3 items-center justify-center bg-white"
       >
-        <VersaceIcon class="h-full w-full" />
-      </NuxtLink>
-      <NuxtLink
-        :to="{
-          path: '/shop',
-          query: {
-            brand: JSON.stringify(['Zara']),
-          },
-        }"
-        class="popular-brands__brand mx-3 my-2"
-      >
-        <ZaraIcon class="h-full w-full" />
-      </NuxtLink>
-      <NuxtLink
-        :to="{
-          path: '/shop',
-          query: {
-            brand: JSON.stringify(['Gucci']),
-          },
-        }"
-        class="popular-brands__brand mx-3 my-2"
-      >
-        <GucciIcon class="h-full w-full" />
-      </NuxtLink>
-      <NuxtLink
-        :to="{
-          path: '/shop',
-          query: {
-            brand: JSON.stringify(['Prada']),
-          },
-        }"
-        class="popular-brands__brand mx-3 my-2"
-      >
-        <PradaIcon class="h-full w-full" />
-      </NuxtLink>
-      <NuxtLink
-        :to="{
-          path: '/shop',
-          query: {
-            brand: JSON.stringify(['Calvin Klein']),
-          },
-        }"
-        class="popular-brands__brand mx-3 my-2"
-      >
-        <CalvinKleinIcon class="h-full w-full" />
+        <component :is="brandList[brand]" class="h-[8vw] w-[80%]" />
       </NuxtLink>
     </section>
-
     <section class="new-arrivals">
       <h3
         class="new-arrivals__title IntergralExtraBold mb-6 mt-9 text-center text-[32px] leading-none"
@@ -157,7 +107,7 @@
       <NuxtLink
         @click="setSortingOption(1)"
         :to="'/shop'"
-        class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] cursor-pointer select-none justify-center rounded-[62px] py-3 text-base"
+        class="new-arrivals__button view-all__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] cursor-pointer select-none justify-center rounded-[62px] py-3 text-base"
       >
         View All
       </NuxtLink>
@@ -180,7 +130,7 @@
       <NuxtLink
         @click="setSortingOption(0)"
         :to="'/shop'"
-        class="top-selling__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] cursor-pointer select-none justify-center rounded-[62px] py-3 text-base"
+        class="top-selling__button view-all__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] cursor-pointer select-none justify-center rounded-[62px] py-3 text-base"
       >
         View All
       </NuxtLink>
@@ -305,7 +255,7 @@
         <!-- Loading screen while items are being fetched -->
         <div
           v-show="!websiteReviewsArray.length"
-          class="waiting-screen-local mt-1"
+          class="waiting-screen-local mt-1 rounded-xl"
         >
           <div class="loader"></div>
         </div>
@@ -449,6 +399,14 @@ function debounce(fn, delay) {
 const debouncedHandleScroll = debounce(handleScroll, 30);
 
 // Review ends
+
+const brandList = {
+  Versace: VersaceIcon,
+  Zara: ZaraIcon,
+  Gucci: GucciIcon,
+  Prada: PradaIcon,
+  'Calvin Klein': CalvinKleinIcon,
+};
 </script>
 <style scoped>
 @import '/assets/styles/style.css';

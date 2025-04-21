@@ -1,7 +1,10 @@
 <template>
   <div class="search-results min-h-[70px]">
     <!-- Loading screen while items are being fetched -->
-    <div v-show="isFetching" class="waiting-screen-local mt-1">
+    <div
+      v-show="isFetching"
+      class="waiting-screen-local mt-1 rounded-b-[1rem] rounded-t-none"
+    >
       <div class="loader"></div>
     </div>
 

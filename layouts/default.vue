@@ -68,7 +68,7 @@
       </div>
       <NuxtLink
         to="/"
-        class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none sm:ml-[20px] sm:block md:ml-[8%] 2xl:ml-[6%] 2xl:text-3xl"
+        class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none sm:ml-[20px] sm:block md:ml-[1%] 2xl:ml-[6%] 2xl:text-3xl"
         :class="isMobileSearchActive ? 'hidden' : ''"
       >
         LOOM.HUB
@@ -84,7 +84,7 @@
           :class="{ 'z-[140]': isShopHovered || isShopClicked }"
           class="top-menu__nav-item top-menu__nav-item__shop relative hidden h-16 cursor-pointer flex-row sm:flex"
         >
-          <div class="top-menu__nav-item__shop-text">Shop</div>
+          <div class="top-menu__nav-item__shop-text select-none">Shop</div>
           <PointerIcon
             class="top-menu__nav-item__shop-arrow mt-[2px] h-6 pl-[3px] sm:w-[14px]"
           />
@@ -184,15 +184,17 @@
         </div>
       </div>
       <div
-        class="top-menu__actions mr-4 flex w-[30%] flex-shrink-0 flex-row justify-end sm:w-auto xl:mr-6 xl:w-[10%]"
+        class="top-menu__actions mr-[1px] flex w-[30%] flex-shrink-0 flex-row items-center justify-end sm:w-auto xl:mr-6 xl:w-[10%]"
         :class="{ 'z-[140]': searchQuery }"
       >
-        <SearchIconBlack
-          class="top-menu__search-icon lg:hidden"
-          :class="isMobileSearchActive ? 'hidden' : ''"
-          aria-label="Search"
-          @click="openMobileSearch"
-        />
+        <div class="px-4">
+          <SearchIconBlack
+            class="top-menu__search-icon lg:hidden"
+            :class="isMobileSearchActive ? 'hidden' : ''"
+            aria-label="Search"
+            @click="openMobileSearch()"
+          />
+        </div>
         <div
           class="mobile-search__container hidden sm:max-w-[64%]"
           :class="{
@@ -229,68 +231,66 @@
             ></Search_results_dropdown>
           </div>
         </div>
-        <!-- <NuxtLink
-          to="/cart"
-          class="top-menu__actions-cart ml-[14px] lg:block"
-          :class="isMobileSearchActive ? 'hidden' : ''"
-          ><CartIcon></CartIcon
-        ></NuxtLink> -->
-        <div
-          class="top-menu__actions-cart ml-[14px] cursor-pointer lg:block"
+        <button
+          class="top-menu__actions-cart top-menu__actions__button flex cursor-pointer justify-center px-4"
           :class="isMobileSearchActive ? 'hidden' : ''"
           @click="openInDev('Cart')"
         >
-          <CartIcon></CartIcon>
-        </div>
-        <ProfileIcon
-          class="top-menu__actions-profile ml-[14px] cursor-pointer lg:block"
-          :class="isMobileSearchActive ? 'hidden' : ''"
-          @click="openAuthPopup"
-        ></ProfileIcon>
+          <CartIcon class="h-16"></CartIcon>
+        </button>
+        <button
+          class="top-menu__actions-profile top-menu__actions__button flex cursor-pointer justify-center px-4"
+        >
+          <ProfileIcon
+            class="h-16"
+            :class="isMobileSearchActive ? 'hidden' : ''"
+            @click="openAuthPopup"
+          ></ProfileIcon>
+        </button>
       </div>
       <!-- Modal -->
       <div
         v-show="authPopupActive"
-        class="Auth__popup fixed left-[50%] top-[50%] z-[140] w-[90vw] max-w-[500px] -translate-x-[50%] -translate-y-[50%] rounded-3xl bg-white pb-5 pl-3 pr-3 pt-12 sm:w-[80vw] sm:pb-8 sm:pl-10 sm:pr-10 sm:pt-12 lg:w-[70vw]"
+        class="auth__popup fixed left-[50%] top-[50%] z-[140] w-[90vw] max-w-[500px] -translate-x-[50%] -translate-y-[50%] rounded-3xl bg-white pb-5 pl-3 pr-3 pt-12 sm:w-[80vw] sm:pb-8 sm:pl-10 sm:pr-10 sm:pt-12 lg:w-[70vw]"
       >
         <div
-          class="Step-back__arrow-container cursor-pointer"
+          class="step-back__arrow-container cursor-pointer"
           @click="AuthStepBack"
         >
-          <ArrowIcon class="Step-back__arrow"></ArrowIcon>
+          <ArrowIcon class="step-back__arrow"></ArrowIcon>
         </div>
-        <div v-if="authGreetingsActive && !nickname" class="Auth__Greetings">
+        <div v-if="authGreetingsActive && !nickname" class="auth__greetings">
           <div
-            class="Auth__popup-btn Login-button cursor-pointer select-none"
+            class="auth__popup-btn Login-button cursor-pointer select-none"
             @click="openAuthLogin"
           >
             Login
           </div>
           <div
-            class="Auth__popup-btn Registration-button cursor-pointer select-none"
+            class="auth__popup-btn registration-button cursor-pointer select-none"
             @click="openAuthRegistration"
           >
             Sign up
           </div>
         </div>
         <div v-if="nickname">
-          <div class="Auth__user-nickname">{{ nickname }}</div>
+          <div class="auth__user-nickname">{{ nickname }}</div>
           <img
             @click="openInDev('Change profile picture')"
             :src="`${profilePicUrl}`"
             v-show="profilePicUrl"
-            class="Auth__user-avatar"
+            class="auth__user-avatar"
           />
           <div
-            class="End-session__button Auth__popup-btn cursor-pointer select-none"
+            class="end-session__button auth__popup-btn cursor-pointer select-none"
             @click="logMeOut"
           >
             Log out
           </div>
         </div>
-        <form v-if="authLoginActive && !nickname" class="Auth__Login">
+        <form v-if="authLoginActive && !nickname" class="auth__Login">
           <input
-            class="Auth-input Auth__login-input"
+            class="auth-input auth__login-input"
             :class="!nicknameLoginError ? 'mb-3' : ''"
             type="text"
             placeholder="Nickname"
@@ -299,7 +299,7 @@
           />
           <div class="error-message">{{ nicknameLoginError }}</div>
           <input
-            class="Auth-input Auth__password-input"
+            class="auth-input auth__password-input"
             :class="!passwordLoginError ? 'mb-4' : ''"
             type="password"
             placeholder="Password"
@@ -308,18 +308,18 @@
           />
           <div class="error-message">{{ passwordLoginError }}</div>
           <button
-            class="Auth__popup-btn mx-auto block cursor-pointer select-none"
+            class="auth__popup-btn mx-auto block cursor-pointer select-none"
             @click.prevent="submitLoginForm"
           >
             Login
           </button>
         </form>
         <form
-          class="Auth__Registration"
+          class="auth__registration"
           v-if="authRegistrationActive && !nickname"
         >
           <input
-            class="Auth-input Auth__login-input"
+            class="auth-input auth__login-input"
             :class="!nicknameRegError ? 'mb-3' : ''"
             type="text"
             placeholder="Nickname"
@@ -328,7 +328,7 @@
           />
           <div class="error-message">{{ nicknameRegError }}</div>
           <input
-            class="Auth-input Auth__password-input"
+            class="auth-input auth__password-input"
             :class="!passwordRegError ? 'mb-4' : ''"
             type="password"
             placeholder="Password"
@@ -340,7 +340,7 @@
             ✅ Registration is successful! Logging in...
           </div>
           <button
-            class="Auth__popup-btn mx-auto cursor-pointer select-none"
+            class="auth__popup-btn mx-auto cursor-pointer select-none"
             @click.prevent="submitRegistrationForm"
           >
             Register

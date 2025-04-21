@@ -9,7 +9,7 @@
     <!-- Loading screen while items are being fetched -->
     <div
       v-show="!productsList.length || productsList.length < 1"
-      class="waiting-screen-local"
+      class="waiting-screen-local rounded-xl"
     >
       <div class="loader"></div>
     </div>
@@ -17,7 +17,7 @@
       v-show="productsList.length"
       v-for="product in productsList"
       :key="product.GID"
-      class="new-arrivals__items-item w-[272px] flex-shrink-0 pl-4"
+      class="new-arrivals__items-item w-[272px] flex-shrink-0 pl-2 pr-2"
       @click="goToItem(product.GID)"
     >
       <img
@@ -35,7 +35,7 @@
         <span>${{ product.price }}</span>
         <span
           v-if="product.oldPrice > 0"
-          class="SatoshiBold ml-2 text-gray-500 line-through"
+          class="satoshiBold ml-2 text-gray-500 line-through"
           >${{ product.oldPrice }}</span
         >
         <span
@@ -45,7 +45,7 @@
             product.oldPrice !== null &&
             product.oldPrice !== undefined
           "
-          class="SatoshiLight ml-2 rounded-[62px] bg-[rgba(255,51,51,0.1)] px-2 py-1 text-sm text-[#FF3333]"
+          class="satoshiLight ml-2 rounded-[62px] bg-[rgba(255,51,51,0.1)] px-2 py-1 text-sm text-[#FF3333]"
           >-{{ product.discount }}%</span
         >
       </div>
@@ -180,6 +180,14 @@ async function getSliderProducts() {
   scroll-snap-align: start;
   padding-top: 20px;
   padding-bottom: 20px;
+}
+.new-arrivals__items-item:hover {
+  background-color: var(--btn-secondary-bg-hover);
+  border-radius: 20px;
+}
+.new-arrivals__items-item:active {
+  background-color: var(--btn-secondary-bg-active);
+  border-radius: 20px;
 }
 .new-arrivals__items-item:last-child {
   padding-right: 16px;

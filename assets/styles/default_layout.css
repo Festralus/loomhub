@@ -107,6 +107,14 @@
 .top-menu {
   border-bottom: solid 1px rgba(0, 0, 0, 0.1);
 }
+.top-menu__actions__button {
+  margin: 0 1px;
+}
+.top-menu__actions__button:hover {
+  border-left: 1px solid var(--border-thin-color);
+  border-right: 1px solid var(--border-thin-color);
+  margin: 0;
+}
 
 /* Burger menu block */
 .BurgerMenu__dropdown {
@@ -175,6 +183,12 @@
   align-items: center;
   height: 64px;
   padding: 0px 10px;
+}
+.top-menu__nav-item:not(:first-child):hover {
+  background-color: var(--btn-secondary-bg-hover);
+}
+.top-menu__nav-item:not(:first-child):active {
+  background-color: var(--btn-secondary-bg-active);
 }
 
 /* Shop hovered Dropdown */
@@ -248,7 +262,7 @@
   border-radius: 0 0 1rem 1rem;
 }
 
-.Step-back__arrow-container {
+.step-back__arrow-container {
   width: 48px;
   height: 48px;
   position: absolute;
@@ -257,19 +271,19 @@
   border-radius: 0 0 2rem 0;
   transform: rotate(180deg);
 }
-.Step-back__arrow {
+.step-back__arrow {
   position: absolute;
   right: 16px;
   bottom: 20px;
 }
-.Auth__Greetings {
+.auth__greetings {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   gap: 30px;
 }
-.Auth__popup-btn {
+.auth__popup-btn {
   display: block;
   background-color: black;
   color: white;
@@ -280,18 +294,18 @@
   padding: 10px 30px;
   border-radius: 1rem;
 }
-.Auth__user-nickname {
+.auth__user-nickname {
   text-align: center;
   font-family: 'Satoshi-Bold';
   font-size: 40px;
   margin-bottom: 20px;
 }
-.Auth__user-avatar {
+.auth__user-avatar {
   width: 200px;
   border-radius: 50%;
   margin: 0 auto 30px auto;
 }
-.Auth-input {
+.auth-input {
   width: 100%;
   display: block;
   background-color: #f0f0f0;
@@ -314,7 +328,7 @@
   display: block;
   margin-top: 12px;
   font-family: 'Satoshi-Regular';
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--border-default-color);
 }
 
 @keyframes shine {

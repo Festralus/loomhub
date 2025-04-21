@@ -22,7 +22,7 @@
           <li
             v-for="(option, index) in sortingOptions"
             :key="option.name"
-            @click="setSortingOption(index)"
+            @click="(setSortingOption(index), closeModalsMobile())"
             class="sorting__modal__option"
             :class="{
               checked: index === Number(shopSortingOption),

@@ -161,7 +161,7 @@ async function setBreadcrumbs() {
 
   font-family: 'Satoshi-Regular';
   font-size: 16px;
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--border-default-color);
 }
 .path__breadcrumb {
   display: flex;
