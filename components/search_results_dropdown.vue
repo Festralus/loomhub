@@ -8,19 +8,13 @@
       <div class="loader"></div>
     </div>
 
-    <div
-      v-if="searchResults"
+    <!-- <div vshow="searachResults?.length"> -->
+    <NuxtLink
+      :to="`/item/${item.GID}`"
+      @click="goToItem(item.GID)"
       v-for="(item, i) in searchResults"
       :key="i"
       class="result flex h-14 cursor-pointer select-none overflow-hidden rounded-lg"
-      :class="{
-        'bg-slate-200': hoveredIndex !== null && hoveredIndex == i,
-        'bg-gray-100': hoveredIndex === null || hoveredIndex != i,
-        'bg-transparent': !item.description && !item.images,
-      }"
-      @click="goToItem(item.GID)"
-      @mouseover="hoveredIndex = i"
-      @mouseleave="hoveredIndex = null"
     >
       <img
         v-if="item?.images?.[0]"
@@ -38,7 +32,8 @@
         </div>
         <div class="result__description">{{ item?.description }}</div>
       </div>
-    </div>
+    </NuxtLink>
+    <!-- </div> -->
   </div>
 </template>
 <script setup>
@@ -71,14 +66,19 @@ const hoveredIndex = ref(null);
   display: flex;
   align-items: center;
   gap: 10px;
-  /* padding-left: 10px; */
+  padding-right: 4px;
+}
+.result:hover {
+  background-color: var(--btn-secondary-bg-default);
+}
+.result:active {
+  background-color: var(--btn-secondary-bg-active);
 }
 .result_image {
   margin-left: 10px;
 
   width: 56px;
   height: 56px;
-  border-radius: 20px;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -89,9 +89,9 @@ const hoveredIndex = ref(null);
 .result__name {
   font-family: 'Satoshi-Bold';
   font-size: 16px;
-  /* overflow: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap; */
+  white-space: nowrap;
 }
 .result__description {
   min-width: 0;

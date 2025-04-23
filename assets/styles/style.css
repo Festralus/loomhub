@@ -53,6 +53,7 @@
   height: 52px;
   width: 160px;
   position: relative;
+  text-align: center;
 }
 
 .popular-brands__brand {
@@ -90,6 +91,8 @@
   display: flex;
   flex-wrap: nowrap;
   width: max-content;
+
+  padding-bottom: 4px;
 }
 
 .reviews__card {
@@ -105,8 +108,6 @@
   width: 90%;
   max-height: 289px;
   overflow: hidden;
-
-  transition: all 100ms ease-in-out;
 }
 .style-masonry__tile:hover {
   filter: drop-shadow(0 0 10px var(--btn-primary-bg-hover));
@@ -128,7 +129,7 @@
 }
 
 .brands__brand:hover {
-  background-color: var(--btn-primary-bg-hover) !important;
+  background-color: var(--btn-primary-bg-hover);
 }
 .brands__brand:active {
   background-color: var(--btn-primary-bg-active);

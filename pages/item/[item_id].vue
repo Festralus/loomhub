@@ -202,7 +202,10 @@
                 >
               </div>
               <div class="reviews-menu__management">
-                <div class="reviews-menu__sorting">
+                <div
+                  v-if="totalReviewsCount.length > 1"
+                  class="reviews-menu__sorting"
+                >
                   <div
                     class="sorting__dropdown-menu"
                     @click="toggleSortingList()"
@@ -262,6 +265,13 @@
             </div>
           </div>
 
+          <!-- Block to show when there are no reviews -->
+          <div class="no-reviews-available__container">
+            <div class="no-reviews__text">
+              Nobody has reviewed this item yet
+            </div>
+          </div>
+
           <!-- Review cards masonry -->
           <div class="reviews__list">
             <div
@@ -310,6 +320,8 @@
               </div>
             </div>
           </div>
+
+          <!-- Reviews pagination -->
           <div v-show="totalReviewPages > 0" class="reviews__pages">
             <ArrowIcon
               v-show="currentReviewPage !== 1"

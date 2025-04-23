@@ -169,3 +169,7 @@ body::-webkit-scrollbar {
 body.no-scroll {
   overflow: hidden;
 }
+
+.cursor-grabbing {
+  cursor: grabbing !important;
+}

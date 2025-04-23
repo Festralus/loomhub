@@ -82,12 +82,12 @@
     </section>
 
     <!-- Possible to refactor this section via v-for and brands import from data folder -->
-    <section class="brands__menu mt-4 flex flex-wrap bg-black xl:mt-0">
+    <section class="brands__menu mt-4 flex flex-wrap bg-transparent xl:mt-0">
       <NuxtLink
         v-for="brand in ['Prada', 'Zara', 'Gucci', 'Versace', 'Calvin Klein']"
         :key="brand"
         :to="{ path: '/shop', query: { brand: JSON.stringify([brand]) } }"
-        class="brands__brand flex h-[10vw] flex-1 basis-1/3 items-center justify-center bg-white"
+        class="brands__brand flex h-[10vw] flex-1 basis-1/3 items-center justify-center bg-black"
       >
         <component :is="brandList[brand]" class="h-[8vw] w-[80%]" />
       </NuxtLink>

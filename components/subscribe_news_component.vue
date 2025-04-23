@@ -13,14 +13,20 @@
     >
       <LetterIcon class="subscribe__input-icon ml-4 mr-3 bg-white"></LetterIcon>
       <input
-        class="subscribe__input SatoshiRegular w-[80%] bg-white text-sm placeholder-gray-400"
+        class="subscribe__input SatoshiRegular w-[80%] bg-white pl-[2px] text-sm placeholder-gray-400"
         placeholder="Enter your email address"
         ref="SubscriptionEmail"
       />
     </div>
     <div
-      class="subscribe__submit-button SatoshiRegular mx-auto mb-7 mt-3 h-[42px] w-[311px] select-none rounded-3xl bg-white text-center leading-[42px] text-black"
-      @click="openInDev('Newsletter')"
+      v-show="isLetterSent"
+      class="subscribe__thank-you-block text-center text-white"
+    >
+      Thank you! The letter has been sent.
+    </div>
+    <div
+      class="subscribe__submit-button SatoshiRegular mx-auto mb-7 mt-3 h-[42px] w-[311px] select-none rounded-3xl bg-white text-center leading-[42px] text-black hover:[background-color:var(--btn-secondary-bg-hover)] active:[background-color:var(--btn-secondary-bg-active)]"
+      @click="(sendLetter(), openInDev('Newsletter'))"
     >
       Subscribe to Newsletter
     </div>
@@ -41,6 +47,13 @@ const currentTarget = ref('');
 function openInDev(string) {
   currentTarget.value = string;
   showInDev.value = true;
+}
+
+const SubscriptionEmail = ref('');
+const isLetterSent = ref(false);
+
+function sendLetter() {
+  isLetterSent.value = true;
 }
 </script>
 <style scoped></style>

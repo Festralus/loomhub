@@ -44,6 +44,7 @@
   .reviews__card {
     width: calc(33% - 20px);
   }
+
   .top__section {
     display: flex;
     flex-direction: row;
@@ -63,6 +64,10 @@
   .reviews-menu__write-button {
     padding: 12px 28px;
     font-size: 18px;
+  }
+
+  .no-reviews__text {
+    font-size: 30px;
   }
 
   /* Gallery */
@@ -313,6 +318,11 @@
     object-fit: contain;
     max-height: 600px;
     border-radius: 50px;
+  }
+
+  /* Reviews tab */
+  .no-reviews__text {
+    font-size: 24px;
   }
 }
 
@@ -666,6 +676,20 @@
   height: 40px;
 
   cursor: pointer;
+}
+
+.no-reviews-available__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: auto;
+  max-width: 90vw;
+  min-height: 90px;
+}
+.no-reviews__text {
+  font-family: 'Integral-Bold';
+  color: var(--btn-primary-bg-active);
 }
 
 /* Details tab */

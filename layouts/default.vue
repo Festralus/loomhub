@@ -68,7 +68,7 @@
       </div>
       <NuxtLink
         to="/"
-        class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none sm:ml-[20px] sm:block md:ml-[1%] 2xl:ml-[6%] 2xl:text-3xl"
+        class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none text-black sm:ml-[20px] sm:block md:ml-[1%] 2xl:ml-[6%] 2xl:text-3xl"
         :class="isMobileSearchActive ? 'hidden' : ''"
       >
         LOOM.HUB
@@ -163,13 +163,12 @@
         <div class="top-menu__search-dropdown relative hidden w-full lg:block">
           <input
             type="text"
-            class="top-menu__search-input h-6 w-[99%] bg-[#F0F0F0]"
+            class="top-menu__search-input h-6 w-[99%] bg-[#F0F0F0] pl-[2px]"
             placeholder="Search for products..."
             aria-label="Search for products"
             ref="HomePageSearch"
             v-model="searchQuery"
             @input="performQuickSearch"
-            @change="performQuickSearch"
             @paste="performPasteQuickSearch"
             @focus="openDropdown"
           />
@@ -184,10 +183,10 @@
         </div>
       </div>
       <div
-        class="top-menu__actions mr-[1px] flex w-[30%] flex-shrink-0 flex-row items-center justify-end sm:w-auto xl:mr-6 xl:w-[10%]"
+        class="top-menu__actions flex h-16 flex-shrink-0 flex-row items-center justify-end sm:w-auto xl:mr-6 xl:w-[10%]"
         :class="{ 'z-[140]': searchQuery }"
       >
-        <div class="px-4">
+        <div class="px-2 md:px-4">
           <SearchIconBlack
             class="top-menu__search-icon lg:hidden"
             :class="isMobileSearchActive ? 'hidden' : ''"
@@ -212,7 +211,7 @@
           <div class="search-dropdown">
             <input
               type="text"
-              class="search-input"
+              class="search-input pl-[2px]"
               placeholder="Search for products..."
               aria-label="Search for products"
               ref="MobileSearchInput"
@@ -228,18 +227,19 @@
               v-show="searchQuery && !outsideClickOccurance"
               :query="searchQuery"
               :searchResults="searchResults"
+              :isFetching="isFetching"
             ></Search_results_dropdown>
           </div>
         </div>
         <button
-          class="top-menu__actions-cart top-menu__actions__button flex cursor-pointer justify-center px-4"
+          class="top-menu__actions-cart top-menu__actions__button flex cursor-pointer justify-center px-2 md:px-4"
           :class="isMobileSearchActive ? 'hidden' : ''"
           @click="openInDev('Cart')"
         >
           <CartIcon class="h-16"></CartIcon>
         </button>
         <button
-          class="top-menu__actions-profile top-menu__actions__button flex cursor-pointer justify-center px-4"
+          class="top-menu__actions-profile top-menu__actions__button flex cursor-pointer justify-center px-2 md:px-4"
         >
           <ProfileIcon
             class="h-16"
@@ -426,15 +426,6 @@
       >
         Loom.hub © 2024-2025, All rights reserved
       </div>
-      <div class="footer__payment-methods mt-4 flex justify-center gap-3">
-        <PaymentVisaIcon class="footer__payment_method"></PaymentVisaIcon>
-        <PaymentMastercardIcon
-          class="footer__payment_method"
-        ></PaymentMastercardIcon>
-        <PaymentPaypalIcon class="footer__payment_method"></PaymentPaypalIcon>
-        <PaymentAppleIcon class="footer__payment_method"></PaymentAppleIcon>
-        <PaymentGoogleIcon class="footer__payment_method"></PaymentGoogleIcon>
-      </div>
     </footer>
   </div>
 </template>
@@ -458,11 +449,6 @@ import PointerIcon from '../assets/icons/PointerIcon.vue';
 import ProfileIcon from '../assets/icons/ProfileIcon.vue';
 import SearchIconBlack from '../assets/icons/SearchIconBlack.vue';
 import SearchIconGray from '../assets/icons/SearchIconGray.vue';
-import PaymentAppleIcon from '../assets/icons/PaymentAppleIcon.vue';
-import PaymentGoogleIcon from '../assets/icons/PaymentGoogleIcon.vue';
-import PaymentMastercardIcon from '../assets/icons/PaymentMastercardIcon.vue';
-import PaymentPaypalIcon from '../assets/icons/PaymentPaypalIcon.vue';
-import PaymentVisaIcon from '../assets/icons/PaymentVisaIcon.vue';
 import ShareTwitterX from '../assets/icons/ShareTwitterXIcon.vue';
 import ShareFacebook from '../assets/icons/ShareFacebookIcon.vue';
 import ShareInstagram from '../assets/icons/ShareInstagramIcon.vue';
