@@ -45,7 +45,7 @@
 
     <Breadcrumbs_component />
 
-    <div v-show="isHydrated" class="shop-gallery">
+    <div v-if="isHydrated" class="shop-gallery">
       <!-- Filters -->
       <div class="shop__filters__container">
         <div class="shop__filters" :class="{ opened: areFiltersShownMobile }">
@@ -284,12 +284,12 @@
           <div class="products__title-sorting">
             <div class="title-sorting__text">Sort by:</div>
             <div
-              v-show="isHydrated"
+              v-if="isHydrated"
               class="title-sorting__parameter__container"
               @click="toggleSortingDropdown()"
             >
               <div class="title-sorting__parameter">
-                {{ sortingOptions[shopSortingOption].name }}
+                {{ sortingOptions?.[shopSortingOption]?.name }}
               </div>
               <PointerIcon
                 class="filters__title-icon"
@@ -301,9 +301,17 @@
                   :key="option.name"
                   @click="setSortingOption(index)"
                   class="sorting-option"
-                  :class="{
-                    highlighted: index === Number(shopSortingOption),
-                  }"
+                  :class="[
+                    {
+                      highlighted: index === Number(shopSortingOption),
+                    },
+                    hoveredSortingOption == index ? 'hovered' : '',
+                  ]"
+                  @mouseover="
+                    index == Number(shopSortingOption)
+                      ? (hoveredSortingOption = null)
+                      : (hoveredSortingOption = index)
+                  "
                 >
                   {{ option.name }}
                 </div>
@@ -324,13 +332,14 @@
           </div>
         </div>
         <div class="products__gallery">
-          <div
+          <RouterLink
+            :to="`/item/${item.GID}`"
             v-for="(item, index) in paginatedProducts"
             :key="index"
-            @click="goToItem(item.GID)"
             class="proucts__gallery__item"
+            draggable="false"
           >
-            <img class="item__image" :src="item.images[0]" />
+            <img class="item__image" :src="item.images[0]" draggable="false" />
             <div class="item__title">{{ item.name }}</div>
             <Product_rating_component
               class="item__stars"
@@ -344,7 +353,7 @@
                 >-{{ item.discountPercentage }}%</span
               >
             </div>
-          </div>
+          </RouterLink>
         </div>
         <div v-show="totalProductPages > 0" class="products__pagination">
           <div
@@ -446,6 +455,8 @@ watch(
 definePageMeta({
   useWebsitePadding: true,
 });
+
+const hoveredSortingOption = ref(null);
 
 // Updating filters and URL
 const query = {};
@@ -603,6 +614,8 @@ function mapProductPrices(products) {
 
 // Reset all filters
 async function resetAllFilters() {
+  if (!Object.values(filters.value).some((arr) => arr.length > 0)) return;
+
   for (const key in filters.value) {
     filters.value[key] = [];
   }
@@ -810,11 +823,6 @@ function checkPageExistence() {
 watch(filteredProducts, () => {
   checkPageExistence();
 });
-
-function goToItem(itemId) {
-  if (!itemId) return;
-  router.push(`/item/${itemId}`);
-}
 </script>
 <style scoped>
 @import '/assets/styles/shop.css';

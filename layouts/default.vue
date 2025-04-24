@@ -364,10 +364,20 @@
           today.
         </div>
         <div class="footer__socials mt-4 flex gap-3 lg:justify-center">
-          <ShareTwitterX class="share__icon"></ShareTwitterX>
-          <ShareFacebook class="share__icon"></ShareFacebook>
-          <ShareInstagram class="share__icon"></ShareInstagram>
-          <ShareGithub class="share__icon"></ShareGithub>
+          <a target="_blank" href="https://x.com/andrey_omelch">
+            <MyTwitterX class="share__icon"></MyTwitterX
+          ></a>
+          <a target="_blank" href="https://t.me/andrey_omelch"
+            ><MyTelegram class="share__icon"></MyTelegram
+          ></a>
+          <a
+            @click="copyEmailToClipboard()"
+            href="mailto:omel.andrey.99@gmail.com?subject=Hello%20Andrey!"
+            ><MyEmail class="share__icon"></MyEmail
+          ></a>
+          <a target="_blank" href="https://github.com/Festralus/"
+            ><MyGithub class="share__icon"></MyGithub
+          ></a>
         </div>
       </div>
       <div class="footer__links mx-1 mt-8 flex flex-wrap justify-center">
@@ -449,12 +459,10 @@ import PointerIcon from '../assets/icons/PointerIcon.vue';
 import ProfileIcon from '../assets/icons/ProfileIcon.vue';
 import SearchIconBlack from '../assets/icons/SearchIconBlack.vue';
 import SearchIconGray from '../assets/icons/SearchIconGray.vue';
-import ShareTwitterX from '../assets/icons/ShareTwitterXIcon.vue';
-import ShareFacebook from '../assets/icons/ShareFacebookIcon.vue';
-import ShareInstagram from '../assets/icons/ShareInstagramIcon.vue';
-import ShareGithub from '../assets/icons/ShareGithubIcon.vue';
-
-import In_development_component from '@/components/in_development_component.vue';
+import MyTwitterX from '../assets/icons/MyTwitterXIcon.vue';
+import MyTelegram from '../assets/icons/MyTelegramIcon.vue';
+import MyEmail from '../assets/icons/MyEmailIcon.vue';
+import MyGithub from '../assets/icons/MyGithubIcon.vue';
 
 // In development popup
 const showInDev = ref(false);
@@ -818,6 +826,20 @@ function logMeOut() {
 // Set sorting option and go to /shop
 const sortingStore = useSortingStore();
 const { setSortingOption } = sortingStore;
+
+// Handle an e-mail icon click
+function copyEmailToClipboard() {
+  const email = 'omel.andrey.99@gmail.com';
+  navigator.clipboard
+    .writeText(email)
+    .then(() => {
+      alert(`Email is copied! (${email})`);
+    })
+    .catch((err) => {
+      alert('Something went wrong. Please try another communication link.');
+      console.error(err);
+    });
+}
 </script>
 
 <style scoped>

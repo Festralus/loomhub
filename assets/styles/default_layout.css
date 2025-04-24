@@ -9,6 +9,7 @@
   .mobile-search__container {
     height: 44px;
     width: 80%;
+    margin-right: 10px;
 
     position: absolute;
     top: 10px;

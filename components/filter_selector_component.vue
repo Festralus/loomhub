@@ -14,13 +14,16 @@
         v-for="(item, index) in filterValues"
         :key="index"
         class="selector__filter"
-        @click="toggleCheckbox(index)"
+        @click="(toggleCheckbox(index), (hoveredIndex = null))"
+        @mouseover="hoveredIndex = index"
+        @mouseleave="hoveredIndex = null"
       >
         <div
           :class="
             combinedQuantity?.[props.parameter]?.[item] ? 'active' : 'inactive'
           "
           class="selector__filter__text"
+          :style="hoveredIndex == index ? 'text-decoration:underline' : ''"
         >
           {{ item }}
           <span
@@ -37,10 +40,20 @@
           <CheckboxEmptyIcon
             v-show="!checkedItems[index]"
             class="option__checkbox"
+            :style="
+              hoveredIndex == index
+                ? 'filter: drop-shadow(0 0 1px var(--btn-primary-bg-active))'
+                : ''
+            "
           />
           <CheckboxFilledIcon
             v-show="checkedItems[index]"
             class="option__checkbox-checked"
+            :style="
+              hoveredIndex == index
+                ? 'filter: drop-shadow(0 0 1px var(--btn-primary-bg-active))'
+                : ''
+            "
           />
         </div>
       </div>
@@ -78,6 +91,8 @@ const props = defineProps({
 const emits = defineEmits(['filter-updated']);
 
 onMounted(() => {});
+
+const hoveredIndex = ref(null);
 
 // Get filter options
 let filterValues = ref([]);
@@ -168,6 +183,8 @@ function toggleCheckbox(index) {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  user-select: none;
+  cursor: pointer;
 }
 
 .option__checkbox__container {

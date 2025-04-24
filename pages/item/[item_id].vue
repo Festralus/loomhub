@@ -3,6 +3,14 @@
     <div v-show="isFetching || initialLoading" class="waiting-screen">
       <div class="loader"></div>
     </div>
+
+    <In_development_component
+      v-if="showInDev"
+      :target="currentTarget"
+      :inDevActive="showInDev"
+      @close="showInDev = false"
+    />
+
     <BreadcrumbsComponent :history="path"></BreadcrumbsComponent>
     <div v-if="item" class="top__section">
       <div class="item__gallery">
@@ -118,12 +126,6 @@
           >
             Add to Cart
           </div>
-          <In_development_component
-            v-if="showInDev"
-            :target="currentTarget"
-            :inDevActive="showInDev"
-            @close="showInDev = false"
-          />
         </div>
       </div>
     </div>
@@ -175,20 +177,15 @@
           </tbody>
         </table>
         <div class="details-tab__photos">
-          <img
+          <div
             v-for="(item, index) in item?.detailsImages"
             :key="`image-${index}`"
-            :src="`${item}`"
-            class="details-tab__photo"
-          />
+            class="details-tab__lazy-photo"
+          >
+            <img :src="item" class="details-tab__photo" loading="lazy" />
+          </div>
         </div>
       </div>
-      <In_development_component
-        v-if="showInDev"
-        :target="currentTarget"
-        :inDevActive="showInDev"
-        @close="showInDev = false"
-      />
 
       <!-- Reviews tab -->
       <div v-if="currentProductTab == 1" class="reviews-tab__container">
@@ -255,12 +252,6 @@
                 >
                   Write a Review
                 </button>
-                <In_development_component
-                  v-if="showInDev"
-                  :target="currentTarget"
-                  :inDevActive="showInDev"
-                  @close="showInDev = false"
-                />
               </div>
             </div>
           </div>
@@ -385,18 +376,15 @@
         </div>
         <div class="FAQ-tab__answer">
           To initiate a return or exchange, simply
-          <NuxtLink to="/contacts" class="FAQ__contact-support"
-            >contact our customer support</NuxtLink
+          <a
+            target="_blank"
+            href="https://t.me/andrey_omelch"
+            class="FAQ__contact-support"
+            >contact our customer support</a
           >
           team through our website, and they will guide you through the process.
           You will need to provide your order number and reason for the return.
         </div>
-        <In_development_component
-          v-if="showInDev"
-          :target="currentTarget"
-          :inDevActive="showInDev"
-          @close="showInDev = false"
-        />
 
         <div class="FAQ-tab__question">
           <span class="FAQ-tab__question-bullet">•</span> What payment methods
@@ -455,7 +443,6 @@ import VerifiedTickIcon from '@/assets/icons/VerifiedTickIcon.vue';
 import PointerIcon from '@/assets/icons/PointerIcon.vue';
 
 import BreadcrumbsComponent from '@/components/breadcrumbs_component.vue';
-import In_development_component from '@/components/in_development_component.vue';
 import Slider_component from '~/components/slider_component.vue';
 import Subscribe_news_component from '~/components/subscribe_news_component.vue';
 

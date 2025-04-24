@@ -15,6 +15,7 @@
       v-for="(item, i) in searchResults"
       :key="i"
       class="result flex h-14 cursor-pointer select-none overflow-hidden rounded-lg"
+      :class="{ 'pointer-events-none': !item?.GID }"
     >
       <img
         v-if="item?.images?.[0]"

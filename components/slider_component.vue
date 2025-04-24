@@ -14,22 +14,21 @@
     </div>
 
     <!-- Product items -->
-    <div
+    <RouterLink
+      @click.capture="handleClick"
+      :to="`/item/${product.GID}`"
       v-for="product in productsList"
       :key="product.GID"
       class="component__items-item w-[272px] flex-shrink-0 pl-2 pr-2"
+      :class="isDragging ? 'cursor-grabbing' : 'cursor-grab'"
+      draggable="false"
     >
-      <RouterLink
-        @click.capture="handleClick"
-        :to="`/item/${product.GID}`"
-        class="component__items__item-link card-link block h-full w-full"
-        :class="isDragging ? 'cursor-grabbing' : 'cursor-grab'"
-        draggable="false"
-      >
+      <div class="component__items__item-link card-link block h-full w-full">
         <img
           :src="product.images[0]"
           alt="Product Image"
-          class="component__items-item__pic pointer-events-none h-[340px] w-full select-none rounded-2xl object-contain"
+          class="component__items-item__pic pointer-events-none h-[340px] w-full select-none rounded-2xl object-cover"
+          loading="lazy"
         />
         <div class="component__items-item__title mt-2 text-lg font-bold">
           {{ product.name }}
@@ -52,8 +51,8 @@
             -{{ product.discount }}%
           </span>
         </div>
-      </RouterLink>
-    </div>
+      </div>
+    </RouterLink>
   </div>
 </template>
 
