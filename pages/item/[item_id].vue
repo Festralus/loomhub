@@ -133,23 +133,38 @@
       <!-- Tabs menu -->
       <div class="tabs__list" ref="productTabsRefs">
         <div
-          @click="switchProductTab(0)"
+          @click="(switchProductTab(0), (hoveredTabName = null))"
           class="tabs__list__tab item-tabs__details-tab"
-          :class="{ chosen: currentProductTab === 0 }"
+          :class="[
+            { chosen: currentProductTab === 0 },
+            { 'tab-name__hovered': hoveredTabName === 0 },
+          ]"
+          @mouseover="currentProductTab === 0 ? '' : (hoveredTabName = 0)"
+          @mouseleave="hoveredTabName = null"
         >
           Product Details
         </div>
         <div
-          @click="switchProductTab(1)"
+          @click="(switchProductTab(1), (hoveredTabName = null))"
           class="tabs__list__tab item-tabs__reviews-tab"
-          :class="{ chosen: currentProductTab === 1 }"
+          :class="[
+            { chosen: currentProductTab === 1 },
+            { 'tab-name__hovered': hoveredTabName === 1 },
+          ]"
+          @mouseover="currentProductTab === 1 ? '' : (hoveredTabName = 1)"
+          @mouseleave="hoveredTabName = null"
         >
           Rating & Reviews
         </div>
         <div
-          @click="switchProductTab(2)"
+          @click="(switchProductTab(2), (hoveredTabName = null))"
           class="tabs__list__tab item-tabs__FAQ-tab"
-          :class="{ chosen: currentProductTab === 2 }"
+          :class="[
+            { chosen: currentProductTab === 2 },
+            { 'tab-name__hovered': hoveredTabName === 2 },
+          ]"
+          @mouseover="currentProductTab === 2 ? '' : (hoveredTabName = 2)"
+          @mouseleave="hoveredTabName = null"
         >
           FAQs
         </div>
@@ -494,6 +509,8 @@ onBeforeMount(() => {
   setChosenItem();
   getSession();
 });
+
+const hoveredTabName = ref(null);
 
 // Get product information
 const productID = ref('');

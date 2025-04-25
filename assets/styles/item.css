@@ -69,6 +69,12 @@
     padding: 12px 28px;
     font-size: 18px;
   }
+  .reviews-menu__write-button:hover,
+  .reviews-menu__write-button:active {
+    background-color: var(--btn-primary-bg-disabled-hover);
+    filter: grayscale(1) blur(1px);
+    cursor: not-allowed;
+  }
 
   .no-reviews__text {
     font-size: 30px;
@@ -126,6 +132,7 @@
   .reviews__card {
     width: calc(50% - 20px);
   }
+
   .sorting__dropdown-menu {
     width: 120px;
     padding: 8px 20px;
@@ -334,13 +341,13 @@
   }
   .item__interactive-menu {
     width: 60%;
-    margin: auto;
   }
 }
 
 /* All views */
 /* Gallery */
 .item__main-picture {
+  border: 1px solid var(--border-thin-color);
   border-radius: 20px;
 }
 .item__secondary-picture {
@@ -506,6 +513,12 @@
   border-radius: 40px;
   text-align: center;
 }
+.item__cart-button:hover,
+.item__cart-button:active {
+  background-color: var(--btn-primary-bg-disabled-hover);
+  filter: grayscale(1) blur(1px);
+  cursor: not-allowed;
+}
 
 /* Tabs menu */
 .tabs__list {
@@ -516,7 +529,7 @@
   margin-top: 50px;
 }
 .tabs__list__tab {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--border-thin-color);
   width: 33.3334%;
   text-align: center;
 
@@ -528,6 +541,14 @@
   border-bottom: 2px solid black;
   padding-top: 1px;
   color: rgba(0, 0, 0, 1);
+}
+.tab-name__hovered {
+  color: var(--btn-primary-bg-active);
+  border-bottom: 1px solid var(--border-default-color);
+}
+.tab-name__hovered:active {
+  color: var(--btn-primary-bg-default);
+  border-bottom: 2px solid var(--border-default-color);
 }
 
 /* Reviews tab */
@@ -594,6 +615,7 @@
   border-radius: 40px;
   background-color: black;
   color: white;
+  overflow: hidden;
 }
 
 .reviews__list {

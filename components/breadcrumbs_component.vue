@@ -37,7 +37,7 @@
       <NuxtLink
         v-if="clothingTypeSegment"
         :to="clothingTypeSegment"
-        class="breadcrumb__name"
+        class="breadcrumb breadcrumb__name"
         >{{ modifiedSegments?.[2] }}</NuxtLink
       >
       <PointerIcon
@@ -54,7 +54,7 @@
       <NuxtLink
         v-if="productCategorySegment"
         :to="productCategorySegment"
-        class="breadcrumb__name"
+        class="breadcrumb breadcrumb__name"
         >{{ modifiedSegments?.[3] }}</NuxtLink
       >
     </div>
@@ -152,6 +152,9 @@ async function setBreadcrumbs() {
 .breadcrumb__name {
   cursor: pointer;
   user-select: none;
+}
+.breadcrumb__name:hover {
+  text-decoration: underline;
 }
 .path__breadcrumbs {
   display: flex;
