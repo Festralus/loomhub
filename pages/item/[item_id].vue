@@ -214,10 +214,7 @@
                 >
               </div>
               <div class="reviews-menu__management">
-                <div
-                  v-if="totalReviewsCount.length > 1"
-                  class="reviews-menu__sorting"
-                >
+                <div v-if="totalReviewsCount > 1" class="reviews-menu__sorting">
                   <div
                     class="sorting__dropdown-menu"
                     @click="toggleSortingList()"
@@ -272,7 +269,10 @@
           </div>
 
           <!-- Block to show when there are no reviews -->
-          <div class="no-reviews-available__container">
+          <div
+            v-if="totalReviewsCount < 1"
+            class="no-reviews-available__container"
+          >
             <div class="no-reviews__text">
               Nobody has reviewed this item yet
             </div>
@@ -810,11 +810,23 @@ async function getProductReviews() {
     // Modify nicknames and dates to match the rules
     const reviewsResponse = res.data.map((review) => {
       const createdAt = new Date(review.createdAt);
+
+      // Show name normally with space
+      const splitIndex = review.user.slice(1).search(/[A-Z]/) + 1;
+      const firstName =
+        review.user.slice(0, splitIndex).charAt(0).toLocaleUpperCase() +
+        review.user.slice(0, splitIndex).slice(1).toLocaleLowerCase();
+      const lastName =
+        review.user.slice(splitIndex).charAt(0).toLocaleUpperCase() +
+        review.user.slice(splitIndex).slice(1).toLocaleLowerCase();
+      const fullName = `${firstName} ${lastName}`;
+
       return {
         ...review,
-        user:
-          review.user.charAt(0).toLocaleUpperCase() +
-          review.user.slice(1).toLocaleLowerCase(),
+        user: fullName,
+        // user:
+        //   review.user.charAt(0).toLocaleUpperCase() +
+        //   review.user.slice(1).toLocaleLowerCase(),
         createdAt: createdAt
           ? createdAt.toLocaleDateString('en-US', {
               year: 'numeric',

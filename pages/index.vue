@@ -325,10 +325,18 @@ async function getWebsiteReviews() {
   try {
     const response = await api.get('/api/getWebsiteReviews');
     const modifiedResponse = response.data.map((review) => {
-      const reviewerName = review.name;
+      // Show name normally with space
+      const splitIndex = review.name.slice(1).search(/[A-Z]/) + 1;
+      const firstName =
+        review.name.slice(0, splitIndex).charAt(0).toLocaleUpperCase() +
+        review.name.slice(0, splitIndex).slice(1).toLocaleLowerCase();
+      const lastName =
+        review.name.slice(splitIndex).charAt(0).toLocaleUpperCase() +
+        review.name.slice(splitIndex).slice(1).toLocaleLowerCase();
+      const fullName = `${firstName} ${lastName}`;
 
       return {
-        user: reviewerName,
+        user: fullName,
         comment: review.comment,
         rating: review.rating,
         id: review._id,

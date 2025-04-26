@@ -3,7 +3,7 @@
     class="subscribe mx-auto mt-12 w-[1100px] max-w-[94vw] overflow-hidden rounded-2xl bg-black"
   >
     <div
-      class="subscribe__title IntegralBold px-6 pt-8 text-center text-[1.8rem] leading-9 text-white"
+      class="subscribe__title IntegralBold px-6 pt-6 text-center text-[1.8rem] leading-8 text-white"
     >
       STAY UP TO DATE ABOUT OUR NEWEST OFFERS
     </div>
@@ -15,45 +15,94 @@
       <input
         class="subscribe__input SatoshiRegular w-[80%] bg-white pl-[2px] text-sm placeholder-gray-400"
         placeholder="Enter your email address"
-        ref="SubscriptionEmail"
+        v-model="subscriptionEmailModel"
+        ref="subscriptionEmailRef"
+        @keydown="handleKeydown"
       />
     </div>
     <div
-      v-show="isLetterSent"
-      class="subscribe__thank-you-block text-center text-white"
+      v-if="isLetterSent"
+      class="subscribe__thank-you-block mt-2 text-center text-white"
     >
-      Thank you! The letter has been sent.
+      Thank you! The letter has been sent. Maybe to your spam folder :)
     </div>
     <div
-      class="subscribe__submit-button SatoshiRegular mx-auto mb-7 mt-3 h-[42px] w-[311px] select-none rounded-3xl bg-white text-center leading-[42px] text-black hover:[background-color:var(--btn-secondary-bg-hover)] active:[background-color:var(--btn-secondary-bg-active)]"
-      @click="(sendLetter(), openInDev('Newsletter'))"
+      v-if="!isLetterBeingSent"
+      class="subscribe__submit-button SatoshiRegular mx-auto mb-8 mt-3 h-[42px] w-[311px] cursor-pointer select-none rounded-3xl bg-white text-center leading-[42px] text-black hover:[background-color:var(--btn-secondary-bg-hover)] active:[background-color:var(--btn-secondary-bg-active)]"
+      @click="sendLetter()"
     >
       Subscribe to Newsletter
     </div>
-    <In_development_component
-      v-if="showInDev"
-      :target="currentTarget"
-      :inDevActive="showInDev"
-      @close="showInDev = false"
-    />
+    <div
+      v-if="isLetterBeingSent"
+      class="subscribe__submit-button SatoshiRegular email-loader mx-auto mb-6 mt-5 h-[42px] w-[311px] cursor-not-allowed select-none rounded-3xl bg-white text-center leading-[42px]"
+    ></div>
   </div>
 </template>
 <script setup>
+// API endpoint
 import LetterIcon from '../assets/icons/LetterIcon.vue';
 
-// In development popup
-const showInDev = ref(false);
-const currentTarget = ref('');
-function openInDev(string) {
-  currentTarget.value = string;
-  showInDev.value = true;
-}
+import { useApi } from '@/composables/useApi.js';
+const api = useApi();
 
-const SubscriptionEmail = ref('');
+const subscriptionEmailModel = ref('');
+const subscriptionEmailRef = ref('');
+const isLetterBeingSent = ref(false);
 const isLetterSent = ref(false);
 
-function sendLetter() {
-  isLetterSent.value = true;
+async function sendLetter() {
+  if (isLetterBeingSent.value) return;
+  if (
+    !subscriptionEmailModel.value ||
+    subscriptionEmailModel.value.length < 5 ||
+    !subscriptionEmailModel.value.includes('@')
+  ) {
+    alert('Please enter a valid email...');
+    return;
+  }
+
+  try {
+    isLetterBeingSent.value = true;
+    const response = await api.post('/api/sendEmail', {
+      email: subscriptionEmailModel.value,
+    });
+
+    if (response.data.success) {
+      isLetterSent.value = true;
+      isLetterBeingSent.value = false;
+    } else {
+      alert('There was an issue sending your subscription.');
+      isLetterBeingSent.value = false;
+    }
+  } catch (error) {
+    console.error('Error sending email:', error);
+    alert('Something went wrong. Please try again later.');
+    isLetterBeingSent.value = false;
+  }
+}
+
+function handleKeydown(e) {
+  if (e.key === 'Enter') {
+    sendLetter();
+  }
 }
 </script>
-<style scoped></style>
+<style scoped>
+.email-loader {
+  width: 42px;
+  height: 42px;
+  border: 5px solid rgba(133, 133, 133, 0.3);
+  border-top: 5px solid var(--btn-secondary-text-active);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>
