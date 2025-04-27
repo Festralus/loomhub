@@ -9,6 +9,7 @@
   .mobile-search__container {
     height: 44px;
     width: 80%;
+    margin-right: 10px;
 
     position: absolute;
     top: 10px;
@@ -16,7 +17,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #f0f0f0;
+    background-color: var(--background-primary-color-two);
     border-radius: 1.5rem;
     /* overflow: hidden; */
 
@@ -34,7 +35,7 @@
     /* top: 33px; */
     width: 94%;
     /* width: 95%; */
-    background-color: #f0f0f0;
+    background-color: var(--background-primary-color-two);
     /* background-color: rgb(226, 199, 199); */
     border-radius: 0 0 1rem 1rem;
     /* border-radius: 1rem; */
@@ -79,13 +80,16 @@
 @media screen and (max-width: 1535px) {
   /* Dropdown styles */
   .shop-dropdown__title {
-    left: -10px;
-    top: -13px;
+    left: 0px;
+    top: 14px;
     padding: 6px 64px 0 10px;
   }
   .shop-dropdown__title-arrow {
     right: 13px;
     top: 6px;
+  }
+  .search-results {
+    padding: 10px 3px;
   }
 }
 
@@ -93,15 +97,42 @@
 @media screen and (min-width: 1536px) {
   /* Dropdown styles */
   .shop-dropdown__title {
-    left: -10px;
-    top: -15px;
+    top: 12px;
+    left: 0px;
     padding: 6px 70px 0 10px;
   }
   .shop-dropdown__title-arrow {
     right: 10px;
-    top: 10px;
+    top: 8px;
   }
-} /* Burger menu block */
+  .search-results {
+    padding: 10px;
+  }
+}
+
+/* Fixed header bottom border */
+.top-menu {
+  border-bottom: solid 1px var(--btn-primary-bg-default);
+}
+.top-menu__logo {
+  color: var(--background-secondary-color-one);
+}
+.top-menu__logo:hover {
+  color: var(--btn-primary-bg-active);
+}
+.top-menu__logo:active {
+  color: var(--border-default-color);
+}
+.top-menu__actions__button {
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+}
+.top-menu__actions__button:hover {
+  border-left: 1px solid var(--border-thin-color);
+  border-right: 1px solid var(--border-thin-color);
+}
+
+/* Burger menu block */
 .BurgerMenu__dropdown {
   position: fixed;
   top: 0;
@@ -154,7 +185,7 @@
     transform 0.3s;
 }
 .BurgerMenu__item:active {
-  color: #007bff;
+  color: var(--btn-secondary-text-active);
   transform: scale(1.05);
 }
 
@@ -166,18 +197,30 @@
 
 .top-menu__nav-item {
   align-items: center;
+  height: 64px;
+  padding: 0px 10px;
+}
+.top-menu__nav-item:not(:first-child):hover {
+  background-color: var(--btn-secondary-bg-hover);
+  border-bottom: 1px solid black;
+  margin-bottom: -1px;
+}
+.top-menu__nav-item:not(:first-child):active {
+  background-color: var(--btn-secondary-bg-active);
 }
 
 /* Shop hovered Dropdown */
 .shop-dropdown__title {
   position: absolute;
+  /* top: 12px;
+  left: 0px; */
   display: flex;
 
   width: 62px;
   height: 60px;
   border-radius: 10px 10px 0 0;
 
-  background-color: white;
+  background-color: var(--background-primary-color-one);
 }
 .shop-dropdown__title-arrow {
   position: absolute;
@@ -192,12 +235,12 @@
   display: flex;
   flex-direction: column;
 
-  left: -10px;
-  top: 22px;
+  left: 0px;
+  top: 48px;
   width: 200px;
   gap: 8px;
   padding: 8px;
-  background-color: white;
+  background-color: var(--background-primary-color-one);
   border-radius: 20px;
 }
 .shop-dropdown__item {
@@ -214,7 +257,7 @@
 .shop-dropdown__item__shadow {
   position: absolute;
   inset: 0px;
-  background-color: black;
+  background-color: var(--background-secondary-color-one);
   opacity: 0.4;
   border-radius: 10px;
 }
@@ -227,17 +270,14 @@
   position: absolute;
   left: 0;
   top: 32px;
-  /* top: 33px; */
 
   width: 98%;
-  padding: 10px;
-  background-color: #f0f0f0;
-  /* background-color: rgb(226, 199, 199); */
+  background-color: var(--background-primary-color-two);
 
   border-radius: 0 0 1rem 1rem;
 }
 
-.Step-back__arrow-container {
+.step-back__arrow-container {
   width: 48px;
   height: 48px;
   position: absolute;
@@ -246,22 +286,22 @@
   border-radius: 0 0 2rem 0;
   transform: rotate(180deg);
 }
-.Step-back__arrow {
+.step-back__arrow {
   position: absolute;
   right: 16px;
   bottom: 20px;
 }
-.Auth__Greetings {
+.auth__greetings {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   gap: 30px;
 }
-.Auth__popup-btn {
+.auth__popup-btn {
   display: block;
-  background-color: black;
-  color: white;
+  background-color: var(--background-secondary-color-one);
+  color: var(--background-primary-color-one);
   font-family: 'Satoshi-Regular';
   font-size: 26px;
   text-align: center;
@@ -269,26 +309,40 @@
   padding: 10px 30px;
   border-radius: 1rem;
 }
-.Auth__user-nickname {
+.auth__popup-btn:hover {
+  background-color: var(--btn-primary-bg-hover);
+}
+.auth__popup-btn:active {
+  background-color: var(--btn-primary-bg-active);
+}
+.auth__user-nickname {
   text-align: center;
   font-family: 'Satoshi-Bold';
   font-size: 40px;
   margin-bottom: 20px;
 }
-.Auth__user-avatar {
+.auth__user-avatar {
   width: 200px;
-  border-radius: 50%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10%;
   margin: 0 auto 30px auto;
 }
-.Auth-input {
+.auth-input {
   width: 100%;
   display: block;
   background-color: #f0f0f0;
-  margin: auto auto 14px auto;
   border-radius: 16px;
   padding: 8px 20px;
 }
 
+.share__icon:hover {
+  cursor: pointer;
+  filter: drop-shadow(0 0 6px var(--btn-primary-bg-hover));
+}
+.share__icon:active {
+  filter: drop-shadow(0 0 6px var(--btn-primary-bg-active));
+}
 .footer__section-title {
   margin-bottom: 26px;
 }
@@ -304,7 +358,15 @@
   display: block;
   margin-top: 12px;
   font-family: 'Satoshi-Regular';
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--border-default-color);
+}
+
+.links__link:hover {
+  color: var(--btn-primary-bg-default);
+}
+
+.links__link:active {
+  color: var(--btn-primary-bg-active);
 }
 
 @keyframes shine {
@@ -318,4 +380,22 @@
 
 .animate-shine {
   animation: shine 0.5s ease-out forwards;
+}
+
+/* Login and Registration errors */
+.error-message {
+  font-family: 'Satoshi-Bold';
+  font-size: 14px;
+  line-height: 28px;
+  color: var(--btn-primary-bg-disabled-active);
+  padding-left: 14px;
+  margin-bottom: 4px;
+}
+.success-message {
+  font-family: 'Satoshi-Bold';
+  font-size: 14px;
+  line-height: 28px;
+  color: rgb(0, 162, 0);
+  padding-left: 14px;
+  margin-bottom: 6px;
 }

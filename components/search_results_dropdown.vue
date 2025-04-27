@@ -1,18 +1,21 @@
 <template>
-  <div class="search-results">
+  <div class="search-results min-h-[70px]">
+    <!-- Loading screen while items are being fetched -->
     <div
-      v-if="searchResults"
+      v-show="isFetching"
+      class="waiting-screen-local mt-1 rounded-b-[1rem] rounded-t-none"
+    >
+      <div class="loader"></div>
+    </div>
+
+    <!-- <div vshow="searachResults?.length"> -->
+    <NuxtLink
+      :to="`/item/${item.GID}`"
+      @click="goToItem(item.GID)"
       v-for="(item, i) in searchResults"
       :key="i"
       class="result flex h-14 cursor-pointer select-none overflow-hidden rounded-lg"
-      :class="{
-        'bg-slate-200': hoveredIndex !== null && hoveredIndex == i,
-        'bg-gray-100': hoveredIndex === null || hoveredIndex != i,
-        'bg-transparent': !item.description && !item.images,
-      }"
-      @click="goToItem(item.GID)"
-      @mouseover="hoveredIndex = i"
-      @mouseleave="hoveredIndex = null"
+      :class="{ 'pointer-events-none': !item?.GID }"
     >
       <img
         v-if="item?.images?.[0]"
@@ -26,11 +29,12 @@
           :class="{ 'text-center': !item.description && !item.images }"
         >
           <span>{{ item?.name }}</span
-          ><span> ({{ item?.brand }})</span>
+          ><span v-show="item?.brand"> ({{ item?.brand }})</span>
         </div>
         <div class="result__description">{{ item?.description }}</div>
       </div>
-    </div>
+    </NuxtLink>
+    <!-- </div> -->
   </div>
 </template>
 <script setup>
@@ -39,6 +43,9 @@ import { useRouter } from 'vue-router';
 defineProps({
   searchResults: {
     type: Array,
+  },
+  isFetching: {
+    type: Boolean,
   },
 });
 
@@ -60,14 +67,31 @@ const hoveredIndex = ref(null);
   display: flex;
   align-items: center;
   gap: 10px;
-  padding-left: 10px;
+  padding-right: 4px;
+}
+.result:hover {
+  background-color: var(--btn-secondary-bg-default);
+}
+.result:active {
+  background-color: var(--btn-secondary-bg-active);
 }
 .result_image {
   width: 56px;
   height: 56px;
-  border-radius: 20px;
   object-fit: contain;
   flex-shrink: 0;
+}
+
+@media (max-width: 1535px) {
+  .result_image {
+    margin-left: 0px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .result_image {
+    margin-left: 10px;
+  }
 }
 .result__text {
   flex: 1 1 auto;
@@ -76,9 +100,9 @@ const hoveredIndex = ref(null);
 .result__name {
   font-family: 'Satoshi-Bold';
   font-size: 16px;
-  /* overflow: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap; */
+  white-space: nowrap;
 }
 .result__description {
   min-width: 0;

@@ -1,12 +1,6 @@
 <template>
   <div>
-    <In_development_component
-      v-if="showInDev"
-      :target="currentTarget"
-      :inDevActive="showInDev"
-      @close="showInDev = false"
-    />
-    <div
+    <section
       class="home-description relative z-50 w-full bg-[#f2f0f1] xl:flex xl:flex-nowrap xl:justify-evenly 2xl:items-center 2xl:justify-between"
     >
       <div
@@ -17,53 +11,48 @@
         >
           FIND CLOTHES THAT MATCHES YOUR STYLE
         </h2>
-        <div
+        <p
           class="home-description__text SatoshiRegular mt-4 text-[14px] lg:text-xl"
         >
           Browse through our diverse range of meticulously crafted garments,
           designed to bring out your individuality and cater to your sense of
           style.
-        </div>
-        <!-- <NuxtLink
+        </p>
+        <NuxtLink
+          @click="setSortingOption(0)"
           to="/shop"
-          class="home-description__button SatoshiRegular text-white text-base mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] select-none items-center justify-center rounded-3xl bg-black"
+          class="home-description__button SatoshiRegular mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] select-none items-center justify-center rounded-3xl bg-black text-base text-white hover:[background-color:var(--btn-primary-bg-hover)] active:[background-color:var(--btn-primary-bg-active)]"
         >
           Shop Now
-        </NuxtLink> -->
-        <div
-          @click="openInDev('Shopping Navigation')"
-          class="home-description__button SatoshiRegular mx-auto mt-5 flex h-12 w-[100%] max-w-[430px] cursor-pointer select-none items-center justify-center rounded-3xl bg-black text-base text-white"
-        >
-          Shop Now
-        </div>
-        <div
+        </NuxtLink>
+        <ul
           class="home-description__stats mt-4 flex flex-wrap justify-center gap-y-4"
         >
-          <div
+          <li
             class="home-description__stat home-description__stats-brands SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
-            <span class="SatoshiBold home-description__stat-value text-2xl"
+            <span class="satoshiBold home-description__stat-value text-2xl"
               >200+</span
             >
             <br class="home-description__stat-label" />International Brands
-          </div>
-          <div
+          </li>
+          <li
             class="home-description__stat home-description__stats-products SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
-            <span class="SatoshiBold home-description__stat-value text-2xl"
+            <span class="satoshiBold home-description__stat-value text-2xl"
               >2,000+</span
             >
             <br class="home-description__stat-label" />High-Quality Products
-          </div>
-          <div
+          </li>
+          <li
             class="home-description__stat home-description__stats-customers SatoshiRegular px-4 pt-2 text-[12px] leading-4 lg:text-base"
           >
-            <span class="SatoshiBold home-description__stat-value text-2xl"
+            <span class="satoshiBold home-description__stat-value text-2xl"
               >30,000+</span
             ><br class="home-description__stat-label" />
             Happy Customers
-          </div>
-        </div>
+          </li>
+        </ul>
       </div>
       <div
         class="home-description__background pointer-events-none relative z-0 mx-auto max-w-[700px] select-none overflow-clip lg:mt-10 xl:mt-0"
@@ -90,113 +79,78 @@
           />
         </picture>
       </div>
-    </div>
-    <div
-      class="popular-brands flex w-full flex-row flex-wrap justify-evenly overflow-hidden bg-black pb-3 pt-5"
-    >
-      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
-        <VersaceIcon class="h-full w-full" />
+    </section>
+
+    <!-- Possible to refactor this section via v-for and brands import from data folder -->
+    <section class="brands__menu mt-4 flex flex-wrap bg-transparent xl:mt-0">
+      <NuxtLink
+        v-for="brand in ['Prada', 'Zara', 'Gucci', 'Versace', 'Calvin Klein']"
+        :key="brand"
+        :to="{ path: '/shop', query: { brand: JSON.stringify([brand]) } }"
+        class="brands__brand flex h-[10vw] flex-1 basis-1/3 items-center justify-center bg-black"
+      >
+        <component :is="brandList[brand]" class="h-[8vw] w-[80%]" />
       </NuxtLink>
-      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
-        <ZaraIcon class="h-full w-full" />
-      </NuxtLink>
-      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
-        <GucciIcon class="h-full w-full" />
-      </NuxtLink>
-      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
-        <PradaIcon class="h-full w-full" />
-      </NuxtLink>
-      <NuxtLink to="/brands" class="popular-brands__brand mx-3 my-2">
-        <CalvinKleinIcon class="h-full w-full" />
-      </NuxtLink>
-    </div>
-    <div class="new-arrivals">
-      <div
+    </section>
+    <section class="new-arrivals">
+      <h3
         class="new-arrivals__title IntergralExtraBold mb-6 mt-9 text-center text-[32px] leading-none"
       >
         NEW ARRIVALS
-      </div>
+      </h3>
 
       <Slider_component
         class="new-arrivals__items"
         filterName="getNewArrivals"
       ></Slider_component>
 
-      <div
-        @click="openInDev('Shopping Navigation')"
-        class="new-arrivals__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] cursor-pointer select-none justify-center rounded-[62px] py-3 text-base"
+      <NuxtLink
+        @click="setSortingOption(1)"
+        :to="'/shop'"
+        class="new-arrivals__button view-all__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] cursor-pointer select-none justify-center rounded-[62px] py-3 text-base"
       >
         View All
-      </div>
+      </NuxtLink>
 
       <div class="horizontal-separator-90 mt-10"></div>
-    </div>
-    <div class="top-selling mt-10">
-      <div
+    </section>
+
+    <section class="top-selling mt-10">
+      <h3
         class="top-selling__title IntergralExtraBold mb-6 mt-9 text-center text-[32px] leading-none"
       >
         TOP SELLING
-      </div>
+      </h3>
 
       <Slider_component
         class="new-arrivals__items"
         filterName="getTopSelling"
       ></Slider_component>
 
-      <div
-        @click="openInDev('Shopping Navigation')"
-        class="top-selling__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] cursor-pointer select-none justify-center rounded-[62px] py-3 text-base"
+      <NuxtLink
+        @click="setSortingOption(0)"
+        :to="'/shop'"
+        class="top-selling__button view-all__button button-border SatoshiRegular mx-auto mt-5 flex w-[90%] max-w-[600px] cursor-pointer select-none justify-center rounded-[62px] py-3 text-base"
       >
         View All
-      </div>
-    </div>
-    <div
+      </NuxtLink>
+    </section>
+
+    <section
       class="style-masonry mx-auto mt-10 w-[1800px] max-w-[94vw] rounded-2xl bg-[#F0F0F0] pb-2 pt-9"
     >
-      <div
+      <h3
         class="style-masonry__title IntergralExtraBold mb-7 px-10 text-center text-[32px] leading-none"
       >
         BROWSE BY DRESS STYLE
-      </div>
+      </h3>
+
       <div
         class="style-masonry__tileset relative flex flex-col flex-wrap items-center justify-center px-2 xl:flex-row xl:gap-5"
       >
-        <!-- <NuxtLink
+        <NuxtLink
           v-for="(style, index) in dress_styles_list"
-          :key="style.name"
-          :to="style.path"
-          class="style-masonry__tile relative mb-4 w-[90%] rounded-3xl bg-white"
-          :class="[
-            index === 1 || index === 2
-              ? 'style-masonry__tile-big'
-              : 'style-masonry__tile-small',
-          ]"
-        >
-          <div
-            class="style-masonry__tile-text SatoshiBold absolute ml-6 mt-4 text-2xl"
-          >
-            {{ style.name }}
-          </div>
-          <picture>
-            <source
-              :srcset="`${style.backgroundPicture}.png`"
-              media="(max-width: 400px)"
-            />
-            <source
-              :srcset="`${style.backgroundPicture}-xl.png`"
-              media="(min-width: 401px)"
-            />
-            <img
-              class="style-masonry__tile-background select-none rounded-3xl"
-              :src="`${style.backgroundPicture}-xl.png`"
-              alt="Background image"
-            />
-          </picture>
-        </NuxtLink> -->
-
-        <div
-          v-for="(style, index) in dress_styles_list"
-          @click="openInDev('Shopping Navigation')"
+          :key="'style-' + index"
           :to="style.path"
           class="style-masonry__tile relative mb-4 w-[90%] cursor-pointer rounded-3xl bg-white"
           :class="[
@@ -205,11 +159,11 @@
               : 'style-masonry__tile-small',
           ]"
         >
-          <div
+          <p
             class="style-masonry__tile-text SatoshiBold absolute ml-6 mt-4 text-2xl"
           >
             {{ style.name }}
-          </div>
+          </p>
           <picture>
             <source
               :srcset="`${style.backgroundPicture}.png`"
@@ -225,30 +179,39 @@
               alt="Background image"
             />
           </picture>
-        </div>
+        </NuxtLink>
       </div>
-    </div>
-    <div class="reviews mt-10">
+    </section>
+
+    <section class="reviews mt-10">
       <div class="reviews__header mx-4 flex">
-        <div
+        <h3
           class="reviews__title IntergralExtraBold mr-10 text-left text-[32px] leading-none"
         >
           OUR HAPPY CUSTOMERS
-        </div>
+        </h3>
         <div class="reviews__arrows mt-auto flex sm:hidden">
-          <ArrowIcon
+          <button
             class="reviews__arrow--left mr-4 size-6 rotate-180"
             @click="scrollToCard(reviewCardIndex - 1)"
-          ></ArrowIcon>
-          <ArrowIcon
+          >
+            <ArrowIcon class="size-6" />
+          </button>
+          <button
             class="reviews__arrow--right size-6"
             @click="scrollToCard(reviewCardIndex + 1)"
-          ></ArrowIcon>
+          >
+            <ArrowIcon class="size-6" />
+          </button>
         </div>
       </div>
-      <div class="reviews__list" ref="reviewCardsContainer">
+      <div
+        class="reviews__list relative min-h-[204px]"
+        ref="reviewCardsContainer"
+      >
         <div class="reviews__cards">
-          <div
+          <article
+            v-show="websiteReviewsArray.length"
             class="reviews__card button-border mx-4 mt-6 h-[180px] w-[340px] rounded-3xl border-gray-500 p-6"
             v-for="review in websiteReviewsArray"
             :key="'main' + review.id"
@@ -257,8 +220,8 @@
             <div class="reviews__card-rating mt-1 flex items-center">
               <span class="flex">
                 <RatingStarIcon
-                  v-for="n in Math.floor(review.rating)"
-                  :key="'full-' + review.id"
+                  v-for="(n, index) in Math.floor(review.rating)"
+                  :key="'full-' + index"
                   class="h-5 w-5"
                 />
                 <RatingHalfStarIcon
@@ -267,27 +230,38 @@
                   class="h-5 w-5"
                 />
                 <RatingEmptyStarIcon
-                  v-for="n in Math.floor(5 - review.rating)"
-                  :key="'empty-' + review.id"
+                  v-for="(n, index) in Math.floor(5 - review.rating)"
+                  :key="'empty-' + index"
                   class="h-5 w-5"
                 />
               </span>
             </div>
+
             <div class="reviews__card__name-line flex items-end">
-              <div class="reviews__card__name SatoshiBold mt-2 text-base">
+              <strong class="reviews__card__name SatoshiBold mt-2 text-base">
                 {{ review.user }}
-              </div>
+              </strong>
               <VerifiedTickIcon
                 class="reviews__card__verified mb-1 ml-1 size-4"
-              ></VerifiedTickIcon>
+              />
             </div>
-            <div class="reviews__card__text SatoshiRegular mt-1 text-gray-500">
+
+            <p class="reviews__card__text SatoshiRegular mt-1 text-gray-500">
               {{ review.comment }}
-            </div>
-          </div>
+            </p>
+          </article>
+        </div>
+
+        <!-- Loading screen while items are being fetched -->
+        <div
+          v-show="!websiteReviewsArray.length"
+          class="waiting-screen-local mt-1 rounded-xl"
+        >
+          <div class="loader"></div>
         </div>
       </div>
-    </div>
+    </section>
+
     <Subscribe_news_component />
 
     <!-- <div class="mb-[500px] mt-[100px]"></div>
@@ -296,9 +270,10 @@
 </template>
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue';
-import axios from 'axios';
+import { useSortingStore } from '@/stores/index.js';
 
 import dress_styles_list from '@/data/dress_styles.js';
+// import brands from '@/data/brands.js';
 import Slider_component from '@/components/slider_component.vue';
 
 import ArrowIcon from '../assets/icons/ArrowIcon.vue';
@@ -313,120 +288,49 @@ import RatingHalfStarIcon from '../assets/icons/RatingHalfStarIcon.vue';
 import StarIcon from '../assets/icons/StarIconBig.vue';
 import VerifiedTickIcon from '../assets/icons/VerifiedTickIcon.vue';
 
-import In_development_component from '@/components/in_development_component.vue';
-import Subscribe_news_component from '~/components/subscribe_news_component.vue';
+import Subscribe_news_component from '@/components/subscribe_news_component.vue';
 
-// In development popup
-const showInDev = ref(false);
-const currentTarget = ref('');
-function openInDev(string) {
-  currentTarget.value = string;
-  showInDev.value = true;
-}
+// API setup
+import { useApi } from '@/composables/useApi.js';
+const api = useApi();
 
 // Page title and API endpoint
 useHead({
   title: 'LoomHub',
 });
 
-const config = useRuntimeConfig();
-const api = axios.create({
-  baseURL: config.public.apiBase,
-});
-// const api = useApi();
-
 onMounted(() => {
-  // getSliderProducts('getNewArrivals');
-  // getSliderProducts('getTopSelling');
   getWebsiteReviews();
 
-  reviewCardsContainer.value.addEventListener('scroll', handleScroll);
+  reviewCardsContainer.value.addEventListener('scroll', debouncedHandleScroll);
 });
 
 onUnmounted(() => {
-  reviewCardsContainer.value?.removeEventListener('scroll', handleScroll);
+  reviewCardsContainer.value?.removeEventListener(
+    'scroll',
+    debouncedHandleScroll
+  );
 });
 
-// Horizontal product slider component functionality
-// const newArrivalsList = ref([]);
-// const limit = 9;
-// const currencyMultiplier = 1;
-// const topSellingList = ref([]);
-
-// async function getSliderProducts(filterName) {
-//   try {
-//     const res = await api.get(`/api/${filterName}?limit=${limit}`);
-//     const arrivalsResponse = res.data.map((product) => {
-//       const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
-//       const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
-//         2
-//       );
-//       const discountPercentage = Math.round(
-//         100 - (modifiedPrice / modifiedOldPrice) * 100
-//       );
-
-//       return {
-//         name: product.name,
-//         price: modifiedPrice,
-//         GID: product.GID,
-//         images: product.images,
-//         timestamps: product.timestamps,
-//         rating: product.rating || 4,
-//         oldPrice: modifiedOldPrice || null,
-//         discount: discountPercentage,
-//       };
-//     });
-
-//     if (filterName === 'getNewArrivals') {
-//       newArrivalsList.value.push(...arrivalsResponse);
-//     } else if (filterName === 'getTopSelling') {
-//       topSellingList.value.push(...arrivalsResponse);
-//     }
-//   } catch (err) {
-//     console.error(err);
-//   }
-// }
-
-// Updating an order
-const orderId = '6769bc16c09d4bcd85526087';
-const newStatus = 'delivered';
-async function updateOrderStatus(orderId, newStatus) {
-  const validStatuses = ['pending', 'shipped', 'delivered', 'cancelled'];
-  if (!validStatuses.includes(newStatus)) {
-    console.error('Invalid order status');
-    return { success: false, message: 'Invalid order status' };
-  }
-
-  try {
-    const res = await api.put(`/api/orders/${orderId}`, {
-      orderStatus: newStatus,
-    });
-
-    if (res.status === 200) {
-      console.log('Order status updated successfully:', res.data.order);
-      return { success: true, order: res.data.order };
-    }
-  } catch (err) {
-    if (err.response?.status === 404) {
-      console.error('Order not found');
-      return { success: false, message: 'Order not found' };
-    }
-    console.error('Internal server error:', err.message);
-    return { success: false, message: 'Internal server error' };
-  }
-}
-
-// Method to Get 5 website reviews
+// Method to get 5 website reviews
 const websiteReviewsArray = ref([]);
 
 async function getWebsiteReviews() {
   try {
     const response = await api.get('/api/getWebsiteReviews');
     const modifiedResponse = response.data.map((review) => {
-      const reviewerName = review.name;
+      // Show name normally with space
+      const splitIndex = review.name.slice(1).search(/[A-Z]/) + 1;
+      const firstName =
+        review.name.slice(0, splitIndex).charAt(0).toLocaleUpperCase() +
+        review.name.slice(0, splitIndex).slice(1).toLocaleLowerCase();
+      const lastName =
+        review.name.slice(splitIndex).charAt(0).toLocaleUpperCase() +
+        review.name.slice(splitIndex).slice(1).toLocaleLowerCase();
+      const fullName = `${firstName} ${lastName}`;
 
       return {
-        user: reviewerName,
+        user: fullName,
         comment: review.comment,
         rating: review.rating,
         id: review._id,
@@ -444,6 +348,7 @@ const reviewCardIndex = ref(0);
 const reviewCardsContainer = ref(null);
 function scrollToCard(index) {
   if (!reviewCardsContainer.value) return;
+
   reviewCardIndex.value = index;
 
   if (index < 0) {
@@ -463,6 +368,7 @@ function scrollToCard(index) {
 }
 
 // Focus Newsletter subscription
+
 const SubscriptionEmail = ref();
 function focusSubscriptionEmail() {
   SubscriptionEmail.value?.focus();
@@ -471,12 +377,38 @@ function focusSubscriptionEmail() {
 // Website review scroll help for arrows
 function handleScroll() {
   if (!reviewCardsContainer.value) return;
-
   const container = reviewCardsContainer.value;
   const scrollLeft = container.scrollLeft;
   const cardWidth = container.children[0]?.children[0]?.offsetWidth;
   reviewCardIndex.value = Math.round(scrollLeft / cardWidth);
 }
+
+// Set sorting option and go to /shop
+const sortingStore = useSortingStore();
+const { setSortingOption } = sortingStore;
+
+// Review starts
+function debounce(fn, delay) {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      fn(...args);
+    }, delay);
+  };
+}
+
+const debouncedHandleScroll = debounce(handleScroll, 30);
+
+// Review ends
+
+const brandList = {
+  Versace: VersaceIcon,
+  Zara: ZaraIcon,
+  Gucci: GucciIcon,
+  Prada: PradaIcon,
+  'Calvin Klein': CalvinKleinIcon,
+};
 </script>
 <style scoped>
 @import '/assets/styles/style.css';

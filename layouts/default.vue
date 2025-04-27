@@ -41,67 +41,50 @@
           'no-animation': !isBurgerAnimationActive,
         }"
       >
-        <!-- <NuxtLink to="/shop" class="BurgerMenu__item">Shop</NuxtLink>
-        <NuxtLink to="/top_selling" class="BurgerMenu__item"
-          >Top Selling</NuxtLink
+        <NuxtLink
+          @click="(setSortingOption(0), closeBurgerDropdown())"
+          to="/shop"
+          class="BurgerMenu__item"
+          >Shop</NuxtLink
         >
-        <NuxtLink to="/new_arrivals" class="BurgerMenu__item"
+        <NuxtLink
+          @click="(setSortingOption(2), closeBurgerDropdown())"
+          to="/shop"
+          class="BurgerMenu__item"
+          >On Sale</NuxtLink
+        >
+        <NuxtLink
+          @click="(setSortingOption(1), closeBurgerDropdown())"
+          to="/shop"
+          class="BurgerMenu__item"
           >New Arrivals</NuxtLink
         >
-        <NuxtLink to="/brands" class="BurgerMenu__item">Brands</NuxtLink> -->
-        <div @click="openInDev('Shopping Navigation')" class="BurgerMenu__item">
-          Shop
-        </div>
-        <div @click="openInDev('Shopping Navigation')" class="BurgerMenu__item">
-          Top Selling
-        </div>
-        <div @click="openInDev('Shopping Navigation')" class="BurgerMenu__item">
-          New Arrivals
-        </div>
-        <div @click="openInDev('Shopping Navigation')" class="BurgerMenu__item">
-          Brands
-        </div>
+        <NuxtLink
+          @click="(setSortingOption(4), closeBurgerDropdown())"
+          to="/shop"
+          class="BurgerMenu__item"
+          >Best Choice</NuxtLink
+        >
       </div>
       <NuxtLink
         to="/"
-        class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none sm:ml-[10%] sm:block 2xl:ml-[6%] 2xl:text-3xl"
+        class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none text-black sm:ml-[20px] sm:block md:ml-[1%] 2xl:ml-[6%] 2xl:text-3xl"
         :class="isMobileSearchActive ? 'hidden' : ''"
       >
         LOOM.HUB
       </NuxtLink>
       <nav
-        class="top-menu__nav SatoshiRegular hidden max-h-[10px] flex-row text-base sm:flex sm:w-full sm:justify-evenly lg:flex xl:w-[30%] 2xl:text-xl"
+        class="top-menu__nav SatoshiRegular hidden max-h-[10px] flex-row items-center text-base sm:flex sm:w-full sm:justify-evenly lg:flex xl:w-[30%] 2xl:text-xl"
         :class="{ 'sm:hidden': isMobileSearchActive }"
       >
-        <!-- <div
-          @mouseover="isShopHovered = true"
-          @mouseleave="isShopHovered = false"
-          :class="{ 'z-[140]': isShopHovered }"
-          class="top-menu__nav-item top-menu__nav-item__shop relative hidden cursor-pointer flex-row items-center 2xl:flex"
-        >
-          <div class="top-menu__nav-item__shop-text">Shop</div>
-          <PointerIcon
-            class="top-menu__nav-item top-menu__nav-item__shop-arrow mt-[2px] h-6 pl-[3px] 2xl:w-[14px]"
-          ></PointerIcon>
-          <div v-show="isShopHovered" class="top-menu__nav-item__shop-dropdown">
-            <NuxtLink
-              v-for="(style, index) in dress_styles_list"
-              :key="index"
-              :to="style.path"
-              class="shop-dropdown__item"
-            >
-              {{ style.name }}
-            </NuxtLink>
-          </div>
-        </div> -->
         <div
           @mouseenter="isShopHovered = true"
           @mouseleave="isShopHovered = false"
           @click="toggleShop()"
           :class="{ 'z-[140]': isShopHovered || isShopClicked }"
-          class="top-menu__nav-item top-menu__nav-item__shop relative hidden cursor-pointer flex-row items-center sm:flex"
+          class="top-menu__nav-item top-menu__nav-item__shop relative hidden h-16 cursor-pointer flex-row sm:flex"
         >
-          <div class="top-menu__nav-item__shop-text">Shop</div>
+          <div class="top-menu__nav-item__shop-text select-none">Shop</div>
           <PointerIcon
             class="top-menu__nav-item__shop-arrow mt-[2px] h-6 pl-[3px] sm:w-[14px]"
           />
@@ -117,10 +100,10 @@
             v-show="isShopHovered || isShopClicked"
             class="top-menu__nav-item__shop-dropdown"
           >
-            <!-- <NuxtLink
+            <NuxtLink
+              :to="style.path"
               v-for="(style, index) in dress_styles_list"
               :key="index"
-              :to="style.path"
               class="shop-dropdown__item"
               :class="[
                 hoveredIndex == index
@@ -132,86 +115,40 @@
               }"
               @mouseover="hoveredIndex = index"
               @mouseleave="hoveredIndex = null"
-            >
-              <span class="relative z-10 text-lg font-semibold">{{
-                style.name
-              }}</span>
-
-              <div
-                v-if="hoveredIndex !== index"
-                class="shop-dropdown__item__shadow"
-              ></div>
-            </NuxtLink> -->
-            <div
-              v-for="(style, index) in dress_styles_list"
-              :key="index"
-              class="shop-dropdown__item"
-              :class="[
-                hoveredIndex == index
-                  ? 'shop-dropdown__item__border text-black'
-                  : 'text-white',
-              ]"
-              :style="{
-                backgroundImage: `url(${style.backgroundPicture}.png)`,
-              }"
-              @mouseover="[(hoveredIndex = index)]"
-              @mouseleave="[(hoveredIndex = null)]"
-              @click="[(hoveredIndex = index)]"
+              @click="hoveredIndex = index"
             >
               <span
                 class="shop-dropdown__item__name relative z-10 text-lg font-semibold"
                 >{{ style.name }}</span
               >
               <div
-                v-if="hoveredIndex !== index"
+                v-show="hoveredIndex !== index"
                 class="shop-dropdown__item__shadow"
               ></div>
-            </div>
+            </NuxtLink>
           </div>
         </div>
-
-        <!-- <NuxtLink
-          to="/shop"
-          class="top-menu__nav-item top-menu__nav-item__shop relative flex cursor-pointer flex-row items-center 2xl:hidden"
-        >
-          <div class="top-menu__nav-item__shop-text">Shop</div>
-        </NuxtLink>
-        <NuxtLink to="/on_sale" class="top-menu__nav-item flex"
-          >On Sale</NuxtLink
-        >
-        <NuxtLink to="/new_arrivals" class="top-menu__nav-item flex"
-          >New Arrivals</NuxtLink
-        >
-        <NuxtLink to="/brands" class="top-menu__nav-item flex">Brands</NuxtLink> -->
-        <div
-          @click="openInDev('Shopping Navigation')"
-          class="top-menu__nav-item top-menu__nav-item__shop relative flex cursor-pointer flex-row items-center sm:hidden"
-        >
-          <div
-            @click="openInDev('Shopping Navigation')"
-            class="top-menu__nav-item__shop-text cursor-pointer"
-          >
-            Shop
-          </div>
-        </div>
-        <div
-          @click="openInDev('Shopping Navigation')"
-          class="top-menu__nav-item flex cursor-pointer"
+        <NuxtLink
+          @click="setSortingOption(2)"
+          :to="'/shop'"
+          class="top-menu__nav-item flex cursor-pointer select-none"
         >
           On Sale
-        </div>
-        <div
-          @click="openInDev('Shopping Navigation')"
-          class="top-menu__nav-item flex cursor-pointer"
+        </NuxtLink>
+        <NuxtLink
+          @click="setSortingOption(1)"
+          :to="'/shop'"
+          class="top-menu__nav-item flex cursor-pointer select-none"
         >
           New Arrivals
-        </div>
-        <div
-          @click="openInDev('Shopping Navigation')"
-          class="top-menu__nav-item flex cursor-pointer"
+        </NuxtLink>
+        <NuxtLink
+          @click="setSortingOption(3)"
+          :to="'/shop'"
+          class="top-menu__nav-item flex cursor-pointer select-none"
         >
-          Brands
-        </div>
+          Best Choice
+        </NuxtLink>
       </nav>
       <div
         class="top-menu__search hidden w-full flex-row rounded-3xl bg-[#F0F0F0] p-2 lg:flex xl:w-[40vw]"
@@ -226,35 +163,39 @@
         <div class="top-menu__search-dropdown relative hidden w-full lg:block">
           <input
             type="text"
-            class="top-menu__search-input h-6 w-[99%] bg-[#F0F0F0]"
+            class="top-menu__search-input h-6 w-[99%] bg-[#F0F0F0] pl-[2px]"
             placeholder="Search for products..."
             aria-label="Search for products"
             ref="HomePageSearch"
             v-model="searchQuery"
             @input="performQuickSearch"
-            @change="performQuickSearch"
             @paste="performPasteQuickSearch"
             @focus="openDropdown"
           />
+
           <Search_results_dropdown
             v-show="searchQuery && !outsideClickOccurance"
             :query="searchQuery"
             :searchResults="searchResults"
-          ></Search_results_dropdown>
+            :isFetching="isFetching"
+          >
+          </Search_results_dropdown>
         </div>
       </div>
       <div
-        class="top-menu__actions mr-4 flex w-[30%] flex-shrink-0 flex-row justify-end sm:w-auto xl:mr-6 xl:w-[10%]"
+        class="top-menu__actions mr-[1px] flex h-16 flex-shrink-0 flex-row items-center justify-end sm:mr-[2px] lg:mr-[3px]"
         :class="{ 'z-[140]': searchQuery }"
       >
-        <SearchIconBlack
-          class="top-menu__search-icon lg:hidden"
-          :class="isMobileSearchActive ? 'hidden' : ''"
-          aria-label="Search"
-          @click="openMobileSearch"
-        />
+        <div class="px-2 md:px-4">
+          <SearchIconBlack
+            class="top-menu__search-icon lg:hidden"
+            :class="isMobileSearchActive ? 'hidden' : ''"
+            aria-label="Search"
+            @click="openMobileSearch()"
+          />
+        </div>
         <div
-          class="mobile-search__container hidden sm:max-w-[64%]"
+          class="mobile-search__container hidden sm:max-w-[70%]"
           :class="{
             active: isMobileSearchActive,
             closed: !isMobileSearchActive,
@@ -270,7 +211,7 @@
           <div class="search-dropdown">
             <input
               type="text"
-              class="search-input"
+              class="search-input pl-[2px]"
               placeholder="Search for products..."
               aria-label="Search for products"
               ref="MobileSearchInput"
@@ -286,110 +227,121 @@
               v-show="searchQuery && !outsideClickOccurance"
               :query="searchQuery"
               :searchResults="searchResults"
+              :isFetching="isFetching"
             ></Search_results_dropdown>
           </div>
         </div>
-        <!-- <NuxtLink
-          to="/cart"
-          class="top-menu__actions-cart ml-[14px] lg:block"
-          :class="isMobileSearchActive ? 'hidden' : ''"
-          ><CartIcon></CartIcon
-        ></NuxtLink> -->
-        <div
-          class="top-menu__actions-cart ml-[14px] cursor-pointer lg:block"
-          :class="isMobileSearchActive ? 'hidden' : ''"
+        <button
+          class="top-menu__actions-cart top-menu__actions__button flex cursor-not-allowed justify-center px-2 hover:blur-[1px] active:blur-[1px] md:px-4"
+          :class="isMobileSearchActive ? 'hidden lg:block' : ''"
           @click="openInDev('Cart')"
         >
-          <CartIcon></CartIcon>
-        </div>
-        <ProfileIcon
-          class="top-menu__actions-profile ml-[14px] cursor-pointer lg:block"
-          :class="isMobileSearchActive ? 'hidden' : ''"
-          @click="openAuthPopup"
-        ></ProfileIcon>
+          <CartIcon class="h-16"></CartIcon>
+        </button>
+        <button
+          class="top-menu__actions-profile top-menu__actions__button flex cursor-pointer justify-center px-2 md:px-4"
+        >
+          <ProfileIcon
+            class="h-16"
+            :class="isMobileSearchActive ? 'hidden lg:block' : ''"
+            @click="openAuthPopup"
+          ></ProfileIcon>
+        </button>
       </div>
+
       <!-- Modal -->
       <div
         v-show="authPopupActive"
-        class="Auth__popup fixed left-[50%] top-[50%] z-[140] w-[90vw] max-w-[500px] -translate-x-[50%] -translate-y-[50%] rounded-3xl bg-white pb-5 pl-3 pr-3 pt-12 sm:w-[80vw] sm:pb-8 sm:pl-10 sm:pr-10 sm:pt-12 lg:w-[70vw]"
+        class="auth__popup fixed left-[50%] top-[50%] z-[140] w-[90vw] max-w-[500px] -translate-x-[50%] -translate-y-[50%] rounded-3xl bg-white pb-7 pl-3 pr-3 pt-12 sm:w-[80vw] sm:pb-8 sm:pl-10 sm:pr-10 sm:pt-12 lg:w-[70vw]"
       >
         <div
-          class="Step-back__arrow-container cursor-pointer"
+          class="step-back__arrow-container cursor-pointer"
           @click="AuthStepBack"
         >
-          <ArrowIcon class="Step-back__arrow"></ArrowIcon>
+          <ArrowIcon class="step-back__arrow"></ArrowIcon>
         </div>
-        <div v-if="authGreetingsActive && !nickname" class="Auth__Greetings">
+        <div v-if="authGreetingsActive && !nickname" class="auth__greetings">
           <div
-            class="Auth__popup-btn Login-button cursor-pointer select-none"
+            class="auth__popup-btn Login-button cursor-pointer select-none"
             @click="openAuthLogin"
           >
             Login
           </div>
           <div
-            class="Auth__popup-btn Registration-button cursor-pointer select-none"
+            class="auth__popup-btn registration-button cursor-pointer select-none"
             @click="openAuthRegistration"
           >
             Sign up
           </div>
         </div>
         <div v-if="nickname">
-          <div class="Auth__user-nickname">{{ nickname }}</div>
+          <div class="auth__user-nickname">{{ nickname }}</div>
           <img
+            @click="openInDev('Change profile picture')"
             :src="`${profilePicUrl}`"
             v-show="profilePicUrl"
-            class="Auth__user-avatar"
+            class="auth__user-avatar"
           />
           <div
-            class="End-session__button Auth__popup-btn cursor-pointer select-none"
+            class="end-session__button auth__popup-btn cursor-pointer select-none"
             @click="logMeOut"
           >
             Log out
           </div>
         </div>
-        <form v-if="authLoginActive && !nickname" class="Auth__Login">
+        <form v-if="authLoginActive && !nickname" class="auth__Login">
           <input
-            class="Auth-input Auth__login-input"
+            class="auth-input auth__login-input"
+            :class="!nicknameLoginError ? 'mb-3' : ''"
             type="text"
             placeholder="Nickname"
             autocomplete="nickname"
             v-model="loginName"
           />
+          <div class="error-message">{{ nicknameLoginError }}</div>
           <input
-            class="Auth-input Auth__password-input"
+            class="auth-input auth__password-input"
+            :class="!passwordLoginError ? 'mb-4' : ''"
             type="password"
             placeholder="Password"
             autocomplete="password"
             v-model="loginPassword"
           />
+          <div class="error-message">{{ passwordLoginError }}</div>
           <button
-            class="Auth__popup-btn mx-auto block cursor-pointer select-none"
+            class="auth__popup-btn mx-auto block cursor-pointer select-none"
             @click.prevent="submitLoginForm"
           >
             Login
           </button>
         </form>
         <form
-          class="Auth__Registration"
+          class="auth__registration"
           v-if="authRegistrationActive && !nickname"
         >
           <input
-            class="Auth-input Auth__login-input"
+            class="auth-input auth__login-input"
+            :class="!nicknameRegError ? 'mb-3' : ''"
             type="text"
             placeholder="Nickname"
             autocomplete="nickname"
             v-model="regName"
-            @keyup="checkNicknameAvailability"
           />
+          <div class="error-message">{{ nicknameRegError }}</div>
           <input
-            class="Auth-input Auth__password-input"
+            class="auth-input auth__password-input"
+            :class="!passwordRegError ? 'mb-4' : ''"
             type="password"
             placeholder="Password"
             autocomplete="password"
             v-model="regPassword"
           />
+          <div class="error-message">{{ passwordRegError }}</div>
+          <div class="success-message" v-if="isRegistrationSuccessful">
+            ✅ Registration is successful! Logging in...
+          </div>
           <button
-            class="Auth__popup-btn mx-auto cursor-pointer select-none"
+            class="auth__popup-btn mx-auto cursor-pointer select-none"
             @click.prevent="submitRegistrationForm"
           >
             Register
@@ -413,10 +365,20 @@
           today.
         </div>
         <div class="footer__socials mt-4 flex gap-3 lg:justify-center">
-          <ShareTwitterX class="share__icon"></ShareTwitterX>
-          <ShareFacebook class="share__icon"></ShareFacebook>
-          <ShareInstagram class="share__icon"></ShareInstagram>
-          <ShareGithub class="share__icon"></ShareGithub>
+          <a target="_blank" href="https://x.com/andrey_omelch">
+            <MyTwitterX class="share__icon"></MyTwitterX
+          ></a>
+          <a target="_blank" href="https://t.me/andrey_omelch"
+            ><MyTelegram class="share__icon"></MyTelegram
+          ></a>
+          <a
+            @click="copyEmailToClipboard()"
+            href="mailto:omel.andrey.99@gmail.com?subject=Hello%20Andrey!"
+            ><MyEmail class="share__icon"></MyEmail
+          ></a>
+          <a target="_blank" href="https://github.com/Festralus/"
+            ><MyGithub class="share__icon"></MyGithub
+          ></a>
         </div>
       </div>
       <div class="footer__links mx-1 mt-8 flex flex-wrap justify-center">
@@ -425,11 +387,11 @@
             <div
               class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
-              CONTACTS
+              CREATOR
             </div>
-            <NuxtLink to="/" class="links__link">About</NuxtLink>
-            <NuxtLink to="/" class="links__link">Features</NuxtLink>
-            <NuxtLink to="/" class="links__link">Works</NuxtLink>
+            <NuxtLink to="/" class="links__link">About me</NuxtLink>
+            <NuxtLink to="/" class="links__link">123</NuxtLink>
+            <NuxtLink to="/" class="links__link">Inspirations</NuxtLink>
             <NuxtLink to="/" class="links__link">Career</NuxtLink>
           </div>
           <div class="links__block pb-6">
@@ -438,10 +400,10 @@
             >
               LINKS
             </div>
-            <NuxtLink to="/" class="links__link">X / Twitter</NuxtLink>
-            <NuxtLink to="/" class="links__link">Delivery Details</NuxtLink>
-            <NuxtLink to="/" class="links__link">Terms & Conditions</NuxtLink>
-            <NuxtLink to="/" class="links__link">Github</NuxtLink>
+            <NuxtLink to="/" class="links__link">GutHub</NuxtLink>
+            <NuxtLink to="/" class="links__link">Codewars</NuxtLink>
+            <NuxtLink to="/" class="links__link">123</NuxtLink>
+            <NuxtLink to="/" class="links__link">123</NuxtLink>
           </div>
         </div>
         <div class="links__container inline-flex">
@@ -449,23 +411,23 @@
             <div
               class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
-              FAQ
+              CONTACTS
             </div>
-            <NuxtLink to="/" class="links__link">Account</NuxtLink>
-            <NuxtLink to="/" class="links__link">Manage Deliveries</NuxtLink>
-            <NuxtLink to="/" class="links__link">Orders</NuxtLink>
-            <NuxtLink to="/" class="links__link">Payment</NuxtLink>
+            <NuxtLink to="/" class="links__link">X / Twitter</NuxtLink>
+            <NuxtLink to="/" class="links__link">E-mail</NuxtLink>
+            <NuxtLink to="/" class="links__link">Telegram</NuxtLink>
+            <NuxtLink to="/" class="links__link">Facebook</NuxtLink>
           </div>
           <div class="links__block pb-6">
             <div
               class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
-              RESOURCES
+              THE WEBSITE
             </div>
-            <NuxtLink to="/" class="links__link">Free eBook</NuxtLink>
-            <NuxtLink to="/" class="links__link">Developer Tutorial</NuxtLink>
-            <NuxtLink to="/" class="links__link">How to - Blog</NuxtLink>
-            <NuxtLink to="/" class="links__link">About me</NuxtLink>
+            <NuxtLink to="/" class="links__link">Why LoomHub</NuxtLink>
+            <NuxtLink to="/" class="links__link">Roadmap</NuxtLink>
+            <NuxtLink to="/" class="links__link">Features</NuxtLink>
+            <NuxtLink to="/" class="links__link">Credits</NuxtLink>
           </div>
         </div>
       </div>
@@ -475,26 +437,16 @@
       >
         Loom.hub © 2024-2025, All rights reserved
       </div>
-      <div class="footer__payment-methods mt-4 flex justify-center gap-3">
-        <PaymentVisaIcon class="footer__payment_method"></PaymentVisaIcon>
-        <PaymentMastercardIcon
-          class="footer__payment_method"
-        ></PaymentMastercardIcon>
-        <PaymentPaypalIcon class="footer__payment_method"></PaymentPaypalIcon>
-        <PaymentAppleIcon class="footer__payment_method"></PaymentAppleIcon>
-        <PaymentGoogleIcon class="footer__payment_method"></PaymentGoogleIcon>
-      </div>
     </footer>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, nextTick, onMounted } from 'vue';
-import { useAuthStore } from '@/stores/index';
 import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/index';
+import { useSortingStore } from '@/stores/index.js';
 const route = useRoute();
 
-import axios from 'axios';
 import Cookies from 'js-cookie';
 
 import dress_styles_list from '~/data/dress_styles.js';
@@ -507,17 +459,10 @@ import PointerIcon from '../assets/icons/PointerIcon.vue';
 import ProfileIcon from '../assets/icons/ProfileIcon.vue';
 import SearchIconBlack from '../assets/icons/SearchIconBlack.vue';
 import SearchIconGray from '../assets/icons/SearchIconGray.vue';
-import PaymentAppleIcon from '../assets/icons/PaymentAppleIcon.vue';
-import PaymentGoogleIcon from '../assets/icons/PaymentGoogleIcon.vue';
-import PaymentMastercardIcon from '../assets/icons/PaymentMastercardIcon.vue';
-import PaymentPaypalIcon from '../assets/icons/PaymentPaypalIcon.vue';
-import PaymentVisaIcon from '../assets/icons/PaymentVisaIcon.vue';
-import ShareTwitterX from '../assets/icons/ShareTwitterXIcon.vue';
-import ShareFacebook from '../assets/icons/ShareFacebookIcon.vue';
-import ShareInstagram from '../assets/icons/ShareInstagramIcon.vue';
-import ShareGithub from '../assets/icons/ShareGithubIcon.vue';
-
-import In_development_component from '@/components/in_development_component.vue';
+import MyTwitterX from '../assets/icons/MyTwitterXIcon.vue';
+import MyTelegram from '../assets/icons/MyTelegramIcon.vue';
+import MyEmail from '../assets/icons/MyEmailIcon.vue';
+import MyGithub from '../assets/icons/MyGithubIcon.vue';
 
 // In development popup
 const showInDev = ref(false);
@@ -527,27 +472,18 @@ function openInDev(string) {
   showInDev.value = true;
 }
 
-const config = useRuntimeConfig();
-const api = axios.create({
-  baseURL: config.public.apiBase,
-});
-// const api = useApi();
+// API endpoint
+import { useApi } from '@/composables/useApi.js';
+const api = useApi();
 
 onMounted(() => {
-  checkSession();
-
-  watch(searchQuery, (newValue) => {
-    if (newValue) {
-      document.addEventListener('click', closeDropdown);
-    } else {
-      document.removeEventListener('click', closeDropdown);
-      outsideClickOccurance.value = false;
-    }
-  });
+  getSession();
+  setStopSearchWatcher();
+  setCloseShopRoute();
 });
 
 onUnmounted(() => {
-  document.removeEventListener('click', closeDropdown);
+  removeStopSearchWatcher();
 });
 
 // Padding for certain pages
@@ -628,6 +564,38 @@ function closeModalOverlay() {
   isModalOverlayActive.value = false;
 }
 
+// Close dropdown on route change
+const router = useRouter();
+
+function setCloseShopRoute() {
+  router.afterEach(closeShop);
+}
+
+function closeShop() {
+  isShopClicked.value = false;
+  isShopHovered.value = false;
+}
+
+// Close dropdown on outside click
+let stopSearchWatcher = null;
+function setStopSearchWatcher() {
+  stopSearchWatcher = watch(searchQuery, (newValue) => {
+    if (newValue) {
+      document.addEventListener('click', closeDropdown);
+    } else {
+      document.removeEventListener('click', closeDropdown);
+      outsideClickOccurance.value = false;
+    }
+  });
+}
+
+function removeStopSearchWatcher() {
+  if (stopSearchWatcher) {
+    stopSearchWatcher();
+  }
+  document.removeEventListener('click', closeDropdown);
+}
+
 // Burger Dropdown
 const isBurgerDropdownActive = ref(false);
 
@@ -641,6 +609,7 @@ function openBurgerDropdown() {
 }
 function closeBurgerDropdown() {
   isBurgerDropdownActive.value = false;
+  closeModalOverlay();
 }
 
 // Product search mobile view control
@@ -664,6 +633,7 @@ watch(searchQuery, async () => {
   await performQuickSearch();
 });
 
+const isFetching = ref(false);
 async function performQuickSearch() {
   outsideClickOccurance.value = false;
   const query = searchQuery.value.trim();
@@ -674,6 +644,7 @@ async function performQuickSearch() {
   }
 
   try {
+    isFetching.value = true;
     openMobileSearch();
     outsideClickOccurance.value = false;
     const res = await api.get(`api/products/search?query=${query}`);
@@ -686,6 +657,8 @@ async function performQuickSearch() {
     searchResults.value = res.data.length < 5 ? res.data : res.data.slice(0, 5);
   } catch (err) {
     console.error(err);
+  } finally {
+    isFetching.value = false;
   }
 }
 
@@ -729,52 +702,139 @@ function AuthStepBack() {
 const regName = ref('');
 const regPassword = ref('');
 async function submitRegistrationForm() {
+  isRegistrationSuccessful.value = false;
+  nicknameRegError.value = validateNickname(regName.value);
+  passwordRegError.value = validatePassword(regPassword.value);
+
+  if (nicknameRegError.value || passwordRegError.value) {
+    return;
+  }
+
+  const res = await api.post('/api/nicknameAvailability', {
+    nickname: regName.value,
+  });
+  if (!res.data.available) {
+    nicknameRegError.value = 'This nickname is already taken';
+    return;
+  } else {
+    nicknameRegError.value = '';
+  }
+
   try {
     await api.post('/api/registration', {
       nickname: regName.value,
       password: regPassword.value,
     });
+
+    isRegistrationSuccessful.value = true;
+
+    loginName.value = regName.value;
+    loginPassword.value = regPassword.value;
+
+    regName.value = '';
+    regPassword.value = '';
+
+    setTimeout(() => {
+      authRegistrationActive.value = false;
+      authGreetingsActive.value = true;
+      isRegistrationSuccessful.value = false;
+      nextTick(() => {
+        submitLoginForm();
+      });
+    }, 2000);
   } catch (err) {
-    console.error(err);
+    const msg = err?.response?.data?.message;
+    if (msg?.includes('Nickname')) {
+      nicknameRegError.value = msg;
+    } else if (msg?.includes('Password')) {
+      passwordRegError.value = msg;
+    } else {
+      console.error(err);
+    }
   }
 }
 
-async function checkNicknameAvailability() {
-  try {
-    const response = await api.post('/api/nicknameAvailability', {
-      nickname: regName.value,
-    });
-    console.log(response);
-  } catch (err) {
-    console.error(err);
-  }
+// Registration error messages
+const nicknameRegError = ref('');
+const passwordRegError = ref('');
+const isRegistrationSuccessful = ref(false);
+
+function validateNickname(nickname) {
+  if (nickname.length < 5) return 'Nickname is too short (min 5 characters)';
+  if (nickname.length > 20) return 'Nickname is too long (max 20 characters)';
+  if (!/^[a-zA-Z0-9_]+$/.test(nickname))
+    return 'Only english letters, numbers and underscores are allowed';
+
+  return null;
+}
+
+function validatePassword(password) {
+  if (password.length < 5) return 'Password is too short (min 5 characters)';
+  if (password.length > 20) return 'Password is too long (max 20 characters)';
+  if (!/^[a-zA-Z0-9]+$/.test(password))
+    return 'Only english letters and numbers are allowed';
+  return null;
 }
 
 // Login and Session
 const loginName = ref('Guppi');
 const loginPassword = ref('123123');
-const checkSession = useAuthStore().checkSession;
+const getSession = useAuthStore().getSession;
 async function submitLoginForm() {
+  nicknameLoginError.value = validateNickname(loginName.value);
+  passwordLoginError.value = validatePassword(loginPassword.value);
+
+  if (nicknameLoginError.value || passwordLoginError.value) {
+    return;
+  }
+
   try {
     const response = await api.post('/api/login', {
       nickname: loginName.value,
       password: loginPassword.value,
     });
+
     const { token } = response.data;
     Cookies.set('token', token, { expires: 1 });
 
-    // console.log(`You are: ${response.data.user}. Your token is: ${token}`);
-
-    await checkSession();
+    await getSession();
   } catch (err) {
-    console.error(err);
+    const msg = err?.response?.data?.message;
+    if (msg?.includes('credentials')) {
+      nicknameLoginError.value = '';
+      passwordLoginError.value = 'Invalid nickname or password';
+    } else {
+      console.error(err);
+    }
   }
 }
+
+// Login error messages
+const nicknameLoginError = ref('');
+const passwordLoginError = ref('');
 
 // Log out function
 function logMeOut() {
   Cookies.remove('token');
   location.reload();
+}
+
+// Set sorting option and go to /shop
+const sortingStore = useSortingStore();
+const { setSortingOption } = sortingStore;
+
+// Handle an e-mail icon click
+function copyEmailToClipboard() {
+  const email = 'omel.andrey.99@gmail.com';
+  navigator.clipboard
+    .writeText(email)
+    .then(() => {
+      alert(`Email is copied! (${email})`);
+    })
+    .catch((err) => {
+      alert('Something went wrong. Please try another communication link.');
+      console.error(err);
+    });
 }
 </script>
 

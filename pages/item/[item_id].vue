@@ -1,7 +1,18 @@
 <template>
   <div>
+    <div v-show="isFetching || initialLoading" class="waiting-screen">
+      <div class="loader"></div>
+    </div>
+
+    <In_development_component
+      v-if="showInDev"
+      :target="currentTarget"
+      :inDevActive="showInDev"
+      @close="showInDev = false"
+    />
+
     <BreadcrumbsComponent :history="path"></BreadcrumbsComponent>
-    <div class="top__section">
+    <div v-if="item" class="top__section">
       <div class="item__gallery">
         <div class="secondary-pictures">
           <img
@@ -24,8 +35,7 @@
         <div class="item__name">{{ item?.name }} ({{ item?.brand }})</div>
         <div class="item__rating">
           <ProductRatingComponent
-            v-if="item"
-            :product="item"
+            :rating="item?.rating || 4"
             :showRatingNumber="false"
             class="item__rating-stars"
           />
@@ -73,7 +83,7 @@
         <div class="horizontal-separator-100 mt-5"></div>
         <div class="item__size-container">
           <div class="item__size__title">Choose size</div>
-          <div class="item__size__list">
+          <div class="item__size__list select-none">
             <div
               v-for="(size, i) in itemSizes"
               :key="size"
@@ -103,10 +113,10 @@
             >
               <PlusIcon />
             </div>
-            <div class="item__cart-possible-quantity">
+            <div class="item__cart-possible-quantity select-none">
               (available:
               <span class="item__cart-possible-quantity__span">
-                &nbsp{{ +availableQuantity }}</span
+                &nbsp;{{ +availableQuantity }}</span
               >)
             </div>
           </div>
@@ -116,43 +126,52 @@
           >
             Add to Cart
           </div>
-          <In_development_component
-            v-if="showInDev"
-            :target="currentTarget"
-            :inDevActive="showInDev"
-            @close="showInDev = false"
-          />
         </div>
       </div>
     </div>
-    <div class="item__tabs">
+    <div v-if="item" class="item__tabs">
       <!-- Tabs menu -->
       <div class="tabs__list" ref="productTabsRefs">
         <div
-          @click="switchProductTab(0)"
+          @click="(switchProductTab(0), (hoveredTabName = null))"
           class="tabs__list__tab item-tabs__details-tab"
-          :class="{ chosen: currentProductTab === 0 }"
+          :class="[
+            { chosen: currentProductTab === 0 },
+            { 'tab-name__hovered': hoveredTabName === 0 },
+          ]"
+          @mouseover="currentProductTab === 0 ? '' : (hoveredTabName = 0)"
+          @mouseleave="hoveredTabName = null"
         >
           Product Details
         </div>
         <div
-          @click="switchProductTab(1)"
+          @click="(switchProductTab(1), (hoveredTabName = null))"
           class="tabs__list__tab item-tabs__reviews-tab"
-          :class="{ chosen: currentProductTab === 1 }"
+          :class="[
+            { chosen: currentProductTab === 1 },
+            { 'tab-name__hovered': hoveredTabName === 1 },
+          ]"
+          @mouseover="currentProductTab === 1 ? '' : (hoveredTabName = 1)"
+          @mouseleave="hoveredTabName = null"
         >
           Rating & Reviews
         </div>
         <div
-          @click="switchProductTab(2)"
+          @click="(switchProductTab(2), (hoveredTabName = null))"
           class="tabs__list__tab item-tabs__FAQ-tab"
-          :class="{ chosen: currentProductTab === 2 }"
+          :class="[
+            { chosen: currentProductTab === 2 },
+            { 'tab-name__hovered': hoveredTabName === 2 },
+          ]"
+          @mouseover="currentProductTab === 2 ? '' : (hoveredTabName = 2)"
+          @mouseleave="hoveredTabName = null"
         >
           FAQs
         </div>
       </div>
 
       <!-- Details tab -->
-      <div v-if="currentProductTab == 0" class="details-tab__container">
+      <div v-show="currentProductTab == 0" class="details-tab__container">
         <table class="details-tab__table">
           <tbody>
             <tr v-for="(value, key) in productDetails" :key="key" class=" ">
@@ -160,36 +179,31 @@
                 {{ formatKey(key) }}
               </th>
               <td class="details-tab__table-data">
-                <div class="table-data__value">{{ value }}</div>
-                <div
-                  @click="openInDev('Shopping Navigation')"
+                <div class="table-data__value">{{ formatValue(value) }}</div>
+                <NuxtLink
+                  :to="similarLinks[key]"
                   v-if="isKeyFilter(key)"
                   class="table-data__link"
                 >
                   Click to find similar products
-                </div>
+                </NuxtLink>
               </td>
             </tr>
           </tbody>
         </table>
         <div class="details-tab__photos">
-          <img
+          <div
             v-for="(item, index) in item?.detailsImages"
             :key="`image-${index}`"
-            :src="`${item}`"
-            class="details-tab__photo"
-          />
+            class="details-tab__lazy-photo"
+          >
+            <img :src="item" class="details-tab__photo" loading="lazy" />
+          </div>
         </div>
       </div>
-      <In_development_component
-        v-if="showInDev"
-        :target="currentTarget"
-        :inDevActive="showInDev"
-        @close="showInDev = false"
-      />
 
       <!-- Reviews tab -->
-      <div v-if="currentProductTab == 1" class="reviews-tab__container">
+      <div v-show="currentProductTab == 1" class="reviews-tab__container">
         <div class="reviews__top-line">
           <div class="reviews">
             <div class="reviews__menu">
@@ -200,7 +214,10 @@
                 >
               </div>
               <div class="reviews-menu__management">
-                <div class="reviews-menu__sorting">
+                <div
+                  v-show="totalReviewsCount > 1"
+                  class="reviews-menu__sorting"
+                >
                   <div
                     class="sorting__dropdown-menu"
                     @click="toggleSortingList()"
@@ -250,13 +267,17 @@
                 >
                   Write a Review
                 </button>
-                <In_development_component
-                  v-if="showInDev"
-                  :target="currentTarget"
-                  :inDevActive="showInDev"
-                  @close="showInDev = false"
-                />
               </div>
+            </div>
+          </div>
+
+          <!-- Block to show when there are no reviews -->
+          <div
+            v-show="totalReviewsCount < 1"
+            class="no-reviews-available__container"
+          >
+            <div class="no-reviews__text">
+              Nobody has reviewed this item yet
             </div>
           </div>
 
@@ -272,7 +293,7 @@
               <ProductRatingComponent
                 class="reviews__card__stars"
                 v-if="review"
-                :product="review"
+                :rating="review.rating"
                 :starsSize="6"
               />
               <div class="reviews__card__name-line flex items-end">
@@ -308,6 +329,8 @@
               </div>
             </div>
           </div>
+
+          <!-- Reviews pagination -->
           <div v-show="totalReviewPages > 0" class="reviews__pages">
             <ArrowIcon
               v-show="currentReviewPage !== 1"
@@ -335,7 +358,7 @@
       </div>
 
       <!-- FAQs tab -->
-      <div v-if="currentProductTab == 2" class="FAQ-tab__container">
+      <div v-show="currentProductTab == 2" class="FAQ-tab__container">
         <div class="FAQ-tab__question">
           <span class="FAQ-tab__question-bullet">•</span> What is the estimated
           delivery time for this product?
@@ -371,18 +394,15 @@
         </div>
         <div class="FAQ-tab__answer">
           To initiate a return or exchange, simply
-          <span @click="openInDev('Contacts Page')" class="FAQ__contact-support"
-            >contact our customer support</span
+          <a
+            target="_blank"
+            href="https://t.me/andrey_omelch"
+            class="FAQ__contact-support"
+            >contact our customer support</a
           >
           team through our website, and they will guide you through the process.
           You will need to provide your order number and reason for the return.
         </div>
-        <In_development_component
-          v-if="showInDev"
-          :target="currentTarget"
-          :inDevActive="showInDev"
-          @close="showInDev = false"
-        />
 
         <div class="FAQ-tab__question">
           <span class="FAQ-tab__question-bullet">•</span> What payment methods
@@ -415,10 +435,10 @@
         </div> -->
       </div>
     </div>
-    <div class="relevant-products">
+    <div v-show="item" class="relevant-products">
       <div class="relevant-products__title">YOU MIGHT ALSO LIKE</div>
       <Slider_component
-        v-if="item"
+        v-show="item"
         class="relevant-products__slider"
         filterName="getRelatedItems"
         :productID="productID"
@@ -433,7 +453,6 @@
 // Imports
 import { useAuthStore } from '@/stores/index';
 import all_colors from '@/data/colors';
-import axios from 'axios';
 
 import ArrowIcon from '../assets/icons/ArrowIcon.vue';
 import MinusIcon from '@/assets/icons/MinusIcon.vue';
@@ -442,7 +461,6 @@ import VerifiedTickIcon from '@/assets/icons/VerifiedTickIcon.vue';
 import PointerIcon from '@/assets/icons/PointerIcon.vue';
 
 import BreadcrumbsComponent from '@/components/breadcrumbs_component.vue';
-import In_development_component from '@/components/in_development_component.vue';
 import Slider_component from '~/components/slider_component.vue';
 import Subscribe_news_component from '~/components/subscribe_news_component.vue';
 
@@ -477,22 +495,20 @@ definePageMeta({
   useWebsitePadding: true,
 });
 
-// API settings
-const config = useRuntimeConfig();
-const api = axios.create({
-  baseURL: config.public.apiBase,
-});
+// API endpoint
+import { useApi } from '@/composables/useApi.js';
+const api = useApi();
 
 // Check and set global variables
-const checkSession = useAuthStore().checkSession;
+const getSession = useAuthStore().getSession;
 
 onBeforeMount(() => {
-  checkSession();
+  initialLoading.value = false;
   setChosenItem();
+  getSession();
 });
 
-// Enable routing
-const router = useRouter();
+const hoveredTabName = ref(null);
 
 // Get product information
 const productID = ref('');
@@ -502,12 +518,38 @@ const itemSizes = ref([]);
 const modifiedPrice = ref(null);
 const discountPercentage = ref(null);
 const currencyMultiplier = 1;
+const similarLinks = ref({});
+const filterKeys = ref(['brand', 'productCategory', 'clothingType']);
+// const filterKeys = ref(['brand', 'productCategory', 'clothingType', 'country']);
+
+// Loading screen while item is being fetched
+const isFetching = ref(false);
+const initialLoading = ref(true);
+
+// Forbid scrolling while item is being fetched
+const bodyClass = computed(() =>
+  isFetching.value || initialLoading.value ? 'no-scroll' : ''
+);
+useHead({
+  bodyAttrs: {
+    class: bodyClass,
+  },
+});
+
+// Loading screen while item is being fetched
+if (isFetching.value) {
+  document?.body.classList.add('no-scroll');
+}
+
 async function setChosenItem() {
+  if (isFetching.value) return;
   path.value = window.location.pathname;
   const segments = path.value.split('/');
   productID.value = segments.pop();
 
   try {
+    isFetching.value = true;
+
     const res = await api.post('/api/productByGid', {
       itemGID: productID.value,
     });
@@ -548,12 +590,64 @@ async function setChosenItem() {
     itemSizes.value = [...new Set(availableSizes)];
 
     // Set available quantity
-    fetchAvailableStock();
-    getProductReviews();
-    getProductDetails();
+    await fetchAvailableStock();
+    await getProductReviews();
+    await getProductDetails();
+    chooseColor(0);
+    sortReviews();
+
+    // Set similar links
+    setSimilarLinks(res.data);
   } catch (err) {
     console.error(err);
+  } finally {
+    isFetching.value = false;
   }
+}
+
+function setSimilarLinks(data) {
+  filterKeys.value.forEach((key) => {
+    const value = data[key];
+    if (value) {
+      similarLinks.value[key] = setLink(key, value);
+    }
+  });
+}
+
+function setLink(parameter, paramValue) {
+  const lowerValue = paramValue.toLowerCase();
+
+  if (parameter === 'clothingType') {
+    if (lowerValue === 'women') {
+      return {
+        path: '/shop',
+        query: {
+          clothingType: JSON.stringify(['Unisex', 'Women']),
+        },
+      };
+    } else if (lowerValue === 'men') {
+      return {
+        path: '/shop',
+        query: {
+          clothingType: JSON.stringify(['Men', 'Unisex']),
+        },
+      };
+    } else {
+      return {
+        path: '/shop',
+        query: {
+          clothingType: JSON.stringify(['Unisex']),
+        },
+      };
+    }
+  }
+
+  return {
+    path: '/shop',
+    query: {
+      [parameter]: JSON.stringify([paramValue]),
+    },
+  };
 }
 
 // Item gallery style, 33% or 50% width depending on image quantity?
@@ -594,7 +688,8 @@ function chooseColor(index) {
   counter.value = 1;
 
   // Filter out unavailable sizes
-  itemSizes.value = item.value.stock
+  itemSizes.value = item?.value?.stock;
+  itemSizes.value = item?.value?.stock
     .filter(
       (product) => product.color == itemColors.value[chosenColor.value].name
     )
@@ -661,19 +756,21 @@ function toggleSortingList() {
 function sortReviews() {
   expandedReviews.value = [];
   shouldShowExpandButton.value = [];
+  checkReviewHeight();
+
   switch (chosenSortingParameter.value) {
     case 0:
       productReviews.value.sort((a, b) => {
         const dateA = new Date(a.createdAt);
         const dateB = new Date(b.createdAt);
-        return dateA.getTime() - dateB.getTime();
+        return dateB.getTime() - dateA.getTime();
       });
       break;
     case 1:
       productReviews.value.sort((a, b) => {
         const dateA = new Date(a.createdAt);
         const dateB = new Date(b.createdAt);
-        return dateB.getTime() - dateA.getTime();
+        return dateA.getTime() - dateB.getTime();
       });
       break;
     case 2:
@@ -710,11 +807,23 @@ async function getProductReviews() {
     // Modify nicknames and dates to match the rules
     const reviewsResponse = res.data.map((review) => {
       const createdAt = new Date(review.createdAt);
+
+      // Show name normally with space
+      const splitIndex = review.user.slice(1).search(/[A-Z]/) + 1;
+      const firstName =
+        review.user.slice(0, splitIndex).charAt(0).toLocaleUpperCase() +
+        review.user.slice(0, splitIndex).slice(1).toLocaleLowerCase();
+      const lastName =
+        review.user.slice(splitIndex).charAt(0).toLocaleUpperCase() +
+        review.user.slice(splitIndex).slice(1).toLocaleLowerCase();
+      const fullName = `${firstName} ${lastName}`;
+
       return {
         ...review,
-        user:
-          review.user.charAt(0).toLocaleUpperCase() +
-          review.user.slice(1).toLocaleLowerCase(),
+        user: fullName,
+        // user:
+        //   review.user.charAt(0).toLocaleUpperCase() +
+        //   review.user.slice(1).toLocaleLowerCase(),
         createdAt: createdAt
           ? createdAt.toLocaleDateString('en-US', {
               year: 'numeric',
@@ -787,30 +896,31 @@ function nextReviewPage() {
 // Details tab
 const productDetails = ref({});
 function getProductDetails() {
-  const availableColors = item.value.colors.join(', ');
-  const availableSizes = item.value.sizes.join(', ');
+  const availableColors =
+    item.value.colors.length > 1
+      ? item.value.colors.join(', ')
+      : item.value.colors[0];
+  const availableSizes =
+    item.value.sizes.length > 1
+      ? item.value.sizes.join(', ')
+      : item.value.sizes;
 
   productDetails.value = {
-    name: item.value.name,
-    brand: item.value.brand,
-    description: item.value.description,
-    productCategory: item.value.productCategory,
-    composition: item.value.composition,
-    clothingType: item.value.clothingType,
+    name: item.value?.name,
+    brand: item.value?.brand,
+    description: item.value?.description,
+    productCategory: item.value?.productCategory,
+    composition: item.value?.composition,
+    clothingType: item.value?.clothingType,
     availableColors: availableColors,
     availableSizes: availableSizes,
-    careInstructions: item.value.careInstructions,
-    country: item.value.country,
-    brandStyleId: item.value.brandStyleId,
+    careInstructions: item.value?.careInstructions,
+    country: item.value?.country,
+    brandStyleID: item.value?.brandStyleID,
   };
 }
 function isKeyFilter(key) {
-  return (
-    key == 'brand' ||
-    key == 'productCategory' ||
-    key == 'clothingType' ||
-    key == 'country'
-  );
+  return filterKeys.value.includes(key);
 }
 function formatKey(key) {
   return key
@@ -818,6 +928,14 @@ function formatKey(key) {
     .replace(/_/g, ' ')
     .replace(/\bId\b/gi, 'ID')
     .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+// Make sure that arrays are displayed nicely in product details tab
+function formatValue(val) {
+  if (Array.isArray(val)) {
+    return val.join(', ');
+  }
+  return val;
 }
 </script>
 <style scoped>

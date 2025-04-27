@@ -1,3 +1,14 @@
+/* Tailwind SM */
+@media screen and (max-width: 640px) {
+  .reviews__list {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .reviews__list::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* Mobile view */
 @media screen and (min-width: 1px) and (max-width: 481px) {
   .home-description__stat:first-child::after {
@@ -7,7 +18,7 @@
     top: 0;
     bottom: 0;
     width: 1px;
-    background: rgba(0, 0, 0, 0.1);
+    background: var(--btn-primary-bg-default);
     height: 100%;
   }
 }
@@ -20,7 +31,7 @@
     top: 0;
     bottom: 0;
     width: 1px;
-    background: rgba(0, 0, 0, 0.1);
+    background: var(--btn-primary-bg-default);
     height: 100%;
   }
 }
@@ -42,17 +53,20 @@
   height: 52px;
   width: 160px;
   position: relative;
+  text-align: center;
 }
 
 .popular-brands__brand {
+  height: auto;
+  max-height: calc(7vw);
+  cursor: pointer;
+}
+/* .popular-brands__brand {
   flex: 1 1 calc(25% - 20px);
   max-width: 27%;
   aspect-ratio: 1.5;
   object-fit: contain;
-  height: auto;
-  max-height: calc(8vw);
-  cursor: pointer;
-}
+} */
 
 .home-description__background--big-star {
   top: 10px;
@@ -71,17 +85,14 @@
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   width: 100%;
+}
 
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-}
-.reviews__list::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, and Edge */
-}
 .reviews__cards {
   display: flex;
   flex-wrap: nowrap;
   width: max-content;
+
+  padding-bottom: 4px;
 }
 
 .reviews__card {
@@ -98,8 +109,28 @@
   max-height: 289px;
   overflow: hidden;
 }
+.style-masonry__tile:hover {
+  filter: drop-shadow(0 0 10px var(--btn-primary-bg-hover));
+}
+.style-masonry__tile:active {
+  filter: drop-shadow(0 0 10px var(--btn-primary-bg-active));
+}
 .style-masonry__tile-background {
   margin-left: auto;
   height: 100%;
   object-fit: cover;
+}
+
+.view-all__button:not(:first-child):hover {
+  background-color: var(--btn-secondary-bg-hover);
+}
+.view-all__button:not(:first-child):active {
+  background-color: var(--btn-secondary-bg-active);
+}
+
+.brands__brand:hover {
+  background-color: var(--btn-primary-bg-hover);
+}
+.brands__brand:active {
+  background-color: var(--btn-primary-bg-active);
 }

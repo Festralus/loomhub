@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia';
 import Cookies from 'js-cookie';
-import useApi from '/utils/api';
+// import useApi from '/utils/api';
+import { useApi } from '@/composables/useApi.js';
 
 export const useAuthStore = defineStore({
   id: 'auth',
+
   state: () => {
     return {
       token: null,
@@ -12,9 +14,10 @@ export const useAuthStore = defineStore({
       authenticated: false,
     };
   },
+
   actions: {
     // Method to check whether a user is logged in
-    async checkSession() {
+    async getSession() {
       const api = useApi();
       const token = Cookies.get('token');
 
@@ -61,6 +64,42 @@ export const useAuthStore = defineStore({
       this.nickname = null;
       this.profilePicUrl = null;
       this.authenticated = false;
+    },
+  },
+});
+
+export const useSortingStore = defineStore({
+  id: 'sort',
+
+  state: () => {
+    return {
+      shopSortingOption: ref(Number(Cookies.get('shopSortingOption')) || 0),
+      sortingOptions: [
+        { name: 'Most popular' },
+        { name: 'Newest arrivals' },
+        { name: 'Most discounted' },
+        { name: 'Highest rated' },
+        { name: 'Price: low to high' },
+        { name: 'Price: high to low' },
+        { name: 'Name: A-Z' },
+        { name: 'Name: Z-A' },
+      ],
+    };
+  },
+
+  actions: {
+    setSortingOption(payload) {
+      if (this.sortingOptions[payload]) {
+        this.shopSortingOption = payload;
+        Cookies.set('shopSortingOption', String(payload), {
+          expires: 7,
+        });
+      } else {
+        this.shopSortingOption = 0;
+        Cookies.set('shopSortingOption', '0', {
+          expires: 7,
+        });
+      }
     },
   },
 });
