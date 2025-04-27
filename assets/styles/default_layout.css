@@ -88,6 +88,9 @@
     right: 13px;
     top: 6px;
   }
+  .search-results {
+    padding: 10px 3px;
+  }
 }
 
 /* PC view */
@@ -100,7 +103,10 @@
   }
   .shop-dropdown__title-arrow {
     right: 10px;
-    top: 10px;
+    top: 8px;
+  }
+  .search-results {
+    padding: 10px;
   }
 }
 
@@ -266,7 +272,6 @@
   top: 32px;
 
   width: 98%;
-  padding: 10px;
   background-color: var(--background-primary-color-two);
 
   border-radius: 0 0 1rem 1rem;
@@ -382,7 +387,7 @@
   font-family: 'Satoshi-Bold';
   font-size: 14px;
   line-height: 28px;
-  color: var(--btn-primary-disabled-active);
+  color: var(--btn-primary-bg-disabled-active);
   padding-left: 14px;
   margin-bottom: 4px;
 }

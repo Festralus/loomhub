@@ -76,12 +76,22 @@ const hoveredIndex = ref(null);
   background-color: var(--btn-secondary-bg-active);
 }
 .result_image {
-  margin-left: 10px;
-
   width: 56px;
   height: 56px;
   object-fit: contain;
   flex-shrink: 0;
+}
+
+@media (max-width: 1535px) {
+  .result_image {
+    margin-left: 0px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .result_image {
+    margin-left: 10px;
+  }
 }
 .result__text {
   flex: 1 1 auto;

@@ -42,25 +42,25 @@
         }"
       >
         <NuxtLink
-          @click="setSortingOption(0)"
+          @click="(setSortingOption(0), closeBurgerDropdown())"
           to="/shop"
           class="BurgerMenu__item"
           >Shop</NuxtLink
         >
         <NuxtLink
-          @click="setSortingOption(2)"
+          @click="(setSortingOption(2), closeBurgerDropdown())"
           to="/shop"
           class="BurgerMenu__item"
           >On Sale</NuxtLink
         >
         <NuxtLink
-          @click="setSortingOption(1)"
+          @click="(setSortingOption(1), closeBurgerDropdown())"
           to="/shop"
           class="BurgerMenu__item"
           >New Arrivals</NuxtLink
         >
         <NuxtLink
-          @click="setSortingOption(4)"
+          @click="(setSortingOption(4), closeBurgerDropdown())"
           to="/shop"
           class="BurgerMenu__item"
           >Best Choice</NuxtLink
@@ -122,7 +122,7 @@
                 >{{ style.name }}</span
               >
               <div
-                v-if="hoveredIndex !== index"
+                v-show="hoveredIndex !== index"
                 class="shop-dropdown__item__shadow"
               ></div>
             </NuxtLink>
@@ -183,7 +183,7 @@
         </div>
       </div>
       <div
-        class="top-menu__actions flex h-16 flex-shrink-0 flex-row items-center justify-end sm:w-auto xl:mr-6 xl:w-[10%]"
+        class="top-menu__actions mr-[1px] flex h-16 flex-shrink-0 flex-row items-center justify-end sm:mr-[2px] lg:mr-[3px]"
         :class="{ 'z-[140]': searchQuery }"
       >
         <div class="px-2 md:px-4">
@@ -195,7 +195,7 @@
           />
         </div>
         <div
-          class="mobile-search__container hidden sm:max-w-[64%]"
+          class="mobile-search__container hidden sm:max-w-[70%]"
           :class="{
             active: isMobileSearchActive,
             closed: !isMobileSearchActive,
@@ -232,8 +232,8 @@
           </div>
         </div>
         <button
-          class="top-menu__actions-cart top-menu__actions__button flex cursor-pointer justify-center px-2 md:px-4"
-          :class="isMobileSearchActive ? 'hidden' : ''"
+          class="top-menu__actions-cart top-menu__actions__button flex cursor-not-allowed justify-center px-2 hover:blur-[1px] active:blur-[1px] md:px-4"
+          :class="isMobileSearchActive ? 'hidden lg:block' : ''"
           @click="openInDev('Cart')"
         >
           <CartIcon class="h-16"></CartIcon>
@@ -243,15 +243,16 @@
         >
           <ProfileIcon
             class="h-16"
-            :class="isMobileSearchActive ? 'hidden' : ''"
+            :class="isMobileSearchActive ? 'hidden lg:block' : ''"
             @click="openAuthPopup"
           ></ProfileIcon>
         </button>
       </div>
+
       <!-- Modal -->
       <div
         v-show="authPopupActive"
-        class="auth__popup fixed left-[50%] top-[50%] z-[140] w-[90vw] max-w-[500px] -translate-x-[50%] -translate-y-[50%] rounded-3xl bg-white pb-5 pl-3 pr-3 pt-12 sm:w-[80vw] sm:pb-8 sm:pl-10 sm:pr-10 sm:pt-12 lg:w-[70vw]"
+        class="auth__popup fixed left-[50%] top-[50%] z-[140] w-[90vw] max-w-[500px] -translate-x-[50%] -translate-y-[50%] rounded-3xl bg-white pb-7 pl-3 pr-3 pt-12 sm:w-[80vw] sm:pb-8 sm:pl-10 sm:pr-10 sm:pt-12 lg:w-[70vw]"
       >
         <div
           class="step-back__arrow-container cursor-pointer"
@@ -446,7 +447,6 @@ import { useAuthStore } from '@/stores/index';
 import { useSortingStore } from '@/stores/index.js';
 const route = useRoute();
 
-// import axios from 'axios';
 import Cookies from 'js-cookie';
 
 import dress_styles_list from '~/data/dress_styles.js';
@@ -475,11 +475,6 @@ function openInDev(string) {
 // API endpoint
 import { useApi } from '@/composables/useApi.js';
 const api = useApi();
-
-// const config = useRuntimeConfig();
-// const api = axios.create({
-//   baseURL: config.public.apiBase,
-// });
 
 onMounted(() => {
   getSession();
@@ -614,6 +609,7 @@ function openBurgerDropdown() {
 }
 function closeBurgerDropdown() {
   isBurgerDropdownActive.value = false;
+  closeModalOverlay();
 }
 
 // Product search mobile view control

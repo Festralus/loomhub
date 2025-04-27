@@ -270,7 +270,6 @@
 </template>
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue';
-// import axios from 'axios';
 import { useSortingStore } from '@/stores/index.js';
 
 import dress_styles_list from '@/data/dress_styles.js';
@@ -299,11 +298,6 @@ const api = useApi();
 useHead({
   title: 'LoomHub',
 });
-
-// const config = useRuntimeConfig();
-// const api = axios.create({
-//   baseURL: config.public.apiBase,
-// });
 
 onMounted(() => {
   getWebsiteReviews();

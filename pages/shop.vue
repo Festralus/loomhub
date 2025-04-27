@@ -392,8 +392,6 @@
   </div>
 </template>
 <script setup>
-// import axios from 'axios';
-
 import Breadcrumbs_component from '@/components/breadcrumbs_component.vue';
 import Filter_selector_component from '@/components/filter_selector_component.vue';
 import Product_rating_component from '@/components/product_rating_component.vue';
@@ -410,11 +408,6 @@ import { storeToRefs } from 'pinia';
 // API endpoint
 import { useApi } from '@/composables/useApi.js';
 const api = useApi();
-
-// const config = useRuntimeConfig();
-// const api = axios.create({
-//   baseURL: config.public.apiBase,
-// });
 
 // Routing
 const route = useRoute();

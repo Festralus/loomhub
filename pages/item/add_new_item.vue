@@ -73,13 +73,6 @@ import { ref } from 'vue';
 import { useApi } from '@/composables/useApi.js';
 const api = useApi();
 
-// import axios from 'axios';
-
-// const config = useRuntimeConfig();
-// const api = axios.create({
-//   baseURL: config.public.apiBase,
-// });
-
 const form = ref({
   name: '',
   description: '',

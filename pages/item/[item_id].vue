@@ -35,7 +35,7 @@
         <div class="item__name">{{ item?.name }} ({{ item?.brand }})</div>
         <div class="item__rating">
           <ProductRatingComponent
-            :rating="item.rating"
+            :rating="item?.rating || 4"
             :showRatingNumber="false"
             class="item__rating-stars"
           />
@@ -171,7 +171,7 @@
       </div>
 
       <!-- Details tab -->
-      <div v-if="currentProductTab == 0" class="details-tab__container">
+      <div v-show="currentProductTab == 0" class="details-tab__container">
         <table class="details-tab__table">
           <tbody>
             <tr v-for="(value, key) in productDetails" :key="key" class=" ">
@@ -179,7 +179,7 @@
                 {{ formatKey(key) }}
               </th>
               <td class="details-tab__table-data">
-                <div class="table-data__value">{{ value }}</div>
+                <div class="table-data__value">{{ formatValue(value) }}</div>
                 <NuxtLink
                   :to="similarLinks[key]"
                   v-if="isKeyFilter(key)"
@@ -203,7 +203,7 @@
       </div>
 
       <!-- Reviews tab -->
-      <div v-if="currentProductTab == 1" class="reviews-tab__container">
+      <div v-show="currentProductTab == 1" class="reviews-tab__container">
         <div class="reviews__top-line">
           <div class="reviews">
             <div class="reviews__menu">
@@ -214,7 +214,10 @@
                 >
               </div>
               <div class="reviews-menu__management">
-                <div v-if="totalReviewsCount > 1" class="reviews-menu__sorting">
+                <div
+                  v-show="totalReviewsCount > 1"
+                  class="reviews-menu__sorting"
+                >
                   <div
                     class="sorting__dropdown-menu"
                     @click="toggleSortingList()"
@@ -270,7 +273,7 @@
 
           <!-- Block to show when there are no reviews -->
           <div
-            v-if="totalReviewsCount < 1"
+            v-show="totalReviewsCount < 1"
             class="no-reviews-available__container"
           >
             <div class="no-reviews__text">
@@ -355,7 +358,7 @@
       </div>
 
       <!-- FAQs tab -->
-      <div v-if="currentProductTab == 2" class="FAQ-tab__container">
+      <div v-show="currentProductTab == 2" class="FAQ-tab__container">
         <div class="FAQ-tab__question">
           <span class="FAQ-tab__question-bullet">•</span> What is the estimated
           delivery time for this product?
@@ -432,10 +435,10 @@
         </div> -->
       </div>
     </div>
-    <div v-if="item" class="relevant-products">
+    <div v-show="item" class="relevant-products">
       <div class="relevant-products__title">YOU MIGHT ALSO LIKE</div>
       <Slider_component
-        v-if="item"
+        v-show="item"
         class="relevant-products__slider"
         filterName="getRelatedItems"
         :productID="productID"
@@ -496,11 +499,6 @@ definePageMeta({
 import { useApi } from '@/composables/useApi.js';
 const api = useApi();
 
-// const config = useRuntimeConfig();
-// const api = axios.create({
-//   baseURL: config.public.apiBase,
-// });
-
 // Check and set global variables
 const getSession = useAuthStore().getSession;
 
@@ -524,27 +522,24 @@ const similarLinks = ref({});
 const filterKeys = ref(['brand', 'productCategory', 'clothingType']);
 // const filterKeys = ref(['brand', 'productCategory', 'clothingType', 'country']);
 
-// Waiting screen while items are being fetched
+// Loading screen while item is being fetched
 const isFetching = ref(false);
 const initialLoading = ref(true);
 
+// Forbid scrolling while item is being fetched
+const bodyClass = computed(() =>
+  isFetching.value || initialLoading.value ? 'no-scroll' : ''
+);
 useHead({
   bodyAttrs: {
-    class: 'no-scroll',
+    class: bodyClass,
   },
 });
-// Loading screen while items are being fetched
+
+// Loading screen while item is being fetched
 if (isFetching.value) {
   document?.body.classList.add('no-scroll');
 }
-
-watchEffect(() => {
-  if (isFetching.value || initialLoading.value) {
-    document?.body.classList.add('no-scroll');
-  } else {
-    document?.body.classList.remove('no-scroll');
-  }
-});
 
 async function setChosenItem() {
   if (isFetching.value) return;
@@ -599,6 +594,7 @@ async function setChosenItem() {
     await getProductReviews();
     await getProductDetails();
     chooseColor(0);
+    sortReviews();
 
     // Set similar links
     setSimilarLinks(res.data);
@@ -614,7 +610,6 @@ function setSimilarLinks(data) {
     const value = data[key];
     if (value) {
       similarLinks.value[key] = setLink(key, value);
-      // console.log(similarLinks.value);
     }
   });
 }
@@ -761,19 +756,21 @@ function toggleSortingList() {
 function sortReviews() {
   expandedReviews.value = [];
   shouldShowExpandButton.value = [];
+  checkReviewHeight();
+
   switch (chosenSortingParameter.value) {
     case 0:
       productReviews.value.sort((a, b) => {
         const dateA = new Date(a.createdAt);
         const dateB = new Date(b.createdAt);
-        return dateA.getTime() - dateB.getTime();
+        return dateB.getTime() - dateA.getTime();
       });
       break;
     case 1:
       productReviews.value.sort((a, b) => {
         const dateA = new Date(a.createdAt);
         const dateB = new Date(b.createdAt);
-        return dateB.getTime() - dateA.getTime();
+        return dateA.getTime() - dateB.getTime();
       });
       break;
     case 2:
@@ -931,6 +928,14 @@ function formatKey(key) {
     .replace(/_/g, ' ')
     .replace(/\bId\b/gi, 'ID')
     .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+// Make sure that arrays are displayed nicely in product details tab
+function formatValue(val) {
+  if (Array.isArray(val)) {
+    return val.join(', ');
+  }
+  return val;
 }
 </script>
 <style scoped>
