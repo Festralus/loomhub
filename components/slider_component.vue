@@ -1,6 +1,6 @@
 <template>
   <div
-    class="component__items relative mx-1 flex min-h-[476px] w-full max-w-[100vw] select-none flex-row justify-start overflow-x-auto pb-1 xl:my-4 xl:origin-center xl:transform"
+    class="component__items relative mx-1 flex min-h-[476px] w-full max-w-[99vw] select-none flex-row justify-start overflow-x-auto pb-1 xl:my-4 xl:origin-center xl:transform"
     :class="isDragging ? 'cursor-grabbing' : 'cursor-grab'"
     @mousedown.left="startDrag"
     @mousemove="onDrag"
