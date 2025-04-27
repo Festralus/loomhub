@@ -129,7 +129,7 @@ const currencyMultiplier = 1;
 
 async function getSliderProducts() {
   try {
-    const res = await api.get('/api/getSliderProductsList', {
+    const res = await api.get('api/getSliderProductsList', {
       params: {
         filterName: props?.filterName,
         limit: parseInt(props?.limit) || 9,
