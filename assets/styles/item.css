@@ -31,10 +31,10 @@
   }
   .details-tab__lazy-photo {
     height: 36vw;
+    padding: auto;
   }
   .details-tab__photo {
     object-fit: cover;
-    max-height: 36vw;
     border-radius: 50px;
   }
 
@@ -741,11 +741,11 @@
   font-family: 'Satoshi-Regular';
 }
 .details-tab__lazy-photo {
-  background-size: cover;
-  background-position: center;
-}
-.details-tab__lazy-photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   aspect-ratio: 0.75;
+  width: 100%;
   position: relative;
   background-image: url('/assets/images/lazy-image.webp');
   background-size: cover;
@@ -753,6 +753,8 @@
   border-radius: 50px;
   overflow: hidden;
   border: 1px solid var(--border-default-color);
+  background-size: cover;
+  background-position: center;
 }
 .table-data__link {
   display: block;

@@ -420,6 +420,7 @@ useHead({
   bodyAttrs: {
     class: 'no-scroll',
   },
+  title: 'Shop',
 });
 
 onMounted(() => {

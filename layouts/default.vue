@@ -1,20 +1,27 @@
 <template>
   <div>
+    <!-- Modal to show incomplete elements -->
     <In_development_component
       v-if="showInDev"
       :target="currentTarget"
       :inDevActive="showInDev"
       @close="showInDev = false"
     />
+
+    <!-- Fixed top line -->
     <header
       class="top-menu fixed left-0 top-0 z-[100] flex h-[64px] w-full flex-row items-center justify-between bg-white"
     >
-      <div
+      <button
+      type="button"
+        aria-label=""
         class="BurgerMenuIcon__container flex w-[12%] sm:hidden"
         @click="openBurgerDropdown"
       >
         <BurgerMenuIcon class="m-auto h-6 w-6 flex-shrink-0 sm:hidden" />
-      </div>
+      </button>
+
+      <!-- Overlays -->
       <div
         class="modal_overlay"
         @click="closeModalOverlay"
@@ -33,7 +40,9 @@
           active: isShopHovered || isShopClicked,
         }"
       ></div>
-      <div
+
+      <!-- Side navigation menu for mobile users -->
+      <nav
         class="BurgerMenu__dropdown"
         :class="{
           active: isBurgerDropdownActive,
@@ -65,7 +74,9 @@
           class="BurgerMenu__item"
           >Best Choice</NuxtLink
         >
-      </div>
+      </nav>
+
+      <!-- Main logo -->
       <NuxtLink
         to="/"
         class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none text-black sm:ml-[20px] sm:block md:ml-[1%] 2xl:ml-[6%] 2xl:text-3xl"
@@ -73,10 +84,13 @@
       >
         LOOM.HUB
       </NuxtLink>
+
+      <!-- Main navigation for PC users -->
       <nav
         class="top-menu__nav SatoshiRegular hidden max-h-[10px] flex-row items-center text-base sm:flex sm:w-full sm:justify-evenly lg:flex xl:w-[30%] 2xl:text-xl"
         :class="{ 'sm:hidden': isMobileSearchActive }"
       >
+        <!-- Shop dropdown menu with 4 options -->
         <div
           @mouseenter="isShopHovered = true"
           @mouseleave="isShopHovered = false"
@@ -84,7 +98,9 @@
           :class="{ 'z-[140]': isShopHovered || isShopClicked }"
           class="top-menu__nav-item top-menu__nav-item__shop relative hidden h-16 cursor-pointer flex-row sm:flex"
         >
-          <div class="top-menu__nav-item__shop-text select-none">Shop</div>
+          <button type="button" class="top-menu__nav-item__shop-text select-none">
+            Shop
+          </button>
           <PointerIcon
             class="top-menu__nav-item__shop-arrow mt-[2px] h-6 pl-[3px] sm:w-[14px]"
           />
@@ -96,7 +112,8 @@
             <div class="shop-dropdown__title-text">Shop</div>
             <PointerIcon class="shop-dropdown__title-arrow" />
           </div>
-          <div
+          <ul
+            role="menu"
             v-show="isShopHovered || isShopClicked"
             class="top-menu__nav-item__shop-dropdown"
           >
@@ -126,8 +143,9 @@
                 class="shop-dropdown__item__shadow"
               ></div>
             </NuxtLink>
-          </div>
+          </ul>
         </div>
+
         <NuxtLink
           @click="setSortingOption(2)"
           :to="'/shop'"
@@ -150,7 +168,10 @@
           Best Choice
         </NuxtLink>
       </nav>
-      <div
+
+      <!-- Main search for PC users -->
+      <form
+        role="search"
         class="top-menu__search hidden w-full flex-row rounded-3xl bg-[#F0F0F0] p-2 lg:flex xl:w-[40vw]"
         :class="{ 'z-[140]': searchQuery }"
         @click="focusHomePageSearch"
@@ -160,7 +181,9 @@
           class="top-menu__search-icon mr-3 hidden pl-1 lg:block"
           aria-label="Search"
         />
-        <div class="top-menu__search-dropdown relative hidden w-full lg:block">
+        <section
+          class="top-menu__search-dropdown relative hidden w-full lg:block"
+        >
           <input
             type="text"
             class="top-menu__search-input h-6 w-[99%] bg-[#F0F0F0] pl-[2px]"
@@ -169,6 +192,7 @@
             ref="HomePageSearch"
             v-model="searchQuery"
             @input="performQuickSearch"
+            @compositionend="performQuickSearch"
             @paste="performPasteQuickSearch"
             @focus="openDropdown"
           />
@@ -178,23 +202,28 @@
             :query="searchQuery"
             :searchResults="searchResults"
             :isFetching="isFetching"
-          >
-          </Search_results_dropdown>
-        </div>
-      </div>
-      <div
+          />
+        </section>
+      </form>
+
+      <!-- Section with interactive state buttons -->
+      <section
         class="top-menu__actions mr-[1px] flex h-16 flex-shrink-0 flex-row items-center justify-end sm:mr-[2px] lg:mr-[3px]"
         :class="{ 'z-[140]': searchQuery }"
       >
-        <div class="px-2 md:px-4">
+        <button class="px-2 md:px-4">
+          <!-- Icon for mobile closed search state -->
           <SearchIconBlack
             class="top-menu__search-icon lg:hidden"
             :class="isMobileSearchActive ? 'hidden' : ''"
             aria-label="Search"
             @click="openMobileSearch()"
           />
-        </div>
-        <div
+        </button>
+
+        <!-- Mobile search container -->
+        <form
+          role="search"
           class="mobile-search__container hidden sm:max-w-[70%]"
           :class="{
             active: isMobileSearchActive,
@@ -203,6 +232,7 @@
           }"
           ref="mobileSearchContainer"
         >
+          <!-- Icon for mobile opened search state -->
           <SearchIconGray
             class="top-menu__search-icon ml-2 mr-3"
             aria-label="Search"
@@ -218,6 +248,7 @@
               v-model="searchQuery"
               @input="performQuickSearch"
               @change="performQuickSearch"
+              @compositionend="performQuickSearch"
               @paste="performPasteQuickSearch"
               @click="openDropdown"
               @focus="openDropdown"
@@ -230,7 +261,9 @@
               :isFetching="isFetching"
             ></Search_results_dropdown>
           </div>
-        </div>
+        </form>
+
+        <!-- Cart button -->
         <button
           class="top-menu__actions-cart top-menu__actions__button flex cursor-not-allowed justify-center px-2 hover:blur-[1px] active:blur-[1px] md:px-4"
           :class="isMobileSearchActive ? 'hidden lg:block' : ''"
@@ -238,6 +271,8 @@
         >
           <CartIcon class="h-16"></CartIcon>
         </button>
+
+        <!-- Profile button -->
         <button
           class="top-menu__actions-profile top-menu__actions__button flex cursor-pointer justify-center px-2 md:px-4"
         >
@@ -247,19 +282,22 @@
             @click="openAuthPopup"
           ></ProfileIcon>
         </button>
-      </div>
+      </section>
 
-      <!-- Modal -->
+      <!-- Modal profile window -->
       <div
         v-show="authPopupActive"
         class="auth__popup fixed left-[50%] top-[50%] z-[140] w-[90vw] max-w-[500px] -translate-x-[50%] -translate-y-[50%] rounded-3xl bg-white pb-7 pl-3 pr-3 pt-12 sm:w-[80vw] sm:pb-8 sm:pl-10 sm:pr-10 sm:pt-12 lg:w-[70vw]"
       >
+        <!-- Arrow to navigate one step back -->
         <div
           class="step-back__arrow-container cursor-pointer"
           @click="AuthStepBack"
         >
           <ArrowIcon class="step-back__arrow"></ArrowIcon>
         </div>
+
+        <!-- Main page of profile modal -->
         <div v-if="authGreetingsActive && !nickname" class="auth__greetings">
           <div
             class="auth__popup-btn Login-button cursor-pointer select-none"
@@ -274,6 +312,8 @@
             Sign up
           </div>
         </div>
+
+        <!-- Logged in state of profile modal -->
         <div v-if="nickname">
           <div class="auth__user-nickname">{{ nickname }}</div>
           <img
@@ -289,6 +329,8 @@
             Log out
           </div>
         </div>
+
+        <!--  -->
         <form v-if="authLoginActive && !nickname" class="auth__Login">
           <input
             class="auth-input auth__login-input"
@@ -349,12 +391,12 @@
         </form>
       </div>
     </header>
-    <div
+    <main
       class="website mt-16"
       :class="{ 'website-padding': useWebsitePadding }"
     >
       <slot></slot>
-    </div>
+    </main>
     <footer class="mb-6">
       <div class="footer__branding ml-4 block lg:ml-0 lg:text-center">
         <div class="share__title IntegralBold mt-6 text-2xl">LOOM.HUB</div>
