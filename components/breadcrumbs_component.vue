@@ -18,8 +18,13 @@
       v-if="modifiedSegments && modifiedSegments.length > 1"
       class="path__breadcrumb"
     >
-      <NuxtLink
+      <!-- <NuxtLink
         :to="isProductPage ? '/shop' : ''"
+        class="breadcrumb breadcrumb__name"
+        >{{ modifiedSegments?.[1] }}</NuxtLink
+      > -->
+      <NuxtLink
+        :to="{ '/shop': isProductPage }"
         class="breadcrumb breadcrumb__name"
         >{{ modifiedSegments?.[1] }}</NuxtLink
       >

@@ -18,12 +18,30 @@
         @mouseover="hoveredIndex = index"
         @mouseleave="hoveredIndex = null"
       >
-        <div
+        <!-- <div
           :class="
             combinedQuantity?.[props.parameter]?.[item] ? 'active' : 'inactive'
           "
           class="selector__filter__text"
           :style="hoveredIndex == index ? 'text-decoration:underline' : ''"
+        >
+          {{ item }}
+          <span
+            :class="
+              combinedQuantity?.[props.parameter]?.[item]
+                ? 'active'
+                : 'inactive'
+            "
+            v-if="isAnyFilterActive"
+            >({{ combinedQuantity?.[props.parameter]?.[item] ?? 0 }})</span
+          >
+        </div> -->
+        <div
+          :class="
+            combinedQuantity?.[props.parameter]?.[item] ? 'active' : 'inactive'
+          "
+          class="selector__filter__text"
+          :style="{ 'text-decoration:underline': hoveredIndex == index }"
         >
           {{ item }}
           <span

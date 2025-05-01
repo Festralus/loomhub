@@ -171,9 +171,6 @@ body::-webkit-scrollbar {
     transform: rotate(360deg);
   }
 }
-body.no-scroll {
-  overflow: hidden;
-}
 
 .cursor-grabbing {
   cursor: grabbing !important;

@@ -84,12 +84,21 @@
         <div class="item__size-container">
           <div class="item__size__title">Choose size</div>
           <div class="item__size__list select-none">
-            <div
+            <!-- <div
               v-for="(size, i) in itemSizes"
               :key="size"
               @click="chooseSize(i)"
               class="item__size__button"
               :class="chosenSize == i ? 'chosen-size-highlighted' : ''"
+            >
+              {{ size }}
+            </div> -->
+            <div
+              v-for="(size, i) in itemSizes"
+              :key="size"
+              @click="chooseSize(i)"
+              class="item__size__button"
+              :class="{ 'chosen-size-highlighted': chosenSize == i }"
             >
               {{ size }}
             </div>

@@ -8,12 +8,13 @@
       @close="showInDev = false"
     />
 
-    <!-- Fixed top line -->
+    <!-- Website page header / Fixed top line -->
     <header
       class="top-menu fixed left-0 top-0 z-[100] flex h-[64px] w-full flex-row items-center justify-between bg-white"
+      :class="{ 'pr-2': isModalOverlayActive }"
     >
       <button
-      type="button"
+        type="button"
         aria-label=""
         class="BurgerMenuIcon__container flex w-[12%] sm:hidden"
         @click="openBurgerDropdown"
@@ -77,10 +78,17 @@
       </nav>
 
       <!-- Main logo -->
-      <NuxtLink
+      <!-- <NuxtLink
         to="/"
         class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none text-black sm:ml-[20px] sm:block md:ml-[1%] 2xl:ml-[6%] 2xl:text-3xl"
         :class="isMobileSearchActive ? 'hidden' : ''"
+      >
+        LOOM.HUB
+      </NuxtLink> -->
+      <NuxtLink
+        to="/"
+        class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none text-black sm:ml-[20px] sm:block md:ml-[1%] 2xl:ml-[6%] 2xl:text-3xl"
+        :class="{ hidden: isMobileSearchActive }"
       >
         LOOM.HUB
       </NuxtLink>
@@ -90,7 +98,7 @@
         class="top-menu__nav SatoshiRegular hidden max-h-[10px] flex-row items-center text-base sm:flex sm:w-full sm:justify-evenly lg:flex xl:w-[30%] 2xl:text-xl"
         :class="{ 'sm:hidden': isMobileSearchActive }"
       >
-        <!-- Shop dropdown menu with 4 options -->
+        <!-- Shop dropdown menu with four dress style options -->
         <div
           @mouseenter="isShopHovered = true"
           @mouseleave="isShopHovered = false"
@@ -98,7 +106,10 @@
           :class="{ 'z-[140]': isShopHovered || isShopClicked }"
           class="top-menu__nav-item top-menu__nav-item__shop relative hidden h-16 cursor-pointer flex-row sm:flex"
         >
-          <button type="button" class="top-menu__nav-item__shop-text select-none">
+          <button
+            type="button"
+            class="top-menu__nav-item__shop-text select-none"
+          >
             Shop
           </button>
           <PointerIcon
@@ -112,7 +123,7 @@
             <div class="shop-dropdown__title-text">Shop</div>
             <PointerIcon class="shop-dropdown__title-arrow" />
           </div>
-          <ul
+          <div
             role="menu"
             v-show="isShopHovered || isShopClicked"
             class="top-menu__nav-item__shop-dropdown"
@@ -143,9 +154,10 @@
                 class="shop-dropdown__item__shadow"
               ></div>
             </NuxtLink>
-          </ul>
+          </div>
         </div>
 
+        <!-- PC navigation continues -->
         <NuxtLink
           @click="setSortingOption(2)"
           :to="'/shop'"
@@ -213,9 +225,15 @@
       >
         <button class="px-2 md:px-4">
           <!-- Icon for mobile closed search state -->
-          <SearchIconBlack
+          <!-- <SearchIconBlack
             class="top-menu__search-icon lg:hidden"
             :class="isMobileSearchActive ? 'hidden' : ''"
+            aria-label="Search"
+            @click="openMobileSearch()"
+          /> -->
+          <SearchIconBlack
+            class="top-menu__search-icon lg:hidden"
+            :class="{ hidden: isMobileSearchActive }"
             aria-label="Search"
             @click="openMobileSearch()"
           />
@@ -238,6 +256,7 @@
             aria-label="Search"
             @click="(closeMobileSearch(), (outsideClickOccurance = true))"
           />
+          <!-- Mobile search -->
           <div class="search-dropdown">
             <input
               type="text"
@@ -264,9 +283,16 @@
         </form>
 
         <!-- Cart button -->
-        <button
+        <!-- <button
           class="top-menu__actions-cart top-menu__actions__button flex cursor-not-allowed justify-center px-2 hover:blur-[1px] active:blur-[1px] md:px-4"
           :class="isMobileSearchActive ? 'hidden lg:block' : ''"
+          @click="openInDev('Cart')"
+        >
+          <CartIcon class="h-16"></CartIcon>
+        </button> -->
+        <button
+          class="top-menu__actions-cart top-menu__actions__button flex cursor-not-allowed justify-center px-2 hover:blur-[1px] active:blur-[1px] md:px-4"
+          :class="{ 'hidden lg:block': isMobileSearchActive }"
           @click="openInDev('Cart')"
         >
           <CartIcon class="h-16"></CartIcon>
@@ -275,30 +301,37 @@
         <!-- Profile button -->
         <button
           class="top-menu__actions-profile top-menu__actions__button flex cursor-pointer justify-center px-2 md:px-4"
+          @click="openAuthPopup"
         >
-          <ProfileIcon
+          <!-- <ProfileIcon
             class="h-16"
             :class="isMobileSearchActive ? 'hidden lg:block' : ''"
-            @click="openAuthPopup"
+          ></ProfileIcon> -->
+          <ProfileIcon
+            class="h-16"
+            :class="{ 'hidden lg:block': isMobileSearchActive }"
           ></ProfileIcon>
         </button>
       </section>
 
       <!-- Modal profile window -->
       <div
-        v-show="authPopupActive"
+        v-show="isAuthPopupActive"
         class="auth__popup fixed left-[50%] top-[50%] z-[140] w-[90vw] max-w-[500px] -translate-x-[50%] -translate-y-[50%] rounded-3xl bg-white pb-7 pl-3 pr-3 pt-12 sm:w-[80vw] sm:pb-8 sm:pl-10 sm:pr-10 sm:pt-12 lg:w-[70vw]"
       >
         <!-- Arrow to navigate one step back -->
         <div
           class="step-back__arrow-container cursor-pointer"
-          @click="AuthStepBack"
+          @click="authStepBack"
         >
           <ArrowIcon class="step-back__arrow"></ArrowIcon>
         </div>
 
         <!-- Main page of profile modal -->
-        <div v-if="authGreetingsActive && !nickname" class="auth__greetings">
+        <section
+          v-if="isAuthGreetingsActive && !nickname"
+          class="auth__greetings"
+        >
           <div
             class="auth__popup-btn Login-button cursor-pointer select-none"
             @click="openAuthLogin"
@@ -311,10 +344,10 @@
           >
             Sign up
           </div>
-        </div>
+        </section>
 
         <!-- Logged in state of profile modal -->
-        <div v-if="nickname">
+        <section v-if="nickname">
           <div class="auth__user-nickname">{{ nickname }}</div>
           <img
             @click="openInDev('Change profile picture')"
@@ -328,22 +361,38 @@
           >
             Log out
           </div>
-        </div>
+        </section>
 
-        <!--  -->
-        <form v-if="authLoginActive && !nickname" class="auth__Login">
-          <input
+        <!-- Login form -->
+        <form v-if="isAuthLoginActive && !nickname" class="auth__Login">
+          <!-- <input
             class="auth-input auth__login-input"
             :class="!nicknameLoginError ? 'mb-3' : ''"
             type="text"
             placeholder="Nickname"
             autocomplete="nickname"
             v-model="loginName"
+          /> -->
+          <input
+            class="auth-input auth__login-input"
+            :class="{ 'mb-3': !nicknameLoginError }"
+            type="text"
+            placeholder="Nickname"
+            autocomplete="nickname"
+            v-model="loginName"
           />
           <div class="error-message">{{ nicknameLoginError }}</div>
-          <input
+          <!-- <input
             class="auth-input auth__password-input"
             :class="!passwordLoginError ? 'mb-4' : ''"
+            type="password"
+            placeholder="Password"
+            autocomplete="password"
+            v-model="loginPassword"
+          /> -->
+          <input
+            class="auth-input auth__password-input"
+            :class="{ 'mb-4': !passwordLoginError }"
             type="password"
             placeholder="Password"
             autocomplete="password"
@@ -357,22 +406,50 @@
             Login
           </button>
         </form>
+
+        <!-- Sign up form -->
         <form
           class="auth__registration"
-          v-if="authRegistrationActive && !nickname"
+          v-if="isAuthRegistrationActive && !nickname"
         >
           <input
+            class="auth-input auth__login-input"
+            :class="{ 'mb-3': !nicknameRegError }"
+            type="text"
+            placeholder="Nickname"
+            autocomplete="nickname"
+            v-model="regName"
+          />
+
+          <!-- <input
             class="auth-input auth__login-input"
             :class="!nicknameRegError ? 'mb-3' : ''"
             type="text"
             placeholder="Nickname"
             autocomplete="nickname"
             v-model="regName"
-          />
-          <div class="error-message">{{ nicknameRegError }}</div>
+          /> -->
           <input
+            class="auth-input auth__login-input"
+            :class="{ 'mb-3': !nicknameRegError }"
+            type="text"
+            placeholder="Nickname"
+            autocomplete="nickname"
+            v-model="regName"
+          />
+
+          <div class="error-message">{{ nicknameRegError }}</div>
+          <!-- <input
             class="auth-input auth__password-input"
             :class="!passwordRegError ? 'mb-4' : ''"
+            type="password"
+            placeholder="Password"
+            autocomplete="password"
+            v-model="regPassword"
+          /> -->
+          <input
+            class="auth-input auth__password-input"
+            :class="{ 'mb-4': !passwordRegError }"
             type="password"
             placeholder="Password"
             autocomplete="password"
@@ -391,21 +468,31 @@
         </form>
       </div>
     </header>
+
+    <!-- Website page content -->
     <main
       class="website mt-16"
       :class="{ 'website-padding': useWebsitePadding }"
     >
       <slot></slot>
     </main>
+
+    <!-- Website page footer -->
     <footer class="mb-6">
+      <!-- Descriptive block -->
       <div class="footer__branding ml-4 block lg:ml-0 lg:text-center">
+        <!-- Footer title -->
         <div class="share__title IntegralBold mt-6 text-2xl">LOOM.HUB</div>
+
+        <!-- Footer description -->
         <div
           class="share__description SatoshiRegular mt-3 text-[16px] leading-[22px] text-gray-500"
         >
           The place where fashion meets your lifestyle. Explore the collection
           today.
         </div>
+
+        <!-- Footer contacts SVGs -->
         <div class="footer__socials mt-4 flex gap-3 lg:justify-center">
           <a target="_blank" href="https://x.com/andrey_omelch">
             <MyTwitterX class="share__icon"></MyTwitterX
@@ -423,88 +510,94 @@
           ></a>
         </div>
       </div>
+
+      <!-- Links block -->
       <div class="footer__links mx-1 mt-8 flex flex-wrap justify-center">
-        <div class="links__container inline-flex">
-          <div class="links__block pb-6">
-            <div
+        <section class="links__container inline-flex">
+          <section class="links__block pb-6">
+            <h3
               class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
               CREATOR
-            </div>
+            </h3>
             <NuxtLink to="/" class="links__link">About me</NuxtLink>
             <NuxtLink to="/" class="links__link">123</NuxtLink>
             <NuxtLink to="/" class="links__link">Inspirations</NuxtLink>
             <NuxtLink to="/" class="links__link">Career</NuxtLink>
-          </div>
+          </section>
           <div class="links__block pb-6">
-            <div
+            <h3
               class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
               LINKS
-            </div>
+            </h3>
             <NuxtLink to="/" class="links__link">GutHub</NuxtLink>
             <NuxtLink to="/" class="links__link">Codewars</NuxtLink>
             <NuxtLink to="/" class="links__link">123</NuxtLink>
             <NuxtLink to="/" class="links__link">123</NuxtLink>
           </div>
-        </div>
+        </section>
         <div class="links__container inline-flex">
-          <div class="links__block pb-6">
-            <div
+          <section class="links__block pb-6">
+            <h3
               class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
               CONTACTS
-            </div>
+            </h3>
             <NuxtLink to="/" class="links__link">X / Twitter</NuxtLink>
             <NuxtLink to="/" class="links__link">E-mail</NuxtLink>
             <NuxtLink to="/" class="links__link">Telegram</NuxtLink>
             <NuxtLink to="/" class="links__link">Facebook</NuxtLink>
-          </div>
-          <div class="links__block pb-6">
-            <div
+          </section>
+          <section class="links__block pb-6">
+            <h3
               class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
               THE WEBSITE
-            </div>
+            </h3>
             <NuxtLink to="/" class="links__link">Why LoomHub</NuxtLink>
             <NuxtLink to="/" class="links__link">Roadmap</NuxtLink>
             <NuxtLink to="/" class="links__link">Features</NuxtLink>
             <NuxtLink to="/" class="links__link">Credits</NuxtLink>
-          </div>
+          </section>
         </div>
       </div>
+
+      <!-- Copyright block -->
       <div class="horizontal-separator-90 mt-8"></div>
-      <div
+      <h4
         class="footer__copyright SatoshiRegular mt-4 text-center text-base text-gray-500"
       >
         Loom.hub © 2024-2025, All rights reserved
-      </div>
+      </h4>
     </footer>
   </div>
 </template>
 
 <script setup>
+// State management imports
+import Cookies from 'js-cookie';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/index';
 import { useSortingStore } from '@/stores/index.js';
 const route = useRoute();
 
-import Cookies from 'js-cookie';
-
+// Comonent and data imports
 import dress_styles_list from '~/data/dress_styles.js';
 import Search_results_dropdown from '~/components/search_results_dropdown.vue';
 
+// Icon imports
 import ArrowIcon from '../assets/icons/ArrowIcon.vue';
 import BurgerMenuIcon from '../assets/icons/BurgerMenuIcon.vue';
 import CartIcon from '../assets/icons/CartIcon.vue';
+import MyEmail from '../assets/icons/MyEmailIcon.vue';
+import MyGithub from '../assets/icons/MyGithubIcon.vue';
+import MyTelegram from '../assets/icons/MyTelegramIcon.vue';
+import MyTwitterX from '../assets/icons/MyTwitterXIcon.vue';
 import PointerIcon from '../assets/icons/PointerIcon.vue';
 import ProfileIcon from '../assets/icons/ProfileIcon.vue';
 import SearchIconBlack from '../assets/icons/SearchIconBlack.vue';
 import SearchIconGray from '../assets/icons/SearchIconGray.vue';
-import MyTwitterX from '../assets/icons/MyTwitterXIcon.vue';
-import MyTelegram from '../assets/icons/MyTelegramIcon.vue';
-import MyEmail from '../assets/icons/MyEmailIcon.vue';
-import MyGithub from '../assets/icons/MyGithubIcon.vue';
 
 // In development popup
 const showInDev = ref(false);
@@ -528,7 +621,7 @@ onUnmounted(() => {
   removeStopSearchWatcher();
 });
 
-// Padding for certain pages
+// Conditional padding for certain pages
 const useWebsitePadding = computed(() => route.meta.useWebsitePadding ?? false);
 
 // Global variables
@@ -595,15 +688,17 @@ function focusHomePageSearch() {
 const isModalOverlayActive = ref(false);
 function openModalOverlay() {
   isModalOverlayActive.value = true;
+  document?.body.classList.add('no-scroll');
 }
 function closeModalOverlay() {
   if (isBurgerDropdownActive.value) {
     closeBurgerDropdown();
   }
-  if (authPopupActive) {
-    authPopupActive.value = false;
+  if (isAuthPopupActive) {
+    isAuthPopupActive.value = false;
   }
   isModalOverlayActive.value = false;
+  document?.body.classList.remove('no-scroll');
 }
 
 // Close dropdown on route change
@@ -706,41 +801,43 @@ async function performQuickSearch() {
 
 async function performPasteQuickSearch() {
   await nextTick();
-  performQuickSearch();
+  await performQuickSearch();
 }
 
 // Authentication popup window
-const authPopupActive = ref(false);
-const authGreetingsActive = ref(true);
-const authLoginActive = ref(false);
-const authRegistrationActive = ref(false);
+const isAuthPopupActive = ref(false);
+const isAuthGreetingsActive = ref(true);
+const isAuthLoginActive = ref(false);
+const isAuthRegistrationActive = ref(false);
 
 function openAuthPopup() {
   isModalOverlayActive.value = true;
-  authPopupActive.value = true;
+  isAuthPopupActive.value = true;
+  document?.body.classList.add('no-scroll');
 }
 function openAuthLogin() {
-  authGreetingsActive.value = false;
-  authLoginActive.value = true;
+  isAuthGreetingsActive.value = false;
+  isAuthLoginActive.value = true;
 }
 function openAuthRegistration() {
-  authGreetingsActive.value = false;
-  authRegistrationActive.value = true;
+  isAuthGreetingsActive.value = false;
+  isAuthRegistrationActive.value = true;
 }
-function AuthStepBack() {
-  if (authRegistrationActive.value) {
-    authRegistrationActive.value = false;
-    authGreetingsActive.value = true;
-  } else if (authLoginActive.value) {
-    authLoginActive.value = false;
-    authGreetingsActive.value = true;
+function authStepBack() {
+  if (isAuthRegistrationActive.value) {
+    isAuthRegistrationActive.value = false;
+    isAuthGreetingsActive.value = true;
+  } else if (isAuthLoginActive.value) {
+    isAuthLoginActive.value = false;
+    isAuthGreetingsActive.value = true;
   } else {
-    authPopupActive.value = false;
+    isAuthPopupActive.value = false;
     isModalOverlayActive.value = false;
+    document?.body.classList.remove('no-scroll');
   }
 }
 
-// Sign up
+// Sign up process
 const regName = ref('');
 const regPassword = ref('');
 async function submitRegistrationForm() {
@@ -777,8 +874,8 @@ async function submitRegistrationForm() {
     regPassword.value = '';
 
     setTimeout(() => {
-      authRegistrationActive.value = false;
-      authGreetingsActive.value = true;
+      isAuthRegistrationActive.value = false;
+      isAuthGreetingsActive.value = true;
       isRegistrationSuccessful.value = false;
       nextTick(() => {
         submitLoginForm();
@@ -796,7 +893,7 @@ async function submitRegistrationForm() {
   }
 }
 
-// Registration error messages
+// Sign up error messages
 const nicknameRegError = ref('');
 const passwordRegError = ref('');
 const isRegistrationSuccessful = ref(false);
@@ -851,7 +948,7 @@ async function submitLoginForm() {
   }
 }
 
-// Login error messages
+// Log in error messages
 const nicknameLoginError = ref('');
 const passwordLoginError = ref('');
 
