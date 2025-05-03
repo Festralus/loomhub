@@ -78,13 +78,6 @@
       </nav>
 
       <!-- Main logo -->
-      <!-- <NuxtLink
-        to="/"
-        class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none text-black sm:ml-[20px] sm:block md:ml-[1%] 2xl:ml-[6%] 2xl:text-3xl"
-        :class="isMobileSearchActive ? 'hidden' : ''"
-      >
-        LOOM.HUB
-      </NuxtLink> -->
       <NuxtLink
         to="/"
         class="top-menu__logo IntergralExtraBold mb-2 mt-0 cursor-pointer select-none text-2xl leading-none text-black sm:ml-[20px] sm:block md:ml-[1%] 2xl:ml-[6%] 2xl:text-3xl"
@@ -225,12 +218,6 @@
       >
         <button class="px-2 md:px-4">
           <!-- Icon for mobile closed search state -->
-          <!-- <SearchIconBlack
-            class="top-menu__search-icon lg:hidden"
-            :class="isMobileSearchActive ? 'hidden' : ''"
-            aria-label="Search"
-            @click="openMobileSearch()"
-          /> -->
           <SearchIconBlack
             class="top-menu__search-icon lg:hidden"
             :class="{ hidden: isMobileSearchActive }"
@@ -283,13 +270,6 @@
         </form>
 
         <!-- Cart button -->
-        <!-- <button
-          class="top-menu__actions-cart top-menu__actions__button flex cursor-not-allowed justify-center px-2 hover:blur-[1px] active:blur-[1px] md:px-4"
-          :class="isMobileSearchActive ? 'hidden lg:block' : ''"
-          @click="openInDev('Cart')"
-        >
-          <CartIcon class="h-16"></CartIcon>
-        </button> -->
         <button
           class="top-menu__actions-cart top-menu__actions__button flex cursor-not-allowed justify-center px-2 hover:blur-[1px] active:blur-[1px] md:px-4"
           :class="{ 'hidden lg:block': isMobileSearchActive }"
@@ -303,10 +283,6 @@
           class="top-menu__actions-profile top-menu__actions__button flex cursor-pointer justify-center px-2 md:px-4"
           @click="openAuthPopup"
         >
-          <!-- <ProfileIcon
-            class="h-16"
-            :class="isMobileSearchActive ? 'hidden lg:block' : ''"
-          ></ProfileIcon> -->
           <ProfileIcon
             class="h-16"
             :class="{ 'hidden lg:block': isMobileSearchActive }"
@@ -365,14 +341,6 @@
 
         <!-- Login form -->
         <form v-if="isAuthLoginActive && !nickname" class="auth__Login">
-          <!-- <input
-            class="auth-input auth__login-input"
-            :class="!nicknameLoginError ? 'mb-3' : ''"
-            type="text"
-            placeholder="Nickname"
-            autocomplete="nickname"
-            v-model="loginName"
-          /> -->
           <input
             class="auth-input auth__login-input"
             :class="{ 'mb-3': !nicknameLoginError }"
@@ -382,14 +350,6 @@
             v-model="loginName"
           />
           <div class="error-message">{{ nicknameLoginError }}</div>
-          <!-- <input
-            class="auth-input auth__password-input"
-            :class="!passwordLoginError ? 'mb-4' : ''"
-            type="password"
-            placeholder="Password"
-            autocomplete="password"
-            v-model="loginPassword"
-          /> -->
           <input
             class="auth-input auth__password-input"
             :class="{ 'mb-4': !passwordLoginError }"
@@ -421,32 +381,7 @@
             v-model="regName"
           />
 
-          <!-- <input
-            class="auth-input auth__login-input"
-            :class="!nicknameRegError ? 'mb-3' : ''"
-            type="text"
-            placeholder="Nickname"
-            autocomplete="nickname"
-            v-model="regName"
-          /> -->
-          <input
-            class="auth-input auth__login-input"
-            :class="{ 'mb-3': !nicknameRegError }"
-            type="text"
-            placeholder="Nickname"
-            autocomplete="nickname"
-            v-model="regName"
-          />
-
           <div class="error-message">{{ nicknameRegError }}</div>
-          <!-- <input
-            class="auth-input auth__password-input"
-            :class="!passwordRegError ? 'mb-4' : ''"
-            type="password"
-            placeholder="Password"
-            autocomplete="password"
-            v-model="regPassword"
-          /> -->
           <input
             class="auth-input auth__password-input"
             :class="{ 'mb-4': !passwordRegError }"
@@ -849,6 +784,7 @@ async function submitRegistrationForm() {
     return;
   }
 
+  // Check nickname availability
   const res = await api.post('/api/nicknameAvailability', {
     nickname: regName.value,
   });
@@ -859,6 +795,7 @@ async function submitRegistrationForm() {
     nicknameRegError.value = '';
   }
 
+  // Create new user
   try {
     await api.post('/api/registration', {
       nickname: regName.value,
@@ -873,6 +810,7 @@ async function submitRegistrationForm() {
     regName.value = '';
     regPassword.value = '';
 
+    // Log the new user in
     setTimeout(() => {
       isAuthRegistrationActive.value = false;
       isAuthGreetingsActive.value = true;

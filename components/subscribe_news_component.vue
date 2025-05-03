@@ -13,7 +13,7 @@
     >
       <LetterIcon class="subscribe__input-icon ml-4 mr-3 bg-white"></LetterIcon>
       <input
-        class="subscribe__input SatoshiRegular w-[80%] bg-white pl-[2px] text-sm placeholder-gray-400"
+        class="subscribe__input SatoshiRegular w-[80%] bg-white pl-[2px] placeholder-gray-400 outline-none"
         placeholder="Enter your email address"
         v-model="subscriptionEmailModel"
         ref="subscriptionEmailRef"
@@ -104,5 +104,10 @@ function handleKeydown(e) {
   to {
     transform: rotate(360deg);
   }
+}
+
+.subscribe__input_wrapper {
+  font-size: 16px;
+  line-height: 24px;
 }
 </style>

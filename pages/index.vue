@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- section with title, description and stats -->
     <section
       class="home-description relative z-50 w-full bg-[#f2f0f1] xl:flex xl:flex-nowrap xl:justify-evenly 2xl:items-center 2xl:justify-between"
     >
@@ -81,7 +82,7 @@
       </div>
     </section>
 
-    <!-- Possible to refactor this section via v-for and brands import from data folder -->
+    <!-- Interactive brand icons -->
     <section class="brands__menu mt-4 flex flex-wrap bg-transparent xl:mt-0">
       <NuxtLink
         v-for="brand in ['Prada', 'Zara', 'Gucci', 'Versace', 'Calvin Klein']"
@@ -92,6 +93,8 @@
         <component :is="brandList[brand]" class="h-[8vw] w-[80%]" />
       </NuxtLink>
     </section>
+
+    <!-- Slider of products -->
     <section class="new-arrivals">
       <h3
         class="new-arrivals__title IntergralExtraBold mb-6 mt-9 text-center text-[32px] leading-none"
@@ -115,6 +118,7 @@
       <div class="horizontal-separator-90 mt-10"></div>
     </section>
 
+    <!-- Slider of products -->
     <section class="top-selling mt-10">
       <h3
         class="top-selling__title IntergralExtraBold mb-6 mt-9 text-center text-[32px] leading-none"
@@ -136,6 +140,7 @@
       </NuxtLink>
     </section>
 
+    <!-- Interactive dress style masonry -->
     <section
       class="style-masonry mx-auto mt-10 w-[1800px] max-w-[94vw] rounded-2xl bg-[#F0F0F0] pb-2 pt-9"
     >
@@ -183,10 +188,11 @@
       </div>
     </section>
 
+    <!-- Website reviews section -->
     <section class="reviews mt-10">
-      <div class="reviews__header mx-4 flex">
+      <div class="reviews__header mx-4">
         <h3
-          class="reviews__title IntergralExtraBold mr-10 text-left text-[32px] leading-none"
+          class="reviews__title IntergralExtraBold 4xl:text-center mr-10 text-left text-[32px] leading-none"
         >
           OUR HAPPY CUSTOMERS
         </h3>
@@ -315,6 +321,7 @@ onUnmounted(() => {
 // Method to get 5 website reviews
 const websiteReviewsArray = ref([]);
 
+// 25.05.04
 async function getWebsiteReviews() {
   try {
     const response = await api.get('/api/getWebsiteReviews');

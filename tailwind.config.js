@@ -18,6 +18,7 @@ export const theme = {
     },
     screens: {
       '3xl': '1900px',
+      '4xl': '2100px',
     },
   },
 };
