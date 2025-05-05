@@ -1,5 +1,5 @@
 <template>
-  <div class="new-arrivals__items-item__rating flex items-center">
+  <div class="new-arrivals__items-item__rating flex w-max items-center">
     <span class="flex">
       <RatingStarIcon
         v-for="(_, i) in Math.floor(rating) + Math.ceil(-0.74 + (rating % 1))"

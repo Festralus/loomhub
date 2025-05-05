@@ -35,9 +35,10 @@
         <div class="item__name">{{ item?.name }} ({{ item?.brand }})</div>
         <div class="item__rating">
           <ProductRatingComponent
+            @click="scrollToReviews"
             :rating="item?.rating || 4"
             :showRatingNumber="false"
-            class="item__rating-stars"
+            class="item__rating-stars cursor-pointer"
           />
         </div>
         <div class="item__price">
@@ -162,6 +163,7 @@
           ]"
           @mouseover="currentProductTab === 1 ? '' : (hoveredTabName = 1)"
           @mouseleave="hoveredTabName = null"
+          ref="ratingReviewsTab"
         >
           Rating & Reviews
         </div>
@@ -212,10 +214,13 @@
       </div>
 
       <!-- Reviews tab -->
-      <div v-show="currentProductTab == 1" class="reviews-tab__container">
+      <div
+        v-show="productReviews !== undefined && currentProductTab == 1"
+        class="reviews-tab__container"
+      >
         <div class="reviews__top-line">
           <div class="reviews">
-            <div class="reviews__menu">
+            <div class="reviews__menu" ref="reviewsMenuRef">
               <div class="reviews-menu__title">
                 All reviews
                 <span class="reviews-menu__title__number"
@@ -448,7 +453,7 @@
       <div class="relevant-products__title">YOU MIGHT ALSO LIKE</div>
       <Slider_component
         v-show="item"
-        class="relevant-products__slider"
+        class="relevant-products__slider w-max-full mx-auto overflow-hidden"
         filterName="getRelatedItems"
         :productID="productID"
         :item="item"
@@ -462,6 +467,8 @@
 // Imports
 import { useAuthStore } from '@/stores/index';
 import all_colors from '@/data/colors';
+
+import ProductRatingComponent from '../components/product_rating_component.vue';
 
 import ArrowIcon from '../assets/icons/ArrowIcon.vue';
 import MinusIcon from '@/assets/icons/MinusIcon.vue';
@@ -888,18 +895,38 @@ const totalReviewPages = computed(() =>
   Math.ceil(productReviews.value.length / reviewsPerPage)
 );
 
+// Reviews ref that is needed for scroll
+const reviewsMenuRef = ref();
 function previousReviewPage() {
-  if (currentReviewPage.value == 1) return;
+  if (currentReviewPage.value == 1 || productReviews.value === undefined)
+    return;
   expandedReviews.value = [];
   shouldShowExpandButton.value = [];
   currentReviewPage.value--;
+
+  reviewsMenuRef.value.scrollIntoView({ behavior: 'smooth' });
 }
 
 function nextReviewPage() {
-  if (currentReviewPage.value == totalReviewPages) return;
+  if (
+    currentReviewPage.value == totalReviewPages ||
+    productReviews.value === undefined
+  )
+    return;
   expandedReviews.value = [];
   shouldShowExpandButton.value = [];
   currentReviewPage.value++;
+
+  reviewsMenuRef.value.scrollIntoView({ behavior: 'smooth' });
+}
+
+const ratingReviewsTab = ref();
+function scrollToReviews() {
+  if (!item) return;
+  switchProductTab(1);
+  nextTick(() => {
+    ratingReviewsTab.value.scrollIntoView({ behavior: 'smooth' });
+  });
 }
 
 // Details tab

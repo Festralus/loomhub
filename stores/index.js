@@ -40,7 +40,7 @@ export const useAuthStore = defineStore({
       }
     },
 
-    // Method to set user auth (log them in)
+    // Function to set user auth (log them in)
     setSession(payload) {
       if (payload.token) {
         this.authenticated = true;
@@ -53,13 +53,13 @@ export const useAuthStore = defineStore({
       }
     },
 
-    // Method to remove user auth
+    // Function to remove user auth
     deleteSessionToken() {
       Cookies.remove('token');
       this.clearSession();
     },
 
-    // Method to clear the session
+    // Function to clear the session
     clearSession() {
       this.nickname = null;
       this.profilePicUrl = null;

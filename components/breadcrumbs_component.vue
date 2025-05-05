@@ -3,6 +3,7 @@
     v-if="modifiedSegments && modifiedSegments.length > 0"
     class="path__breadcrumbs"
   >
+    <!-- Following element is always shown -->
     <div class="path__breadcrumb">
       <NuxtLink to="/" class="breadcrumb__name">{{
         modifiedSegments?.[0]
@@ -14,15 +15,12 @@
         class="breadcrumb__pointer"
       ></PointerIcon>
     </div>
+
+    <!-- Following element is always shown -->
     <div
       v-if="modifiedSegments && modifiedSegments.length > 1"
       class="path__breadcrumb"
     >
-      <!-- <NuxtLink
-        :to="isProductPage ? '/shop' : ''"
-        class="breadcrumb breadcrumb__name"
-        >{{ modifiedSegments?.[1] }}</NuxtLink
-      > -->
       <NuxtLink
         :to="{ '/shop': isProductPage }"
         class="breadcrumb breadcrumb__name"
@@ -35,6 +33,8 @@
         class="breadcrumb__pointer"
       ></PointerIcon>
     </div>
+
+    <!-- Following element is only shown at item.[item_id] -->
     <div
       v-if="modifiedSegments && modifiedSegments.length > 2"
       class="path__breadcrumb"
@@ -52,6 +52,8 @@
         class="breadcrumb__pointer"
       ></PointerIcon>
     </div>
+
+    <!-- Following element is only shown at item.[item_id] -->
     <div
       v-if="modifiedSegments && modifiedSegments.length > 3"
       class="path__breadcrumb"
@@ -66,8 +68,7 @@
   </div>
 </template>
 <script setup>
-import { defineProps, onMounted } from 'vue';
-
+// Icon imports
 import PointerIcon from '/assets/icons/PointerIcon';
 
 // API endpoint

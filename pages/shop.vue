@@ -312,6 +312,7 @@
                       ? (hoveredSortingOption = null)
                       : (hoveredSortingOption = index)
                   "
+                  @mouseleave="hoveredSortingOption = null"
                 >
                   {{ option.name }}
                 </div>

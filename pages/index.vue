@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- section with title, description and stats -->
+    <!-- Section with title, description and stats -->
     <section
       class="home-description relative z-50 w-full bg-[#f2f0f1] xl:flex xl:flex-nowrap xl:justify-evenly 2xl:items-center 2xl:justify-between"
     >
@@ -103,7 +103,7 @@
       </h3>
 
       <Slider_component
-        class="new-arrivals__items"
+        class="new-arrivals__items w-max-full mx-auto"
         filterName="getNewArrivals"
       ></Slider_component>
 
@@ -127,7 +127,7 @@
       </h3>
 
       <Slider_component
-        class="new-arrivals__items"
+        class="new-arrivals__items w-max-full mx-auto"
         filterName="getTopSelling"
       ></Slider_component>
 
@@ -192,7 +192,7 @@
     <section class="reviews mt-10">
       <div class="reviews__header mx-4">
         <h3
-          class="reviews__title IntergralExtraBold 4xl:text-center mr-10 text-left text-[32px] leading-none"
+          class="reviews__title IntergralExtraBold mr-10 text-left text-[32px] leading-none 4xl:text-center"
         >
           OUR HAPPY CUSTOMERS
         </h3>
@@ -318,10 +318,9 @@ onUnmounted(() => {
   );
 });
 
-// Method to get 5 website reviews
+// Function to get 5 website reviews
 const websiteReviewsArray = ref([]);
 
-// 25.05.04
 async function getWebsiteReviews() {
   try {
     const response = await api.get('/api/getWebsiteReviews');

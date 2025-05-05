@@ -172,7 +172,6 @@ async function getSliderProducts() {
 .component__items {
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  justify-content: center;
 }
 .component__items-item {
   scroll-snap-align: start;
