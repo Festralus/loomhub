@@ -1,3 +1,4 @@
+// Is is used in item_[item_id].vue for "Set available colors" to turn color names into color icons
 const all_colors = [
   {
     name: 'AliceBlue',

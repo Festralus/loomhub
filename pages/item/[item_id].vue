@@ -1,9 +1,11 @@
 <template>
   <div>
+    <!-- Loading screen while items are being fetched -->
     <div v-show="isFetching || initialLoading" class="waiting-screen">
       <div class="loader"></div>
     </div>
 
+    <!-- Modal to show incomplete elements -->
     <In_development_component
       v-if="showInDev"
       :target="currentTarget"
@@ -11,7 +13,9 @@
       @close="showInDev = false"
     />
 
-    <BreadcrumbsComponent :history="path"></BreadcrumbsComponent>
+    <Breadcrumbs_component :history="path"></Breadcrumbs_component>
+
+    <!-- First section - Interactive part -->
     <div v-if="item" class="top__section">
       <div class="item__gallery">
         <div class="secondary-pictures">
@@ -34,7 +38,7 @@
       <div class="item__interactive-menu">
         <div class="item__name">{{ item?.name }} ({{ item?.brand }})</div>
         <div class="item__rating">
-          <ProductRatingComponent
+          <Product_rating_component
             @click="scrollToReviews"
             :rating="item?.rating || 4"
             :showRatingNumber="false"
@@ -139,9 +143,12 @@
         </div>
       </div>
     </div>
+
+    <!-- Second section - Tabs controller -->
     <div v-if="item" class="item__tabs">
       <!-- Tabs menu -->
       <div class="tabs__list" ref="productTabsRefs">
+        <!-- First tab - Details -->
         <div
           @click="(switchProductTab(0), (hoveredTabName = null))"
           class="tabs__list__tab item-tabs__details-tab"
@@ -154,6 +161,8 @@
         >
           Product Details
         </div>
+
+        <!-- Second tab - Reviews -->
         <div
           @click="(switchProductTab(1), (hoveredTabName = null))"
           class="tabs__list__tab item-tabs__reviews-tab"
@@ -167,6 +176,8 @@
         >
           Rating & Reviews
         </div>
+
+        <!-- Third tab - FAQs -->
         <div
           @click="(switchProductTab(2), (hoveredTabName = null))"
           class="tabs__list__tab item-tabs__FAQ-tab"
@@ -181,7 +192,7 @@
         </div>
       </div>
 
-      <!-- Details tab -->
+      <!-- Details tab contents -->
       <div v-show="currentProductTab == 0" class="details-tab__container">
         <table class="details-tab__table">
           <tbody>
@@ -213,7 +224,7 @@
         </div>
       </div>
 
-      <!-- Reviews tab -->
+      <!-- Reviews tab contents -->
       <div
         v-show="productReviews !== undefined && currentProductTab == 1"
         class="reviews-tab__container"
@@ -304,7 +315,7 @@
               :key="'main-' + index"
               ref="reviewCardsRefs"
             >
-              <ProductRatingComponent
+              <Product_rating_component
                 class="reviews__card__stars"
                 v-if="review"
                 :rating="review.rating"
@@ -327,13 +338,13 @@
                 "{{ review?.comment }}"
               </div>
               <div
-                v-show="shouldShowExpandButton[index] || expandedReviews[index]"
+                v-show="isExpandButtonShown[index] || expandedReviews[index]"
                 @click="toggleReview(index)"
                 class="reviews__full-review"
               >
                 {{ expandedReviews[index] ? 'Hide review' : '' }}
                 {{
-                  shouldShowExpandButton[index] && !expandedReviews[index]
+                  isExpandButtonShown[index] && !expandedReviews[index]
                     ? 'View full review'
                     : ''
                 }}
@@ -371,7 +382,7 @@
         </div>
       </div>
 
-      <!-- FAQs tab -->
+      <!-- FAQs tab contents -->
       <div v-show="currentProductTab == 2" class="FAQ-tab__container">
         <div class="FAQ-tab__question">
           <span class="FAQ-tab__question-bullet">•</span> What is the estimated
@@ -437,18 +448,10 @@
           email. You can use this tracking number to check the status of your
           delivery on the carrier's website.
         </div>
-
-        <!-- <div class="FAQ-tab__question">
-          <span class="FAQ-tab__question-bullet">•</span> Do you offer gift
-          cards?
-        </div>
-        <div class="FAQ-tab__answer">
-          Yes, we offer gift cards in various denominations. You can purchase
-          them directly from our website, and they are available for immediate
-          digital delivery.
-        </div> -->
       </div>
     </div>
+
+    <!-- Third section - Relevant products -->
     <div v-show="item" class="relevant-products">
       <div class="relevant-products__title">YOU MIGHT ALSO LIKE</div>
       <Slider_component
@@ -464,21 +467,22 @@
   </div>
 </template>
 <script setup>
-// Imports
+// State management imports
 import { useAuthStore } from '@/stores/index';
+
+// Comonent and data imports
 import all_colors from '@/data/colors';
+import Breadcrumbs_component from '@/components/breadcrumbs_component.vue';
+import Product_rating_component from '@/components/product_rating_component.vue';
+import Slider_component from '@/components/slider_component.vue';
+import Subscribe_news_component from '@/components/subscribe_news_component.vue';
 
-import ProductRatingComponent from '../components/product_rating_component.vue';
-
-import ArrowIcon from '../assets/icons/ArrowIcon.vue';
+// Icon imports
+import ArrowIcon from '@/assets/icons/ArrowIcon.vue';
 import MinusIcon from '@/assets/icons/MinusIcon.vue';
 import PlusIcon from '@/assets/icons/PlusIcon.vue';
-import VerifiedTickIcon from '@/assets/icons/VerifiedTickIcon.vue';
 import PointerIcon from '@/assets/icons/PointerIcon.vue';
-
-import BreadcrumbsComponent from '@/components/breadcrumbs_component.vue';
-import Slider_component from '~/components/slider_component.vue';
-import Subscribe_news_component from '~/components/subscribe_news_component.vue';
+import VerifiedTickIcon from '@/assets/icons/VerifiedTickIcon.vue';
 
 onMounted(() => {
   watch(paginatedReviews, () => {
@@ -533,7 +537,6 @@ const itemColors = ref([]);
 const itemSizes = ref([]);
 const modifiedPrice = ref(null);
 const discountPercentage = ref(null);
-const currencyMultiplier = 1;
 const similarLinks = ref({});
 const filterKeys = ref(['brand', 'productCategory', 'clothingType']);
 // const filterKeys = ref(['brand', 'productCategory', 'clothingType', 'country']);
@@ -557,6 +560,7 @@ if (isFetching.value) {
   document?.body.classList.add('no-scroll');
 }
 
+// Getting the product
 async function setChosenItem() {
   if (isFetching.value) return;
   path.value = window.location.pathname;
@@ -572,11 +576,9 @@ async function setChosenItem() {
     item.value = res.data;
 
     // Set the price
-    modifiedPrice.value = (res.data.price * currencyMultiplier).toFixed(2);
+    modifiedPrice.value = res.data.price.toFixed(2);
     if (res.data.oldPrice) {
-      const modifiedOldPrice = (res.data.oldPrice * currencyMultiplier).toFixed(
-        2
-      );
+      const modifiedOldPrice = res.data.oldPrice.toFixed(2);
 
       discountPercentage.value = Math.round(
         100 - (modifiedPrice.value / modifiedOldPrice) * 100
@@ -607,8 +609,8 @@ async function setChosenItem() {
 
     // Set available quantity
     await fetchAvailableStock();
-    await getProductReviews();
-    await getProductDetails();
+    await fetchProductReviews();
+    await fetchProductDetails();
     chooseColor(0);
     sortReviews();
 
@@ -696,7 +698,7 @@ function choosePicture(index) {
   chosenPicture.value = index;
 }
 
-// Choose color
+// Choose product color
 const chosenColor = ref(0);
 function chooseColor(index) {
   chosenColor.value = index;
@@ -712,14 +714,14 @@ function chooseColor(index) {
     .map((product) => product.size);
 }
 
-// Choose size
+// Choose product size
 const chosenSize = ref(0);
 function chooseSize(index) {
   chosenSize.value = index;
   counter.value = 1;
 }
 
-// Track color and size changes
+// Watch for color or size changes
 watch([chosenColor, chosenSize], () => {
   fetchAvailableStock();
 });
@@ -728,15 +730,10 @@ watch([chosenColor, chosenSize], () => {
 const availableQuantity = ref(1);
 const chosenColorName = ref(null);
 function fetchAvailableStock() {
-  // Reverse color from hex to name
+  // Convert color from hex to name
   if (itemColors.value[chosenColor.value].isMulticolor) {
     chosenColorName.value = 'multicolor';
   } else {
-    // chosenColorName.value = all_colors.find(
-    //   (item) =>
-    //     item.hex.toLowerCase() ==
-    //     itemColors.value[chosenColor.value].hexValue.toLowerCase()
-    // ).name;
     chosenColorName.value = itemColors.value[chosenColor.value].name;
   }
 
@@ -771,7 +768,7 @@ function toggleSortingList() {
 
 function sortReviews() {
   expandedReviews.value = [];
-  shouldShowExpandButton.value = [];
+  isExpandButtonShown.value = [];
   checkReviewHeight();
 
   switch (chosenSortingParameter.value) {
@@ -803,14 +800,14 @@ function sortReviews() {
 }
 
 // Reviews tab
-// Get product reviews
+// Getting product reviews
 const productReviews = ref([]);
 const totalReviewsCount = computed(() => productReviews.value.length);
 
-async function getProductReviews() {
+async function fetchProductReviews() {
   try {
     // Get an array of reviews
-    const res = await api.post('/api/findProductReview', {
+    const res = await api.post('/api/getProductReview', {
       productID: productID.value,
     });
 
@@ -856,9 +853,9 @@ async function getProductReviews() {
 }
 
 // Expand and collapse long reviews
-// Might also add checks on window resize to find new reviews that need Expand button. Would hurt performance though, even with debounce.
+// Might also add checks on window resize to find new reviews that need Expand button. Would hurt performance though even with debounce.
 const reviewCardsRefs = ref([]);
-const shouldShowExpandButton = ref([]);
+const isExpandButtonShown = ref([]);
 const expandedReviews = ref([]);
 
 function checkReviewHeight() {
@@ -872,7 +869,7 @@ function checkReviewHeight() {
       const textEl = el.querySelector('.reviews__card__text');
       if (!textEl) return;
 
-      shouldShowExpandButton.value[index] =
+      isExpandButtonShown.value[index] =
         textEl.scrollHeight > textEl.clientHeight;
     });
   });
@@ -901,7 +898,7 @@ function previousReviewPage() {
   if (currentReviewPage.value == 1 || productReviews.value === undefined)
     return;
   expandedReviews.value = [];
-  shouldShowExpandButton.value = [];
+  isExpandButtonShown.value = [];
   currentReviewPage.value--;
 
   reviewsMenuRef.value.scrollIntoView({ behavior: 'smooth' });
@@ -914,7 +911,7 @@ function nextReviewPage() {
   )
     return;
   expandedReviews.value = [];
-  shouldShowExpandButton.value = [];
+  isExpandButtonShown.value = [];
   currentReviewPage.value++;
 
   reviewsMenuRef.value.scrollIntoView({ behavior: 'smooth' });
@@ -931,7 +928,7 @@ function scrollToReviews() {
 
 // Details tab
 const productDetails = ref({});
-function getProductDetails() {
+function fetchProductDetails() {
   const availableColors =
     item.value.colors.length > 1
       ? item.value.colors.join(', ')

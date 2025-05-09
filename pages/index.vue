@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main>
     <!-- Section with title, description and stats -->
     <section
       class="home-description relative z-50 w-full bg-[#f2f0f1] xl:flex xl:flex-nowrap xl:justify-evenly 2xl:items-center 2xl:justify-between"
@@ -82,7 +82,7 @@
       </div>
     </section>
 
-    <!-- Interactive brand icons -->
+    <!-- Interactive brand quick links: user is able to filter products by brand in Shop -->
     <section class="brands__menu mt-4 flex flex-wrap bg-transparent xl:mt-0">
       <NuxtLink
         v-for="brand in ['Prada', 'Zara', 'Gucci', 'Versace', 'Calvin Klein']"
@@ -94,7 +94,7 @@
       </NuxtLink>
     </section>
 
-    <!-- Slider of products -->
+    <!-- Slider of products: highlights newest products -->
     <section class="new-arrivals">
       <h3
         class="new-arrivals__title IntergralExtraBold mb-6 mt-9 text-center text-[32px] leading-none"
@@ -118,7 +118,7 @@
       <div class="horizontal-separator-90 mt-10"></div>
     </section>
 
-    <!-- Slider of products -->
+    <!-- Slider of products: highlights most popular products -->
     <section class="top-selling mt-10">
       <h3
         class="top-selling__title IntergralExtraBold mb-6 mt-9 text-center text-[32px] leading-none"
@@ -140,7 +140,7 @@
       </NuxtLink>
     </section>
 
-    <!-- Interactive dress style masonry -->
+    <!-- Interactive dress style masonry: user is able to filter products by fashion style in Shop  -->
     <section
       class="style-masonry mx-auto mt-10 w-[1800px] max-w-[94vw] rounded-2xl bg-[#F0F0F0] pb-2 pt-9"
     >
@@ -188,9 +188,9 @@
       </div>
     </section>
 
-    <!-- Website reviews section -->
+    <!-- Website reviews section: carousel with scrollable user feedback -->
     <section class="reviews mt-10">
-      <div class="reviews__header mx-4">
+      <div class="reviews__header mx-4 flex justify-between">
         <h3
           class="reviews__title IntergralExtraBold mr-10 text-left text-[32px] leading-none 4xl:text-center"
         >
@@ -215,6 +215,14 @@
         class="reviews__list relative min-h-[204px]"
         ref="reviewCardsContainer"
       >
+        <!-- Loading screen while reviews are being fetched -->
+        <div
+          v-show="!websiteReviewsArray.length"
+          class="waiting-screen-local mt-1 rounded-xl"
+        >
+          <div class="loader"></div>
+        </div>
+        <!-- Review slider -->
         <div class="reviews__cards">
           <article
             v-show="websiteReviewsArray.length"
@@ -257,44 +265,40 @@
             </p>
           </article>
         </div>
-
-        <!-- Loading screen while items are being fetched -->
-        <div
-          v-show="!websiteReviewsArray.length"
-          class="waiting-screen-local mt-1 rounded-xl"
-        >
-          <div class="loader"></div>
-        </div>
       </div>
     </section>
 
     <Subscribe_news_component />
-
-    <!-- <div class="mb-[500px] mt-[100px]"></div>
-    <button @click="updateOrderStatus(orderId, newStatus)">UPDATE</button> -->
-  </div>
+  </main>
 </template>
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue';
+// State imports
 import { useSortingStore } from '@/stores/index.js';
 
+// Data and components imports
 import dress_styles_list from '@/data/dress_styles.js';
-// import brands from '@/data/brands.js';
 import Slider_component from '@/components/slider_component.vue';
-
-import ArrowIcon from '../assets/icons/ArrowIcon.vue';
-import RatingEmptyStarIcon from '../assets/icons/RatingEmptyStarIcon.vue';
-import RatingStarIcon from '../assets/icons/RatingFullStarIcon.vue';
-import GucciIcon from '../assets/icons/GucciIcon.vue';
-import PradaIcon from '../assets/icons/PradaIcon.vue';
-import VersaceIcon from '../assets/icons/VersaceIcon.vue';
-import ZaraIcon from '../assets/icons/ZaraIcon.vue';
-import CalvinKleinIcon from '../assets/icons/CalvinKleinIcon.vue';
-import RatingHalfStarIcon from '../assets/icons/RatingHalfStarIcon.vue';
-import StarIcon from '../assets/icons/StarIconBig.vue';
-import VerifiedTickIcon from '../assets/icons/VerifiedTickIcon.vue';
-
 import Subscribe_news_component from '@/components/subscribe_news_component.vue';
+const brandList = {
+  Versace: VersaceIcon,
+  Zara: ZaraIcon,
+  Gucci: GucciIcon,
+  Prada: PradaIcon,
+  'Calvin Klein': CalvinKleinIcon,
+};
+
+// Icon imports
+import ArrowIcon from '@/assets/icons/ArrowIcon.vue';
+import CalvinKleinIcon from '@/assets/icons/CalvinKleinIcon.vue';
+import GucciIcon from '@/assets/icons/GucciIcon.vue';
+import PradaIcon from '@/assets/icons/PradaIcon.vue';
+import RatingEmptyStarIcon from '@/assets/icons/RatingEmptyStarIcon.vue';
+import RatingHalfStarIcon from '@/assets/icons/RatingHalfStarIcon.vue';
+import RatingStarIcon from '@/assets/icons/RatingFullStarIcon.vue';
+import StarIcon from '@/assets/icons/StarIconBig.vue';
+import VerifiedTickIcon from '@/assets/icons/VerifiedTickIcon.vue';
+import VersaceIcon from '@/assets/icons/VersaceIcon.vue';
+import ZaraIcon from '@/assets/icons/ZaraIcon.vue';
 
 // API setup
 import { useApi } from '@/composables/useApi.js';
@@ -318,7 +322,11 @@ onUnmounted(() => {
   );
 });
 
-// Function to get 5 website reviews
+// Set sorting option and go to /shop
+const sortingStore = useSortingStore();
+const { setSortingOption } = sortingStore;
+
+// Function to get five random website reviews
 const websiteReviewsArray = ref([]);
 
 async function getWebsiteReviews() {
@@ -364,8 +372,9 @@ function scrollToCard(index) {
   if (index > websiteReviewsArray.value.length - 1) {
     reviewCardIndex.value = 0;
   }
+
   const cardWidth =
-    reviewCardsContainer.value.children[0]?.children[0]?.offsetWidth;
+    reviewCardsContainer.value.querySelector('.reviews__card')?.offsetWidth;
 
   reviewCardsContainer.value.scrollTo({
     left: cardWidth * reviewCardIndex.value,
@@ -373,48 +382,28 @@ function scrollToCard(index) {
   });
 }
 
-// Focus Newsletter subscription
-
-const SubscriptionEmail = ref();
-function focusSubscriptionEmail() {
-  SubscriptionEmail.value?.focus();
-}
-
-// Website review scroll help for arrows
+// Website review scroll helper
+// Maybe handleScroll+debounce can be deleted entirely
 function handleScroll() {
   if (!reviewCardsContainer.value) return;
   const container = reviewCardsContainer.value;
   const scrollLeft = container.scrollLeft;
-  const cardWidth = container.children[0]?.children[0]?.offsetWidth;
+  const cardWidth =
+    reviewCardsContainer.value.querySelector('.reviews__card')?.offsetWidth;
+  console.log(cardWidth);
   reviewCardIndex.value = Math.round(scrollLeft / cardWidth);
 }
 
-// Set sorting option and go to /shop
-const sortingStore = useSortingStore();
-const { setSortingOption } = sortingStore;
-
-// Review starts
-function debounce(fn, delay) {
+const debouncedHandleScroll = debounce(handleScroll, 30);
+function debounce(func, delay) {
   let timeoutId;
   return (...args) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
-      fn(...args);
+      func(...args);
     }, delay);
   };
 }
-
-const debouncedHandleScroll = debounce(handleScroll, 30);
-
-// Review ends
-
-const brandList = {
-  Versace: VersaceIcon,
-  Zara: ZaraIcon,
-  Gucci: GucciIcon,
-  Prada: PradaIcon,
-  'Calvin Klein': CalvinKleinIcon,
-};
 </script>
 <style scoped>
 @import '/assets/styles/style.css';

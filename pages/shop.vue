@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Overlay -->
     <div
       class="shop__modal__overlay"
       @click="closeModalsMobile()"
@@ -11,6 +12,7 @@
       <div class="loader"></div>
     </div>
 
+    <!-- Sorting controls -->
     <div
       v-if="isHydrated"
       v-show="isSortingShownMobile"
@@ -56,6 +58,7 @@
             <div class="reset-button__text">Reset all</div>
           </div>
           <div class="horizontal-separator-90 mb-4"></div>
+
           <!-- Category picker -->
           <div class="filters__categories__container">
             <div
@@ -101,6 +104,7 @@
         </div> -->
 
           <div class="horizontal-separator-90 mb-4 mt-4"></div>
+
           <!-- Colors picker -->
           <div class="filters__colors__container">
             <div
@@ -133,6 +137,7 @@
           </div>
 
           <div class="horizontal-separator-90 mb-4 mt-4"></div>
+
           <!-- Size picker -->
           <div class="filters__sizes__container">
             <div
@@ -165,6 +170,7 @@
           </div>
 
           <div class="horizontal-separator-90 mb-4 mt-4"></div>
+
           <!-- Dress Style picker -->
           <div class="filters__dress-style__container">
             <div
@@ -196,6 +202,7 @@
           </div>
 
           <div class="horizontal-separator-90 mb-4 mt-4"></div>
+
           <!-- Clothing Type picker -->
           <div class="filters__clothing-type__container">
             <div
@@ -227,7 +234,8 @@
           </div>
 
           <div class="horizontal-separator-90 mb-4 mt-4"></div>
-          <!-- Brands -->
+
+          <!-- Brands picker -->
           <div class="filters__brands__container">
             <div
               class="filters__section__title filters__brands__title"
@@ -281,6 +289,8 @@
             }}</span>
             Products
           </div>
+
+          <!-- Sorting controls -->
           <div class="products__title-sorting">
             <div class="title-sorting__text">Sort by:</div>
             <div
@@ -319,12 +329,16 @@
               </div>
             </div>
           </div>
+
+          <!-- Mobile Sorting controls -->
           <div
             @click="toggleSortingMobile"
             class="products__title-mobile-sorting"
           >
             <SortingIcon class="sorting__icon" />
           </div>
+
+          <!-- Mobile Filters controls -->
           <div
             @click="toggleFiltersMobile"
             class="products__title-mobile-filters"
@@ -332,6 +346,8 @@
             <FiltersIcon class="filters__icon" />
           </div>
         </div>
+
+        <!-- Products masonry list -->
         <div class="products__gallery">
           <RouterLink
             :to="`/item/${item.GID}`"
@@ -356,6 +372,8 @@
             </div>
           </RouterLink>
         </div>
+
+        <!-- Pagination -->
         <div v-show="totalProductPages > 0" class="products__pagination">
           <div
             v-show="currentProductPage !== 1"
@@ -393,18 +411,21 @@
   </div>
 </template>
 <script setup>
+// State imports
+import { storeToRefs } from 'pinia';
+import { useSortingStore } from '@/stores/index.js';
+
+// Data and component imports
 import Breadcrumbs_component from '@/components/breadcrumbs_component.vue';
 import Filter_selector_component from '@/components/filter_selector_component.vue';
 import Product_rating_component from '@/components/product_rating_component.vue';
 import Subscribe_news_component from '@/components/subscribe_news_component.vue';
 
+// Icon imports
 import ArrowIcon from '@/assets/icons/ArrowIcon.vue';
 import FiltersIcon from '@/assets/icons/FiltersIcon.vue';
 import PointerIcon from '@/assets/icons/PointerIcon.vue';
 import SortingIcon from '@/assets/icons/SortingIcon.vue';
-
-import { useSortingStore } from '@/stores/index.js';
-import { storeToRefs } from 'pinia';
 
 // API endpoint
 import { useApi } from '@/composables/useApi.js';
@@ -417,6 +438,7 @@ const router = useRouter();
 // Hydration mismatch guard
 const isHydrated = ref(false);
 
+// Forbid scrolling until the content is loaded
 useHead({
   bodyAttrs: {
     class: 'no-scroll',
@@ -455,15 +477,6 @@ const hoveredSortingOption = ref(null);
 
 // Updating filters and URL
 const query = {};
-
-// const filters = ref({
-//   productCategory: ref([]),
-//   color: ref([]),
-//   size: ref([]),
-//   dressStyle: ref([]),
-//   clothingType: ref([]),
-//   brand: ref([]),
-// });
 const filters = ref({
   productCategory: [],
   color: [],
@@ -490,7 +503,6 @@ async function updateFilters({ key, values }) {
   router.push({ query: query.value });
 }
 
-// REVIEW START
 function initializeFiltersFromURL() {
   for (const key in route.query) {
     try {
@@ -501,22 +513,23 @@ function initializeFiltersFromURL() {
   }
 }
 
-// Get all products and filter categories
+// Getting all products and filter categories
 const products = ref([]);
 const filteredProducts = ref([]);
 const combinedQuantity = ref({});
 const isFetching = ref(false);
 const initialLoading = ref(true);
-const currencyMultiplier = 1;
+
+// A products list copy for receiving correct filters. Smth to refactor:
+const allProducts = ref([]);
+// ^ A products list copy for receiving correct filters. Smth to refactor
 
 async function getAllProducts() {
   try {
     const response = await api.get('/api/products');
 
     // A products list copy for receiving correct filters. Smth to refactor:
-
     allProducts.value = response.data.allProducts;
-
     // ^ A products list copy for receiving correct filters. Smth to refactor
 
     products.value = mapProductPrices(response.data.products);
@@ -531,8 +544,8 @@ async function getAllProducts() {
     console.error(err);
   }
 }
-// A products list copy for receiving correct filters. Smth to refactor:
-const allProducts = ref([]);
+
+// Getting filtered products and filter categories
 async function getProducts() {
   if (isFetching.value) return;
   if (
@@ -568,7 +581,6 @@ async function getProducts() {
 
     // A products list copy for receiving correct filters. Smth to refactor:
     allProducts.value = response.data.allProducts;
-
     // ^ A products list copy for receiving correct filters. Smth to refactor
 
     const mappedProducts = mapProductPrices(response.data.products);
@@ -590,10 +602,8 @@ async function getProducts() {
 function mapProductPrices(products) {
   return products.map((product) => {
     {
-      const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
-      const modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(
-        2
-      );
+      const modifiedPrice = product.price.toFixed(2);
+      const modifiedOldPrice = product.oldPrice?.toFixed(2) || null;
       const discountPercentage =
         Math.round(100 - (modifiedPrice / modifiedOldPrice) * 100) || 0;
 
@@ -648,7 +658,6 @@ watchEffect(() => {
 });
 
 // Add available combination numbers to the filters
-
 const emit = defineEmits(['update:combinedQuantity']);
 
 watch(
@@ -674,7 +683,7 @@ const isAnyFilterActive = computed(() => {
   return Object.values(filters.value).some((arr) => arr.length > 0);
 });
 
-// If user is navigating via Layout Dropdown while being in the /shop, reset filters to avoid bugs
+// If user is navigating via Layout Dropdown while being in the /shop, reset filters
 const watchLayoutDropdownNavigation = watch(
   () => router?.currentRoute?.value,
   () => {
@@ -689,8 +698,6 @@ const watchLayoutDropdownNavigation = watch(
     getProducts();
   }
 );
-
-// REVIEW END
 
 // Hide and show filters window for mobile view
 const areFiltersShownMobile = ref(false);
@@ -735,11 +742,6 @@ function toggleSortingDropdown() {
 const sortingStore = useSortingStore();
 const { sortingOptions, shopSortingOption } = storeToRefs(sortingStore);
 const { setSortingOption } = sortingStore;
-
-// const sortingOptionRef = ref(0);
-// function getSortingOption() {
-//   sortingOptionRef.value = Cookies.get('shopSortingOption');
-// }
 
 watch(
   shopSortingOption,

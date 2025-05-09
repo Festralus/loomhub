@@ -11,11 +11,10 @@
     <!-- Website page header / Fixed top line -->
     <header
       class="top-menu fixed left-0 top-0 z-[100] flex h-[64px] w-full flex-row items-center justify-between bg-white"
-      :class="{ 'pr-2': isModalOverlayActive }"
+      :class="{ 'lg:pr-2': isModalOverlayActive }"
     >
       <button
         type="button"
-        aria-label=""
         class="BurgerMenuIcon__container flex w-[12%] sm:hidden"
         @click="openBurgerDropdown"
       >
@@ -511,30 +510,30 @@
 
 <script setup>
 // State management imports
-import Cookies from 'js-cookie';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/index';
 import { useSortingStore } from '@/stores/index.js';
+import Cookies from 'js-cookie';
 const route = useRoute();
 
 // Comonent and data imports
-import dress_styles_list from '~/data/dress_styles.js';
-import Search_results_dropdown from '~/components/search_results_dropdown.vue';
+import dress_styles_list from '@/data/dress_styles.js';
+import Search_results_dropdown from '@/components/search_results_dropdown.vue';
 
 // Icon imports
-import ArrowIcon from '../assets/icons/ArrowIcon.vue';
-import BurgerMenuIcon from '../assets/icons/BurgerMenuIcon.vue';
-import CartIcon from '../assets/icons/CartIcon.vue';
-import MyEmail from '../assets/icons/MyEmailIcon.vue';
-import MyGithub from '../assets/icons/MyGithubIcon.vue';
-import MyTelegram from '../assets/icons/MyTelegramIcon.vue';
-import MyTwitterX from '../assets/icons/MyTwitterXIcon.vue';
-import PointerIcon from '../assets/icons/PointerIcon.vue';
-import ProfileIcon from '../assets/icons/ProfileIcon.vue';
-import SearchIconBlack from '../assets/icons/SearchIconBlack.vue';
-import SearchIconGray from '../assets/icons/SearchIconGray.vue';
+import ArrowIcon from '@/assets/icons/ArrowIcon.vue';
+import BurgerMenuIcon from '@/assets/icons/BurgerMenuIcon.vue';
+import CartIcon from '@/assets/icons/CartIcon.vue';
+import MyEmail from '@/assets/icons/MyEmailIcon.vue';
+import MyGithub from '@/assets/icons/MyGithubIcon.vue';
+import MyTelegram from '@/assets/icons/MyTelegramIcon.vue';
+import MyTwitterX from '@/assets/icons/MyTwitterXIcon.vue';
+import PointerIcon from '@/assets/icons/PointerIcon.vue';
+import ProfileIcon from '@/assets/icons/ProfileIcon.vue';
+import SearchIconBlack from '@/assets/icons/SearchIconBlack.vue';
+import SearchIconGray from '@/assets/icons/SearchIconGray.vue';
 
-// In development popup
+// In development pop-up
 const showInDev = ref(false);
 const currentTarget = ref('');
 function openInDev(string) {
@@ -562,7 +561,7 @@ const useWebsitePadding = computed(() => route.meta.useWebsitePadding ?? false);
 // Global variables
 const { nickname, profilePicUrl } = storeToRefs(useAuthStore());
 
-// Empty search every page route
+// Empty search at every route change
 watch(
   () => route.path,
   () => {
@@ -570,7 +569,7 @@ watch(
   }
 );
 
-// Watch for outside clicks to close native overlay
+// Watch for outside clicks to close overlay
 const outsideClickOccurance = ref(false);
 const searchContainer = ref();
 const mobileSearchContainer = ref();
@@ -726,7 +725,7 @@ async function performQuickSearch() {
       ];
       return;
     }
-    searchResults.value = res.data.length < 5 ? res.data : res.data.slice(0, 5);
+    searchResults.value = res.data.length < 6 ? res.data : res.data.slice(0, 5);
   } catch (err) {
     console.error(err);
   } finally {
@@ -831,7 +830,7 @@ async function submitRegistrationForm() {
   }
 }
 
-// Sign up error messages
+// Login and Sign up error messages
 const nicknameRegError = ref('');
 const passwordRegError = ref('');
 const isRegistrationSuccessful = ref(false);

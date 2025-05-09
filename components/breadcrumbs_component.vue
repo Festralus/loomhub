@@ -22,7 +22,7 @@
       class="path__breadcrumb"
     >
       <NuxtLink
-        :to="{ '/shop': isProductPage }"
+        :to="{ path: isProductPage ? '/shop' : '' }"
         class="breadcrumb breadcrumb__name"
         >{{ modifiedSegments?.[1] }}</NuxtLink
       >
@@ -69,7 +69,7 @@
 </template>
 <script setup>
 // Icon imports
-import PointerIcon from '/assets/icons/PointerIcon';
+import PointerIcon from '@/assets/icons/PointerIcon';
 
 // API endpoint
 import { useApi } from '@/composables/useApi.js';

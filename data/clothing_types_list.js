@@ -1,3 +1,4 @@
+//  Will be used eventually for optimization
 const clothing_types_list = [
   {
     name: 'Men',

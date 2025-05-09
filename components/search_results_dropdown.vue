@@ -8,7 +8,6 @@
       <div class="loader"></div>
     </div>
 
-    <!-- <div vshow="searachResults?.length"> -->
     <NuxtLink
       :to="`/item/${item.GID}`"
       @click="goToItem(item.GID)"
@@ -17,10 +16,10 @@
       class="result flex h-14 cursor-pointer select-none overflow-hidden rounded-lg"
       :class="{ 'pointer-events-none': !item?.GID }"
     >
+      <!-- Optimization: Possible to load a very small stock image until the real one is loaded -->
       <img
         v-if="item?.images?.[0]"
         :src="item?.images?.[0]"
-        alt=""
         class="result_image"
       />
       <div class="result__text">
@@ -34,12 +33,9 @@
         <div class="result__description">{{ item?.description }}</div>
       </div>
     </NuxtLink>
-    <!-- </div> -->
   </div>
 </template>
 <script setup>
-import { useRouter } from 'vue-router';
-
 defineProps({
   searchResults: {
     type: Array,
@@ -50,16 +46,15 @@ defineProps({
 });
 
 const router = useRouter();
+const hoveredIndex = ref(null);
 function goToItem(itemId) {
   if (!itemId) return;
   router.push(`/item/${itemId}`);
   hoveredIndex.value = null;
 }
-
-const hoveredIndex = ref(null);
 </script>
 <style scoped>
-@import '/assets/styles/default_layout.css';
+@import '@/assets/styles/default_layout.css';
 .result:not(:first-child) {
   margin-top: 8px;
 }

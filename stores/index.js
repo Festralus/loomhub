@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
-import Cookies from 'js-cookie';
-// import useApi from '/utils/api';
 import { useApi } from '@/composables/useApi.js';
+import Cookies from 'js-cookie';
 
 export const useAuthStore = defineStore({
   id: 'auth',
@@ -40,7 +39,7 @@ export const useAuthStore = defineStore({
       }
     },
 
-    // Function to set user auth (log them in)
+    // Method to set user auth (log them in)
     setSession(payload) {
       if (payload.token) {
         this.authenticated = true;
@@ -53,13 +52,13 @@ export const useAuthStore = defineStore({
       }
     },
 
-    // Function to remove user auth
+    // Method to remove user auth
     deleteSessionToken() {
       Cookies.remove('token');
       this.clearSession();
     },
 
-    // Function to clear the session
+    // Method to clear the session
     clearSession() {
       this.nickname = null;
       this.profilePicUrl = null;

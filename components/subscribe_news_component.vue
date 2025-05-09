@@ -40,14 +40,20 @@
   </div>
 </template>
 <script setup>
-// API endpoint
-import LetterIcon from '../assets/icons/LetterIcon.vue';
+// Icon imports
+import LetterIcon from '@/assets/icons/LetterIcon.vue';
 
+// API endpoint
 import { useApi } from '@/composables/useApi.js';
 const api = useApi();
 
-const subscriptionEmailModel = ref('');
+// Focus Newsletter subscription
 const subscriptionEmailRef = ref('');
+function focusSubscriptionEmail() {
+  subscriptionEmailRef.value?.focus();
+}
+
+const subscriptionEmailModel = ref('');
 const isLetterBeingSent = ref(false);
 const isLetterSent = ref(false);
 

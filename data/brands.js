@@ -1,3 +1,4 @@
+// Was used in index.vue for "Interactive brand icons"
 const brands = [
   { name: 'Versace', icon: 'VersaceIcon' },
   { name: 'Zara', icon: 'ZaraIcon' },

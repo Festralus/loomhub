@@ -22,6 +22,7 @@
   </div>
 </template>
 <script setup>
+// Icon imports
 import ArrowIcon from '@/assets/icons/ArrowIcon.vue';
 
 defineProps({

@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// Provide the Axios instance as "$api" throughout the project
 export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig();
 

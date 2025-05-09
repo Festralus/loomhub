@@ -17,6 +17,8 @@
           :style="{ 'text-decoration:underline': hoveredIndex == index }"
         >
           {{ item }}
+
+          <!-- Shows how many items fit the combination of filters -->
           <span
             :class="
               combinedQuantity?.[props.parameter]?.[item]
@@ -52,18 +54,23 @@
   </div>
 </template>
 <script setup>
-import CheckboxEmptyIcon from '~/assets/icons/CheckboxEmptyIcon.vue';
-import CheckboxFilledIcon from '~/assets/icons/CheckboxFilledIcon.vue';
+// Icon imports
+import CheckboxEmptyIcon from '@/assets/icons/CheckboxEmptyIcon.vue';
+import CheckboxFilledIcon from '@/assets/icons/CheckboxFilledIcon.vue';
 
 const props = defineProps({
   products: {
     type: Array,
     required: true,
   },
+
+  // Filter category (e.g. "color", "clothingType")
   parameter: {
     type: String,
     required: true,
   },
+
+  // Some values (sucha as quantity, colors and sizes) are nested within "Stock" array within each item in the database
   nested: {
     type: Boolean,
     default: false,
@@ -81,13 +88,11 @@ const props = defineProps({
 
 const emits = defineEmits(['filter-updated']);
 
-onMounted(() => {});
-
 const hoveredIndex = ref(null);
 
-// Get filter options
-let filterValues = ref([]);
-function getFilterValues(parameter) {
+// Getting filter options
+const filterValues = ref([]);
+function fetchFilterValues(parameter) {
   if (!props.products || props.products === undefined) return;
 
   if (!props.nested) {
@@ -107,7 +112,7 @@ function getFilterValues(parameter) {
   }
 }
 
-// Check filterValues length
+// Check filterValues length and adds styling for unnoticeable scrollbar difference
 const hasFewFilters = computed(() => filterValues.value.length < 7);
 
 // Check if the passed value is an integer
@@ -115,7 +120,7 @@ function isNum(val) {
   return !isNaN(val) && Number.isInteger(Number(val));
 }
 
-// Sort filters - numbers then strings alphabetically
+// Sort filters - numbers in ascending order then strings in alphabetical order
 function sortFilterValues(vals) {
   return vals.sort((a, b) => {
     if (isNum(a) && isNum(b)) {
@@ -128,18 +133,17 @@ function sortFilterValues(vals) {
   });
 }
 
-// REVIEW START
+// Always update filters
 watch(
   () => props.products,
   (newProducts) => {
     if (newProducts.length) {
-      getFilterValues(props.parameter);
+      fetchFilterValues(props.parameter);
     }
   },
   { deep: true }
 );
 
-// Toggle a filter value
 const checkedItems = computed(() => {
   return filterValues?.value?.map((value) => props?.selected?.includes(value));
 });
@@ -157,8 +161,6 @@ function toggleCheckbox(index) {
     values: selectedValues,
   });
 }
-
-// REVIEW END
 </script>
 <style scoped>
 .filters {

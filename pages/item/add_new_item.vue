@@ -1,4 +1,4 @@
-<!-- !! THIS PAGE WAS MOSTLY GENERATED !! -->
+<!-- !! CURRENT PAGE WAS MOSTLY AI-GENERATED !! -->
 <template>
   <div class="form-wrapper">
     <h1>Add New Item</h1>
@@ -254,7 +254,7 @@ const handleSubmit = async () => {
     console.log('Item added:', data);
   } catch (error) {
     console.error('Error adding item:', error);
-    console.log(error.response?.data); // (Safe access with ?)
+    console.log(error.response?.data);
   }
 };
 

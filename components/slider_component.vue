@@ -8,7 +8,7 @@
     @mouseleave="endDrag"
     ref="scrollContainer"
   >
-    <!-- Loading screen -->
+    <!-- Loading screen while items are being fetched -->
     <div v-show="!productsList.length" class="waiting-screen-local rounded-xl">
       <div class="loader"></div>
     </div>
@@ -57,9 +57,8 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
-
-import Product_rating_component from '../components/product_rating_component.vue';
+// Icon imports
+import Product_rating_component from '@/components/product_rating_component.vue';
 
 const props = defineProps({
   item: {
@@ -82,52 +81,17 @@ const props = defineProps({
 });
 
 onMounted(() => {
-  getSliderProducts();
+  fetchSliderProducts();
 });
 
 // API endpoint
 import { useApi } from '@/composables/useApi.js';
 const api = useApi();
 
-// Drag settings
-const scrollContainer = ref(null);
-let isDragging = ref(false);
-let hasBeenDragged = ref(false);
-let startX, scrollLeft;
-
-function startDrag(e) {
-  hasBeenDragged.value = false;
-  isDragging.value = true;
-  startX = e.pageX - scrollContainer.value.offsetLeft;
-  scrollLeft = scrollContainer.value.scrollLeft;
-}
-
-function onDrag(e) {
-  if (!isDragging.value || !e) return;
-  e.preventDefault();
-  const x = e.pageX - scrollContainer.value.offsetLeft;
-  const walk = (x - startX) * 2;
-  if (Math.abs(walk) > 6) {
-    hasBeenDragged.value = true;
-    isDragging.value = true;
-  }
-  scrollContainer.value.scrollLeft = scrollLeft - walk;
-}
-
-function endDrag() {
-  isDragging.value = false;
-}
-
-function handleClick(e) {
-  if (!e) return;
-  if (hasBeenDragged.value) e.preventDefault();
-}
-
-// Get the product list
+// Getting the products
 const productsList = ref([]);
-const currencyMultiplier = 1;
 
-async function getSliderProducts() {
+async function fetchSliderProducts() {
   try {
     const res = await api.get('api/getSliderProductsList', {
       params: {
@@ -140,11 +104,11 @@ async function getSliderProducts() {
     });
 
     const response = res.data.map((product) => {
-      const modifiedPrice = (product.price * currencyMultiplier).toFixed(2);
+      const modifiedPrice = product.price.toFixed(2);
       let modifiedOldPrice = null;
       let discountPercentage = null;
       if (product.oldPrice) {
-        modifiedOldPrice = (product.oldPrice * currencyMultiplier).toFixed(2);
+        modifiedOldPrice = product.oldPrice.toFixed(2);
 
         discountPercentage =
           Math.round(100 - (modifiedPrice / modifiedOldPrice) * 100) || 0;
@@ -165,6 +129,43 @@ async function getSliderProducts() {
   } catch (err) {
     console.error(err);
   }
+}
+
+// Drag settings
+const scrollContainer = ref(null);
+let isDragging = ref(false);
+let hasBeenDragged = ref(false);
+let startX, scrollLeft;
+
+function startDrag(e) {
+  hasBeenDragged.value = false;
+  isDragging.value = true;
+  startX = e.pageX - scrollContainer.value.offsetLeft;
+  scrollLeft = scrollContainer.value.scrollLeft;
+}
+
+function onDrag(e) {
+  if (!isDragging.value || !e) return;
+  e.preventDefault();
+
+  const x = e.pageX - scrollContainer.value.offsetLeft;
+  // Deactivate link if user moved three or more pixels
+  const walk = x - startX;
+  if (Math.abs(walk) > 3) {
+    hasBeenDragged.value = true;
+    isDragging.value = true;
+  }
+  scrollContainer.value.scrollLeft = scrollLeft - walk;
+}
+
+function endDrag() {
+  isDragging.value = false;
+}
+
+// Prevent activating the link if the item is dragged and not clicked
+function handleClick(e) {
+  if (!e) return;
+  if (hasBeenDragged.value) e.preventDefault();
 }
 </script>
 

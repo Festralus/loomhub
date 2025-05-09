@@ -1,3 +1,4 @@
+// It is used in both index.vue (Home page) and default.vue (main layout) for "Interactive dress style masonry" and Dress style "Dropdown menu"
 const dress_styles_list = [
   {
     name: 'Casual',
