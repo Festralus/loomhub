@@ -1,7 +1,7 @@
 <template>
   <div class="filters" :class="{ 'pl-[14px]': hasFewFilters }" v-if="products">
-    <div class="filter__contents">
-      <div
+    <ul class="filter__contents">
+      <li
         v-for="(item, index) in filterValues"
         :key="index"
         class="selector__filter"
@@ -38,6 +38,7 @@
                 ? 'filter: drop-shadow(0 0 1px var(--btn-primary-bg-active))'
                 : ''
             "
+            role="checkbox"
           />
           <CheckboxFilledIcon
             v-show="checkedItems[index]"
@@ -47,10 +48,11 @@
                 ? 'filter: drop-shadow(0 0 1px var(--btn-primary-bg-active))'
                 : ''
             "
+            role="checkbox"
           />
         </div>
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 </template>
 <script setup>

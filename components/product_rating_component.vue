@@ -1,21 +1,33 @@
 <template>
-  <div class="new-arrivals__items-item__rating flex w-max items-center">
+  <div
+    v-if="rating"
+    class="new-arrivals__items-item__rating flex w-max items-center"
+    aria-label="Rating is {{ rating }} stars"
+  >
     <span class="flex">
+      <!-- Full stars (one more if rating is greater than .75) -->
       <RatingStarIcon
         v-for="(_, i) in Math.floor(rating) + Math.ceil(-0.74 + (rating % 1))"
         :key="'full-' + i"
         :class="`size-${starsSize}`"
+        aria-hidden="true"
       />
+
+      <!-- Half star (if rating is between .25 and .75) -->
       <RatingHalfStarIcon
         v-if="rating % 1 >= 0.25 && rating % 1 <= 0.74"
         :class="`size-${starsSize}`"
+        aria-hidden="true"
       />
+
+      <!-- Empty stars (one more if rating is less than .25) -->
       <RatingEmptyStarIcon
         v-for="(_, i) in 5 -
         Math.ceil(rating) +
         Math.ceil(rating % 1 == 0 ? 0 : 0.25 - (rating % 1))"
         :key="'empty-' + i"
         :class="`size-${starsSize}`"
+        aria-hidden="true"
       />
     </span>
 

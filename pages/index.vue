@@ -7,11 +7,11 @@
       <div
         class="home-description__interactive relative z-30 px-4 xl:max-w-[940px] 2xl:mx-auto 2xl:text-center"
       >
-        <h2
+        <h1
           class="home-description__title IntergralExtraBold max-w-[576px] text-4xl leading-tight xl:text-6xl 2xl:max-w-full"
         >
           FIND CLOTHES THAT MATCHES YOUR STYLE
-        </h2>
+        </h1>
         <p
           class="home-description__text SatoshiRegular mt-4 text-[14px] lg:text-xl"
         >
@@ -76,7 +76,8 @@
           <img
             class="home-description__background-image -mb-4 bg-center object-center"
             src="https://i.imgur.com/sqNcZ0J.png"
-            alt="Background image"
+            alt=""
+            aria-hidden="true"
           />
         </picture>
       </div>
@@ -96,11 +97,11 @@
 
     <!-- Slider of products: highlights newest products -->
     <section class="new-arrivals">
-      <h3
+      <h2
         class="new-arrivals__title IntergralExtraBold mb-6 mt-9 text-center text-[32px] leading-none"
       >
         NEW ARRIVALS
-      </h3>
+      </h2>
 
       <Slider_component
         class="new-arrivals__items w-max-full mx-auto"
@@ -120,11 +121,11 @@
 
     <!-- Slider of products: highlights most popular products -->
     <section class="top-selling mt-10">
-      <h3
+      <h2
         class="top-selling__title IntergralExtraBold mb-6 mt-9 text-center text-[32px] leading-none"
       >
         TOP SELLING
-      </h3>
+      </h2>
 
       <Slider_component
         class="new-arrivals__items w-max-full mx-auto"
@@ -144,11 +145,11 @@
     <section
       class="style-masonry mx-auto mt-10 w-[1800px] max-w-[94vw] rounded-2xl bg-[#F0F0F0] pb-2 pt-9"
     >
-      <h3
+      <h2
         class="style-masonry__title IntergralExtraBold mb-7 px-10 text-center text-[32px] leading-none"
       >
         BROWSE BY DRESS STYLE
-      </h3>
+      </h2>
 
       <div
         class="style-masonry__tileset relative flex flex-col flex-wrap items-center justify-center px-2 xl:flex-row xl:gap-5"
@@ -191,11 +192,11 @@
     <!-- Website reviews section: carousel with scrollable user feedback -->
     <section class="reviews mt-10">
       <div class="reviews__header mx-4 flex justify-between">
-        <h3
+        <h2
           class="reviews__title IntergralExtraBold mr-10 text-left text-[32px] leading-none 4xl:text-center"
         >
           OUR HAPPY CUSTOMERS
-        </h3>
+        </h2>
         <div class="reviews__arrows mt-auto flex sm:hidden">
           <button
             class="reviews__arrow--left mr-4 size-6 rotate-180"
@@ -219,6 +220,7 @@
         <div
           v-show="!websiteReviewsArray.length"
           class="waiting-screen-local mt-1 rounded-xl"
+          aria-live="polite"
         >
           <div class="loader"></div>
         </div>

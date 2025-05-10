@@ -8,7 +8,11 @@
     ></div>
 
     <!-- Loading screen while items are being fetched -->
-    <div v-show="isFetching || initialLoading" class="waiting-screen">
+    <div
+      v-show="isFetching || initialLoading"
+      class="waiting-screen"
+      aria-live="polite"
+    >
       <div class="loader"></div>
     </div>
 

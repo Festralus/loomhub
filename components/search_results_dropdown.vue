@@ -1,9 +1,10 @@
 <template>
-  <div class="search-results min-h-[70px]">
+  <section class="search-results min-h-[70px]">
     <!-- Loading screen while items are being fetched -->
     <div
       v-show="isFetching"
       class="waiting-screen-local mt-1 rounded-b-[1rem] rounded-t-none"
+      aria-live="polite"
     >
       <div class="loader"></div>
     </div>
@@ -18,22 +19,22 @@
     >
       <!-- Optimization: Possible to load a very small stock image until the real one is loaded -->
       <img
-        v-if="item?.images?.[0]"
+        v-show="item?.images?.[0]"
         :src="item?.images?.[0]"
-        class="result_image"
+        class="result__image"
       />
       <div class="result__text">
-        <div
+        <h3
           class="result__name"
           :class="{ 'text-center': !item.description && !item.images }"
         >
           <span>{{ item?.name }}</span
           ><span v-show="item?.brand"> ({{ item?.brand }})</span>
-        </div>
-        <div class="result__description">{{ item?.description }}</div>
+        </h3>
+        <p class="result__description">{{ item?.description }}</p>
       </div>
     </NuxtLink>
-  </div>
+  </section>
 </template>
 <script setup>
 defineProps({
@@ -70,7 +71,7 @@ function goToItem(itemId) {
 .result:active {
   background-color: var(--btn-secondary-bg-active);
 }
-.result_image {
+.result__image {
   width: 56px;
   height: 56px;
   object-fit: contain;
@@ -78,13 +79,13 @@ function goToItem(itemId) {
 }
 
 @media (max-width: 1535px) {
-  .result_image {
+  .result__image {
     margin-left: 0px;
   }
 }
 
 @media (min-width: 1536px) {
-  .result_image {
+  .result__image {
     margin-left: 10px;
   }
 }

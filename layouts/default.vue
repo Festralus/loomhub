@@ -273,6 +273,8 @@
           class="top-menu__actions-cart top-menu__actions__button flex cursor-not-allowed justify-center px-2 hover:blur-[1px] active:blur-[1px] md:px-4"
           :class="{ 'hidden lg:block': isMobileSearchActive }"
           @click="openInDev('Cart')"
+          aria-label="Cart, in development"
+          aria-disabled="true"
         >
           <CartIcon class="h-16"></CartIcon>
         </button>
@@ -339,7 +341,11 @@
         </section>
 
         <!-- Login form -->
-        <form v-if="isAuthLoginActive && !nickname" class="auth__Login">
+        <form
+          v-if="isAuthLoginActive && !nickname"
+          class="auth__Login"
+          @submit.prevent="submitLoginForm"
+        >
           <input
             class="auth-input auth__login-input"
             :class="{ 'mb-3': !nicknameLoginError }"
@@ -360,7 +366,6 @@
           <div class="error-message">{{ passwordLoginError }}</div>
           <button
             class="auth__popup-btn mx-auto block cursor-pointer select-none"
-            @click.prevent="submitLoginForm"
           >
             Login
           </button>

@@ -1,71 +1,77 @@
 <template>
-  <div
-    v-if="modifiedSegments && modifiedSegments.length > 0"
+  <nav
+    v-if="modifiedSegments?.length > 0"
     class="path__breadcrumbs"
+    aria-label="Breadcrumb navigation"
   >
-    <!-- Following element is always shown -->
-    <div class="path__breadcrumb">
-      <NuxtLink to="/" class="breadcrumb__name">{{
-        modifiedSegments?.[0]
-      }}</NuxtLink>
-      <PointerIcon
+    <ol class="breadcrumb__list">
+      <!-- Following element is always shown -->
+      <li class="path__breadcrumb">
+        <NuxtLink to="/" class="breadcrumb__link">{{
+          modifiedSegments?.[0]
+        }}</NuxtLink>
+        <PointerIcon
+          v-if="modifiedSegments && modifiedSegments.length > 1"
+          :currentColor="'#666666'"
+          :strokeWidth="0.2"
+          class="breadcrumb__pointer"
+          aria-hidden="true"
+        ></PointerIcon>
+      </li>
+
+      <!-- Following element is always shown -->
+      <li
         v-if="modifiedSegments && modifiedSegments.length > 1"
-        :currentColor="'#666666'"
-        :strokeWidth="0.2"
-        class="breadcrumb__pointer"
-      ></PointerIcon>
-    </div>
-
-    <!-- Following element is always shown -->
-    <div
-      v-if="modifiedSegments && modifiedSegments.length > 1"
-      class="path__breadcrumb"
-    >
-      <NuxtLink
-        :to="{ path: isProductPage ? '/shop' : '' }"
-        class="breadcrumb breadcrumb__name"
-        >{{ modifiedSegments?.[1] }}</NuxtLink
+        class="path__breadcrumb"
       >
-      <PointerIcon
+        <NuxtLink
+          :to="{ path: isProductPage ? '/shop' : '' }"
+          class="breadcrumb breadcrumb__link"
+          >{{ modifiedSegments?.[1] }}</NuxtLink
+        >
+        <PointerIcon
+          v-if="modifiedSegments && modifiedSegments.length > 2"
+          :currentColor="'#666666'"
+          :strokeWidth="0.2"
+          class="breadcrumb__pointer"
+          aria-hidden="true"
+        ></PointerIcon>
+      </li>
+
+      <!-- Following element is only shown at item.[item_id] -->
+      <li
         v-if="modifiedSegments && modifiedSegments.length > 2"
-        :currentColor="'#666666'"
-        :strokeWidth="0.2"
-        class="breadcrumb__pointer"
-      ></PointerIcon>
-    </div>
-
-    <!-- Following element is only shown at item.[item_id] -->
-    <div
-      v-if="modifiedSegments && modifiedSegments.length > 2"
-      class="path__breadcrumb"
-    >
-      <NuxtLink
-        v-if="clothingTypeSegment"
-        :to="clothingTypeSegment"
-        class="breadcrumb breadcrumb__name"
-        >{{ modifiedSegments?.[2] }}</NuxtLink
+        class="path__breadcrumb"
       >
-      <PointerIcon
+        <NuxtLink
+          v-if="clothingTypeSegment"
+          :to="clothingTypeSegment"
+          class="breadcrumb breadcrumb__link"
+          >{{ modifiedSegments?.[2] }}</NuxtLink
+        >
+        <PointerIcon
+          v-if="modifiedSegments && modifiedSegments.length > 3"
+          :currentColor="'#666666'"
+          :strokeWidth="0.2"
+          class="breadcrumb__pointer"
+          aria-hidden="true"
+        ></PointerIcon>
+      </li>
+
+      <!-- Following element is only shown at item.[item_id] -->
+      <li
         v-if="modifiedSegments && modifiedSegments.length > 3"
-        :currentColor="'#666666'"
-        :strokeWidth="0.2"
-        class="breadcrumb__pointer"
-      ></PointerIcon>
-    </div>
-
-    <!-- Following element is only shown at item.[item_id] -->
-    <div
-      v-if="modifiedSegments && modifiedSegments.length > 3"
-      class="path__breadcrumb"
-    >
-      <NuxtLink
-        v-if="productCategorySegment"
-        :to="productCategorySegment"
-        class="breadcrumb breadcrumb__name"
-        >{{ modifiedSegments?.[3] }}</NuxtLink
+        class="path__breadcrumb"
       >
-    </div>
-  </div>
+        <NuxtLink
+          v-if="productCategorySegment"
+          :to="productCategorySegment"
+          class="breadcrumb breadcrumb__link"
+          >{{ modifiedSegments?.[3] }}</NuxtLink
+        >
+      </li>
+    </ol>
+  </nav>
 </template>
 <script setup>
 // Icon imports
@@ -148,14 +154,15 @@ async function setBreadcrumbs() {
 </script>
 <style scoped>
 /* Breadcrumbs */
-.breadcrumb__name {
+.breadcrumb__link {
   cursor: pointer;
   user-select: none;
 }
-.breadcrumb__name:hover {
+.breadcrumb__link:hover {
   text-decoration: underline;
 }
-.path__breadcrumbs {
+.breadcrumb__list {
+  list-style: none;
   display: flex;
   gap: 10px;
   margin-top: 78px;

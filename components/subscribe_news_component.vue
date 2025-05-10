@@ -1,12 +1,12 @@
 <template>
-  <div
+  <section
     class="subscribe mx-auto mt-12 w-[1100px] max-w-[94vw] overflow-hidden rounded-2xl bg-black"
   >
-    <div
+    <h3
       class="subscribe__title IntegralBold px-6 pt-6 text-center text-[1.8rem] leading-8 text-white"
     >
       STAY UP TO DATE ABOUT OUR NEWEST OFFERS
-    </div>
+    </h3>
     <div
       class="subscribe__input_wrapper mx-auto mt-8 flex h-[42px] w-[311px] items-center overflow-hidden rounded-3xl bg-white"
       @click="focusSubscriptionEmail"
@@ -26,18 +26,19 @@
     >
       Thank you! The letter has been sent. Maybe to your spam folder :)
     </div>
-    <div
+    <button
       v-if="!isLetterBeingSent"
       class="subscribe__submit-button SatoshiRegular mx-auto mb-8 mt-3 h-[42px] w-[311px] cursor-pointer select-none rounded-3xl bg-white text-center leading-[42px] text-black hover:[background-color:var(--btn-secondary-bg-hover)] active:[background-color:var(--btn-secondary-bg-active)]"
       @click="sendLetter()"
     >
       Subscribe to Newsletter
-    </div>
+    </button>
     <div
       v-if="isLetterBeingSent"
       class="subscribe__submit-button SatoshiRegular email-loader mx-auto mb-6 mt-5 h-[42px] w-[311px] cursor-not-allowed select-none rounded-3xl bg-white text-center leading-[42px]"
+      aria-live="polite"
     ></div>
-  </div>
+  </section>
 </template>
 <script setup>
 // Icon imports

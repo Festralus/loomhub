@@ -1,5 +1,5 @@
 <template>
-  <div
+  <section
     class="component__items relative mx-1 flex min-h-[476px] w-full max-w-[99vw] select-none flex-row justify-start overflow-x-auto pb-1 xl:my-4 xl:origin-center xl:transform"
     :class="isDragging ? 'cursor-grabbing' : 'cursor-grab'"
     @mousedown.left="startDrag"
@@ -9,16 +9,20 @@
     ref="scrollContainer"
   >
     <!-- Loading screen while items are being fetched -->
-    <div v-show="!productsList.length" class="waiting-screen-local rounded-xl">
+    <div
+      v-show="!productsList.length"
+      class="waiting-screen-local rounded-xl"
+      aria-live="polite"
+    >
       <div class="loader"></div>
     </div>
 
     <!-- Product items -->
     <RouterLink
-      @click.capture="handleClick"
-      :to="`/item/${product.GID}`"
       v-for="product in productsList"
+      :to="`/item/${product.GID}`"
       :key="product.GID"
+      @click.capture="handleClick"
       class="component__items-item w-[272px] flex-shrink-0 pl-2 pr-2"
       :class="isDragging ? 'cursor-grabbing' : 'cursor-grab'"
       draggable="false"
@@ -36,6 +40,19 @@
         <Product_rating_component :rating="product.rating" class="mt-1" />
         <div
           class="component__items-item__price SatoshiBold mt-1 flex items-center text-xl font-semibold"
+          :aria-label="
+            'Current price is ' +
+            product.price +
+            'dollars,' +
+            (product.oldPrice > 0
+              ? 'Original price was ' +
+                product.oldPrice +
+                'dollars,' +
+                'Discount is ' +
+                product.discount +
+                'percent'
+              : '')
+          "
         >
           <span>${{ product.price }}</span>
           <span
@@ -53,7 +70,7 @@
         </div>
       </div>
     </RouterLink>
-  </div>
+  </section>
 </template>
 
 <script setup>
