@@ -144,7 +144,7 @@ async function setBreadcrumbs() {
     } catch (err) {
       modifiedSegments.value = ['Home', 'Shop'];
       isProductPage.value = false;
-      console.error(err);
+      console.error(`Error setting breadcrumbs: `, err);
     }
   } else {
     modifiedSegments.value = ['Home', 'Shop'];

@@ -459,45 +459,81 @@
             >
               CREATOR
             </h3>
-            <NuxtLink to="/" class="links__link">About me</NuxtLink>
-            <NuxtLink to="/" class="links__link">123</NuxtLink>
-            <NuxtLink to="/" class="links__link">Inspirations</NuxtLink>
-            <NuxtLink to="/" class="links__link">Career</NuxtLink>
+            <NuxtLink to="/footer/about-me" class="links__link"
+              >About me</NuxtLink
+            >
+            <NuxtLink to="/footer/skills-development" class="links__link"
+              >Skills development</NuxtLink
+            >
+            <NuxtLink to="/footer/career" class="links__link">Career</NuxtLink>
+            <NuxtLink to="/footer/expertise" class="links__link"
+              >Expertise</NuxtLink
+            >
           </section>
-          <div class="links__block pb-6">
+
+          <section class="links__block pb-6">
             <h3
               class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
-              LINKS
+              WEBSITE
             </h3>
-            <NuxtLink to="/" class="links__link">GutHub</NuxtLink>
-            <NuxtLink to="/" class="links__link">Codewars</NuxtLink>
-            <NuxtLink to="/" class="links__link">123</NuxtLink>
-            <NuxtLink to="/" class="links__link">123</NuxtLink>
-          </div>
+            <NuxtLink to="/footer/why-loomhub" class="links__link"
+              >Why LoomHub</NuxtLink
+            >
+            <NuxtLink to="/footer/roadmap" class="links__link"
+              >Roadmap</NuxtLink
+            >
+            <NuxtLink to="/footer/features" class="links__link"
+              >Features</NuxtLink
+            >
+            <NuxtLink to="/footer/credits" class="links__link"
+              >Credits</NuxtLink
+            >
+          </section>
         </section>
         <div class="links__container inline-flex">
           <section class="links__block pb-6">
             <h3
               class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
-              CONTACTS
+              MISC
             </h3>
-            <NuxtLink to="/" class="links__link">X / Twitter</NuxtLink>
-            <NuxtLink to="/" class="links__link">E-mail</NuxtLink>
-            <NuxtLink to="/" class="links__link">Telegram</NuxtLink>
-            <NuxtLink to="/" class="links__link">Facebook</NuxtLink>
+
+            <NuxtLink to="/" class="links__link">Why LoomHub</NuxtLink>
+            <NuxtLink to="/" class="links__link">Why LoomHub</NuxtLink>
+            <NuxtLink to="/" class="links__link">Why LoomHub</NuxtLink>
+            <NuxtLink to="/" class="links__link">Why LoomHub</NuxtLink>
           </section>
           <section class="links__block pb-6">
             <h3
               class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
-              THE WEBSITE
+              LINKS
             </h3>
-            <NuxtLink to="/" class="links__link">Why LoomHub</NuxtLink>
-            <NuxtLink to="/" class="links__link">Roadmap</NuxtLink>
-            <NuxtLink to="/" class="links__link">Features</NuxtLink>
-            <NuxtLink to="/" class="links__link">Credits</NuxtLink>
+            <a
+              target="_blank"
+              href="https://github.com/Festralus/"
+              class="links__link"
+              >GutHub</a
+            >
+            <a
+              target="_blank"
+              href="https://x.com/andrey_omelch"
+              class="links__link"
+              >X / Twitter</a
+            >
+            <a
+              @click="copyEmailToClipboard()"
+              href="mailto:omel.andrey.99@gmail.com?subject=Hello%20Andrey!"
+              class="links__link"
+              >E-mail</a
+            >
+            <a
+              target="_blank"
+              href="https://t.me/andrey_omelch"
+              class="links__link"
+              >Telegram</a
+            >
           </section>
         </div>
       </div>
@@ -732,7 +768,7 @@ async function performQuickSearch() {
     }
     searchResults.value = res.data.length < 6 ? res.data : res.data.slice(0, 5);
   } catch (err) {
-    console.error(err);
+    console.error(`Error during search: `, err);
   } finally {
     isFetching.value = false;
   }
@@ -830,7 +866,7 @@ async function submitRegistrationForm() {
     } else if (msg?.includes('Password')) {
       passwordRegError.value = msg;
     } else {
-      console.error(err);
+      console.error(`Error creating user: `, err);
     }
   }
 }
@@ -885,7 +921,7 @@ async function submitLoginForm() {
       nicknameLoginError.value = '';
       passwordLoginError.value = 'Invalid nickname or password';
     } else {
-      console.error(err);
+      console.error(`Error getting session: `, err);
     }
   }
 }
@@ -914,7 +950,7 @@ function copyEmailToClipboard() {
     })
     .catch((err) => {
       alert('Something went wrong. Please try another communication link.');
-      console.error(err);
+      console.error(`Error copying e-mail: `, err);
     });
 }
 </script>

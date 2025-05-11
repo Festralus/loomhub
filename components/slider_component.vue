@@ -144,7 +144,7 @@ async function fetchSliderProducts() {
 
     productsList.value = [...response];
   } catch (err) {
-    console.error(err);
+    console.error(`Error fetching products: `, err);
   }
 }
 

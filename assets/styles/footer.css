@@ -1,0 +1,141 @@
+/* !! CURRENT FILE WAS MOSTLY AI-GENERATED !! */
+
+.story-page {
+  width: calc(100% - 1rem);
+  max-width: 800px;
+  margin: 80px auto 0 auto;
+  padding: 2rem 1rem;
+  background-color: var(--background-primary-color-two);
+  border: 1px solid var(--border-thin-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  color: #000;
+  line-height: 1.6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.story-page h1 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: var(--btn-primary-bg-default);
+}
+
+.story-page p {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.story-page .back-link {
+  display: block;
+  text-align: center;
+  margin-top: 2rem;
+  color: var(--btn-secondary-text-active);
+  text-decoration: none;
+  font-weight: 500;
+}
+.story-page .back-link:hover {
+  text-decoration: underline;
+}
+
+.story-nav-section {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.story-nav-section__heading {
+  margin-bottom: 1rem;
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--btn-primary-bg-default);
+}
+
+.story-nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.story-nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.25rem;
+  background-color: var(--btn-secondary-bg-default);
+  border: 1px solid var(--border-default-color);
+  border-radius: 8px;
+  color: var(--btn-primary-bg-default);
+  text-decoration: none;
+  font-size: 0.95rem;
+  min-width: 150px;
+  transition: background-color 0.2s ease;
+}
+
+.story-nav-button:hover {
+  background-color: var(--btn-secondary-bg-hover);
+}
+
+.story-list {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  list-style: disc;
+}
+
+.story-list li {
+  margin-bottom: 0rem;
+  font-size: 1rem;
+  text-align: left;
+}
+
+/* Tablet */
+@media screen and (max-width: 768px) {
+  .story-page {
+    padding: 1.5rem 1rem;
+    border-radius: 10px;
+  }
+
+  .story-page h1 {
+    font-size: 1.5rem;
+  }
+
+  .story-page p {
+    font-size: 0.95rem;
+  }
+
+  .story-nav-button {
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 480px) {
+  .story-page {
+    padding: 1rem 0.75rem;
+    border-radius: 8px;
+  }
+
+  .story-page h1 {
+    font-size: 1.25rem;
+  }
+
+  .story-page p {
+    font-size: 0.9rem;
+  }
+
+  .story-page .back-link {
+    font-size: 0.95rem;
+  }
+
+  .story-nav-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .story-nav-button {
+    width: 100%;
+    text-align: center;
+  }
+}

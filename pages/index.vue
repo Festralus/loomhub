@@ -355,7 +355,7 @@ async function getWebsiteReviews() {
 
     websiteReviewsArray.value.push(...modifiedResponse);
   } catch (err) {
-    console.error(err);
+    console.error(`Error fetching website reviews: `, err);
   }
 }
 

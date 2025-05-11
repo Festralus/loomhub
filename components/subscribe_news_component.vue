@@ -26,13 +26,13 @@
     >
       Thank you! The letter has been sent. Maybe to your spam folder :)
     </div>
-    <button
+    <div
       v-if="!isLetterBeingSent"
       class="subscribe__submit-button SatoshiRegular mx-auto mb-8 mt-3 h-[42px] w-[311px] cursor-pointer select-none rounded-3xl bg-white text-center leading-[42px] text-black hover:[background-color:var(--btn-secondary-bg-hover)] active:[background-color:var(--btn-secondary-bg-active)]"
       @click="sendLetter()"
     >
       Subscribe to Newsletter
-    </button>
+    </div>
     <div
       v-if="isLetterBeingSent"
       class="subscribe__submit-button SatoshiRegular email-loader mx-auto mb-6 mt-5 h-[42px] w-[311px] cursor-not-allowed select-none rounded-3xl bg-white text-center leading-[42px]"
@@ -82,8 +82,8 @@ async function sendLetter() {
       alert('There was an issue sending your subscription.');
       isLetterBeingSent.value = false;
     }
-  } catch (error) {
-    console.error('Error sending email:', error);
+  } catch (err) {
+    console.error('Error sending email:', err);
     alert('Something went wrong. Please try again later.');
     isLetterBeingSent.value = false;
   }

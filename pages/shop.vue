@@ -511,8 +511,8 @@ function initializeFiltersFromURL() {
   for (const key in route.query) {
     try {
       filters.value[key] = JSON.parse(route.query[key]);
-    } catch (error) {
-      console.error(`Error parsing filter ${key}: `, error);
+    } catch (err) {
+      console.error(`Error parsing filter ${key}: `, err);
     }
   }
 }
@@ -545,7 +545,7 @@ async function getAllProducts() {
 
     combinedQuantity.value = response.data.filterCounts;
   } catch (err) {
-    console.error(err);
+    console.error(`Error fetching products: `, err);
   }
 }
 
@@ -565,7 +565,7 @@ async function getProducts() {
       await getAllProducts();
       return;
     } catch (err) {
-      console.error(err);
+      console.error(`Error fetching products: `, err);
       return;
     } finally {
       isFetching.value = false;
@@ -596,7 +596,7 @@ async function getProducts() {
 
     combinedQuantity.value = response.data.filterCounts;
   } catch (err) {
-    console.error(err);
+    console.error(`Error fetching products: `, err);
   } finally {
     isFetching.value = false;
   }

@@ -252,9 +252,9 @@ const handleSubmit = async () => {
   try {
     const { data } = await api.post('/api/addNewItem', payload);
     console.log('Item added:', data);
-  } catch (error) {
-    console.error('Error adding item:', error);
-    console.log(error.response?.data);
+  } catch (err) {
+    console.error('Error adding item:', err);
+    console.log(err.response?.data);
   }
 };
 

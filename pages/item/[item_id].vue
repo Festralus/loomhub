@@ -621,7 +621,7 @@ async function setChosenItem() {
     // Set similar links
     setSimilarLinks(res.data);
   } catch (err) {
-    console.error(err);
+    console.error(`Error setting chosen item:`, err);
   } finally {
     isFetching.value = false;
   }
@@ -715,7 +715,10 @@ function chooseColor(index) {
     .filter(
       (product) => product.color == itemColors.value[chosenColor.value].name
     )
-    .map((product) => product.size);
+    .map((product) => product.size)
+    .sort((a, b) => {
+      return a - b;
+    });
 }
 
 // Choose product size
@@ -751,7 +754,7 @@ function fetchAvailableStock() {
 
 // Product Tabs
 const productTabsRefs = ref([]);
-const currentProductTab = ref(1);
+const currentProductTab = ref(0);
 function switchProductTab(index) {
   currentProductTab.value = index;
 }
@@ -852,7 +855,7 @@ async function fetchProductReviews() {
     });
     productReviews.value = reviewsResponse;
   } catch (err) {
-    console.error(`Error while fetching product reviews:`, err.message);
+    console.error(`Error fetching product reviews:`, err);
   }
 }
 
