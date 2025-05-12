@@ -496,13 +496,17 @@
             <h3
               class="footer__section-title SatoshiRegular text-base tracking-[3px]"
             >
-              MISC
+              TRY OUT
             </h3>
 
-            <NuxtLink to="/" class="links__link">Why LoomHub</NuxtLink>
-            <NuxtLink to="/" class="links__link">Why LoomHub</NuxtLink>
-            <NuxtLink to="/" class="links__link">Why LoomHub</NuxtLink>
-            <NuxtLink to="/" class="links__link">Why LoomHub</NuxtLink>
+            <NuxtLink to="/footer/letter" class="links__link">Letter</NuxtLink>
+            <NuxtLink to="/footer/sliders" class="links__link"
+              >Sliders</NuxtLink
+            >
+            <NuxtLink to="/footer/filters" class="links__link"
+              >Filters</NuxtLink
+            >
+            <NuxtLink to="/footer/search" class="links__link">Search</NuxtLink>
           </section>
           <section class="links__block pb-6">
             <h3
